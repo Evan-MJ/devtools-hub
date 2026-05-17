@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker - HEX RGB HSL Converter | DevTools Hub</title>
+    <meta name="description" content="Free color picker tool. Convert between HEX, RGB, and HSL color formats instantly. Generate color palettes, check contrast ratios, and copy values with one click.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/color-picker/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Color Picker","description":"Pick colors and convert between HEX, RGB, and HSL formats with contrast checking","url":"https://tools.scoreroute.com/tools/color-picker/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header><div class="container"><h1>Color Picker</h1><p class="subtitle">HEX, RGB & HSL Color Converter</p><nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Color Picker</span></nav></div></header>
+    <main class="container">
+        <section class="tool-page-content">
+            <div class="tool-description">
+                <h2>Understanding Color Formats</h2>
+                <p>Different systems represent colors in different formats. Web browsers use HEX and RGB, design tools often use HSL, and print systems work with CMYK. Understanding these formats helps you convert between them accurately.</p>
+
+                <h3>HEX Color Codes</h3>
+                <p>HEX codes represent colors as hexadecimal triplets: <code>#RRGGBB</code>. Each pair ranges from 00 to FF (0-255 in decimal). The most common format for web development, CSS, and design tools.</p>
+                <ul>
+                    <li><code>#FF0000</code> = Pure red</li>
+                    <li><code>#00FF00</code> = Pure green</li>
+                    <li><code>#0000FF</code> = Pure blue</li>
+                    <li><code>#000000</code> = Black</li>
+                    <li><code>#FFFFFF</code> = White</li>
+                </ul>
+
+                <h3>RGB Color Model</h3>
+                <p>RGB defines colors by their Red, Green, and Blue components, each ranging from 0-255. Combining all three at maximum (255,255,255) produces white. All at zero (0,0,0) produces black.</p>
+                <p>The formula for perceived brightness: <code>(R×299 + G×587 + B×114) / 1000</code>. Colors with brightness above 128 are typically considered "light" colors.</p>
+
+                <h3>HSL Color Model</h3>
+                <p>HSL represents colors through Hue (color angle 0-360°), Saturation (intensity 0-100%), and Lightness (brightness 0-100%). HSL is often more intuitive for humans - "make it more blue" or "desaturate this" maps directly to HSL adjustments.</p>
+                <ul>
+                    <li>Hue 0° = Red</li>
+                    <li>Hue 120° = Green</li>
+                    <li>Hue 240° = Blue</li>
+                </ul>
+
+                <h3>Accessibility: Contrast Ratios</h3>
+                <p>Web Content Accessibility Guidelines (WCAG) require minimum contrast ratios between text and background colors for readability:</p>
+                <table>
+                    <tr><th>Level</th><th>Normal Text</th><th>Large Text</th></tr>
+                    <tr><td>AA (Minimum)</td><td>4.5:1</td><td>3:1</td></tr>
+                    <tr><td>AAA (Enhanced)</td><td>7:1</td><td>4.5:1</td></tr>
+                </table>
+                <p>Use the relative luminance formula to calculate: <code>L = 0.2126 * R + 0.7152 * G + 0.0722 * B</code> where R, G, B are linearized values.</p>
+
+                <h3>Alpha (Transparency)</h3>
+                <p>RGBA and HSLA add an alpha channel (0-1) for transparency. CSS also supports 8-digit HEX (<code>#RRGGBBAA</code>) for the same effect. An alpha of 0 means fully transparent, 1 means fully opaque.</p>
+
+                <h3>Color in Web Development</h3>
+                <p><strong>CSS Variables:</strong> Define a color system with <code>:root { --primary: #3498db; }</code> for consistent theming.</p>
+                <p><strong>Dark Mode:</strong> Store both light and dark values: <code>--bg: #ffffff</code> and <code>--bg-dark: #1a1a2e</code>.</p>
+                <p><strong>Gradient Interpolation:</strong> Colors between two values in a gradient don't transition linearly in HSL space - the hue might wrap around (0° to 360°), causing unexpected color shifts.</p>
+            </div>
+
+            <div class="tool-section">
+                <h2>Pick a Color</h2>
+                <input type="color" id="color-input" value="#3498db">
+                <div class="color-preview" id="color-preview" style="background-color:#3498db;"></div>
+                <div class="color-formats">
+                    <div class="color-format">
+                        <label>HEX</label>
+                        <input type="text" id="color-hex" value="#3498DB" readonly>
+                    </div>
+                    <div class="color-format">
+                        <label>RGB</label>
+                        <input type="text" id="color-rgb" value="rgb(52,152,219)" readonly>
+                    </div>
+                    <div class="color-format">
+                        <label>HSL</label>
+                        <input type="text" id="color-hsl" value="hsl(204,70%,43%)" readonly>
+                    </div>
+                </div>
+                <button onclick="copyToClipboard('color-hex')" class="btn btn-small">Copy HEX</button>
+                <button onclick="copyToClipboard('color-rgb')" class="btn btn-small">Copy RGB</button>
+                <button onclick="copyToClipboard('color-hsl')" class="btn btn-small">Copy HSL</button>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/json-formatter/">JSON Formatter</a> - Format CSS/JSON color data</li>
+                    <li><a href="/tools/url-encoder/">URL Encoder</a> - Encode color values in URLs</li>
+                    <li><a href="/tools/hash-generator/">Hash Generator</a> - Generate color hashes</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+    <script src="/tools.js"></script>
+    <script>
+        document.getElementById('color-input').addEventListener('input', function(e) {
+            const color = e.target.value;
+            document.getElementById('color-preview').style.backgroundColor = color;
+            document.getElementById('color-hex').value = color.toUpperCase();
+            const rgb = hexToRgb(color);
+            document.getElementById('color-rgb').value = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            document.getElementById('color-hsl').value = 'hsl('+hsl.h+','+hsl.s+'%,'+hsl.l+'%)';
+        });
+        function copyToClipboard(id) { const e=document.getElementById(id); if(e) navigator.clipboard.writeText(e.value||e.textContent); }
+        function hexToRgb(hex) { const r=/^#?([a-f\d]{2})$/i.exec(hex); return r?{r:parseInt(r[1],16),g:parseInt(r[1],16)>>8||parseInt(r[1].slice(0,2),16),b:parseInt(r[1])||parseInt(r[1].slice(-2),16)}:{r:0,g:0,b:0}; }
+        function rgbToHsl(r,g,b) { r/=255;g/=255;b/=255; const max=Math.max(r,g,b),min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min){h=s=0;}else{const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min); switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}} return {h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)}; }
+    </script>
+</body>
+</html>

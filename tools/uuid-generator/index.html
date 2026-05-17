@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator - Generate Unique Identifiers Online | DevTools Hub</title>
+    <meta name="description" content="Free UUID generator. Create UUID v1, v4, and v7 identifiers instantly. Bulk generation supported. Used for databases, distributed systems, and unique naming.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/uuid-generator/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"UUID Generator","description":"Generate unique identifiers in UUID v1, v4, and v7 formats","url":"https://tools.scoreroute.com/tools/uuid-generator/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header><div class="container"><h1>UUID Generator</h1><p class="subtitle">Generate Unique Identifiers - v1, v4, v7</p><nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>UUID Generator</span></nav></div></header>
+    <main class="container">
+        <section class="tool-page-content">
+            <div class="tool-description">
+                <h2>What is UUID?</h2>
+                <p>A UUID (Universally Unique Identifier) is a 128-bit label with a standardized format: <code>550e8400-e29b-41d4-a716-446655440000</code>. The probability of generating duplicate UUIDs is vanishingly small - you'd need to generate 1 billion UUIDs per second for 100 years to have a 50% chance of a single collision.</p>
+
+                <h3>UUID Versions Explained</h3>
+                <div class="uuid-versions">
+                    <div class="version">
+                        <h4>UUID v1 (Time-based)</h4>
+                        <p>Contains timestamp and MAC address. Two v1 UUIDs generated at the same instant on the same machine will be identical. Reveals when and where the UUID was created - not suitable for security-sensitive applications.</p>
+                        <p><code>550e8400-e29b-11d4-a716-446655440000</code></p>
+                    </div>
+                    <div class="version">
+                        <h4>UUID v4 (Random)</h4>
+                        <p>Pure random generation. Most common choice for general use. No information about creation time or location. Provides excellent uniqueness guarantees without privacy concerns.</p>
+                        <p><code>550e8400-e29b-41d4-a716-446655440000</code></p>
+                    </div>
+                    <div class="version">
+                        <h4>UUID v7 (Unix Epoch Time)</h4>
+                        <p>Newer standard combining timestamp with randomness. Sortable by creation time (useful for databases), contains no sensitive information, and is recommended for new applications.</p>
+                        <p><code>0191a23c-4e90-7b23-9c10-8e7f3d2a5c6e</code></p>
+                    </div>
+                </div>
+
+                <h3>When to Use UUIDs</h3>
+                <div class="use-cases">
+                    <div class="use-case">
+                        <h4>Database Primary Keys</h4>
+                        <p>UUIDs allow merging data from multiple databases without key conflicts. Each system generates its own UUIDs, guaranteeing uniqueness across distributed databases without centralized coordination.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>URL Shortening</h4>
+                        <p>Create unique, unpredictable identifiers for shortened URLs. A v4 UUID provides 122 bits of randomness, making enumeration attacks computationally infeasible.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>Session Tokens</h4>
+                        <p>Generate secure session identifiers that cannot be predicted or guessed. v4 UUIDs provide sufficient randomness for authentication tokens when combined with proper server-side validation.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>File Naming</h4>
+                        <p>Name uploaded files with UUIDs to prevent name collisions, hide original filenames, and avoid directory traversal attacks. The UUID ensures each file gets a unique name regardless of user upload.</p>
+                    </div>
+                </div>
+
+                <h3>UUID vs Auto-increment</h3>
+                <table>
+                    <tr><th>Aspect</th><th>UUID</th><th>Auto-increment</th></tr>
+                    <tr><td>Distributed systems</td><td>✅ Independent generation</td><td>❌ Needs coordination</td></tr>
+                    <tr><td>URL exposure</td><td>❌ Sequential guessable</td><td>✅ Sequential guessable</td></tr>
+                    <tr><td>Storage size</td><td>❌ 16 bytes</td><td>✅ 4-8 bytes</td></tr>
+                    <tr><td>Database performance</td><td>❌ Random insertion</td><td>✅ Sequential insertion</td></tr>
+                </table>
+
+                <h3>UUID Performance in Databases</h3>
+                <p>Random UUIDs (v4) cause index fragmentation because new rows insert randomly rather than sequentially. For high-write databases, consider UUID v7 (sortable by time) or ULIDs as alternatives. Some databases offer native UUID optimization - PostgreSQL's uuid-ossp extension and MySQL's uuid_short() function.</p>
+            </div>
+
+            <div class="tool-section">
+                <h2>Generate UUID</h2>
+                <select id="uuid-version"><option value="v4">Version 4 (Random)</option><option value="v1">Version 1 (Timestamp)</option><option value="v7">Version 7 (Sortable)</option></select>
+                <input type="number" id="uuid-count" value="1" min="1" max="100">
+                <div class="btn-group">
+                    <button onclick="generateUUID()" class="btn btn-primary">Generate</button>
+                    <button onclick="generateBulkUUID()" class="btn">Bulk Generate</button>
+                </div>
+                <div id="uuid-output" class="uuid-results"></div>
+                <button onclick="copyAllUUID()" class="btn btn-small">Copy All</button>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/hash-generator/">Hash Generator</a> - Create secure hashes</li>
+                    <li><a href="/tools/timestamp-converter/">Timestamp Converter</a> - Decode v1 timestamps</li>
+                    <li><a href="/tools/json-formatter/">JSON Formatter</a> - Format UUID data</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+    <script src="/tools.js"></script>
+    <script>
+        function generateUUID() { document.getElementById('uuid-output').innerHTML='<p>'+createUUID(document.getElementById('uuid-version').value)+'</p>'; }
+        function generateBulkUUID() { const count=parseInt(document.getElementById('uuid-count').value)||1; const uuids=[]; for(let i=0;i<Math.min(count,100);i++) uuids.push(createUUID(document.getElementById('uuid-version').value)); document.getElementById('uuid-output').innerHTML=uuids.map(u=>'<p>'+u+'</p>').join(''); }
+        function createUUID(v) { if(v==='v4') return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){const r=Math.random()*16|0;const va=c==='x'?r:(r&0x3|0x8);return va.toString(16);}); else if(v==='v1') { const t=Date.now().toString(16).padStart(12,'0'); return t.slice(0,8)+'-'+t.slice(8,12)+'-1xxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g,()=>Math.floor(Math.random()*16).toString(16)); } else { const t=Date.now().toString(16).padStart(12,'0'); return t.slice(0,8)+'-'+t.slice(8,12)+'-7xxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g,()=>Math.floor(Math.random()*16).toString(16)); } }
+        function copyAllUUID() { navigator.clipboard.writeText(document.getElementById('uuid-output').textContent); }
+    </script>
+</body>
+</html>

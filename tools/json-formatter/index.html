@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter - Format, Validate & Beautify JSON Online | DevTools Hub</title>
+    <meta name="description" content="Free JSON formatter and validator. Format, minify, beautify and convert JSON to YAML. Detect syntax errors with line numbers. Works in any browser, no signup required.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/json-formatter/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "JSON Formatter",
+        "description": "Format, validate and beautify JSON data instantly with syntax highlighting and error detection",
+        "url": "https://tools.scoreroute.com/tools/json-formatter/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Format JSON with syntax highlighting",
+            "Validate JSON syntax with error location",
+            "Minify JSON for production",
+            "Convert JSON to YAML"
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>JSON Formatter</h1>
+            <p class="subtitle">Format, Validate & Beautify JSON Online</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>JSON Formatter</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page-content">
+            <div class="tool-description">
+                <h2>What is JSON Formatter?</h2>
+                <p>A JSON Formatter is an essential developer utility that transforms minified or poorly structured JSON data into human-readable format with proper indentation and syntax highlighting. When working with APIs, configuration files, or data interchange, properly formatted JSON dramatically improves debugging efficiency.</p>
+                
+                <h3>Why Use JSON Formatter?</h3>
+                <ul>
+                    <li><strong>Debug API responses</strong> - When an API returns a single-line JSON response, identifying the exact location of a syntax error becomes nearly impossible without formatting</li>
+                    <li><strong>Configuration validation</strong> - Verify package.json, tsconfig.json, or any JSON-based configuration before deployment</li>
+                    <li><strong>Data inspection</strong> - Navigate through nested JSON structures with expandable tree views</li>
+                    <li><strong>Prettify exports</strong> - Make exported JSON data from databases more accessible</li>
+                </ul>
+
+                <h3>Common JSON Syntax Errors</h3>
+                <div class="error-list">
+                    <div class="error-item">
+                        <strong>Trailing Commas:</strong> <code>{"key": "value",}</code> - The comma after the last item causes parsing failures
+                    </div>
+                    <div class="error-item">
+                        <strong>Unescaped Quotes:</strong> <code>{"msg": "He said "hello""}</code> - Quotes inside strings must be escaped with backslash
+                    </div>
+                    <div class="error-item">
+                        <strong>Single Quotes:</strong> <code>{'key': 'value'}</code> - JSON requires double quotes for keys and string values
+                    </div>
+                    <div class="error-item">
+                        <strong>Comments:</strong> <code>{"//": "comment"}</code> - JSON does not support comments, use only valid syntax
+                    </div>
+                </div>
+
+                <h3>Real-World Use Cases</h3>
+                <p><strong>Scenario 1: Backend Development</strong><br>
+                When building a Node.js application, you might encounter a cryptic "Unexpected token" error. Using a JSON formatter to paste your config data reveals the misplaced comma at line 47 that caused the crash.</p>
+                
+                <p><strong>Scenario 2: API Integration</strong><br>
+                Third-party APIs often return minified responses. Before debugging why your data parsing fails, run it through the formatter to see exactly what structure you're working with.</p>
+                
+                <p><strong>Scenario 3: Data Migration</strong><br>
+                Moving data between systems often involves JSON export/import. Formatting the output helps identify datetime format inconsistencies or missing fields before they cause production issues.</p>
+
+                <h3>How JSON Parsing Works</h3>
+                <p>JSON (JavaScript Object Notation) follows strict syntax rules defined in RFC 8259. A JSON parser reads the text and constructs a data structure matching the content. Any deviation from the specification - even a missing quote or an extra comma - causes the parser to reject the entire document.</p>
+                
+                <p>The parser treats your input as a stream of characters, identifying strings, numbers, booleans, null values, arrays, and objects. Each element must conform to its type's rules. For example, object keys must be strings in double quotes, and values cannot be undefined or functions.</p>
+            </div>
+
+            <div class="tool-section">
+                <h2>Try It Now</h2>
+                <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+                <div class="btn-group">
+                    <button onclick="formatJSON()" class="btn btn-primary">Format</button>
+                    <button onclick="minifyJSON()" class="btn">Minify</button>
+                    <button onclick="validateJSON()" class="btn">Validate</button>
+                    <button onclick="jsonToYaml()" class="btn">To YAML</button>
+                    <button onclick="clearJSON()" class="btn btn-secondary">Clear</button>
+                </div>
+                <textarea id="json-output" readonly placeholder="Output..."></textarea>
+                <div id="json-status" class="status"></div>
+                <button onclick="copyToClipboard('json-output')" class="btn btn-small">Copy Output</button>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/base64-encoder/">Base64 Encoder</a> - Encode/decode data for API transmission</li>
+                    <li><a href="/tools/url-encoder/">URL Encoder</a> - Handle special characters in URLs</li>
+                    <li><a href="/tools/hash-generator/">Hash Generator</a> - Create checksums for data integrity</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+        function copyToClipboard(id) { const e=document.getElementById(id); if(e) navigator.clipboard.writeText(e.value||e.textContent); }
+    </script>
+</body>
+</html>

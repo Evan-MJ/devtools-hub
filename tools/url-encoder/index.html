@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder/Decoder - Encode URLs for Safe Transmission | DevTools Hub</title>
+    <meta name="description" content="Free URL encoder and decoder. Encode special characters in URLs for safe transmission. Converts spaces to %20, handles query parameters, and supports full URL encoding.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/url-encoder/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"URL Encoder/Decoder","description":"Encode and decode URLs for safe web transmission","url":"https://tools.scoreroute.com/tools/url-encoder/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header><div class="container"><h1>URL Encoder & Decoder</h1><p class="subtitle">Safe URL Encoding for Query Parameters</p><nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>URL Encoder</span></nav></div></header>
+    <main class="container">
+        <section class="tool-page-content">
+            <div class="tool-description">
+                <h2>Why URL Encoding Exists</h2>
+                <p>URLs were designed to transport ASCII characters safely, but the web contains billions of pages with non-ASCII characters (Chinese, Arabic, emojis) and special symbols. URL encoding (percent-encoding) converts problematic characters into a format that URLs can handle.</p>
+
+                <h3>The Percent-Encoding Mechanism</h3>
+                <p>Each special character becomes <code>%</code> followed by its two-digit hex ASCII code. A space becomes <code>%20</code>, an ampersand becomes <code>%26</code>, and so on. This encoding happens at the browser level when you submit forms or navigate to URLs containing special characters.</p>
+
+                <div class="encoding-examples">
+                    <h3>Common Encodings</h3>
+                    <table>
+                        <tr><th>Character</th><th>Encoded</th><th>Common Use</th></tr>
+                        <tr><td>Space</td><td><code>%20</code></td><td>Between words</td></tr>
+                        <tr><td>!</td><td><code>%21</code></td><td>Negation, factorials</td></tr>
+                        <tr><td>#</td><td><code>%23</code></td><td>Fragment identifiers</td></tr>
+                        <tr><td>&</td><td><code>%26</code></td><td>Parameter separators</td></tr>
+                        <tr><td>=</td><td><code>%3D</code></td><td>Key-value pairs</td></tr>
+                        <tr><td>/</td><td><code>%2F</code></td><td>Path segments</td></tr>
+                        <tr><td>?</td><td><code>%3F</code></td><td>Query string start</td></tr>
+                    </table>
+                </div>
+
+                <h3>Real Problems Without Encoding</h3>
+                <p><strong>Search Query Failure:</strong> A search for "coffee & tea" in a URL without encoding breaks the query string. The <code>&</code> gets interpreted as a parameter separator, creating malformed server requests.</p>
+                
+                <p><strong>Path Interpretation:</strong> A filename containing <code>/backup/important.txt</code> in a URL path gets split into separate path segments, pointing to non-existent directories.</p>
+
+                <p><strong>XSS Vulnerabilities:</strong> Without proper encoding, malicious scripts can inject code through unvalidated URL parameters. Server-side encoding prevents this by treating user input as literal data, not executable code.</p>
+
+                <h3>Query String vs Path Encoding</h3>
+                <p>Different URL components have different encoding rules:</p>
+                <ul>
+                    <li><strong>Query parameters:</strong> Encode most characters, preserve <code>=</code>, <code>&</code>, <code>+</code> for structure</li>
+                    <li><strong>URL path:</strong> Encode <code>/</code> only when it's part of the data, not a path separator</li>
+                    <li><strong>Fragment:</strong> Rarely encoded, <code>#</code> marks the fragment start</li>
+                </ul>
+
+                <h3>JavaScript Encoding Functions</h3>
+                <div class="code-examples">
+                    <p><code>encodeURIComponent("hello world")</code> → <code>"hello%20world"</code></p>
+                    <p><code>encodeURI("hello world")</code> → <code>"hello%20world"</code></p>
+                    <p><strong>Difference:</strong> <code>encodeURI()</code> preserves characters like <code>/</code>, <code>:</code>, <code>;</code> that are valid in full URLs but are invalid in URL components.</p>
+                </div>
+
+                <h3>URL Encoding in APIs</h3>
+                <p>REST APIs often require query parameters to be encoded. A Twitter API request to search for "web development #tutorial" becomes:</p>
+                <p><code>GET /tweets?q=web%20development%20%23tutorial</code></p>
+                <p>Failing to encode the hashtag results in <code>#tutorial</code> being interpreted as a fragment identifier, causing the request to fail or return unexpected results.</p>
+            </div>
+
+            <div class="tool-section">
+                <h2>Encode or Decode URL</h2>
+                <textarea id="url-input" placeholder="Enter URL or text..."></textarea>
+                <div class="btn-group">
+                    <button onclick="encodeURL()" class="btn btn-primary">Encode</button>
+                    <button onclick="decodeURL()" class="btn btn-primary">Decode</button>
+                    <button onclick="clearURL()" class="btn btn-secondary">Clear</button>
+                </div>
+                <textarea id="url-output" readonly placeholder="Output..."></textarea>
+                <button onclick="copyToClipboard('url-output')" class="btn btn-small">Copy</button>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/base64-encoder/">Base64 Encoder</a> - Encode binary data as text</li>
+                    <li><a href="/tools/json-formatter/">JSON Formatter</a> - Format API response URLs</li>
+                    <li><a href="/tools/hash-generator/">Hash Generator</a> - Create secure URL signatures</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+    <script src="/tools.js"></script>
+    <script>
+        function encodeURL() { document.getElementById('url-output').value=encodeURIComponent(document.getElementById('url-input').value); }
+        function decodeURL() { try { document.getElementById('url-output').value=decodeURIComponent(document.getElementById('url-input').value); } catch(e) { document.getElementById('url-output').value='Error'; } }
+        function clearURL() { document.getElementById('url-input').value=''; document.getElementById('url-output').value=''; }
+        function copyToClipboard(id) { const e=document.getElementById(id); if(e) navigator.clipboard.writeText(e.value||e.textContent); }
+    </script>
+</body>
+</html>

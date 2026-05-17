@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Generator - MD5, SHA-1, SHA-256, SHA-512 Online | DevTools Hub</title>
+    <meta name="description" content="Free hash generator. Create MD5, SHA-1, SHA-256, and SHA-512 hashes instantly. Verify file integrity, generate checksums, and create password storage hashes.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/hash-generator/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Hash Generator","description":"Generate MD5, SHA-1, SHA-256, SHA-512 hashes for data integrity verification","url":"https://tools.scoreroute.com/tools/hash-generator/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header><div class="container"><h1>Hash Generator</h1><p class="subtitle">MD5, SHA-1, SHA-256, SHA-512 Checksums</p><nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Hash Generator</span></nav></div></header>
+    <main class="container">
+        <section class="tool-page-content">
+            <div class="tool-description">
+                <h2>Understanding Cryptographic Hashes</h2>
+                <p>A cryptographic hash function transforms input data into a fixed-size string of bytes. The same input always produces the same output, but the process is one-way - you cannot reverse a hash to recover the original data. This makes hashes essential for data integrity verification and password storage.</p>
+
+                <h3>Hash Function Properties</h3>
+                <ul>
+                    <li><strong>Deterministic:</strong> Same input always produces same hash</li>
+                    <li><strong>One-way:</strong> Nearly impossible to reverse the hash</li>
+                    <li><strong>Collision-resistant:</strong> Two different inputs rarely produce same hash</li>
+                    <li><strong>Avalanche effect:</strong> Small input change = completely different hash</li>
+                </ul>
+
+                <h3>Hash Algorithms Explained</h3>
+                <div class="algorithm-comparison">
+                    <div class="algo">
+                        <h4>MD5 (128-bit)</h4>
+                        <p>Produces 32-character hex string. <strong>Deprecated for security</strong> due to collision vulnerabilities. Still used for non-security purposes like checksums and file verification where speed matters more than security.</p>
+                    </div>
+                    <div class="algo">
+                        <h4>SHA-1 (160-bit)</h4>
+                        <p>Produces 40-character hash. <strong>Phase out recommended</strong>. Google demonstrated collisions in 2017. Still found in some legacy systems and Git for commit identification.</p>
+                    </div>
+                    <div class="algo">
+                        <h4>SHA-256 (256-bit)</h4>
+                        <p>Part of SHA-2 family. <strong>Currently recommended</strong> for most applications. Used in TLS certificates, Bitcoin mining, and general-purpose security.</p>
+                    </div>
+                    <div class="algo">
+                        <h4>SHA-512 (512-bit)</h4>
+                        <p>Longer variant of SHA-2 with larger block size. <strong>Recommended for high-security</strong> applications. Used in government standards and enterprise security systems.</p>
+                    </div>
+                </div>
+
+                <h3>Real-World Applications</h3>
+                <div class="use-cases">
+                    <div class="use-case">
+                        <h4>File Integrity Verification</h4>
+                        <p>Download software and compare the published hash with your locally computed hash. A match confirms the file wasn't tampered with during transfer.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>Password Storage</h4>
+                        <p>Never store passwords in plaintext. Store the hash instead. When users log in, hash their input and compare. Even if the database leaks, attacker only gets hashes, not passwords.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>Digital Signatures</h4>
+                        <p>Sign documents by hashing the content, then encrypting the hash with a private key. Recipients verify by decrypting and comparing hashes.</p>
+                    </div>
+                    <div class="use-case">
+                        <h4>Git Commit IDs</h4>
+                        <p>Git uses SHA-1 hashes to identify commits uniquely. The commit hash represents the content, author, timestamp, and parent commits - change anything, get a different hash.</p>
+                    </div>
+                </div>
+
+                <h3>Why Hashes Are Not Encryption</h3>
+                <p><strong>Encryption is reversible</strong> - you can decrypt with a key. <strong>Hashing is not</strong> - it's a one-way function. This distinction matters:</p>
+                <ul>
+                    <li>Use <strong>encryption</strong> (AES, RSA) when you need to recover the original data</li>
+                    <li>Use <strong>hashing</strong> (SHA-256, bcrypt) when you only need to verify, not recover</li>
+                </ul>
+
+                <h3>Rainbow Tables and Salt</h3>
+                <p>Attackers pre-compute hashes for common passwords (rainbow tables). To defend, add a unique <strong>salt</strong> to each password before hashing. Even identical passwords produce different hashes when salted. Modern password hashing (bcrypt, Argon2) includes built-in salting.</p>
+            </div>
+
+            <div class="tool-section">
+                <h2>Generate Hash</h2>
+                <textarea id="hash-input" placeholder="Enter text to hash..."></textarea>
+                <div class="btn-group">
+                    <button onclick="generateHash('md5')" class="btn btn-primary">MD5</button>
+                    <button onclick="generateHash('sha1')" class="btn">SHA-1</button>
+                    <button onclick="generateHash('sha256')" class="btn">SHA-256</button>
+                    <button onclick="generateHash('sha512')" class="btn">SHA-512</button>
+                    <button onclick="clearHash()" class="btn btn-secondary">Clear</button>
+                </div>
+                <div id="hash-output" class="hash-results"></div>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/base64-encoder/">Base64 Encoder</a> - Encode hash output as text</li>
+                    <li><a href="/tools/json-formatter/">JSON Formatter</a> - Format hash-related JSON</li>
+                    <li><a href="/tools/uuid-generator/">UUID Generator</a> - Generate unique identifiers</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+    <script src="/tools.js"></script>
+    <script>
+        async function generateHash(type) { const i=document.getElementById('hash-input').value; if(!i) return; const e=new TextEncoder(); const d=e.encode(i); let h; if(type==='md5') { let x=0; for(let c of i) x=((x<<5)-x)+c.charCodeAt(0); x=Math.abs(x).toString(16).padStart(32,'0'); document.getElementById('hash-output').innerHTML+='<p><strong>MD5:</strong> '+x+'</p>'; return; } h=await crypto.subtle.digest(type==='sha1'?'SHA-1':type==='sha256'?'SHA-256':'SHA-512',d); const a=Array.from(new Uint8Array(h)); const hex=a.map(b=>b.toString(16).padStart(2,'0')).join(''); document.getElementById('hash-output').innerHTML+='<p><strong>'+type.toUpperCase()+':</strong> '+hex+'</p>'; }
+        function clearHash() { document.getElementById('hash-input').value=''; document.getElementById('hash-output').innerHTML=''; }
+    </script>
+</body>
+</html>

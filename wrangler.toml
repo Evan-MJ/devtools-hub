@@ -1,0 +1,10 @@
+name = "devtools-hub"
+compatibility_date = "2026-05-17"
+
+pages_projects = [
+  { project_name = "devtools-hub", dashboard_display_name = "DevTools Hub" }
+]
+
+[environments.production]
+name = "devtools-hub"
+compatibility_date = "2026-05-17"
