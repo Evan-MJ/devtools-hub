@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools Hub - Free Developer Tools</title>
+    <meta name="description" content="Free developer tools: JSON formatter, Base64 encoder, Timestamp converter, Hash generator, Cron generator, UUID generator, Color picker, URL encoder.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DevTools Hub</h1>
+            <p class="subtitle">Free Online Developer Tools</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav class="tool-nav">
+            <button class="nav-btn active" data-tool="json">JSON</button>
+            <button class="nav-btn" data-tool="base64">Base64</button>
+            <button class="nav-btn" data-tool="timestamp">Timestamp</button>
+            <button class="nav-btn" data-tool="url">URL</button>
+            <button class="nav-btn" data-tool="hash">Hash</button>
+            <button class="nav-btn" data-tool="cron">Cron</button>
+            <button class="nav-btn" data-tool="uuid">UUID</button>
+            <button class="nav-btn" data-tool="color">Color</button>
+        </nav>
+
+        <section id="json-tool" class="tool-section active">
+            <h2>JSON Formatter & Validator</h2>
+            <div class="tool-content">
+                <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+                <div class="btn-group">
+                    <button onclick="formatJSON()" class="btn btn-primary">Format</button>
+                    <button onclick="minifyJSON()" class="btn">Minify</button>
+                    <button onclick="validateJSON()" class="btn">Validate</button>
+                    <button onclick="jsonToYaml()" class="btn">YAML</button>
+                    <button onclick="clearJSON()" class="btn btn-secondary">Clear</button>
+                </div>
+                <textarea id="json-output" readonly placeholder="Output..."></textarea>
+                <div id="json-status" class="status"></div>
+                <button onclick="copyToClipboard('json-output')" class="btn btn-small">Copy</button>
+            </div>
+        </section>
+
+        <section id="base64-tool" class="tool-section">
+            <h2>Base64 Encoder/Decoder</h2>
+            <div class="tool-content">
+                <textarea id="base64-input" placeholder="Enter text..."></textarea>
+                <div class="btn-group">
+                    <button onclick="encodeBase64()" class="btn btn-primary">Encode</button>
+                    <button onclick="decodeBase64()" class="btn btn-primary">Decode</button>
+                    <button onclick="clearBase64()" class="btn btn-secondary">Clear</button>
+                </div>
+                <textarea id="base64-output" readonly placeholder="Output..."></textarea>
+                <button onclick="copyToClipboard('base64-output')" class="btn btn-small">Copy</button>
+            </div>
+        </section>
+
+        <section id="timestamp-tool" class="tool-section">
+            <h2>Timestamp Converter</h2>
+            <div class="tool-content">
+                <div class="timestamp-card">
+                    <label>Current Unix Timestamp</label>
+                    <div id="current-timestamp" class="timestamp-value">---</div>
+                </div>
+                <input type="number" id="timestamp-input" placeholder="Enter timestamp">
+                <div class="btn-group">
+                    <button onclick="timestampToDate()" class="btn btn-primary">To Date</button>
+                    <button onclick="getCurrentTimestamp()" class="btn">Now</button>
+                    <button onclick="clearTimestamp()" class="btn btn-secondary">Clear</button>
+                </div>
+                <div id="timestamp-output" class="timestamp-result"></div>
+                <input type="datetime-local" id="datetime-input">
+                <button onclick="dateToTimestamp()" class="btn btn-primary">Date to Timestamp</button>
+            </div>
+        </section>
+
+        <section id="url-tool" class="tool-section">
+            <h2>URL Encoder/Decoder</h2>
+            <div class="tool-content">
+                <textarea id="url-input" placeholder="Enter URL or text..."></textarea>
+                <div class="btn-group">
+                    <button onclick="encodeURL()" class="btn btn-primary">Encode</button>
+                    <button onclick="decodeURL()" class="btn btn-primary">Decode</button>
+                    <button onclick="clearURL()" class="btn btn-secondary">Clear</button>
+                </div>
+                <textarea id="url-output" readonly placeholder="Output..."></textarea>
+                <button onclick="copyToClipboard('url-output')" class="btn btn-small">Copy</button>
+            </div>
+        </section>
+
+        <section id="hash-tool" class="tool-section">
+            <h2>Hash Generator</h2>
+            <div class="tool-content">
+                <textarea id="hash-input" placeholder="Enter text to hash..."></textarea>
+                <div class="btn-group">
+                    <button onclick="generateHash('md5')" class="btn btn-primary">MD5</button>
+                    <button onclick="generateHash('sha1')" class="btn">SHA-1</button>
+                    <button onclick="generateHash('sha256')" class="btn">SHA-256</button>
+                    <button onclick="generateHash('sha512')" class="btn">SHA-512</button>
+                    <button onclick="clearHash()" class="btn btn-secondary">Clear</button>
+                </div>
+                <div id="hash-output" class="hash-results"></div>
+            </div>
+        </section>
+
+        <section id="cron-tool" class="tool-section">
+            <h2>Cron Expression Generator</h2>
+            <div class="tool-content">
+                <div class="cron-builder">
+                    <select id="cron-minute"><option value="*">Every minute</option><option value="0">At minute 0</option></select>
+                    <select id="cron-hour"><option value="*">Every hour</option><option value="0">Midnight</option><option value="9">9 AM</option></select>
+                    <select id="cron-day"><option value="*">Every day</option><option value="1">1st</option></select>
+                    <select id="cron-month"><option value="*">Every month</option></select>
+                    <select id="cron-weekday"><option value="*">Every day</option><option value="1-5">Weekdays</option></select>
+                </div>
+                <button onclick="generateCron()" class="btn btn-primary">Generate</button>
+                <div id="cron-result" class="cron-result">
+                    <code id="cron-expression">* * * * *</code>
+                    <p id="cron-description">Every minute</p>
+                    <ul id="cron-next-runs"></ul>
+                </div>
+                <input type="text" id="cron-parse-input" placeholder="Or parse: 0 5 * * *">
+                <button onclick="parseCron()" class="btn">Parse</button>
+                <button onclick="copyToClipboard('cron-expression')" class="btn btn-small">Copy</button>
+            </div>
+        </section>
+
+        <section id="uuid-tool" class="tool-section">
+            <h2>UUID Generator</h2>
+            <div class="tool-content">
+                <select id="uuid-version"><option value="v4">Version 4</option><option value="v1">Version 1</option><option value="v7">Version 7</option></select>
+                <input type="number" id="uuid-count" value="1" min="1" max="100">
+                <div class="btn-group">
+                    <button onclick="generateUUID()" class="btn btn-primary">Generate</button>
+                    <button onclick="generateBulkUUID()" class="btn">Bulk</button>
+                </div>
+                <div id="uuid-output" class="uuid-results"></div>
+                <button onclick="copyAllUUID()" class="btn btn-small">Copy All</button>
+            </div>
+        </section>
+
+        <section id="color-tool" class="tool-section">
+            <h2>Color Picker</h2>
+            <div class="tool-content">
+                <input type="color" id="color-input" value="#3498db">
+                <div class="color-preview" id="color-preview" style="background-color:#3498db;"></div>
+                <div class="color-formats">
+                    <input type="text" id="color-hex" value="#3498DB" readonly>
+                    <input type="text" id="color-rgb" value="rgb(52,152,219)" readonly>
+                    <input type="text" id="color-hsl" value="hsl(204,70%,43%)" readonly>
+                </div>
+                <button onclick="copyToClipboard('color-hex')" class="btn btn-small">Copy HEX</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub</p>
+    </footer>
+
+    <script src="tools.js"></script>
+    <script>
+        setInterval(() => {
+            document.getElementById('current-timestamp').textContent = Math.floor(Date.now()/1000);
+        }, 1000);
+        document.getElementById('current-timestamp').textContent = Math.floor(Date.now()/1000);
+
+        document.getElementById('color-input').addEventListener('input', function(e) {
+            const color = e.target.value;
+            document.getElementById('color-preview').style.backgroundColor = color;
+            document.getElementById('color-hex').value = color.toUpperCase();
+            const rgb = hexToRgb(color);
+            document.getElementById('color-rgb').value = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            document.getElementById('color-hsl').value = 'hsl('+hsl.h+','+hsl.s+'%,'+hsl.l+'%)';
+        });
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tool + '-tool').classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
