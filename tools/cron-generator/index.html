@@ -16,7 +16,7 @@
         <div class="container">
             <h1>Cron Generator</h1>
             <p class="subtitle">Create Cron Expressions Interactively</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Cron Generator</span></nav>
+            <nav class="breadcrumb"><a href="/">Home</a> &gt; <span>Cron Generator</span></nav>
         </div>
     </header>
     <main class="container">
@@ -94,57 +94,66 @@
                 <h3>What is a Cron Expression?</h3>
                 <p>A cron expression is a string of 5 fields separated by spaces that defines when a scheduled task should run. Each field represents a time unit: minute, hour, day of month, month, and day of week. This format is used by Unix-like systems, CI/CD pipelines, cloud functions, and task schedulers worldwide.</p>
 
-                <h3>Cron Expression Format</h3>
-                <div class="example-box">
-                    <div class="example-item">
-                        <strong>Minute (0-59)</strong>
-                        <code>*</code> = every minute, <code>0</code> = at minute 0, <code>15,30,45</code> = at minutes 15, 30, and 45
-                    </div>
-                    <div class="example-item">
-                        <strong>Hour (0-23)</strong>
-                        <code>*</code> = every hour, <code>9-17</code> = business hours, <code>0</code> = midnight
-                    </div>
-                    <div class="example-item">
-                        <strong>Day of Month (1-31)</strong>
-                        <code>*</code> = every day, <code>1</code> = 1st of month, <code>15</code> = 15th
-                    </div>
-                    <div class="example-item">
-                        <strong>Month (1-12)</strong>
-                        <code>*</code> = every month, <code>1,4,7,10</code> = quarterly, <code>6-8</code> = summer months
-                    </div>
-                    <div class="example-item">
-                        <strong>Day of Week (0-6)</strong>
-                        <code>0</code> = Sunday, <code>1-5</code> = weekdays, <code>0,6</code> = weekends
-                    </div>
-                </div>
+                <h3>Cron Expression Syntax</h3>
+                <p>Cron expressions consist of five fields in the order: <strong>Minute Hour Day-of-Month Month Day-of-Week</strong>. Each field accepts specific values: Minutes use numbers 0-59, hours use 0-23, days of month use 1-31, months use 1-12 or names (JAN-DEC), and weekdays use 0-6 or names (SUN-SAT). Special characters include asterisks (*) for any value, commas (,) for lists, hyphens (-) for ranges, and forward slashes (/) for steps. For example, <code>*/15</code> means every 15 units, <code>1-5</code> means through 5, and <code>0,30</code> means at 0 and 30.</p>
 
                 <h3>Common Cron Patterns</h3>
-                <div class="example-box">
-                    <div class="example-item">
-                        <code>0 * * * *</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Every hour on the hour</span>
-                    </div>
-                    <div class="example-item">
-                        <code>0 9 * * 1-5</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">9 AM every weekday</span>
-                    </div>
-                    <div class="example-item">
-                        <code>*/15 * * * *</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Every 15 minutes</span>
-                    </div>
-                    <div class="example-item">
-                        <code>0 0 1 * *</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Midnight on the 1st of every month</span>
-                    </div>
-                    <div class="example-item">
-                        <code>30 2 * * 0</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">2:30 AM every Sunday</span>
-                    </div>
-                    <div class="example-item">
-                        <code>0 0 * * *</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Daily at midnight</span>
-                    </div>
-                </div>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem;">
+                    <tr style="border-bottom: 1px solid #333;">
+                        <th style="text-align: left; padding: 8px; color: #667eea;">Expression</th>
+                        <th style="text-align: left; padding: 8px; color: #aaa;">Description</th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 8px; font-family: monospace;">0 * * * *</td>
+                        <td style="padding: 8px; color: #aaa;">Every hour on the hour</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 8px; font-family: monospace;">0 9 * * 1-5</td>
+                        <td style="padding: 8px; color: #aaa;">9 AM on weekdays</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 8px; font-family: monospace;">*/15 * * * *</td>
+                        <td style="padding: 8px; color: #aaa;">Every 15 minutes</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 8px; font-family: monospace;">0 0 1 * *</td>
+                        <td style="padding: 8px; color: #aaa;">Midnight on the 1st</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #222;">
+                        <td style="padding: 8px; font-family: monospace;">30 2 * * 0</td>
+                        <td style="padding: 8px; color: #aaa;">2:30 AM every Sunday</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-family: monospace;">0 0 * * *</td>
+                        <td style="padding: 8px; color: #aaa;">Daily at midnight</td>
+                    </tr>
+                </table>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">What timezone do cron jobs use?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">Most systems use UTC timezone for cron jobs. Adjust your expression accordingly for local execution times. For example, a job scheduled at 9 AM PST should be set to 17:00 UTC.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">Can I use both day-of-month and day-of-week?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">Yes, when both fields are specified, the job runs when either field matches. For example, <code>0 9 15 * *</code> runs at 9 AM on the 15th of every month AND on every Monday.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">What do the day-of-week numbers mean?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">In cron syntax, 0 and 7 both represent Sunday, 1 is Monday, 2 is Tuesday, up to 6 for Saturday. Some systems prefer 0=Sunday while others use 0-6 with Sunday at 0.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">How do I run a job every Monday?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">Set the day-of-week field to <code>1</code> (Monday). Use <code>0 9 * * 1</code> to run at 9 AM every Monday. The <code>*</code> in other fields means every day and every month.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">What is the difference between * and ?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">In standard cron, <code>*</code> means "any value." Some variants like Quartz use <code>?</code> for "any" when you have already specified either day-of-month OR day-of-week but not both.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 10px; padding: 10px; background: #0f0f23; border-radius: 8px;">
+                    <summary style="cursor: pointer; color: #667eea; font-weight: bold;">How do I specify every quarter?</summary>
+                    <p style="margin-top: 8px; color: #aaa;">To run on the first day of every quarter (January, April, July, October) at midnight, use <code>0 0 1 1,4,7,10 *</code>. The comma separates multiple values in a list.</p>
+                </details>
 
                 <h3>Use Cases</h3>
                 <ul>
@@ -153,7 +162,6 @@
                     <li><strong>Cloud Functions:</strong> Schedule AWS Lambda, Google Cloud Functions, or Azure Functions</li>
                     <li><strong>Monitoring:</strong> Run health checks, log rotation, or system maintenance tasks</li>
                 </ul>
-                <p>Note: Most systems use UTC timezone for cron jobs. Adjust your expression accordingly for local execution times. For example, a job scheduled at 9 AM PST should be set to 17:00 UTC.</p>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

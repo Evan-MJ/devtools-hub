@@ -39,44 +39,49 @@
             </div>
 
             <div class="info-section">
-                <h3>What is a Unix Timestamp?</h3>
-                <p>A Unix timestamp is the number of seconds elapsed since January 1, 1970 00:00:00 UTC. Many programming languages and APIs use this format for date storage because it's easy to compare and calculate with.</p>
+                <h3>Unix Timestamp Basics</h3>
+                <p>A Unix timestamp represents the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC, commonly known as the Unix epoch. This epoch was chosen as a convenient round number to mark the start of the Unix era. Before this date, timestamps are represented as negative numbers, while dates after the epoch use positive values.</p>
+                <p>The Unix timestamp system was developed in the early 1970s as part of the Unix operating system design. Its simplicity—storing time as a single integer—made it efficient for computing and comparing dates. Unlike date strings that require parsing, timestamps can be compared mathematically with ease. This universal format became the standard for APIs, databases, and programming languages worldwide.</p>
 
-                <h3>Seconds vs Milliseconds</h3>
+                <h3>Timestamp Formats Explained</h3>
+                <p>Timestamps come in two primary formats: seconds and milliseconds. JavaScript's <code>Date.now()</code> returns milliseconds (13 digits like 1747488000000), while Python's <code>time.time()</code> and Go's <code>time.Now().Unix()</code> return seconds (10 digits like 1747488000). Most Unix systems and APIs use seconds by default, while languages designed for web development typically use milliseconds.</p>
                 <div class="example-box">
                     <div class="example-item">
-                        <strong>JavaScript (Milliseconds)</strong>
+                        <strong>JavaScript / Java / C# (Milliseconds)</strong>
                         <code>Date.now() → 1747488000000</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">13 digits - multiply by 1000 to convert to seconds</span>
                     </div>
                     <div class="example-item">
-                        <strong>Python, Go, Ruby (Seconds)</strong>
+                        <strong>Python / Go / Ruby / PHP (Seconds)</strong>
                         <code>time.time() → 1747488000</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">10 digits - standard Unix format</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Java (Milliseconds)</strong>
-                        <code>System.currentTimeMillis() → 1747488000000</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Uses milliseconds like JavaScript</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Database Integers</strong>
-                        <code>PostgreSQL: EXTRACT(epoch FROM now())</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Most databases store as integers</span>
                     </div>
                 </div>
+                <p>When converting between formats, multiply or divide by 1000 accordingly. Most modern APIs accept both formats, but always verify the documentation for your specific use case.</p>
 
-                <h3>How Timestamp Conversion Works</h3>
-                <p>To convert a Unix timestamp to a date, the seconds value is multiplied by 1000 (to get milliseconds) and passed to the Date constructor. The Date object then converts it to a human-readable string using the local timezone or UTC.</p>
-                <p>To convert a date to a timestamp, the Date object retrieves the milliseconds since epoch using getTime(), then divides by 1000 to get seconds. This ensures compatibility with Unix-based systems.</p>
-
-                <h3>Common Use Cases</h3>
-                <ul>
-                    <li><strong>API Integrations:</strong> Many REST APIs accept or return timestamps in Unix format for universal compatibility</li>
-                    <li><strong>Database Records:</strong> Store creation and update times as integers for efficient querying and indexing</li>
-                    <li><strong>Log Files:</strong> Parse server logs by converting timestamps to human-readable dates for debugging</li>
-                    <li><strong>Scheduling Systems:</strong> Cron jobs and task schedulers often use Unix timestamps for next-run calculations</li>
-                </ul>
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>What is the Unix epoch?</summary>
+                    The Unix epoch is January 1, 1970 00:00:00 UTC. All Unix timestamps are measured as seconds elapsed from this point.
+                </details>
+                <details class="faq-item">
+                    <summary>Why do some timestamps have 13 digits?</summary>
+                    Timestamps with 13 digits are in milliseconds (like JavaScript uses). Those with 10 digits are in seconds (like Python uses). Multiply milliseconds by 1000 to convert to seconds.
+                </details>
+                <details class="faq-item">
+                    <summary>Can timestamps represent dates before 1970?</summary>
+                    Yes, negative timestamps represent dates before the Unix epoch. For example, -86400 represents December 31, 1969.
+                </details>
+                <details class="faq-item">
+                    <summary>What happens in 2038?</summary>
+                    Older 32-bit systems cannot represent timestamps beyond January 19, 2038 03:14:07 UTC. Modern systems use 64-bit integers, avoiding this limitation.
+                </details>
+                <details class="faq-item">
+                    <summary>How do I handle timezones?</summary>
+                    Unix timestamps are always in UTC. When displaying to users, convert to their local timezone using JavaScript's <code>toLocaleString()</code> or similar methods.
+                </details>
+                <details class="faq-item">
+                    <summary>Are Unix timestamps the same worldwide?</summary>
+                    Yes, timestamps are universal and timezone-independent. 1747488000 always represents the same moment: May 17, 2025 12:00:00 UTC.
+                </details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

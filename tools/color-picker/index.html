@@ -55,6 +55,15 @@
                 <h3>What is a Color Picker?</h3>
                 <p>A Color Picker is a tool that allows you to select a color visually and convert it between different formats like HEX, RGB, and HSL. This free online tool helps developers and designers quickly get the exact color codes they need for their projects.</p>
 
+                <h3>HEX vs RGB vs HSL</h3>
+                <p><strong>HEX</strong> uses hexadecimal notation with base-16 values (00-FF) for red, green, and blue channels. It is compact and the most common format in CSS and web development. Use HEX when you need brevity and compatibility with CSS.</p>
+                <p><strong>RGB</strong> expresses colors using decimal values from 0 to 255 for each channel. It is intuitive for programmers and directly maps to how screens render color. Use RGB when working with image processing or canvas APIs.</p>
+                <p><strong>HSL</strong> represents color through hue (0-360 degrees), saturation (0-100%), and lightness (0-100%). It is human-friendly and makes it easy to generate variations. Use HSL when creating color palettes or adjusting tones programmatically.</p>
+
+                <h3>Color Model Basics</h3>
+                <p>There are two fundamental color models. <strong>Additive color</strong> (RGB) starts with black and adds light to create colors—it is how screens emit color using red, green, and blue subpixels. <strong>Subtractive color</strong> (CMYK) starts with white and subtracts light using pigments—it is used in printing where cyan, magenta, yellow, and black absorb wavelengths.</p>
+                <p>Web and digital tools use the additive RGB model, where combining full red, green, and blue produces white. Understanding this helps explain why HEX values start with # and why color pickers default to RGB output.</p>
+
                 <h3>Understanding Color Formats</h3>
                 <div class="example-box">
                     <div class="example-item">
@@ -74,9 +83,13 @@
                     </div>
                 </div>
 
-                <h3>How Color Conversion Works</h3>
-                <p>HEX to RGB converts each pair of hexadecimal characters to decimal values. RGB to HSL requires calculating the relative luminance and chromatic values to determine hue, saturation, and lightness components. The formulas are standardized in the CSS specification.</p>
-                <p>All three formats represent the same color - they are just different ways of expressing it. HEX is compact and commonly used in CSS. RGB is intuitive for programming. HSL is useful for generating color variations programmatically.</p>
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item"><summary>What is the difference between HEX and RGB?</summary><p>HEX is a hexadecimal representation using base-16 values, while RGB uses decimal values from 0-255. They represent the same color but in different notations. HEX is more compact for CSS, while RGB is easier to manipulate programmatically.</p></details>
+                <details class="faq-item"><summary>When should I use HSL over RGB?</summary><p>Use HSL when you need to generate color variations or adjust tones. HSL makes it easy to change saturation and lightness while keeping the same hue, which is useful for creating color themes and gradients.</p></details>
+                <details class="faq-item"><summary>Can I copy colors directly to CSS?</summary><p>Yes, simply click the Copy button next to any format. The copied text can be pasted directly into your CSS file as hex codes like #667eea or rgb values like rgb(102, 126, 234).</p></details>
+                <details class="faq-item"><summary>Why do screens use RGB instead of CMYK?</summary><p>Screens emit light rather than reflect it, so they use additive color (RGB). Printers use subtractive color (CMYK) because they work with pigments that absorb certain wavelengths of light.</p></details>
+                <details class="faq-item"><summary>What is the range of values in each format?</summary><p>HEX uses two-character pairs (00-FF) per channel, RGB uses 0-255 per channel, and HSL uses hue 0-360 degrees with saturation and lightness 0-100%.</p></details>
+                <details class="faq-item"><summary>Are HEX, RGB, and HSL case-sensitive?</summary><p>In CSS, HEX codes are case-insensitive (#667eea equals #667EEA). RGB and HSL values are typically written in lowercase, but browsers accept uppercase notation as well.</p></details>
 
                 <h3>Real-World Use Cases</h3>
                 <ul>

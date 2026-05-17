@@ -69,6 +69,13 @@
                 <p>Cryptographic hash functions process input data through mathematical algorithms that produce a fixed-size output. These functions are one-way: you can compute a hash from input, but you cannot reverse the process to recover the original data from the hash alone.</p>
                 <p>The same input always produces the identical hash output. Even a tiny change in input (like changing one character) produces a completely different hash—this property is called the avalanche effect.</p>
 
+                <h3>Hash Functions vs Encryption</h3>
+                <p>Hash functions and encryption serve different purposes. Encryption is a two-way process: you can encrypt data and later decrypt it with a key. Hashing is one-way—you cannot reverse a hash to recover the original input.</p>
+                <p>Use encryption when you need to recover data (like securing messages or storing sensitive information that must be retrieved). Use hashing when you only need to verify data integrity or store passwords securely without needing to recover the original value.</p>
+
+                <h3>MD5/SHA-1/SHA-256/SHA-512 Differences</h3>
+                <p>The main differences lie in output bit length and security level. MD5 produces a 128-bit hash (32 hex characters) and is cryptographically broken—collision attacks are practical. SHA-1 produces 160 bits (40 hex chars) and is also deprecated due to known vulnerabilities. SHA-256 generates 256 bits (64 hex chars) and remains secure for most applications. SHA-512 produces the longest output at 512 bits (128 hex characters) and offers stronger security for sensitive data. For any security-critical purpose, use SHA-256 or SHA-512.</p>
+
                 <h3>Common Use Cases</h3>
                 <ul>
                     <li><strong>File Integrity:</strong> Verify downloads by comparing checksums</li>
@@ -80,6 +87,32 @@
 
                 <h3>Important Security Note</h3>
                 <p>Never use MD5 or SHA-1 for password hashing or security-critical applications. For password storage, use dedicated algorithms like bcrypt, scrypt, or Argon2. For checksums and integrity verification, SHA-256 or SHA-512 are recommended.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Can I reverse a hash to get the original text?</summary>
+                    <p>No, cryptographic hash functions are one-way. You cannot reverse the process to recover the original input from the hash output. This is by design—hashing is not encryption.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does the same input produce the same hash?</summary>
+                    <p>This determinism is fundamental to hash functions. It allows you to verify data integrity by comparing checksums—you know the data hasn't changed if the hashes match.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is MD5 still useful?</summary>
+                    <p>MD5 should only be used for non-security purposes like checksumming files. It is cryptographically broken and should never be used for security-sensitive applications.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What hash should I use for my application?</summary>
+                    <p>For general integrity checking, SHA-256 is recommended. For password hashing, use bcrypt, scrypt, or Argon2. For digital signatures or security-critical purposes, use SHA-512.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does changing the input slightly produce a similar hash?</summary>
+                    <p>No, the avalanche effect ensures even a tiny change (one character) produces a completely different hash. There is no way to infer similarity between inputs from their hashes.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Are hashes case-sensitive?</summary>
+                    <p>Yes, hash functions are case-sensitive. "Hello" and "hello" produce completely different hashes. This matters when comparing checksums—always verify exact case.</p>
+                </details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

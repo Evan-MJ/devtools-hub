@@ -40,51 +40,45 @@
             </div>
 
             <div class="info-section">
-                <h3>What is Regex Tester?</h3>
-                <p>A Regex Tester is a tool that allows you to test regular expression patterns against sample text to verify matches and see results in real-time. This free online tool helps developers debug, validate, and experiment with regex patterns without writing code.</p>
+                <h3>Regex Pattern Basics</h3>
+                <p><strong>Metacharacters</strong> define patterns:</p>
+                <ul>
+                    <li><code>.</code> - Any character</li>
+                    <li><code>\d</code> - Digit</li>
+                    <li><code>\w</code> - Word character</li>
+                    <li><code>\s</code> - Whitespace</li>
+                    <li><code>^$</code> - Start/end anchors</li>
+                </ul>
+                <p><strong>Quantifiers</strong> control repetition: <code>*</code> zero+, <code>+</code> one+, <code>?</code> optional, <code>{n,m}</code> between n and m.</p>
 
                 <h3>Common Regex Patterns</h3>
-                <div class="example-box">
-                    <div class="example-item">
-                        <strong>Digits</strong>
-                        <code>\d+</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches one or more digits (0-9)</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Word Characters</strong>
-                        <code>\w+</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches letters, digits, and underscores</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Lowercase Letters</strong>
-                        <code>[a-z]+</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches one or more lowercase letters</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Starts With</strong>
-                        <code>^start</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches text that begins with "start"</span>
-                    </div>
-                    <div class="example-item">
-                        <strong>Ends With</strong>
-                        <code>end$</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches text that ends with "end"</span>
-                    </div>
-                </div>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr><th style="text-align:left;padding:5px;">Pattern</th><th style="text-align:left;padding:5px;">Use</th></tr>
+                    <tr><td style="padding:5px;"><code>[\w.-]+@[\w.-]+\.\w+</code></td><td style="padding:5px;">Email</td></tr>
+                    <tr><td style="padding:5px;"><code>\d{3}[-.]?\d{3}[-.]?\d{4}</code></td><td style="padding:5px;">Phone</td></tr>
+                    <tr><td style="padding:5px;"><code>https?://[\w.-]+</code></td><td style="padding:5px;">URL</td></tr>
+                    <tr><td style="padding:5px;"><code>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}</code></td><td style="padding:5px;">IPv4</td></tr>
+                    <tr><td style="padding:5px;"><code>#[0-9A-Fa-f]{6}</code></td><td style="padding:5px;">Hex color</td></tr>
+                </table>
 
-                <h3>Regex Flags Explained</h3>
-                <p>Flags modify regex behavior:</p>
+                <h3>Regex Flags</h3>
                 <ul>
-                    <li><strong>g (Global)</strong> - Find all matches, not just the first one</li>
-                    <li><strong>i (Case Insensitive)</strong> - Match regardless of case (a matches A)</li>
-                    <li><strong>m (Multiline)</strong> - ^ and $ match line boundaries, not just string start/end</li>
-                    <li><strong>s (DotAll)</strong> - The dot (.) matches newlines, not just characters</li>
+                    <li><strong>g</strong> - Global, find all</li>
+                    <li><strong>i</strong> - Case insensitive</li>
+                    <li><strong>m</strong> - Multiline</li>
+                    <li><strong>s</strong> - Dot matches newline</li>
                 </ul>
 
                 <h3>Advanced Patterns</h3>
-                <p><strong>Capture Groups</strong> <code>(...)</code> extract parts of the matched text. For example, <code>(\d+)-(\d+)</code> captures the parts before and after a hyphen.</p>
-                <p><strong>Backreferences</strong> <code>\1</code> match text that was previously captured. <code>([a-z])\1</code> matches double letters like "aa" or "bb".</p>
-                <p><strong>Lookahead</strong> <code>(?=...)</code> matches a pattern without consuming characters. <code>foo(?=bar)</code> matches "foo" only when followed by "bar".</p>
+                <p><code>(...)</code> capture groups. <code>([a-z])\1</code> matches "aa". <code>foo(?=bar)</code> matches "foo" before "bar" (lookahead).</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item"><summary>How to test a regex?</summary>Enter pattern, type test text, select flags, click "Test Match".</details>
+                <details class="faq-item"><summary>What are regex flags?</summary>They modify pattern behavior: g (global), i (case insensitive), m (multiline), s (dotall).</details>
+                <details class="faq-item"><summary>Match special characters?</summary>Escape with backslash: \. matches a literal period.</details>
+                <details class="faq-item"><summary>What are capture groups?</summary>Parentheses () extract matched parts like (\d+) to capture digits.</details>
+                <details class="faq-item"><summary>Why no match?</summary>Check escaping, verify flags (use g for multiple), ensure anchors are correct.</details>
+                <details class="faq-item"><summary>Case insensitive?</summary>Enable the "i" flag checkbox.</details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

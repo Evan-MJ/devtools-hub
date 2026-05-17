@@ -38,37 +38,66 @@
 
             <div class="info-section">
                 <h3>What is Base64 Encoding?</h3>
-                <p>Base64 encoding converts binary data into ASCII text format using 64 characters (A-Z, a-z, 0-9, +, /). Each Base64 digit represents exactly 6 bits of the original data. This encoding is essential when transmitting data through protocols that only support text.</p>
+                <p>Base64 encoding converts binary data into ASCII text using 64 characters (A-Z, a-z, 0-9, +, /). Each digit represents 6 bits. Essential for transmitting data through text-only protocols.</p>
 
                 <h3>Common Use Cases</h3>
                 <div class="example-box">
                     <div class="example-item">
                         <strong>Email Attachments (MIME)</strong>
-                        <span style="display: block; margin-top: 4px;">Email attachments are encoded in Base64 to ensure they can be transmitted via email protocols that only support text.</span>
+                        <span style="display: block; margin-top: 4px;">Email attachments are encoded in Base64 for transmission.</span>
                     </div>
                     <div class="example-item">
                         <strong>Data URIs in CSS/HTML</strong>
-                        <span style="display: block; margin-top: 4px;">Embed small images directly in HTML or CSS using Base64 data URIs to reduce HTTP requests.</span>
+                        <span style="display: block; margin-top: 4px;">Embed small images directly in HTML to reduce HTTP requests.</span>
                     </div>
                     <div class="example-item">
                         <strong>API Authentication</strong>
-                        <span style="display: block; margin-top: 4px;">Basic Auth credentials are Base64 encoded (e.g., "user:pass" becomes "dXNlcjpwYXNz"). Note: This is NOT encryption.</span>
+                        <span style="display: block; margin-top: 4px;">Basic Auth credentials are Base64 encoded. This is NOT encryption.</span>
                     </div>
                     <div class="example-item">
                         <strong>Storing Binary in JSON</strong>
-                        <span style="display: block; margin-top: 4px;">When APIs need to transmit binary data as JSON, Base64 encoding is commonly used to represent the binary content as text.</span>
+                        <span style="display: block; margin-top: 4px;">APIs encode binary data as text for JSON transmission.</span>
                     </div>
                 </div>
 
-                <h3>URL-Safe Variant</h3>
-                <p>Standard Base64 uses <code>+</code> and <code>/</code> which can conflict with URL reserved characters. For URL-safe encoding, variant uses <code>-</code> and <code>_</code> instead. This is commonly used in URL-safe tokens and JWTs.</p>
-
                 <h3>Important Notes</h3>
                 <ul>
-                    <li><strong>Not Encryption:</strong> Base64 is NOT encryption—anyone can decode it trivially. Never use it to protect sensitive data.</li>
-                    <li><strong>Size Overhead:</strong> Base64 increases data size by approximately 33% compared to the original binary data.</li>
-                    <li><strong>Browser Support:</strong> Works in all modern browsers using the built-in btoa() and atob() functions.</li>
+                    <li><strong>Not Encryption:</strong> Base64 can be trivially decoded.</li>
+                    <li><strong>Size Overhead:</strong> Increases data size by approximately 33%.</li>
+                    <li><strong>Browser Support:</strong> Works in all modern browsers using btoa() and atob().</li>
                 </ul>
+
+                <h3>Why Format JSON?</h3>
+                <p>JSON formatting makes data readable and debuggable. Minified JSON is nearly impossible to parse. Proper indentation helps spot syntax errors, understand data hierarchies, and share data with team members.</p>
+
+                <h3>JSON vs YAML vs XML</h3>
+                <p>JSON is preferred for web APIs due to lightweight syntax. YAML prioritizes human readability for configuration files in CI/CD pipelines. XML remains relevant in enterprise systems, offering validation through XSD schemas.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Is Base64 encoding secure?</summary>
+                    <p>No, Base64 is not encryption. It can be trivially decoded. Use proper encryption like AES for sensitive data.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does Base64 increase file size?</summary>
+                    <p>Base64 represents every 3 bytes with 4 characters. Since each character stores 6 bits instead of 8, output is ~33% larger.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What is URL-safe Base64?</summary>
+                    <p>Standard Base64 uses + and / which conflict with URLs. URL-safe variant uses - and _ instead, common in JWT tokens.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I encode images in Base64?</summary>
+                    <p>Yes, images can be encoded for embedding in HTML/CSS as data URIs, reducing HTTP requests. For large images this is inefficient.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I decode in different languages?</summary>
+                    <p>JavaScript uses atob()/btoa(). Python has base64 module with encodebytes()/decodebytes(). Most languages have similar built-in functions.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>When should I use Base64?</summary>
+                    <p>Use it for embedding small binary assets, transmitting binary through text-only protocols, and encoding credentials in HTTP Basic Auth.</p>
+                </details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

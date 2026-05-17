@@ -41,41 +41,44 @@
 
             <div class="info-section">
                 <h3>What is a UUID?</h3>
-                <p>UUID (Universally Unique Identifier) is a 128-bit label used to identify information in computer systems. UUIDs are standardized by RFC 4122 and come in several versions, each with different generation methods and properties.</p>
+                <p>UUID (Universally Unique Identifier) is a 128-bit label used to identify information in computer systems. They follow RFC 4122 with several versions, each with different generation methods.</p>
 
                 <h3>UUID Versions Explained</h3>
                 <div class="example-box">
                     <div class="example-item">
-                        <strong>UUID v4 (Random)</strong>
-                        <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Most commonly used. Random generation means collision probability is negligible.</span>
-                    </div>
-                    <div class="example-item">
                         <strong>UUID v1 (Timestamp)</strong>
                         <code>xxxxxxxx-xxxx-1xxx-xxxx-xxxxxxxxxxxx</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Embeds timestamp and MAC address. Can be sorted chronologically.</span>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Embeds timestamp and MAC address. Sortable but exposes node information.</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>UUID v4 (Random)</strong>
+                        <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Most common version. Random generation means negligible collision probability.</span>
                     </div>
                     <div class="example-item">
                         <strong>UUID v7 (Unix Epoch)</strong>
                         <code>xxxxxxxx-xxxx-7xxx-xxxx-xxxxxxxxxxxx</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Newer standard. Combines Unix timestamp with randomness. Sortable and time-ordered.</span>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Combines Unix timestamp with randomness. Sortable and privacy-preserving.</span>
                     </div>
                 </div>
 
-                <h3>UUID Format Details</h3>
-                <p>In UUID v4, the <code>x</code> characters are replaced with random hexadecimal digits, while <code>y</code> is always 8, 9, a, or b. This specific pattern (4xxx-yxxx) identifies the version of the UUID.</p>
-                <p>UUID v1 includes the node (MAC address of the generating machine) and timestamp. UUID v7 uses Unix timestamp in milliseconds, providing better sorting capabilities while maintaining privacy since it doesn't expose the MAC address.</p>
-
-                <h3>Common Use Cases</h3>
+                <h3>When to Use Each UUID Type</h3>
                 <ul>
-                    <li><strong>Database Primary Keys:</strong> Generate unique identifiers for database records without a central coordinator</li>
-                    <li><strong>Distributed Systems:</strong> Create identifiers across multiple systems without collision</li>
-                    <li><strong>Session IDs:</strong> Generate unique session identifiers for web applications</li>
-                    <li><strong>Resource Naming:</strong> Name files, containers, or resources with guaranteed uniqueness</li>
+                    <li><strong>v4:</strong> General-purpose identifiers for databases, sessions, and any case where privacy matters.</li>
+                    <li><strong>v1:</strong> Legacy systems needing chronological ordering. Use cautiously due to MAC exposure.</li>
+                    <li><strong>v7:</strong> Modern apps needing time-sortable IDs without v1's privacy issues. Ideal for distributed systems.</li>
                 </ul>
 
                 <h3>Security Considerations</h3>
-                <p>While random UUIDs (v4) are not predictable, they should not be used for security-critical purposes like cryptographic keys or security tokens. For those use cases, use cryptographically secure random number generators instead.</p>
+                <p>UUID v4 is not cryptographically secure. Do not use standard UUIDs for security tokens or cryptographic keys. Use dedicated CSPRNG libraries instead.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item"><summary>What is the collision probability for UUID v4?</summary>Approximately 1 in 5.3 x 10^36. Even generating 1 billion UUIDs per second for 100 years yields less than 0.001% collision chance.</details>
+                <details class="faq-item"><summary>Can UUIDs be used as database primary keys?</summary>Yes, especially in distributed systems. UUID v7 is recommended for indexed columns due to its time-ordered structure.</details>
+                <details class="faq-item"><summary>Are UUIDs cryptographically secure?</summary>No. UUID v4 uses pseudo-random generation, not cryptographic randomness. Use CSPRNG for security tokens.</details>
+                <details class="faq-item"><summary>Which version is best for database indexes?</summary>UUID v7. Its time-ordered structure allows sequential B-tree fills, reducing index fragmentation and improving insert performance.</details>
+                <details class="faq-item"><summary>Can UUIDs be converted between versions?</summary>No. Each version has a different structure and algorithm. Generate a new UUID with the desired version.</details>
+                <details class="faq-item"><summary>What does the version number mean?</summary>The version byte (position 13) indicates the generation method: v1=timestamp+MAC, v4=random, v7=Unix epoch+random.</details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>

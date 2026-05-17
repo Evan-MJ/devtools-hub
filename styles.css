@@ -83,3 +83,26 @@ footer a { color: #667eea; }
     .btn { padding: 8px 16px; font-size: 0.85rem; }
     .btn-group { gap: 8px; }
 }
+
+/* FAQ Section Styles */
+.faq-item { background: #0f0f23; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a2a4a; }
+.faq-item summary { padding: 14px 16px; cursor: pointer; color: #667eea; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; font-size: 1.2rem; color: #667eea; }
+.faq-item[open] summary::after { content: "-"; }
+.faq-item summary:hover { color: #8b9ef5; }
+.faq-item p { padding: 0 16px 14px 16px; color: #aaa; line-height: 1.7; margin-top: 0; }
+.faq-item[open] summary { border-bottom: 1px solid #2a2a4a; margin-bottom: 10px; padding-bottom: 10px; }
+
+/* Content sections */
+.content-block { margin: 20px 0; }
+.content-block h4 { color: #667eea; margin: 16px 0 8px; font-size: 1rem; }
+.content-block ul { margin: 10px 0 15px 20px; }
+.content-block li { margin-bottom: 8px; line-height: 1.6; }
+
+/* Comparison table */
+.comparison-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.comparison-table th, .comparison-table td { padding: 10px 14px; text-align: left; border: 1px solid #2a2a4a; }
+.comparison-table th { background: #252545; color: #667eea; }
+.comparison-table tr:nth-child(even) { background: #0f0f23; }
+.comparison-table td { color: #aaa; }

@@ -37,42 +37,62 @@
             </div>
 
             <div class="info-section">
-                <h3>What is URL Encoding?</h3>
-                <p>URL encoding converts special characters into a format that can be transmitted over the Internet. Spaces become <code>%20</code>, and characters like <code>&</code>, <code>?</code>, <code>#</code> are encoded because they have special meaning in URLs.</p>
+                <h3>Why URL Encoding Matters</h3>
+                <p>URL encoding, also known as percent-encoding, converts characters into a format safe for internet transmission. Since URLs only support ASCII, special characters like emojis, spaces, and non-Latin scripts must be encoded. UTF-8 encoding is the standard that converts any character into byte sequences, each byte represented as <code>%HH</code>. Without proper encoding, characters like <code>&amp;</code> or <code>=</code> would break query parameter parsing and corrupt URL structure.</p>
+
+                <h3>Reserved Characters Explained</h3>
+                <table class="info-table">
+                    <thead>
+                        <tr><th>Char</th><th>Name</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>?</code></td><td>Question Mark</td><td>Separates path from query</td></tr>
+                        <tr><td><code>&amp;</code></td><td>Ampersand</td><td>Separates query parameters</td></tr>
+                        <tr><td><code>=</code></td><td>Equals</td><td>Name-value separator</td></tr>
+                        <tr><td><code>/</code></td><td>Slash</td><td>Path segment separator</td></tr>
+                        <tr><td><code>#</code></td><td>Hash</td><td>Fragment identifier</td></tr>
+                        <tr><td><code>%</code></td><td>Percent</td><td>Escape indicator</td></tr>
+                    </tbody>
+                </table>
 
                 <h3>Characters That Need Encoding</h3>
                 <div class="example-box">
                     <div class="example-item">
-                        <strong>Spaces</strong>
-                        <code>" "</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Becomes: %20</span>
+                        <strong>Spaces</strong> <code>" "</code>
+                        <span style="color: #10b981; display: block;">Becomes: %20</span>
                     </div>
                     <div class="example-item">
-                        <strong>Special Characters</strong>
-                        <code>& ? # = $ + , / : ;</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Encoded because they have reserved meaning in URLs</span>
+                        <strong>Special Characters</strong> <code>& ? # = $ + , / : ;</code>
+                        <span style="color: #10b981; display: block;">Encoded due to reserved meaning</span>
                     </div>
                     <div class="example-item">
-                        <strong>Unicode Characters</strong>
-                        <code>你好世界</code>
-                        <span style="color: #10b981; display: block; margin-top: 4px;">Encoded as UTF-8 byte sequences</span>
+                        <strong>Unicode</strong> <code>你好世界</code>
+                        <span style="color: #10b981; display: block;">Encoded as UTF-8 bytes</span>
                     </div>
                 </div>
 
                 <h3>Safe Characters</h3>
-                <p>Only a limited set of characters (A-Z, a-z, 0-9, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>) are safe in URLs without encoding. All other characters should be percent-encoded using UTF-8 byte sequences.</p>
+                <p>Only A-Z, a-z, 0-9, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code> are safe without encoding. All others require percent-encoding using UTF-8.</p>
 
                 <h3>Common Use Cases</h3>
                 <ul>
-                    <li><strong>Form Submission:</strong> Query parameters in URLs with special characters</li>
-                    <li><strong>API Endpoints:</strong> Construct URLs with dynamic path parameters</li>
-                    <li><strong>Redirect URLs:</strong> Handle URLs with query strings and fragments</li>
-                    <li><strong>HTML Links:</strong> Generate safe URLs for web pages</li>
+                    <li><strong>Form Submission:</strong> Query parameters with special characters</li>
+                    <li><strong>API Endpoints:</strong> URLs with dynamic path parameters</li>
+                    <li><strong>Redirect URLs:</strong> Query strings and fragments</li>
+                    <li><strong>HTML Links:</strong> Safe URL generation</li>
                 </ul>
 
                 <h3>Important Notes</h3>
-                <p>URL encoding is NOT the same as Base64 encoding. URL encoding uses percent-encoding (<code>%20</code> for space), while Base64 uses a different alphabet and is used for encoding binary data as ASCII text.</p>
-                <p>When encoding for query parameters, use <code>encodeURIComponent()</code> to properly encode all special characters including <code>&</code> and <code>=</code>.</p>
+                <p>URL encoding differs from Base64 encoding. URL encoding uses percent-encoding (<code>%20</code> for space), while Base64 uses a different alphabet for binary data.</p>
+                <p>For query parameters, use <code>encodeURIComponent()</code> to properly encode all special characters including <code>&amp;</code> and <code>=</code>.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item"><summary>encodeURI vs encodeURIComponent?</summary>Use <code>encodeURI()</code> when preserving <code>/</code>, <code>?</code>, <code>#</code>. Use <code>encodeURIComponent()</code> for individual query values with any special characters.</details>
+                <details class="faq-item"><summary>Why %20 and not + for spaces?</summary>Plus sign encoding is legacy form encoding. Modern URLs use <code>%20</code> for spaces. Plus only appears in application/x-www-form-urlencoded form data.</details>
+                <details class="faq-item"><summary>How are Unicode characters encoded?</summary>First converted to UTF-8 bytes, then each byte percent-encoded. <code>你好</code> becomes <code>%E4%BD%A0%E5%A5%BD</code> (3 bytes per character).</details>
+                <details class="faq-item"><summary>What happens without encoding?</summary>Unencoded special characters break parsing, cause security vulnerabilities like parameter injection, or corrupt data transmission.</details>
+                <details class="faq-item"><summary>Can I decode multiple times?</summary>Only if double-encoded. Typically decode once. Double encoding happens when data is encoded, then encoded again as part of another parameter.</details>
+                <details class="faq-item"><summary>Are hex digits case-sensitive?</summary>Both <code>%2F</code> and <code>%2f</code> are valid and equivalent. Case-insensitive, though uppercase is conventionally used.</details>
 
                 <div class="related-section">
                     <h4>Related Tools</h4>
