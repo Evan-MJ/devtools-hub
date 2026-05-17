@@ -16,17 +16,8 @@
         "url": "https://tools.scoreroute.com/tools/json-formatter/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Format JSON with syntax highlighting",
-            "Validate JSON syntax with error location",
-            "Minify JSON for production",
-            "Convert JSON to YAML"
-        ]
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Format JSON with syntax highlighting", "Validate JSON syntax", "Minify JSON", "Convert JSON to YAML"]
     }
     </script>
 </head>
@@ -42,54 +33,10 @@
     </header>
 
     <main class="container">
-        <section class="tool-page-content">
-            <div class="tool-description">
-                <h2>What is JSON Formatter?</h2>
-                <p>A JSON Formatter is an essential developer utility that transforms minified or poorly structured JSON data into human-readable format with proper indentation and syntax highlighting. When working with APIs, configuration files, or data interchange, properly formatted JSON dramatically improves debugging efficiency.</p>
-                
-                <h3>Why Use JSON Formatter?</h3>
-                <ul>
-                    <li><strong>Debug API responses</strong> - When an API returns a single-line JSON response, identifying the exact location of a syntax error becomes nearly impossible without formatting</li>
-                    <li><strong>Configuration validation</strong> - Verify package.json, tsconfig.json, or any JSON-based configuration before deployment</li>
-                    <li><strong>Data inspection</strong> - Navigate through nested JSON structures with expandable tree views</li>
-                    <li><strong>Prettify exports</strong> - Make exported JSON data from databases more accessible</li>
-                </ul>
-
-                <h3>Common JSON Syntax Errors</h3>
-                <div class="error-list">
-                    <div class="error-item">
-                        <strong>Trailing Commas:</strong> <code>{"key": "value",}</code> - The comma after the last item causes parsing failures
-                    </div>
-                    <div class="error-item">
-                        <strong>Unescaped Quotes:</strong> <code>{"msg": "He said "hello""}</code> - Quotes inside strings must be escaped with backslash
-                    </div>
-                    <div class="error-item">
-                        <strong>Single Quotes:</strong> <code>{'key': 'value'}</code> - JSON requires double quotes for keys and string values
-                    </div>
-                    <div class="error-item">
-                        <strong>Comments:</strong> <code>{"//": "comment"}</code> - JSON does not support comments, use only valid syntax
-                    </div>
-                </div>
-
-                <h3>Real-World Use Cases</h3>
-                <p><strong>Scenario 1: Backend Development</strong><br>
-                When building a Node.js application, you might encounter a cryptic "Unexpected token" error. Using a JSON formatter to paste your config data reveals the misplaced comma at line 47 that caused the crash.</p>
-                
-                <p><strong>Scenario 2: API Integration</strong><br>
-                Third-party APIs often return minified responses. Before debugging why your data parsing fails, run it through the formatter to see exactly what structure you're working with.</p>
-                
-                <p><strong>Scenario 3: Data Migration</strong><br>
-                Moving data between systems often involves JSON export/import. Formatting the output helps identify datetime format inconsistencies or missing fields before they cause production issues.</p>
-
-                <h3>How JSON Parsing Works</h3>
-                <p>JSON (JavaScript Object Notation) follows strict syntax rules defined in RFC 8259. A JSON parser reads the text and constructs a data structure matching the content. Any deviation from the specification - even a missing quote or an extra comma - causes the parser to reject the entire document.</p>
-                
-                <p>The parser treats your input as a stream of characters, identifying strings, numbers, booleans, null values, arrays, and objects. Each element must conform to its type's rules. For example, object keys must be strings in double quotes, and values cannot be undefined or functions.</p>
-            </div>
-
-            <div class="tool-section">
-                <h2>Try It Now</h2>
-                <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Format & Validate JSON</h2>
+                <textarea id="json-input" placeholder='Paste your JSON here, e.g.: {"name": "test", "value": 123}'></textarea>
                 <div class="btn-group">
                     <button onclick="formatJSON()" class="btn btn-primary">Format</button>
                     <button onclick="minifyJSON()" class="btn">Minify</button>
@@ -102,13 +49,42 @@
                 <button onclick="copyToClipboard('json-output')" class="btn btn-small">Copy Output</button>
             </div>
 
-            <div class="related-tools">
-                <h3>Related Tools</h3>
-                <ul>
-                    <li><a href="/tools/base64-encoder/">Base64 Encoder</a> - Encode/decode data for API transmission</li>
-                    <li><a href="/tools/url-encoder/">URL Encoder</a> - Handle special characters in URLs</li>
-                    <li><a href="/tools/hash-generator/">Hash Generator</a> - Create checksums for data integrity</li>
-                </ul>
+            <div class="tool-details">
+                <button class="details-toggle" onclick="toggleDetails(this)">
+                    <span class="toggle-icon">▸</span> Learn More About JSON Formatting
+                </button>
+                <div class="details-content" style="display: none;">
+                    <h3>What is JSON Formatter?</h3>
+                    <p>A JSON Formatter transforms minified or poorly structured JSON data into human-readable format with proper indentation and syntax highlighting.</p>
+                    
+                    <h3>Common JSON Errors</h3>
+                    <div class="error-list">
+                        <div class="error-item"><strong>Trailing Commas:</strong> <code>{"key": "value",}</code> - Remove comma after last item</div>
+                        <div class="error-item"><strong>Unescaped Quotes:</strong> <code>{"msg": "He said "hello""}</code> - Escape quotes with backslash</div>
+                        <div class="error-item"><strong>Single Quotes:</strong> <code>{'key': 'value'}</code> - Use double quotes only</div>
+                        <div class="error-item"><strong>Comments:</strong> <code>{"//": "comment"}</code> - JSON doesn't support comments</div>
+                    </div>
+
+                    <h3>Real-World Use Cases</h3>
+                    <ul>
+                        <li><strong>API Debugging:</strong> Format API responses to locate syntax errors</li>
+                        <li><strong>Config Validation:</strong> Verify package.json before deployment</li>
+                        <li><strong>Data Inspection:</strong> Navigate nested JSON structures easily</li>
+                        <li><strong>Export Formatting:</strong> Make database exports more readable</li>
+                    </ul>
+
+                    <h3>How JSON Parsing Works</h3>
+                    <p>JSON (JavaScript Object Notation) follows RFC 8259. The parser identifies strings, numbers, booleans, null, arrays, and objects. Any deviation causes parsing failure.</p>
+
+                    <div class="related-links">
+                        <h4>Related Tools</h4>
+                        <ul>
+                            <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
+                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -119,7 +95,74 @@
 
     <script src="/tools.js"></script>
     <script>
-        function copyToClipboard(id) { const e=document.getElementById(id); if(e) navigator.clipboard.writeText(e.value||e.textContent); }
+        function toggleDetails(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.toggle-icon');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▾';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▸';
+            }
+        }
+        function formatJSON() {
+            const input = document.getElementById('json-input').value;
+            try {
+                document.getElementById('json-output').value = JSON.stringify(JSON.parse(input), null, 2);
+                showStatus('json-status', 'Valid JSON - Formatted successfully', 'success');
+            } catch (e) {
+                showStatus('json-status', 'Invalid: ' + e.message, 'error');
+            }
+        }
+        function minifyJSON() {
+            const input = document.getElementById('json-input').value;
+            try {
+                document.getElementById('json-output').value = JSON.stringify(JSON.parse(input));
+                showStatus('json-status', 'Minified successfully', 'success');
+            } catch (e) {
+                showStatus('json-status', 'Invalid: ' + e.message, 'error');
+            }
+        }
+        function validateJSON() {
+            const input = document.getElementById('json-input').value;
+            try {
+                JSON.parse(input);
+                showStatus('json-status', 'Valid JSON', 'success');
+                document.getElementById('json-output').value = input;
+            } catch (e) {
+                showStatus('json-status', 'Invalid: ' + e.message, 'error');
+            }
+        }
+        function jsonToYaml() {
+            const input = document.getElementById('json-input').value;
+            try {
+                const obj = JSON.parse(input);
+                let yaml = '';
+                for (let key in obj) {
+                    yaml += key + ': ' + (typeof obj[key] === 'object' ? JSON.stringify(obj[key]) : obj[key]) + '\n';
+                }
+                document.getElementById('json-output').value = yaml;
+                showStatus('json-status', 'Converted to YAML', 'success');
+            } catch (e) {
+                showStatus('json-status', 'Invalid JSON', 'error');
+            }
+        }
+        function clearJSON() {
+            document.getElementById('json-input').value = '';
+            document.getElementById('json-output').value = '';
+            document.getElementById('json-status').textContent = '';
+        }
+        function showStatus(id, msg, type) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.className = 'status ' + type;
+            setTimeout(() => el.textContent = '', 3000);
+        }
+        function copyToClipboard(id) {
+            const e = document.getElementById(id);
+            if (e) navigator.clipboard.writeText(e.value || e.textContent);
+        }
     </script>
 </body>
 </html>
