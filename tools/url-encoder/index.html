@@ -16,9 +16,12 @@
         <div class="container">
             <h1>URL Encoder/Decoder</h1>
             <p class="subtitle">Encode URLs for Safe Transmission</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>URL Encoder</span></nav>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>URL Encoder</span>
+            </nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -32,31 +35,66 @@
                 <textarea id="url-output" readonly placeholder="Output..."></textarea>
                 <button onclick="copyToClipboard('url-output')" class="btn btn-small">Copy Output</button>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>URL encoding converts special characters into a format that can be transmitted over the Internet. Spaces become <code>%20</code>, and characters like <code>&</code>, <code>?</code>, <code>#</code> are encoded because they have special meaning in URLs.</p>
-                    <p>Only a limited set of characters (A-Z, a-z, 0-9, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>) are safe in URLs without encoding. All other characters should be percent-encoded using UTF-8 byte sequences.</p>
-                    <p>Common use cases include form submission (query parameters), API endpoint construction, redirect URL handling, and HTML link generation. URL encoding is NOT the same as Base64 encoding.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is URL Encoding?</h3>
+                <p>URL encoding converts special characters into a format that can be transmitted over the Internet. Spaces become <code>%20</code>, and characters like <code>&</code>, <code>?</code>, <code>#</code> are encoded because they have special meaning in URLs.</p>
+
+                <h3>Characters That Need Encoding</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Spaces</strong>
+                        <code>" "</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Becomes: %20</span>
                     </div>
+                    <div class="example-item">
+                        <strong>Special Characters</strong>
+                        <code>& ? # = $ + , / : ;</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Encoded because they have reserved meaning in URLs</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Unicode Characters</strong>
+                        <code>你好世界</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Encoded as UTF-8 byte sequences</span>
+                    </div>
+                </div>
+
+                <h3>Safe Characters</h3>
+                <p>Only a limited set of characters (A-Z, a-z, 0-9, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>) are safe in URLs without encoding. All other characters should be percent-encoded using UTF-8 byte sequences.</p>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>Form Submission:</strong> Query parameters in URLs with special characters</li>
+                    <li><strong>API Endpoints:</strong> Construct URLs with dynamic path parameters</li>
+                    <li><strong>Redirect URLs:</strong> Handle URLs with query strings and fragments</li>
+                    <li><strong>HTML Links:</strong> Generate safe URLs for web pages</li>
+                </ul>
+
+                <h3>Important Notes</h3>
+                <p>URL encoding is NOT the same as Base64 encoding. URL encoding uses percent-encoding (<code>%20</code> for space), while Base64 uses a different alphabet and is used for encoding binary data as ASCII text.</p>
+                <p>When encoding for query parameters, use <code>encodeURIComponent()</code> to properly encode all special characters including <code>&</code> and <code>=</code>.</p>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         function encodeURL() { document.getElementById('url-output').value = encodeURIComponent(document.getElementById('url-input').value); }
         function decodeURL() { try { document.getElementById('url-output').value = decodeURIComponent(document.getElementById('url-input').value); } catch(e) { document.getElementById('url-output').value = 'Error: Invalid encoding'; } }
         function clearURL() { document.getElementById('url-input').value = ''; document.getElementById('url-output').value = ''; }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
         function copyToClipboard(id) { const e = document.getElementById(id); if (e) navigator.clipboard.writeText(e.value || e.textContent); }
     </script>
 </body>

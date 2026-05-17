@@ -16,7 +16,7 @@
         <div class="container">
             <h1>UUID Generator</h1>
             <p class="subtitle">Generate Unique Identifiers</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>UUID Generator</span></nav>
+            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>UUID Generator</span></nav>
         </div>
     </header>
     <main class="container">
@@ -38,20 +38,52 @@
                 <div id="uuid-output" style="font-family: monospace; padding: 15px; background: #0f0f23; border-radius: 8px; margin-top: 10px;"></div>
                 <button onclick="copyAllUUID()" class="btn btn-small">Copy All</button>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>UUID (Universally Unique Identifier) is a 128-bit label. UUID v4 is random and most commonly used—collision probability is negligible. UUID v1 embeds timestamp and MAC address. UUID v7 is newer, combining timestamp with randomness.</p>
-                    <p>UUID v4 format: <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code> where <code>y</code> is 8, 9, a, or b. UUID v1 format includes node (MAC address) and timestamp. UUID v7 uses Unix timestamp in milliseconds.</p>
-                    <p>Common use cases include database primary keys, distributed systems identifiers, session IDs, and resource naming. While random UUIDs are not predictable, don't use them for security-critical purposes.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                            <li><a href="/tools/timestamp-converter/">Timestamp Converter</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is a UUID?</h3>
+                <p>UUID (Universally Unique Identifier) is a 128-bit label used to identify information in computer systems. UUIDs are standardized by RFC 4122 and come in several versions, each with different generation methods and properties.</p>
+
+                <h3>UUID Versions Explained</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>UUID v4 (Random)</strong>
+                        <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Most commonly used. Random generation means collision probability is negligible.</span>
                     </div>
+                    <div class="example-item">
+                        <strong>UUID v1 (Timestamp)</strong>
+                        <code>xxxxxxxx-xxxx-1xxx-xxxx-xxxxxxxxxxxx</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Embeds timestamp and MAC address. Can be sorted chronologically.</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>UUID v7 (Unix Epoch)</strong>
+                        <code>xxxxxxxx-xxxx-7xxx-xxxx-xxxxxxxxxxxx</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Newer standard. Combines Unix timestamp with randomness. Sortable and time-ordered.</span>
+                    </div>
+                </div>
+
+                <h3>UUID Format Details</h3>
+                <p>In UUID v4, the <code>x</code> characters are replaced with random hexadecimal digits, while <code>y</code> is always 8, 9, a, or b. This specific pattern (4xxx-yxxx) identifies the version of the UUID.</p>
+                <p>UUID v1 includes the node (MAC address of the generating machine) and timestamp. UUID v7 uses Unix timestamp in milliseconds, providing better sorting capabilities while maintaining privacy since it doesn't expose the MAC address.</p>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>Database Primary Keys:</strong> Generate unique identifiers for database records without a central coordinator</li>
+                    <li><strong>Distributed Systems:</strong> Create identifiers across multiple systems without collision</li>
+                    <li><strong>Session IDs:</strong> Generate unique session identifiers for web applications</li>
+                    <li><strong>Resource Naming:</strong> Name files, containers, or resources with guaranteed uniqueness</li>
+                </ul>
+
+                <h3>Security Considerations</h3>
+                <p>While random UUIDs (v4) are not predictable, they should not be used for security-critical purposes like cryptographic keys or security tokens. For those use cases, use cryptographically secure random number generators instead.</p>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                        <li><a href="/tools/timestamp-converter/">Timestamp Converter</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -67,7 +99,6 @@
         function generateUUID() { document.getElementById('uuid-output').innerHTML = '<p>' + createUUID(document.getElementById('uuid-version').value) + '</p>'; }
         function generateBulkUUID() { const count = parseInt(document.getElementById('uuid-count').value) || 1; const uuids = []; for (let i = 0; i < Math.min(count, 100); i++) uuids.push(createUUID(document.getElementById('uuid-version').value)); document.getElementById('uuid-output').innerHTML = uuids.map(u => '<p>' + u + '</p>').join(''); }
         function copyAllUUID() { navigator.clipboard.writeText(document.getElementById('uuid-output').textContent); }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
     </script>
 </body>
 </html>

@@ -27,7 +27,7 @@
             <h1>JSON Formatter</h1>
             <p class="subtitle">Format, Validate & Beautify JSON Online</p>
             <nav class="breadcrumb">
-                <a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>JSON Formatter</span>
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>JSON Formatter</span>
             </nav>
         </div>
     </header>
@@ -46,44 +46,56 @@
                 </div>
                 <textarea id="json-output" readonly placeholder="Output..."></textarea>
                 <div id="json-status" class="status"></div>
-                <button onclick="copyToClipboard('json-output')" class="btn btn-small">Copy Output</button>
+                <button onclick="copyToClipboard('json-output')" class="copy-btn">Copy Output</button>
             </div>
 
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)">
-                    <span class="toggle-icon">▸</span> Learn More About JSON Formatting
-                </button>
-                <div class="details-content" style="display: none;">
-                    <h3>What is JSON Formatter?</h3>
-                    <p>A JSON Formatter transforms minified or poorly structured JSON data into human-readable format with proper indentation and syntax highlighting.</p>
-                    
-                    <h3>Common JSON Errors</h3>
-                    <div class="error-list">
-                        <div class="error-item"><strong>Trailing Commas:</strong> <code>{"key": "value",}</code> - Remove comma after last item</div>
-                        <div class="error-item"><strong>Unescaped Quotes:</strong> <code>{"msg": "He said "hello""}</code> - Escape quotes with backslash</div>
-                        <div class="error-item"><strong>Single Quotes:</strong> <code>{'key': 'value'}</code> - Use double quotes only</div>
-                        <div class="error-item"><strong>Comments:</strong> <code>{"//": "comment"}</code> - JSON doesn't support comments</div>
-                    </div>
+            <div class="info-section">
+                <h3>What is JSON Formatter?</h3>
+                <p>A JSON Formatter transforms minified or poorly structured JSON data into human-readable format with proper indentation and syntax highlighting. This free online tool helps developers debug, validate, and beautify JSON data without installing any software.</p>
 
-                    <h3>Real-World Use Cases</h3>
+                <h3>Common JSON Errors & Solutions</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Trailing Commas</strong>
+                        <code>{"key": "value",}</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Fix: Remove the comma after the last item</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Unescaped Quotes</strong>
+                        <code>{"msg": "He said "hello""}</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Fix: Escape inner quotes with backslash</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Single Quotes</strong>
+                        <code>{'key': 'value'}</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Fix: Use double quotes only for JSON</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Comments Not Allowed</strong>
+                        <code>{"//": "comment"}</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Fix: JSON doesn't support comments - remove them</span>
+                    </div>
+                </div>
+
+                <h3>How JSON Parsing Works</h3>
+                <p>JSON (JavaScript Object Notation) follows the RFC 8259 standard. The parser reads through the input character by character, identifying strings, numbers, booleans, null values, arrays, and objects. Any deviation from the expected format causes parsing to fail.</p>
+                <p>When you format JSON, the parser first validates the syntax, then reconstructs it with proper indentation (typically 2 or 4 spaces) and line breaks after each property. This makes the structure visible to human readers.</p>
+
+                <h3>Real-World Use Cases</h3>
+                <ul>
+                    <li><strong>API Debugging:</strong> Format API responses to quickly locate syntax errors in complex payloads</li>
+                    <li><strong>Configuration Validation:</strong> Verify package.json files before deployment to catch missing commas or invalid syntax</li>
+                    <li><strong>Data Inspection:</strong> Navigate deeply nested JSON structures when inspecting database exports</li>
+                    <li><strong>Code Review:</strong> Make JSON code more readable for team code reviews and documentation</li>
+                </ul>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
                     <ul>
-                        <li><strong>API Debugging:</strong> Format API responses to locate syntax errors</li>
-                        <li><strong>Config Validation:</strong> Verify package.json before deployment</li>
-                        <li><strong>Data Inspection:</strong> Navigate nested JSON structures easily</li>
-                        <li><strong>Export Formatting:</strong> Make database exports more readable</li>
+                        <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
+                        <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
                     </ul>
-
-                    <h3>How JSON Parsing Works</h3>
-                    <p>JSON (JavaScript Object Notation) follows RFC 8259. The parser identifies strings, numbers, booleans, null, arrays, and objects. Any deviation causes parsing failure.</p>
-
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
-                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </section>
@@ -95,17 +107,6 @@
 
     <script src="/tools.js"></script>
     <script>
-        function toggleDetails(btn) {
-            const content = btn.nextElementSibling;
-            const icon = btn.querySelector('.toggle-icon');
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                icon.textContent = '▾';
-            } else {
-                content.style.display = 'none';
-                icon.textContent = '▸';
-            }
-        }
         function formatJSON() {
             const input = document.getElementById('json-input').value;
             try {
@@ -152,16 +153,17 @@
             document.getElementById('json-input').value = '';
             document.getElementById('json-output').value = '';
             document.getElementById('json-status').textContent = '';
+            document.getElementById('json-status').className = 'status';
         }
         function showStatus(id, msg, type) {
             const el = document.getElementById(id);
             el.textContent = msg;
             el.className = 'status ' + type;
-            setTimeout(() => el.textContent = '', 3000);
+            setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 3000);
         }
         function copyToClipboard(id) {
             const e = document.getElementById(id);
-            if (e) navigator.clipboard.writeText(e.value || e.textContent);
+            if (e && e.value) navigator.clipboard.writeText(e.value);
         }
     </script>
 </body>

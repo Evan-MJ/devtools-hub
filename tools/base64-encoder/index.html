@@ -16,9 +16,12 @@
         <div class="container">
             <h1>Base64 Encoder/Decoder</h1>
             <p class="subtitle">Encode Binary Data as Text - Instant Conversion</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Base64 Encoder</span></nav>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Base64 Encoder</span>
+            </nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -30,33 +33,64 @@
                     <button onclick="clearBase64()" class="btn btn-secondary">Clear</button>
                 </div>
                 <textarea id="base64-output" readonly placeholder="Output..."></textarea>
-                <button onclick="copyToClipboard('base64-output')" class="btn btn-small">Copy Output</button>
+                <button onclick="copyToClipboard('base64-output')" class="copy-btn">Copy Output</button>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>Base64 encoding converts binary data into ASCII text format using 64 characters (A-Z, a-z, 0-9, +, /). Each Base64 digit represents exactly 6 bits of the original data. This encoding is essential when transmitting data through protocols that only support text.</p>
-                    <p>Common use cases include email attachments (MIME), embedding images in CSS/HTML as data URIs, API authentication (Basic Auth uses Base64), and storing binary data in JSON. Base64 is NOT encryption—anyone can decode it trivially.</p>
-                    <p>Standard Base64 uses <code>+</code> and <code>/</code> which can conflict with URL reserved characters. For URL-safe encoding, variant uses <code>-</code> and <code>_</code> instead. Base64 increases data size by approximately 33%.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is Base64 Encoding?</h3>
+                <p>Base64 encoding converts binary data into ASCII text format using 64 characters (A-Z, a-z, 0-9, +, /). Each Base64 digit represents exactly 6 bits of the original data. This encoding is essential when transmitting data through protocols that only support text.</p>
+
+                <h3>Common Use Cases</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Email Attachments (MIME)</strong>
+                        <span style="display: block; margin-top: 4px;">Email attachments are encoded in Base64 to ensure they can be transmitted via email protocols that only support text.</span>
                     </div>
+                    <div class="example-item">
+                        <strong>Data URIs in CSS/HTML</strong>
+                        <span style="display: block; margin-top: 4px;">Embed small images directly in HTML or CSS using Base64 data URIs to reduce HTTP requests.</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>API Authentication</strong>
+                        <span style="display: block; margin-top: 4px;">Basic Auth credentials are Base64 encoded (e.g., "user:pass" becomes "dXNlcjpwYXNz"). Note: This is NOT encryption.</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Storing Binary in JSON</strong>
+                        <span style="display: block; margin-top: 4px;">When APIs need to transmit binary data as JSON, Base64 encoding is commonly used to represent the binary content as text.</span>
+                    </div>
+                </div>
+
+                <h3>URL-Safe Variant</h3>
+                <p>Standard Base64 uses <code>+</code> and <code>/</code> which can conflict with URL reserved characters. For URL-safe encoding, variant uses <code>-</code> and <code>_</code> instead. This is commonly used in URL-safe tokens and JWTs.</p>
+
+                <h3>Important Notes</h3>
+                <ul>
+                    <li><strong>Not Encryption:</strong> Base64 is NOT encryption—anyone can decode it trivially. Never use it to protect sensitive data.</li>
+                    <li><strong>Size Overhead:</strong> Base64 increases data size by approximately 33% compared to the original binary data.</li>
+                    <li><strong>Browser Support:</strong> Works in all modern browsers using the built-in btoa() and atob() functions.</li>
+                </ul>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         function encodeBase64() { document.getElementById('base64-output').value = btoa(document.getElementById('base64-input').value); }
         function decodeBase64() { try { document.getElementById('base64-output').value = atob(document.getElementById('base64-input').value); } catch(e) { document.getElementById('base64-output').value = 'Error: Invalid Base64'; } }
         function clearBase64() { document.getElementById('base64-input').value = ''; document.getElementById('base64-output').value = ''; }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
         function copyToClipboard(id) { const e = document.getElementById(id); if (e) navigator.clipboard.writeText(e.value || e.textContent); }
     </script>
 </body>

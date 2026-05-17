@@ -8,7 +8,7 @@
     <link rel="canonical" href="https://tools.scoreroute.com/tools/regex-tester/">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","name":"Regex Tester","description":"Test regular expressions with real-time matching","url":"https://tools.scoreroute.com/tools/regex-tester/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Regex Tester","description":"Test regular expressions with real-time matching","url":"https://tools.scoreroute.com/tools/regex-tester/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Test regex patterns with real-time matching","Support for g, i, m, s flags","Display match count and captured groups"]}
     </script>
 </head>
 <body>
@@ -16,9 +16,10 @@
         <div class="container">
             <h1>Regex Tester</h1>
             <p class="subtitle">Test Regular Expressions with Live Matching</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Regex Tester</span></nav>
+            <nav class="breadcrumb"><a href="/">Home</a> &gt; <span>Regex Tester</span></nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -37,25 +38,70 @@
                 </div>
                 <div id="regex-output" style="margin-top: 15px;"></div>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>Regular expressions (regex) are patterns that match text. Common patterns: <code>\d+</code> (digits), <code>\w+</code> (word characters), <code>[a-z]+</code> (lowercase letters), <code>^start</code> (starts with), <code>end$</code> (ends with).</p>
-                    <p>Flags modify behavior: <code>g</code> (global - find all matches), <code>i</code> (case insensitive), <code>m</code> (multiline - <code>^</code>/<code>$</code> match line boundaries), <code>s</code> (dotall - <code>.</code> matches newlines).</p>
-                    <p>Use capture groups <code>(...)</code> to extract parts. Backreferences <code>\1</code> match previously captured text. Lookahead <code>(?=...)</code> matches without consuming.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is Regex Tester?</h3>
+                <p>A Regex Tester is a tool that allows you to test regular expression patterns against sample text to verify matches and see results in real-time. This free online tool helps developers debug, validate, and experiment with regex patterns without writing code.</p>
+
+                <h3>Common Regex Patterns</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Digits</strong>
+                        <code>\d+</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches one or more digits (0-9)</span>
                     </div>
+                    <div class="example-item">
+                        <strong>Word Characters</strong>
+                        <code>\w+</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches letters, digits, and underscores</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Lowercase Letters</strong>
+                        <code>[a-z]+</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches one or more lowercase letters</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Starts With</strong>
+                        <code>^start</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches text that begins with "start"</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Ends With</strong>
+                        <code>end$</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Matches text that ends with "end"</span>
+                    </div>
+                </div>
+
+                <h3>Regex Flags Explained</h3>
+                <p>Flags modify regex behavior:</p>
+                <ul>
+                    <li><strong>g (Global)</strong> - Find all matches, not just the first one</li>
+                    <li><strong>i (Case Insensitive)</strong> - Match regardless of case (a matches A)</li>
+                    <li><strong>m (Multiline)</strong> - ^ and $ match line boundaries, not just string start/end</li>
+                    <li><strong>s (DotAll)</strong> - The dot (.) matches newlines, not just characters</li>
+                </ul>
+
+                <h3>Advanced Patterns</h3>
+                <p><strong>Capture Groups</strong> <code>(...)</code> extract parts of the matched text. For example, <code>(\d+)-(\d+)</code> captures the parts before and after a hyphen.</p>
+                <p><strong>Backreferences</strong> <code>\1</code> match text that was previously captured. <code>([a-z])\1</code> matches double letters like "aa" or "bb".</p>
+                <p><strong>Lookahead</strong> <code>(?=...)</code> matches a pattern without consuming characters. <code>foo(?=bar)</code> matches "foo" only when followed by "bar".</p>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                        <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         function testRegex() {
@@ -82,7 +128,6 @@
             }
         }
         function clearRegex() { document.getElementById('regex-pattern').value = ''; document.getElementById('regex-test').value = ''; document.getElementById('regex-output').innerHTML = ''; }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
     </script>
 </body>
 </html>

@@ -16,9 +16,12 @@
         <div class="container">
             <h1>Color Picker</h1>
             <p class="subtitle">Convert Between HEX, RGB, and HSL</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Color Picker</span></nav>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Color Picker</span>
+            </nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -47,25 +50,58 @@
                     </div>
                 </div>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>HEX format uses hexadecimal color codes like <code>#667eea</code>. RGB defines red, green, blue values from 0-255. HSL defines hue (0-360), saturation (0-100%), and lightness (0-100%).</p>
-                    <p>All three formats represent the same color. HEX is compact and commonly used in CSS. RGB is intuitive for programming. HSL is useful for generating color variations programmatically.</p>
-                    <p>Use cases include CSS styling, design system color palette creation, accessibility checking (contrast ratios), and generating tints/shades of a base color.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
-                            <li><a href="/tools/hash-generator/">Hash Generator</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is a Color Picker?</h3>
+                <p>A Color Picker is a tool that allows you to select a color visually and convert it between different formats like HEX, RGB, and HSL. This free online tool helps developers and designers quickly get the exact color codes they need for their projects.</p>
+
+                <h3>Understanding Color Formats</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>HEX (Hexadecimal)</strong>
+                        <code>#667eea</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Uses base-16 values from 00 to FF for red, green, and blue. Compact and widely used in CSS.</span>
                     </div>
+                    <div class="example-item">
+                        <strong>RGB (Red, Green, Blue)</strong>
+                        <code>rgb(102, 126, 234)</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Defines color by specifying the intensity of each channel from 0 to 255.</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>HSL (Hue, Saturation, Lightness)</strong>
+                        <code>hsl(231, 75%, 67%)</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Hue is degrees (0-360), saturation and lightness are percentages (0-100%).</span>
+                    </div>
+                </div>
+
+                <h3>How Color Conversion Works</h3>
+                <p>HEX to RGB converts each pair of hexadecimal characters to decimal values. RGB to HSL requires calculating the relative luminance and chromatic values to determine hue, saturation, and lightness components. The formulas are standardized in the CSS specification.</p>
+                <p>All three formats represent the same color - they are just different ways of expressing it. HEX is compact and commonly used in CSS. RGB is intuitive for programming. HSL is useful for generating color variations programmatically.</p>
+
+                <h3>Real-World Use Cases</h3>
+                <ul>
+                    <li><strong>CSS Styling:</strong> Quickly get color codes for web development projects</li>
+                    <li><strong>Design Systems:</strong> Generate consistent color palettes for UI components</li>
+                    <li><strong>Accessibility Checking:</strong> Ensure sufficient contrast ratios between foreground and background colors</li>
+                    <li><strong>Color Variations:</strong> Create tints and shades by adjusting HSL values systematically</li>
+                </ul>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                        <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                        <li><a href="/tools/hash-generator/">Hash Generator</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         function hexToRgb(hex) {
@@ -98,7 +134,6 @@
             document.getElementById('hsl-output').value = 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
         }
         document.getElementById('color-input').addEventListener('input', updateColor);
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
         function copyToClipboard(id) { const e = document.getElementById(id); if (e) navigator.clipboard.writeText(e.value || e.textContent); }
     </script>
 </body>

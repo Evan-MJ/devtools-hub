@@ -16,9 +16,12 @@
         <div class="container">
             <h1>Hash Generator</h1>
             <p class="subtitle">Generate Cryptographic Hashes Instantly</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Hash Generator</span></nav>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Hash Generator</span>
+            </nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -33,25 +36,67 @@
                 </div>
                 <div id="hash-output" style="font-family: monospace; word-break: break-all;"></div>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>Cryptographic hash functions convert input data into a fixed-length fingerprint. The same input always produces the same hash output. Hashes are one-way functions—it's computationally infeasible to reverse them.</p>
-                    <p>MD5 produces 128-bit hashes (32 hex characters) but is cryptographically broken. SHA-1 produces 160-bit hashes and is also deprecated for security use. SHA-256 and SHA-512 are currently considered secure for most applications.</p>
-                    <p>Common use cases include password storage (use bcrypt/scrypt instead for passwords), file integrity verification, digital signatures, and blockchain technology. Never use these hashes for password storage in new systems.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
-                            <li><a href="/tools/url-encoder/">URL Encoder</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is a Hash Generator?</h3>
+                <p>A Hash Generator converts input text into a fixed-length cryptographic digest using hash functions like MD5, SHA-1, SHA-256, or SHA-512. The same input always produces the same hash output, making it useful for verifying data integrity.</p>
+
+                <h3>Understanding Hash Algorithms</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>MD5 (128-bit)</strong>
+                        <code>128-bit hash = 32 hex characters</code>
+                        <span style="color: #ef4444; display: block; margin-top: 4px;">Deprecated - cryptographically broken</span>
                     </div>
+                    <div class="example-item">
+                        <strong>SHA-1 (160-bit)</strong>
+                        <code>160-bit hash = 40 hex characters</code>
+                        <span style="color: #f59e0b; display: block; margin-top: 4px;">Deprecated - vulnerable to collision attacks</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>SHA-256 (256-bit)</strong>
+                        <code>256-bit hash = 64 hex characters</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Secure - recommended for most uses</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>SHA-512 (512-bit)</strong>
+                        <code>512-bit hash = 128 hex characters</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Secure - stronger for sensitive data</span>
+                    </div>
+                </div>
+
+                <h3>How Hash Functions Work</h3>
+                <p>Cryptographic hash functions process input data through mathematical algorithms that produce a fixed-size output. These functions are one-way: you can compute a hash from input, but you cannot reverse the process to recover the original data from the hash alone.</p>
+                <p>The same input always produces the identical hash output. Even a tiny change in input (like changing one character) produces a completely different hash—this property is called the avalanche effect.</p>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>File Integrity:</strong> Verify downloads by comparing checksums</li>
+                    <li><strong>Password Storage:</strong> Hash passwords before storing (use bcrypt/scrypt for proper security)</li>
+                    <li><strong>Digital Signatures:</strong> Sign documents and verify authenticity</li>
+                    <li><strong>Blockchain:</strong> Link blocks with cryptographic hashes</li>
+                    <li><strong>API Keys:</strong> Create secure identifiers for authentication</li>
+                </ul>
+
+                <h3>Important Security Note</h3>
+                <p>Never use MD5 or SHA-1 for password hashing or security-critical applications. For password storage, use dedicated algorithms like bcrypt, scrypt, or Argon2. For checksums and integrity verification, SHA-256 or SHA-512 are recommended.</p>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
+                        <li><a href="/tools/url-encoder/">URL Encoder</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         async function generateHash(type) {
@@ -74,7 +119,6 @@
             document.getElementById('hash-output').innerHTML += '<p><strong>' + type.toUpperCase() + ':</strong> ' + hex + '</p>';
         }
         function clearHash() { document.getElementById('hash-input').value = ''; document.getElementById('hash-output').innerHTML = ''; }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
     </script>
 </body>
 </html>

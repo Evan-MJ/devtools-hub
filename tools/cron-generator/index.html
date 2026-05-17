@@ -16,7 +16,7 @@
         <div class="container">
             <h1>Cron Generator</h1>
             <p class="subtitle">Create Cron Expressions Interactively</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Cron Generator</span></nav>
+            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Cron Generator</span></nav>
         </div>
     </header>
     <main class="container">
@@ -89,20 +89,79 @@
                     <ul id="cron-next-runs" style="font-family: monospace; color: #aaa; list-style: none;"></ul>
                 </div>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>Cron expressions have 5 fields: minute, hour, day of month, month, and day of week. Each field accepts specific values: <code>*</code> (any), numbers, ranges (<code>1-5</code>), or lists (<code>1,15</code>).</p>
-                    <p>Common patterns: <code>0 * * * *</code> (every hour), <code>0 9 * * 1-5</code> (9 AM weekdays), <code>*/15 * * * *</code> (every 15 minutes), <code>0 0 1 * *</code> (midnight on 1st of month).</p>
-                    <p>Used in cron jobs, CI/CD pipelines, scheduled functions (AWS Lambda, Google Cloud Functions), and task schedulers. Most systems use UTC timezone—adjust accordingly for local execution times.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/timestamp-converter/">Timestamp Converter</a></li>
-                            <li><a href="/tools/uuid-generator/">UUID Generator</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is a Cron Expression?</h3>
+                <p>A cron expression is a string of 5 fields separated by spaces that defines when a scheduled task should run. Each field represents a time unit: minute, hour, day of month, month, and day of week. This format is used by Unix-like systems, CI/CD pipelines, cloud functions, and task schedulers worldwide.</p>
+
+                <h3>Cron Expression Format</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Minute (0-59)</strong>
+                        <code>*</code> = every minute, <code>0</code> = at minute 0, <code>15,30,45</code> = at minutes 15, 30, and 45
                     </div>
+                    <div class="example-item">
+                        <strong>Hour (0-23)</strong>
+                        <code>*</code> = every hour, <code>9-17</code> = business hours, <code>0</code> = midnight
+                    </div>
+                    <div class="example-item">
+                        <strong>Day of Month (1-31)</strong>
+                        <code>*</code> = every day, <code>1</code> = 1st of month, <code>15</code> = 15th
+                    </div>
+                    <div class="example-item">
+                        <strong>Month (1-12)</strong>
+                        <code>*</code> = every month, <code>1,4,7,10</code> = quarterly, <code>6-8</code> = summer months
+                    </div>
+                    <div class="example-item">
+                        <strong>Day of Week (0-6)</strong>
+                        <code>0</code> = Sunday, <code>1-5</code> = weekdays, <code>0,6</code> = weekends
+                    </div>
+                </div>
+
+                <h3>Common Cron Patterns</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <code>0 * * * *</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Every hour on the hour</span>
+                    </div>
+                    <div class="example-item">
+                        <code>0 9 * * 1-5</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">9 AM every weekday</span>
+                    </div>
+                    <div class="example-item">
+                        <code>*/15 * * * *</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Every 15 minutes</span>
+                    </div>
+                    <div class="example-item">
+                        <code>0 0 1 * *</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Midnight on the 1st of every month</span>
+                    </div>
+                    <div class="example-item">
+                        <code>30 2 * * 0</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">2:30 AM every Sunday</span>
+                    </div>
+                    <div class="example-item">
+                        <code>0 0 * * *</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Daily at midnight</span>
+                    </div>
+                </div>
+
+                <h3>Use Cases</h3>
+                <ul>
+                    <li><strong>Automation:</strong> Schedule scripts to run backups, cleanup tasks, or reports at specific times</li>
+                    <li><strong>CI/CD Pipelines:</strong> Trigger builds and deployments on schedule (midnight deployment, weekly release)</li>
+                    <li><strong>Cloud Functions:</strong> Schedule AWS Lambda, Google Cloud Functions, or Azure Functions</li>
+                    <li><strong>Monitoring:</strong> Run health checks, log rotation, or system maintenance tasks</li>
+                </ul>
+                <p>Note: Most systems use UTC timezone for cron jobs. Adjust your expression accordingly for local execution times. For example, a job scheduled at 9 AM PST should be set to 17:00 UTC.</p>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/timestamp-converter/">Timestamp Converter</a></li>
+                        <li><a href="/tools/uuid-generator/">UUID Generator</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -145,7 +204,6 @@
             }
             document.getElementById('cron-next-runs').innerHTML = runs.map(r => '<li>' + r + '</li>').join('');
         }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
     </script>
 </body>
 </html>

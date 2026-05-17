@@ -16,9 +16,12 @@
         <div class="container">
             <h1>Timestamp Converter</h1>
             <p class="subtitle">Convert Unix Time to Human-Readable Dates</p>
-            <nav class="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Timestamp Converter</span></nav>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <span>Timestamp Converter</span>
+            </nav>
         </div>
     </header>
+
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
@@ -34,25 +37,63 @@
                 </div>
                 <div id="timestamp-output" style="font-family: monospace; color: #667eea; margin-top: 15px;"></div>
             </div>
-            <div class="tool-details">
-                <button class="details-toggle" onclick="toggleDetails(this)"><span class="toggle-icon">▸</span> Learn More</button>
-                <div class="details-content" style="display: none;">
-                    <p>A Unix timestamp is the number of seconds elapsed since January 1, 1970 00:00:00 UTC. Many programming languages and APIs use this format for date storage because it's easy to compare and calculate with.</p>
-                    <p>JavaScript uses milliseconds (Date.now() returns 13 digits) while most other languages use seconds (10 digits). When converting, make sure to multiply or divide by 1000 as needed. Most databases store timestamps as integers.</p>
-                    <p>Common use cases include API integrations, database record timestamps, log file timestamps, and scheduling systems. Cron jobs often use Unix timestamps for next-run calculations.</p>
-                    <div class="related-links">
-                        <h4>Related Tools</h4>
-                        <ul>
-                            <li><a href="/tools/cron-generator/">Cron Generator</a></li>
-                            <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
-                            <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
-                        </ul>
+
+            <div class="info-section">
+                <h3>What is a Unix Timestamp?</h3>
+                <p>A Unix timestamp is the number of seconds elapsed since January 1, 1970 00:00:00 UTC. Many programming languages and APIs use this format for date storage because it's easy to compare and calculate with.</p>
+
+                <h3>Seconds vs Milliseconds</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>JavaScript (Milliseconds)</strong>
+                        <code>Date.now() → 1747488000000</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">13 digits - multiply by 1000 to convert to seconds</span>
                     </div>
+                    <div class="example-item">
+                        <strong>Python, Go, Ruby (Seconds)</strong>
+                        <code>time.time() → 1747488000</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">10 digits - standard Unix format</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Java (Milliseconds)</strong>
+                        <code>System.currentTimeMillis() → 1747488000000</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Uses milliseconds like JavaScript</span>
+                    </div>
+                    <div class="example-item">
+                        <strong>Database Integers</strong>
+                        <code>PostgreSQL: EXTRACT(epoch FROM now())</code>
+                        <span style="color: #10b981; display: block; margin-top: 4px;">Most databases store as integers</span>
+                    </div>
+                </div>
+
+                <h3>How Timestamp Conversion Works</h3>
+                <p>To convert a Unix timestamp to a date, the seconds value is multiplied by 1000 (to get milliseconds) and passed to the Date constructor. The Date object then converts it to a human-readable string using the local timezone or UTC.</p>
+                <p>To convert a date to a timestamp, the Date object retrieves the milliseconds since epoch using getTime(), then divides by 1000 to get seconds. This ensures compatibility with Unix-based systems.</p>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>API Integrations:</strong> Many REST APIs accept or return timestamps in Unix format for universal compatibility</li>
+                    <li><strong>Database Records:</strong> Store creation and update times as integers for efficient querying and indexing</li>
+                    <li><strong>Log Files:</strong> Parse server logs by converting timestamps to human-readable dates for debugging</li>
+                    <li><strong>Scheduling Systems:</strong> Cron jobs and task schedulers often use Unix timestamps for next-run calculations</li>
+                </ul>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/cron-generator/">Cron Generator</a></li>
+                        <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+                        <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
-    <footer><p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p></footer>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
     <script src="/tools.js"></script>
     <script>
         function updateCurrentTimestamp() { document.getElementById('current-timestamp').textContent = Math.floor(Date.now() / 1000); }
@@ -60,7 +101,6 @@
         function dateToTimestamp() { const d = document.getElementById('datetime-input').value; if (d) document.getElementById('timestamp-output').innerHTML = 'Timestamp: ' + Math.floor(new Date(d).getTime() / 1000); }
         function timestampToDate() { const t = document.getElementById('timestamp-input').value; if (t) document.getElementById('timestamp-output').innerHTML = 'Date: ' + new Date(parseInt(t) * 1000).toISOString(); }
         function clearTimestamp() { document.getElementById('timestamp-input').value = ''; document.getElementById('datetime-input').value = ''; document.getElementById('timestamp-output').innerHTML = ''; }
-        function toggleDetails(btn) { const c = btn.nextElementSibling; const i = btn.querySelector('.toggle-icon'); c.style.display = c.style.display === 'none' ? (c.style.display = 'block', i.textContent = '▾') : (c.style.display = 'none', i.textContent = '▸'); }
     </script>
 </body>
 </html>
