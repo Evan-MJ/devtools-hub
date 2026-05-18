@@ -103,5 +103,6 @@
         function generateBulkUUID() { const count = parseInt(document.getElementById('uuid-count').value) || 1; const uuids = []; for (let i = 0; i < Math.min(count, 100); i++) uuids.push(createUUID(document.getElementById('uuid-version').value)); document.getElementById('uuid-output').innerHTML = uuids.map(u => '<p>' + u + '</p>').join(''); }
         function copyAllUUID() { navigator.clipboard.writeText(document.getElementById('uuid-output').textContent); }
     </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
