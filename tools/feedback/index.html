@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Problem - Feedback | DevTools Hub</title>
+    <meta name="description" content="Report problems or bugs you find on DevTools Hub. Help us improve by sharing issues with our free developer tools.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/feedback/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Report a Problem - DevTools Hub","description":"Submit feedback about issues with DevTools Hub tools","url":"https://tools.scoreroute.com/tools/feedback/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Report a Problem</h1>
+            <p class="subtitle">Help Us Improve Our Free Developer Tools</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <span>Feedback</span>
+              <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="feedback-form-container">
+                    <h2>Submit Feedback</h2>
+                    
+                    <form id="feedback-form" onsubmit="submitFeedback(event)">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" required onchange="updateTools()">
+                                <option value="">Select a category</option>
+                                <option value="formatter">Formatters</option>
+                                <option value="generator">Generators</option>
+                                <option value="converter">Converters</option>
+                                <option value="network">Network Tools</option>
+                                <option value="testing">Code Testing</option>
+                                <option value="math">Calculators & Math</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="tool-group" style="display:none;">
+                            <label for="tool">Tool *</label>
+                            <select id="tool" required>
+                                <option value="">Select a tool</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedback-type">Feedback Type *</label>
+                            <select id="feedback-type" required>
+                                <option value="">Select type</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="suggestion">Feature Suggestion</option>
+                                <option value="content">Content Error</option>
+                                <option value="performance">Performance Issue</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description *</label>
+                            <textarea id="description" rows="5" placeholder="Please describe the problem in detail..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email (optional, for follow-up)</label>
+                            <input type="email" id="email" placeholder="your@email.com">
+                        </div>
+
+                        <button type="submit" class="submit-btn">Submit Feedback</button>
+                    </form>
+
+                    <div id="submit-success" class="success-message" style="display:none;">
+                        <p>Thank you for your feedback! We have received your report.</p>
+                    </div>
+                </div>
+
+                <div class="recent-feedback">
+                    <h2>Recent Feedback</h2>
+                    <div id="feedback-list">
+                        <p class="no-feedback">No feedback submitted yet. Be the first to report!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>How to Report Problems</h2>
+                <p>Found a bug or have a suggestion? Let us know!</p>
+                
+                <div class="faq-item">
+                    <h3>What should I include in a bug report?</h3>
+                    <p>Please include: what you were trying to do, what went wrong, and any error messages you saw. Screenshots are helpful!</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>What happens after I submit?</h3>
+                    <p>We review all feedback and fix critical bugs as soon as possible. You can include your email if you want us to follow up.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Is feedback really free?</h3>
+                    <p>Yes! Reporting problems is completely free and requires no login.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 DevTools Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    const TOOLS_BY_CATEGORY = {
+        'formatter': ['JSON Formatter', 'HTML Formatter', 'SQL Formatter'],
+        'generator': ['QR Code Generator', 'Password Generator', 'Hash Generator', 'UUID Generator', 'Cron Generator'],
+        'converter': ['Timestamp Converter', 'Color Picker', 'Word Counter', 'Base64 Encoder', 'URL Encoder', 'Currency Converter', 'Time Zone Converter'],
+        'network': ['Speed Test', 'IP Address Lookup'],
+        'testing': ['Regex Tester', 'JWT Decoder'],
+        'math': ['Calculator', 'Math Solver'],
+        'other': ['Other (please specify in description)']
+    };
+
+    const TOOL_URLS = {
+        'JSON Formatter': '/tools/json-formatter/',
+        'HTML Formatter': '/tools/html-formatter/',
+        'SQL Formatter': '/tools/sql-formatter/',
+        'QR Code Generator': '/tools/qr-code-generator/',
+        'Password Generator': '/tools/password-generator/',
+        'Hash Generator': '/tools/hash-generator/',
+        'UUID Generator': '/tools/uuid-generator/',
+        'Cron Generator': '/tools/cron-generator/',
+        'Timestamp Converter': '/tools/timestamp-converter/',
+        'Color Picker': '/tools/color-picker/',
+        'Word Counter': '/tools/word-counter/',
+        'Base64 Encoder': '/tools/base64-encoder/',
+        'URL Encoder': '/tools/url-encoder/',
+        'Currency Converter': '/tools/currency-converter/',
+        'Time Zone Converter': '/tools/time-zone-converter/',
+        'Speed Test': '/tools/speed-test/',
+        'IP Address Lookup': '/tools/ip-address-lookup/',
+        'Regex Tester': '/tools/regex-tester/',
+        'JWT Decoder': '/tools/jwt-decoder/',
+        'Calculator': '/tools/calculator/',
+        'Math Solver': '/tools/math-solver/',
+        'Other (please specify in description)': null
+    };
+
+    let feedbackData = JSON.parse(localStorage.getItem('feedbackData') || '[]');
+
+    function updateTools() {
+        const category = document.getElementById('category').value;
+        const toolGroup = document.getElementById('tool-group');
+        const toolSelect = document.getElementById('tool');
+        
+        toolSelect.innerHTML = '<option value="">Select a tool</option>';
+        
+        if (category && TOOLS_BY_CATEGORY[category]) {
+            toolGroup.style.display = 'block';
+            TOOLS_BY_CATEGORY[category].forEach(tool => {
+                const option = document.createElement('option');
+                option.value = tool;
+                option.textContent = tool;
+                toolSelect.appendChild(option);
+            });
+        } else {
+            toolGroup.style.display = 'none';
+        }
+    }
+
+    function submitFeedback(event) {
+        event.preventDefault();
+        
+        const feedback = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            category: document.getElementById('category').value,
+            tool: document.getElementById('tool').value,
+            type: document.getElementById('feedback-type').value,
+            description: document.getElementById('description').value.trim(),
+            email: document.getElementById('email').value.trim() || null
+        };
+
+        feedbackData.unshift(feedback);
+        if (feedbackData.length > 100) {
+            feedbackData = feedbackData.slice(0, 100);
+        }
+        
+        localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+        
+        document.getElementById('feedback-form').reset();
+        document.getElementById('tool-group').style.display = 'none';
+        document.getElementById('submit-success').style.display = 'block';
+        
+        renderFeedback();
+        
+        setTimeout(() => {
+            document.getElementById('submit-success').style.display = 'none';
+        }, 5000);
+    }
+
+    function getCategoryLabel(cat) {
+        const labels = {
+            'formatter': 'Formatters',
+            'generator': 'Generators',
+            'converter': 'Converters',
+            'network': 'Network Tools',
+            'testing': 'Code Testing',
+            'math': 'Calculators & Math',
+            'other': 'Other'
+        };
+        return labels[cat] || cat;
+    }
+
+    function getTypeLabel(type) {
+        const labels = {
+            'bug': 'Bug',
+            'suggestion': 'Suggestion',
+            'content': 'Content Error',
+            'performance': 'Performance',
+            'other': 'Other'
+        };
+        return labels[type] || type;
+    }
+
+    function renderFeedback() {
+        const list = document.getElementById('feedback-list');
+        
+        if (feedbackData.length === 0) {
+            list.innerHTML = '<p class="no-feedback">No feedback submitted yet. Be the first to report!</p>';
+            return;
+        }
+
+        list.innerHTML = feedbackData.map(f => {
+            const toolUrl = TOOL_URLS[f.tool];
+            const toolLink = toolUrl ? `<a href="${toolUrl}">${f.tool}</a>` : f.tool;
+            
+            return `
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <span class="feedback-badge ${f.type}">${getTypeLabel(f.type)}</span>
+                        <span class="feedback-category">${getCategoryLabel(f.category)}</span>
+                        <span class="feedback-tool">${toolLink}</span>
+                    </div>
+                    <div class="feedback-description">${escapeHtml(f.description)}</div>
+                    <div class="feedback-meta">
+                        <span class="feedback-time">${formatTime(f.timestamp)}</span>
+                        ${f.email ? `<span class="feedback-email">${escapeHtml(f.email)}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatTime(isoString) {
+        const date = new Date(isoString);
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    // Render feedback on page load
+    renderFeedback();
+    </script>
+
+    <style>
+    .feedback-form-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+    .feedback-form-container h2 {
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-secondary);
+        color: var(--text);
+        font-size: 14px;
+        font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+        background: var(--primary-dark);
+    }
+
+    .success-message {
+        padding: 16px;
+        background: #d1fae5;
+        border: 1px solid #10b981;
+        border-radius: 8px;
+        color: #065f46;
+        text-align: center;
+        margin-top: 16px;
+    }
+
+    .recent-feedback {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .recent-feedback h2 {
+        margin-bottom: 16px;
+        font-size: 18px;
+    }
+
+    .no-feedback {
+        color: var(--text-secondary);
+        text-align: center;
+        padding: 20px;
+    }
+
+    .feedback-item {
+        padding: 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .feedback-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+
+    .feedback-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .feedback-badge.bug { background: #fef2f2; color: #dc2626; }
+    .feedback-badge.suggestion { background: #eff6ff; color: #2563eb; }
+    .feedback-badge.content { background: #fef3c7; color: #d97706; }
+    .feedback-badge.performance { background: #f3e8ff; color: #9333ea; }
+    .feedback-badge.other { background: #f1f5f9; color: #64748b; }
+
+    .feedback-category {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .feedback-tool {
+        font-size: 13px;
+        color: var(--primary);
+    }
+
+    .feedback-tool a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .feedback-tool a:hover {
+        text-decoration: underline;
+    }
+
+    .feedback-description {
+        color: var(--text);
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .feedback-meta {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        gap: 16px;
+    }
+
+    .faq-item {
+        margin-bottom: 16px;
+    }
+
+    .faq-item h3 {
+        font-size: 15px;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .faq-item p {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+    </style>
+</body>
+</html>

@@ -447,3 +447,5 @@ input, select, textarea, button {
     margin-bottom: 15px;
     color: #333;
 }
+/* Feedback link styles */
+.feedback-link { float: right; font-size: 13px; color: var(--text-secondary); text-decoration: none; padding: 4px 10px; background: var(--bg-secondary); border-radius: 4px; } .feedback-link:hover { color: var(--primary); background: var(--border); }
