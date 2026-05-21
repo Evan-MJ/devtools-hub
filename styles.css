@@ -106,3 +106,344 @@ footer a { color: #667eea; }
 .comparison-table th { background: #252545; color: #667eea; }
 .comparison-table tr:nth-child(even) { background: #0f0f23; }
 .comparison-table td { color: #aaa; }
+
+/* Category Section Styles */
+.tools-section {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #2a2a4a;
+}
+.tools-section:last-of-type {
+    border-bottom: none;
+}
+.tools-section h2 {
+    font-size: 1.4rem;
+    color: #667eea;
+    margin-bottom: 8px;
+    font-weight: 600;
+    padding-bottom: 12px;
+    border-bottom: 2px solid transparent;
+    display: inline-block;
+}
+.tools-section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin-top: 8px;
+}
+.category-desc {
+    color: #777;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    padding-left: 2px;
+}
+
+/* Last updated and author styling */
+.last-updated {
+    text-align: center;
+    color: #666;
+    font-size: 0.85rem;
+    padding: 16px 0;
+    margin-top: 24px;
+    border-top: 1px solid #2a2a4a;
+}
+
+/* Last updated styling */
+.last-updated {
+    text-align: center;
+    color: #888;
+    font-size: 0.85rem;
+    padding: 16px 0;
+    margin-top: 24px;
+    border-top: 1px solid #2a2a4a;
+    font-style: italic;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 768px) {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0 16px;
+    }
+    
+    header {
+        padding: 24px 0;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .hero-section {
+        padding: 24px 0;
+    }
+    
+    .hero-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .hero-section p {
+        font-size: 0.95rem;
+    }
+    
+    .tools-section {
+        padding: 16px 0;
+    }
+    
+    .tools-section h2 {
+        font-size: 1.2rem;
+    }
+    
+    .category-desc {
+        font-size: 0.9rem;
+    }
+    
+    .tools-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px 0;
+    }
+    
+    .tool-card {
+        padding: 20px;
+    }
+    
+    .tool-card h3 {
+        font-size: 1.05rem;
+    }
+    
+    .tool-card p {
+        font-size: 0.9rem;
+    }
+    
+    .tool-main {
+        padding: 20px 16px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+    }
+    
+    .tool-main h2 {
+        font-size: 1.2rem;
+    }
+    
+    .info-section {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+    
+    .info-section h3 {
+        font-size: 1.1rem;
+        margin-top: 24px;
+    }
+    
+    .btn {
+        padding: 12px 18px;
+        font-size: 0.9rem;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    .btn-group {
+        gap: 8px;
+    }
+    
+    footer {
+        padding: 24px 0;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        min-height: 48px;
+    }
+    
+    .tool-card {
+        cursor: pointer;
+    }
+}
+
+/* Ensure proper viewport on mobile */
+@viewport {
+    width: device-width;
+    initial-scale: 1.0;
+    maximum-scale: 5.0;
+}
+
+/* Minimum touch target size */
+input, select, textarea, button {
+    min-height: 44px;
+}
+
+/* Improved text readability on mobile */
+@media (max-width: 768px) {
+    p, li {
+        line-height: 1.7;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Currency Converter Styles */
+.currency-converter {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cc-result-display {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.cc-from-display, .cc-to-display {
+    text-align: center;
+}
+
+.cc-amount {
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+}
+
+.cc-currency {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.cc-arrow {
+    font-size: 2em;
+    opacity: 0.8;
+}
+
+.cc-input-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.cc-input-group, .cc-from-group, .cc-to-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.cc-input-group input, .cc-from-group select, .cc-to-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.cc-input-group input:focus, .cc-from-group select:focus, .cc-to-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.cc-swap-btn {
+    padding: 12px 20px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+
+.cc-swap-btn:hover {
+    background: #e0e0e0;
+}
+
+.cc-convert-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.cc-rate-info {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.cc-exchange-rate {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.cc-last-updated {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.cc-quick-conversions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.cc-quick-item {
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e0e0e0;
+}
+
+.cc-quick-item:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.currency-table {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.currency-table h3 {
+    margin-bottom: 15px;
+    color: #333;
+}

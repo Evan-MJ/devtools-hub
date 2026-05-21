@@ -1,0 +1,80 @@
+# DevTools Hub - Free Online Developer Tools
+
+Welcome to DevTools Hub! This site provides free, browser-based developer tools for common coding tasks. No signup required.
+
+## Available Tools
+
+### Formatters
+- **JSON Formatter** - Format, validate, minify, and beautify JSON with syntax highlighting. Convert JSON to YAML. Detect syntax errors with line numbers.
+- **HTML Formatter** - Format, prettify, and beautify HTML code with proper indentation. Validate HTML syntax and fix common errors.
+- **SQL Formatter** - Format, beautify, and prettify SQL queries. Supports MySQL, PostgreSQL, SQL Server, Oracle, SQLite.
+
+### Calculators & Converters
+- **Calculator** - Free online calculator with Basic, Scientific, Unit Converter, Loan Calculator, and BMI Calculator. Solves everyday math problems including unit conversions, loan payments, and health metrics.
+- **Currency Converter** - Convert between 166+ world currencies with live exchange rates. Free online currency calculator with instant results for USD, EUR, GBP, JPY, CNY and more.
+- **Timestamp Converter** - Convert between Unix timestamps and human-readable dates. Shows current timestamp updating in real-time.
+- **Time Zone Converter** - Convert time between cities worldwide. See current time in multiple locations instantly. Perfect for international meetings and travel planning.
+- **Color Picker** - Pick colors and convert between HEX, RGB, and HSL formats with live preview and copy buttons.
+- **Word Counter** - Count words, characters, sentences with readability scores and keyword density analysis. Perfect for SEO writers and students.
+
+### Generators
+- **Password Generator** - Generate strong, secure passwords with real-time strength analysis and NIST 800-63B compliance checking. Uses Web Crypto API for cryptographically secure randomness.
+- **QR Code Generator** - Create QR codes for URLs, text, WiFi networks, email, SMS, vCards, and phone numbers. Download as PNG.
+- **Hash Generator** - Generate MD5, SHA-1, SHA-256, and SHA-512 checksums instantly in your browser.
+- **UUID Generator** - Generate UUID v1, v4, and v7 identifiers. Supports single and bulk generation up to 100 UUIDs.
+- **Cron Generator** - Create and validate cron expressions. See next execution times and test schedules interactively.
+
+### Encoders & Decoders
+- **Base64 Encoder** - Encode and decode Base64 strings. Supports standard and URL-safe Base64 variants.
+- **URL Encoder** - Encode and decode URLs for safe transmission. Handles special characters, spaces, and Unicode.
+
+### Network Tools
+- **Speed Test** - Free internet speed test. Check your download speed, upload speed, and latency instantly in your browser. No software install needed.
+- **IP Address Lookup** - Find your public IP address, geolocation, ISP information instantly. Verify VPN and check network settings.
+
+### Code Testing
+- **Regex Tester** - Test regular expressions with real-time matching. Supports g, i, m, s flags. See match count and captured groups.
+- **JWT Decoder** - Decode and verify JSON Web Tokens. Inspect claims, validate format, and check expiration times.
+
+## Key Features
+
+- **Privacy First**: All processing happens in your browser. Your code never leaves your device.
+- **Always Free**: No signup, no limits, no premium tier. Every tool is completely free forever.
+- **166+ Currencies**: Currency converter supports 166+ world currencies with live exchange rates.
+- **Live Exchange Rates**: Currency rates updated daily from exchangerate-api.com.
+- **Fast & Reliable**: Powered by Cloudflare's global CDN. Tools load instantly from anywhere in the world.
+- **No Dependencies**: Works entirely client-side with pure JavaScript. No external API calls (except IP lookup and currency rates).
+- **NIST Compliant**: Password Generator follows NIST SP 800-63B guidelines for digital identity.
+- **Readability Analysis**: Word Counter provides Flesch Reading Ease and Grade Level scores.
+- **Security Headers**: X-Frame-Options, Content-Security-Policy, X-Content-Type-Options enabled.
+
+## Use Cases
+
+- **Math & Finance**: Use Calculator for scientific functions, unit conversions, loan calculations, and BMI calculations. Currency Converter for live exchange rates.
+- **Writing & Content**: Use Word Counter to analyze readability and keyword density for SEO optimization.
+- **Security**: Generate strong passwords with entropy analysis, verify password strength.
+- **Network**: Check your public IP address, test internet speed, verify network settings.
+- **API Development**: Format JSON responses, test regex patterns, encode URLs.
+- **Database Work**: Format SQL queries, generate UUIDs for records.
+- **Web Development**: Beautify HTML, generate QR codes for apps.
+- **DevOps**: Create cron expressions, convert timestamps, manage time zones.
+- **International Business**: Convert currencies and manage time zones for global teams.
+
+## Technical Details
+
+- All tools use semantic HTML with proper heading hierarchy
+- Schema.org structured data for search engines (WebApplication with datePublished/dateModified)
+- FAQ sections with common questions and answers
+- Mobile-responsive design
+- Accessible navigation
+- Web Crypto API for cryptographically secure random number generation
+- IndexNow integration for instant Bing indexing
+
+## SEO Information
+
+Each tool page includes:
+- Unique title and meta description (under 60 chars title, 155 chars description)
+- Canonical URL
+- Schema.org JSON-LD (WebApplication)
+- FAQ sections with common questions and answers
+- External authoritative references (NIST, OWASP, W3C, IETF)

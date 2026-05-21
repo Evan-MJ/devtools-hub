@@ -1,23 +1,21 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tools.scoreroute.com/sitemap.xml
-
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
-# Block AI training bots (optional)
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
 
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
+
+Sitemap: https://tools.scoreroute.com/sitemap.xml
+
+Crawl-delay: 1

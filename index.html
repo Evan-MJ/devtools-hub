@@ -7,8 +7,8 @@
     <meta property="og:image" content="/og-image.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTools Hub - Free Online Developer Tools</title>
-    <meta name="description" content="Free developer tools: JSON formatter, Base64 encoder, Timestamp converter, URL encoder, Hash generator, Cron generator, UUID generator, Color picker, JWT Decoder. No signup required.">
+    <title>DevTools Hub - Free Online Developer Tools Collection</title>
+    <meta name="description" content="Free developer tools: JSON formatter, HTML formatter, SQL formatter, Base64 encoder, Password Generator, QR Code Generator, Calculator, Speed Test and more. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/">
     <link rel="stylesheet" href="styles.css">
     <script type="application/ld+json">
@@ -28,14 +28,25 @@
             "name": "Developer Tools",
             "itemListElement": [
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "JSON Formatter"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "HTML Formatter"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SQL Formatter"}},
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Base64 Encoder"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Timestamp Converter"}},
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "URL Encoder"}},
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hash Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cron Generator"}},
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "UUID Generator"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cron Generator"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Password Generator"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "QR Code Generator"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Timestamp Converter"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Time Zone Converter"}},
                 {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Color Picker"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "JWT Decoder"}}
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Word Counter"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IP Address Lookup"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Regex Tester"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "JWT Decoder"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Calculator"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Speed Test"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Currency Converter"}},
             ]
         }
     }
@@ -52,59 +63,137 @@
     <main class="container">
         <section class="hero-section">
             <h2>Developer Tools Collection</h2>
-            <p>Essential tools for developers, programmers, and webmasters. All tools work directly in your browser with no server-side processing.</p>
+            <p>Essential tools for developers, programmers, and webmasters. All tools work directly in your browser with no server-side processing. From code formatters to speed tests, we've got you covered.</p>
         </section>
 
-        <section class="tools-grid">
-            <div class="tool-card">
-                <h3><a href="/tools/json-formatter/">JSON Formatter</a></h3>
-                <p>Format, validate, minify, and beautify JSON with syntax highlighting and error detection.</p>
-                <span class="tool-tag">Most Popular</span>
+        <section class="tools-section">
+            <h2>Formatters</h2>
+            <p class="category-desc">Format and beautify code for better readability and debugging.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/json-formatter/">JSON Formatter</a></h3>
+                    <p>Format, validate, minify, and beautify JSON with syntax highlighting and error detection.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/html-formatter/">HTML Formatter</a></h3>
+                    <p>Format, prettify, and beautify HTML code with proper indentation and validation.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/sql-formatter/">SQL Formatter</a></h3>
+                    <p>Format, beautify, and prettify SQL queries with proper indentation and keyword capitalization.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/base64-encoder/">Base64 Encoder</a></h3>
-                <p>Encode and decode Base64 strings. Supports standard and URL-safe variants.</p>
+        <section class="tools-section">
+            <h2>Calculators & Math Tools</h2>
+            <p class="category-desc">Solve everyday math problems from basic arithmetic to loan calculations.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/calculator/">Calculator</a></h3>
+                    <p>Basic, Scientific, Unit Converter, Loan Calculator, and BMI Calculator. Free online math solver.</p>
+                    <span class="tool-tag">Popular</span>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/timestamp-converter/">Timestamp Converter</a></h3>
-                <p>Convert between Unix timestamps and human-readable dates. Shows current time.</p>
+        <section class="tools-section">
+            <h2>Encoders & Decoders</h2>
+            <p class="category-desc">Encode and decode data for safe transmission and storage.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/base64-encoder/">Base64 Encoder</a></h3>
+                    <p>Encode and decode Base64 strings. Supports standard and URL-safe variants.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/url-encoder/">URL Encoder</a></h3>
+                    <p>Encode and decode URLs for safe transmission. Handles special characters.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/url-encoder/">URL Encoder</a></h3>
-                <p>Encode and decode URLs for safe transmission. Handles special characters.</p>
+        <section class="tools-section">
+            <h2>Generators</h2>
+            <p class="category-desc">Generate hashes, identifiers, QR codes, and expressions for development tasks.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/qr-code-generator/">QR Code Generator</a></h3>
+                    <p>Create QR codes for URLs, text, WiFi, email, SMS, vCards. Download as PNG.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/password-generator/">Password Generator</a></h3>
+                    <p>Generate strong passwords with NIST compliance checking and entropy analysis.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/hash-generator/">Hash Generator</a></h3>
+                    <p>Generate MD5, SHA-1, SHA-256, and SHA-512 checksums instantly.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/uuid-generator/">UUID Generator</a></h3>
+                    <p>Generate UUID v1, v4, and v7 identifiers. Bulk generation supported.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/cron-generator/">Cron Generator</a></h3>
+                    <p>Create and validate cron expressions. See next execution times.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/hash-generator/">Hash Generator</a></h3>
-                <p>Generate MD5, SHA-1, SHA-256, and SHA-512 checksums instantly.</p>
+        <section class="tools-section">
+            <h2>Converters</h2>
+            <p class="category-desc">Convert between different formats, timestamps, and representations.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/timestamp-converter/">Timestamp Converter</a></h3>
+                    <p>Convert between Unix timestamps and human-readable dates. Shows current time.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/color-picker/">Color Picker</a></h3>
+                    <p>Convert between HEX, RGB, and HSL color formats with live preview.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/word-counter/">Word Counter</a></h3>
+                    <p>Count words, characters, sentences with readability scores and keyword density analysis.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/currency-converter/">Currency Converter</a></h3>
+                    <p>Convert between 166+ world currencies with live exchange rates. Free online currency calculator.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/time-zone-converter/">Time Zone Converter</a></h3>
+                    <p>Convert time between cities worldwide. See current time in multiple locations instantly.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/cron-generator/">Cron Generator</a></h3>
-                <p>Create and validate cron expressions. See next execution times.</p>
+        <section class="tools-section">
+            <h2>Network & Internet Tools</h2>
+            <p class="category-desc">Speed tests, IP lookup, and network utilities for developers.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/speed-test/">Speed Test</a></h3>
+                    <p>Free internet speed test. Check your download speed, upload speed, and latency instantly in your browser.</p>
+                    <span class="tool-tag">New</span>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/ip-address-lookup/">IP Address Lookup</a></h3>
+                    <p>Find your public IP, geolocation, ISP info. Verify VPN and check network settings.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <h3><a href="/tools/uuid-generator/">UUID Generator</a></h3>
-                <p>Generate UUID v1, v4, and v7 identifiers. Bulk generation supported.</p>
-            </div>
-
-            <div class="tool-card">
-                <h3><a href="/tools/color-picker/">Color Picker</a></h3>
-                <p>Convert between HEX, RGB, and HSL color formats with live preview.</p>
-            </div>
-
-            <div class="tool-card">
-                <h3><a href="/tools/jwt-decoder/">JWT Decoder</a></h3>
-                <p>Decode and verify JSON Web Tokens. Inspect claims, validate format.</p>
-            </div>
-
-            <div class="tool-card">
-                <h3><a href="/tools/regex-tester/">Regex Tester</a></h3>
-                <p>Test regular expressions with real-time matching and capture group display.</p>
+        <section class="tools-section">
+            <h2>Code Testing</h2>
+            <p class="category-desc">Test and decode tokens, patterns, and expressions.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><a href="/tools/regex-tester/">Regex Tester</a></h3>
+                    <p>Test regular expressions with real-time matching and capture group display.</p>
+                </div>
+                <div class="tool-card">
+                    <h3><a href="/tools/jwt-decoder/">JWT Decoder</a></h3>
+                    <p>Decode and verify JSON Web Tokens. Inspect claims, validate format.</p>
+                </div>
             </div>
         </section>
 
@@ -123,12 +212,40 @@
                     <h4>Fast & Reliable</h4>
                     <p>Powered by Cloudflare's global CDN. Your tools load instantly from anywhere in the world.</p>
                 </div>
+                <div class="feature">
+                    <h4>Problem Solvers</h4>
+                    <p>From "What is my IP?" to "How fast is my internet?" - we solve real problems developers face daily.</p>
+                </div>
             </div>
+        </section>
+
+        <section class="about-section">
+            <h2>Frequently Asked Questions</h2>
+            <details class="faq-item">
+                <summary>Are these tools really free?</summary>
+                Yes, all tools on DevTools Hub are completely free with no signup required. We believe essential developer tools should be accessible to everyone.
+            </details>
+            <details class="faq-item">
+                <summary>Is my data safe?</summary>
+                All processing happens locally in your browser. We don't store, transmit, or log any of your data. Close the page and your data is gone.
+            </details>
+            <details class="faq-item">
+                <summary>Do I need to install anything?</summary>
+                No, all tools work directly in your browser. No plugins, no downloads, no signups. Just open the page and start working.
+            </details>
+            <details class="faq-item">
+                <summary>Which tools are most popular?</summary>
+                Based on search volume, Calculator (24.9M/month), Speed Test (9.1M/month), and JSON Formatter are among the most searched tools online.
+            </details>
+            <details class="faq-item">
+                <summary>Can I suggest new tools?</summary>
+                We're always looking to add useful tools. If you have a suggestion, let us know through our GitHub repository.
+            </details>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 DevTools Hub | Free Developer Tools</p>
+        <p>&copy; 2026 DevTools Hub | Free Developer Tools | <a href="/sitemap.xml">Sitemap</a></p>
     </footer>
 
     <!-- Cloudflare Web Analytics -->

@@ -11,6 +11,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/calculator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/color-picker/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -21,7 +26,22 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/currency-converter/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/hash-generator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/html-formatter/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/ip-address-lookup/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -36,7 +56,32 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/password-generator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/qr-code-generator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/regex-tester/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/speed-test/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/sql-formatter/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/time-zone-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -52,6 +97,11 @@
   </url>
   <url>
     <loc>https://tools.scoreroute.com/tools/uuid-generator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/word-counter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
