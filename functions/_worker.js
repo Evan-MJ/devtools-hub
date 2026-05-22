@@ -1,16 +1,9 @@
-/**
- * Cloudflare Pages Function - AI API Proxy
- * 
- * This worker proxies AI API requests to protect API keys.
- * Environment variables are available server-side only.
- */
-
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
   
   // Handle /api/ai/grammar-check
   if (url.pathname === '/api/ai/grammar-check') {
-    const { text } = await request.json();
+    const { text } = await request.json().catch(() => ({}));
     
     if (!text) {
       return new Response(JSON.stringify({ error: 'No text provided' }), {
@@ -73,7 +66,7 @@ export async function onRequest({ request, env }) {
   
   // Handle /api/ai/math-solve
   if (url.pathname === '/api/ai/math-solve') {
-    const { problem } = await request.json();
+    const { problem } = await request.json().catch(() => ({}));
     
     if (!problem) {
       return new Response(JSON.stringify({ error: 'No problem provided' }), {
@@ -134,6 +127,19 @@ export async function onRequest({ request, env }) {
     }
   }
   
+  // Test endpoint
+  if (url.pathname === '/api/ai/test') {
+    return new Response(JSON.stringify({ 
+      message: 'Worker is working!',
+      path: url.pathname,
+      timestamp: new Date().toISOString()
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+  
+  // Return 404 for unmatched API routes
   return new Response(JSON.stringify({ error: 'Not found' }), {
     status: 404,
     headers: { 'Content-Type': 'application/json' }
