@@ -1,10 +1,8 @@
 name = "devtools-hub"
 compatibility_date = "2026-05-17"
 
-pages_projects = [
-  { project_name = "devtools-hub", dashboard_display_name = "DevTools Hub" }
-]
+pages_build_output_dir = "."
 
-[environments.production]
+[env.production]
 name = "devtools-hub"
 compatibility_date = "2026-05-17"
