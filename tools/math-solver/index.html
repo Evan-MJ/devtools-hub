@@ -12,7 +12,7 @@
     <link rel="canonical" href="https://tools.scoreroute.com/tools/math-solver/">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Free Online Math Solver","description":"Free math solver with step-by-step solutions for algebra, equations, fractions, and more","url":"https://tools.scoreroute.com/tools/math-solver/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-22","dateModified":"2026-05-22","author":{"@type":"Person","name":"BAOMING"},"name":"Free Online Math Solver","description":"Free math solver with step-by-step solutions for algebra, equations, fractions, and more","url":"https://tools.scoreroute.com/tools/math-solver/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -22,7 +22,7 @@
             <p class="subtitle">Step-by-Step Solutions for Any Math Problem</p>
             <nav class="breadcrumb">
                 <a href="/">Home</a> &gt; <a href="/tools/calculator/">Calculator</a> &gt; <span>Math Solver</span>
-              <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
             </nav>
         </div>
     </header>
@@ -105,9 +105,7 @@
     </footer>
 
     <script>
-    const GROQ_API_KEY = import.meta.env?.DEVTOOLS_GROQ_API_KEY || 'GROQ_API_KEY_NOT_SET';
-    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-    const MODEL = 'llama-3.3-70b-versatile';
+    const API_URL = '/api/ai/math-solve';
 
     function setExample(example) {
         document.getElementById('math-input').value = example;
@@ -144,43 +142,23 @@
         showLoading(true);
 
         try {
-            const response = await fetch(GROQ_API_URL, {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + GROQ_API_KEY,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    model: MODEL,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'You are a math solver. Provide step-by-step solutions. Format your response with clear steps. Use LaTeX-style for math notation when appropriate. Example format:\n\n**Problem:** [user input]\n\n**Solution:**\n**Step 1:** [explanation]\n**Step 2:** [explanation]\n...\n\n**Final Answer:** [answer]\n\nBe clear and concise.'
-                        },
-                        {
-                            role: 'user',
-                            content: 'Solve this math problem: ' + input
-                        }
-                    ],
-                    temperature: 0.3,
-                    max_tokens: 2048
-                })
+                body: JSON.stringify({ problem: input })
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error('API Error: ' + response.status);
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'API Error: ' + response.status);
             }
 
             const data = await response.json();
-            const solution = data.choices[0].message.content;
+            const content = data.choices[0].message.content;
 
-            showResult(`
-                <div class="solution-box">
-                    <div class="solution-problem"><strong>Problem:</strong> ${input}</div>
-                    <div class="solution-content">${solution.replace(/\n/g, '<br>')}</div>
-                </div>
-            `);
+            showResult('<div class="solution-box"><div class="solution-problem"><strong>Problem:</strong> ' + input + '</div><div class="solution-content">' + content.replace(/\n/g, '<br>') + '</div></div>');
         } catch (error) {
             console.error('Math solver error:', error);
             showError('Failed to solve. Please try again. Error: ' + error.message);
@@ -296,7 +274,6 @@
     .math-examples h2 {
         margin-bottom: 12px;
         font-size: 16px;
-        color: var(--text-secondary);
     }
 
     .example-chips {

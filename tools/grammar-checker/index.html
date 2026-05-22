@@ -12,13 +12,13 @@
     <link rel="canonical" href="https://tools.scoreroute.com/tools/grammar-checker/">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Free Online Grammar Checker","description":"AI-powered grammar checker that explains why your English is wrong and how to fix it","url":"https://tools.scoreroute.com/tools/grammar-checker/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-22","dateModified":"2026-05-22","author":{"@type":"Person","name":"BAOMING"},"name":"Free Grammar Checker","description":"AI-powered grammar checker that explains why your English is wrong and how to fix it","url":"https://tools.scoreroute.com/tools/grammar-checker/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Free Online Grammar Checker</h1>
+            <h1>Free Grammar Checker</h1>
             <p class="subtitle">AI-Powered English Correction with Explanation</p>
             <nav class="breadcrumb">
                 <a href="/">Home</a> &gt; <span>Grammar Checker</span>
@@ -103,9 +103,7 @@
     </footer>
 
     <script>
-    const GROQ_API_KEY = import.meta.env?.DEVTOOLS_GROQ_API_KEY || 'GROQ_API_KEY_NOT_SET';
-    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-    const MODEL = 'llama-3.3-70b-versatile';
+    const API_URL = '/api/ai/grammar-check';
 
     function setExample(text) {
         document.getElementById('grammar-input').value = text;
@@ -142,59 +140,23 @@
         showLoading(true);
 
         try {
-            const response = await fetch(GROQ_API_URL, {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + GROQ_API_KEY,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    model: MODEL,
-                    messages: [
-                        {
-                            role: 'system',
-                            content: `You are a grammar checker. Your task is to:
-1. Check the given text for grammar errors
-2. Explain WHY each error is wrong (this is the most important part)
-3. Provide the corrected version
-
-Format your response as follows:
-
-**Original:** [original text]
-
-**Corrected:** [corrected text]
-
-**Errors Found:**
-[For each error, use this format:]
-- [error]: [explanation of why it's wrong] → [correction]
-
-Be specific about grammar rules. Explain the rule, not just the correction.
-
-If no errors are found, say "No grammar errors found!"`
-                        },
-                        {
-                            role: 'user',
-                            content: input
-                        }
-                    ],
-                    temperature: 0.3,
-                    max_tokens: 2048
-                })
+                body: JSON.stringify({ text: input })
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error('API Error: ' + response.status);
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'API Error: ' + response.status);
             }
 
             const data = await response.json();
-            const result = data.choices[0].message.content;
+            const content = data.choices[0].message.content;
 
-            showResult(`
-                <div class="grammar-box">
-                    <div class="grammar-content">${result.replace(/\n/g, '<br>')}</div>
-                </div>
-            `);
+            showResult('<div class="grammar-box"><div class="grammar-content">' + content.replace(/\n/g, '<br>') + '</div></div>');
         } catch (error) {
             console.error('Grammar check error:', error);
             showError('Failed to check grammar. Please try again. Error: ' + error.message);
