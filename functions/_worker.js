@@ -1,7 +1,18 @@
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
   
-  // Handle /api/ai/grammar-check
+  if (url.pathname === '/api/ai/test') {
+    return new Response(JSON.stringify({ 
+      message: 'Worker is working!',
+      method: request.method,
+      path: url.pathname,
+      timestamp: new Date().toISOString()
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+  
   if (url.pathname === '/api/ai/grammar-check') {
     const { text } = await request.json().catch(() => ({}));
     
@@ -64,7 +75,6 @@ export async function onRequest({ request, env }) {
     }
   }
   
-  // Handle /api/ai/math-solve
   if (url.pathname === '/api/ai/math-solve') {
     const { problem } = await request.json().catch(() => ({}));
     
@@ -127,20 +137,7 @@ export async function onRequest({ request, env }) {
     }
   }
   
-  // Test endpoint
-  if (url.pathname === '/api/ai/test') {
-    return new Response(JSON.stringify({ 
-      message: 'Worker is working!',
-      path: url.pathname,
-      timestamp: new Date().toISOString()
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-  
-  // Return 404 for unmatched API routes
-  return new Response(JSON.stringify({ error: 'Not found' }), {
+  return new Response(JSON.stringify({ error: 'Not found', path: url.pathname }), {
     status: 404,
     headers: { 'Content-Type': 'application/json' }
   });
