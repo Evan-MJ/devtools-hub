@@ -1,9 +1,10 @@
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
   
-  const response = new Response(JSON.stringify({
+  // Catch-all for ANY path that doesn't match a static file
+  return new Response(JSON.stringify({
     success: true,
-    message: 'Functions worker is running!',
+    message: 'Worker handled this request!',
     path: url.pathname,
     method: request.method,
     timestamp: new Date().toISOString()
@@ -11,6 +12,4 @@ export async function onRequest({ request, env }) {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
   });
-  
-  return response;
 }
