@@ -9,13 +9,11 @@
 /functions/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; connect-src 'self' https://api.groq.com https://integrate.api.nvidia.com
 
 /*
 /api/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; connect-src 'self' https://api.groq.com https://integrate.api.nvidia.com
 
 /tools/*
   X-Frame-Options: DENY
