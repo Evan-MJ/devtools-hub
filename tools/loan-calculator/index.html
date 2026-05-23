@@ -151,367 +151,133 @@
     <script>
         var equityChart = null;
 
-        function formatCurrency(amount) {
-            if (isNaN(amount) || !isFinite(amount)) {
-                return '$0';
-            }
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
+        function fmt(amount) {
+            return '$' + Math.round(amount).toLocaleString();
         }
 
-        function calculateLoan() {
-            var principal = parseFloat(document.getElementById('loan-amount').value) || 0;
-            var rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
-            var years = parseInt(document.getElementById('loan-term').value) || 30;
-            var downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
-            var extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
-            var homePrice = principal + downPayment;
-
-            if (principal <= 0 || rate <= 0) {
-                alert('Please enter valid loan details');
+        function calc() {
+            var p = parseFloat(document.getElementById('loan-amount').value) || 0;
+            var r = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+            var y = parseInt(document.getElementById('loan-term').value) || 30;
+            var dp = parseFloat(document.getElementById('down-payment').value) || 0;
+            var ep = parseFloat(document.getElementById('extra-payment').value) || 0;
+            var hp = p + dp;
+            var n = y * 12;
+            
+            if (p <= 0 || r <= 0) {
+                alert('Enter valid loan details');
                 return;
             }
-
-            var n = years * 12;
-            var monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
-            var totalPayment = monthlyPayment * n;
-            var totalInterest = totalPayment - principal;
-
-            var payoffDate = new Date();
-            payoffDate.setMonth(payoffDate.getMonth() + n);
-
-            document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
-            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
-            document.getElementById('total-cost').textContent = formatCurrency(totalPayment + downPayment);
-            document.getElementById('payoff-date').textContent = payoffDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-            if (extraPayment > 0) {
-                var result = calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment);
-                var interestSaved = totalInterest - result.totalInterest;
-                var monthsSaved = n - result.months;
-
-                document.getElementById('interest-saved').textContent = formatCurrency(interestSaved);
-                document.getElementById('time-saved').textContent = Math.floor(monthsSaved / 12) + ' years ' + (monthsSaved % 12) + ' months';
+            
+            var mp = p * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            var tp = mp * n;
+            var ti = tp - p;
+            
+            document.getElementById('monthly-payment').textContent = fmt(mp);
+            document.getElementById('total-interest').textContent = fmt(ti);
+            document.getElementById('total-cost').textContent = fmt(tp + dp);
+            
+            var pd = new Date();
+            pd.setMonth(pd.getMonth() + n);
+            document.getElementById('payoff-date').textContent = pd.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+            
+            if (ep > 0) {
+                var bal = p, mo = 0, ti2 = 0;
+                while (bal > 0 && mo < n * 2) {
+                    var int = bal * r;
+                    ti2 += int;
+                    var pp = mp + ep - int;
+                    if (pp <= 0) break;
+                    bal -= pp;
+                    mo++;
+                }
+                document.getElementById('interest-saved').textContent = fmt(ti - ti2);
+                document.getElementById('time-saved').textContent = Math.floor((n - mo) / 12) + 'y ' + ((n - mo) % 12) + 'm';
                 document.getElementById('extra-payment-results').style.display = 'block';
             } else {
                 document.getElementById('extra-payment-results').style.display = 'none';
             }
-
-            var pmiThreshold = homePrice * 0.8;
-            var originalLTV = principal / homePrice;
-            if (originalLTV > 0.8) {
-                var balance = principal;
-                var monthsTo20 = 0;
-                while (balance > pmiThreshold && monthsTo20 < n) {
-                    var interest = balance * rate;
-                    var principalPayment = monthlyPayment - interest;
-                    balance -= principalPayment;
-                    monthsTo20++;
+            
+            if (p / hp > 0.8) {
+                var bal = p, m20 = 0;
+                while (bal > hp * 0.8 && m20 < n) {
+                    bal -= (mp - bal * r);
+                    m20++;
                 }
-                
-                var pmiRemovalDate = new Date();
-                pmiRemovalDate.setMonth(pmiRemovalDate.getMonth() + monthsTo20);
-                
-                document.getElementById('pmi-info').textContent = 'At 3% annual appreciation, you will reach 80% LTV';
-                document.getElementById('pmi-date').textContent = 'PMI can be removed around: ' + pmiRemovalDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                var pmi = new Date();
+                pmi.setMonth(pmi.getMonth() + m20);
+                document.getElementById('pmi-date').textContent = '~' + pmi.toLocaleDateString('en-US', {month:'long', year:'numeric'});
                 document.getElementById('pmi-section').style.display = 'block';
             } else {
                 document.getElementById('pmi-section').style.display = 'none';
             }
-
-            generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment);
         }
 
-        function calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment) {
-            var balance = principal;
-            var months = 0;
-            var totalInterest = 0;
-            var maxMonths = n * 2;
-            
-            while (balance > 0 && months < maxMonths) {
-                var interest = balance * rate;
-                totalInterest += interest;
-                var principalPayment = monthlyPayment + extraPayment - interest;
-                
-                if (principalPayment <= 0) {
-                    break;
-                }
-                
-                balance -= principalPayment;
-                months++;
-            }
-
-            var payoffDate = new Date();
-            payoffDate.setMonth(payoffDate.getMonth() + months);
-
-            return {
-                months: months,
-                totalInterest: totalInterest,
-                payoffDate: payoffDate
-            };
-        }
-
-        function generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment) {
-            var ctx = document.getElementById('equity-chart').getContext('2d');
-            
-            if (equityChart) {
-                equityChart.destroy();
-            }
-
-            var data = [];
-            var labels = [];
-            var balance = principal;
-            var months = 0;
-            var maxMonths = 360 * 2;
-            var equity = downPayment || (homePrice - principal);
-
-            while (balance > 0 && months < maxMonths) {
-                var interest = balance * rate;
-                var principalPayment = monthlyPayment + (extraPayment || 0) - interest;
-                
-                if (principalPayment <= 0) break;
-                
-                balance -= principalPayment;
-                equity += homePrice * (0.03 / 12);
-                months++;
-
-                if (months % 12 === 0) {
-                    labels.push('Year ' + (months / 12));
-                    data.push(equity);
-                }
-            }
-
-            equityChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Your Equity',
-                        data: data,
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Equity Growth Over Time'
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + (value / 1000).toFixed(0) + 'K';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function resetCalculator() {
+        function reset() {
             document.getElementById('loan-amount').value = 300000;
             document.getElementById('interest-rate').value = 6.5;
             document.getElementById('loan-term').value = 30;
             document.getElementById('down-payment').value = 60000;
             document.getElementById('extra-payment').value = 0;
-            if (equityChart) {
-                equityChart.destroy();
-                equityChart = null;
-            }
-            calculateLoan();
+            calc();
         }
 
-        function toggleAmortization() {
-            var table = document.getElementById('amortization-table');
-            if (table.style.display === 'none' || table.style.display === '') {
-                generateAmortizationTable();
-                table.style.display = 'block';
-            } else {
-                table.style.display = 'none';
-            }
-        }
-
-        function generateAmortizationTable() {
-            var principal = parseFloat(document.getElementById('loan-amount').value) || 0;
-            var rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
-            var n = parseInt(document.getElementById('loan-term').value) * 12 || 360;
-            var monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
-            
-            var balance = principal;
-            var html = '<table><thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
-            
-            for (var i = 1; i <= Math.min(n, 360); i++) {
-                var interest = balance * rate;
-                var principalPayment = monthlyPayment - interest;
-                balance -= principalPayment;
-                
-                if (i <= 12 || i % 12 === 0 || i === n) {
-                    html += '<tr>';
-                    html += '<td>' + i + '</td>';
-                    html += '<td>' + formatCurrency(monthlyPayment) + '</td>';
-                    html += '<td>' + formatCurrency(principalPayment) + '</td>';
-                    html += '<td>' + formatCurrency(interest) + '</td>';
-                    html += '<td>' + formatCurrency(Math.max(0, balance)) + '</td>';
-                    html += '</tr>';
+        function toggleAmort() {
+            var t = document.getElementById('amortization-table');
+            t.style.display = (t.style.display === 'none' || t.style.display === '') ? 'block' : 'none';
+            if (t.style.display === 'block') {
+                var p = parseFloat(document.getElementById('loan-amount').value) || 0;
+                var r = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+                var y = parseInt(document.getElementById('loan-term').value) * 12 || 360;
+                var mp = p * (r * Math.pow(1 + r, y)) / (Math.pow(1 + r, y) - 1);
+                var bal = p, html = '<table><tr><th>M</th><th>Pay</th><th>Prin</th><th>Int</th><th>Bal</th></tr>';
+                for (var i = 1; i <= Math.min(y, 360); i++) {
+                    var int = bal * r;
+                    var pp = mp - int;
+                    bal -= pp;
+                    if (i <= 12 || i % 12 === 0 || i === y) {
+                        html += '<tr><td>' + i + '</td><td>' + fmt(mp) + '</td><td>' + fmt(pp) + '</td><td>' + fmt(int) + '</td><td>' + fmt(Math.max(0, bal)) + '</td></tr>';
+                    }
                 }
+                t.innerHTML = html + '</table>';
             }
-            
-            html += '</tbody></table>';
-            document.getElementById('amortization-table').innerHTML = html;
         }
 
-        document.getElementById('calc-btn').addEventListener('click', calculateLoan);
-        document.getElementById('reset-btn').addEventListener('click', resetCalculator);
-        document.getElementById('toggle-amortization').addEventListener('click', toggleAmortization);
-
-        window.addEventListener('load', function() {
-            calculateLoan();
-        });
+        document.getElementById('calc-btn').onclick = calc;
+        document.getElementById('reset-btn').onclick = reset;
+        document.getElementById('toggle-amortization').onclick = toggleAmort;
+        
+        window.onload = function() {
+            setTimeout(calc, 100);
+        };
     </script>
 
     <style>
-        .calculator-inputs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .input-group label {
-            font-weight: 500;
-            margin-bottom: 4px;
-            color: #374151;
-        }
-        .input-group input,
-        .input-group select {
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        .results-section {
-            margin-top: 24px;
-            padding: 24px;
-            background: #f9fafb;
-            border-radius: 12px;
-        }
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .result-card {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #e5e7eb;
-        }
-        .result-card.primary {
-            background: #3b82f6;
-            color: white;
-            border: none;
-        }
-        .result-card.highlight {
-            background: #10b981;
-            color: white;
-            border: none;
-        }
-        .result-label {
-            display: block;
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-        .result-card.primary .result-label,
-        .result-card.highlight .result-label {
-            color: rgba(255,255,255,0.8);
-        }
-        .result-value {
-            display: block;
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .extra-results {
-            margin-top: 20px;
-            padding: 16px;
-            background: #ecfdf5;
-            border-radius: 8px;
-        }
-        .extra-results h4 {
-            margin-top: 0;
-            color: #065f46;
-        }
-        .pmi-section {
-            margin-top: 20px;
-        }
-        .pmi-alert {
-            padding: 16px;
-            background: #fef3c7;
-            border-radius: 8px;
-            border-left: 4px solid #f59e0b;
-        }
-        .pmi-alert h4 {
-            margin-top: 0;
-            color: #92400e;
-        }
-        .pmi-alert p {
-            margin: 8px 0;
-            color: #78350f;
-        }
-        .chart-container {
-            margin-top: 20px;
-            height: 300px;
-        }
-        .amortization-section {
-            margin-top: 20px;
-        }
-        .amortization-table {
-            margin-top: 16px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .amortization-table table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        .amortization-table th,
-        .amortization-table td {
-            padding: 8px 12px;
-            text-align: right;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .amortization-table th {
-            background: #f3f4f6;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-        .amortization-table td:first-child,
-        .amortization-table th:first-child {
-            text-align: left;
-        }
+        .calculator-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: 500; margin-bottom: 4px; color: #374151; }
+        .input-group input, .input-group select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; }
+        .results-section { margin-top: 24px; padding: 24px; background: #f9fafb; border-radius: 12px; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .result-card { background: white; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb; }
+        .result-card.primary { background: #3b82f6; color: white; border: none; }
+        .result-card.highlight { background: #10b981; color: white; border: none; }
+        .result-label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+        .result-card.primary .result-label, .result-card.highlight .result-label { color: rgba(255,255,255,0.8); }
+        .result-value { display: block; font-size: 24px; font-weight: 700; }
+        .extra-results { margin-top: 20px; padding: 16px; background: #ecfdf5; border-radius: 8px; }
+        .extra-results h4 { margin-top: 0; color: #065f46; }
+        .pmi-section { margin-top: 20px; }
+        .pmi-alert { padding: 16px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b; }
+        .pmi-alert h4 { margin-top: 0; color: #92400e; }
+        .pmi-alert p { margin: 8px 0; color: #78350f; }
+        .chart-container { margin-top: 20px; height: 300px; }
+        .amortization-section { margin-top: 20px; }
+        .amortization-table { margin-top: 16px; max-height: 400px; overflow-y: auto; }
+        .amortization-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .amortization-table th, .amortization-table td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #e5e7eb; }
+        .amortization-table th { background: #f3f4f6; font-weight: 600; }
+        .amortization-table td:first-child, .amortization-table th:first-child { text-align: left; }
     </style>
 </body>
 </html>
