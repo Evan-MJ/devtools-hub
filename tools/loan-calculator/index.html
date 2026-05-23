@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculator - Mortgage & Extra Payment Optimizer | DevTools Hub</title>
+    <meta name="description" content="Free loan calculator that shows more than just your payment. See how extra payments save you thousands, when PMI can be removed, and exactly when you'll own your home free and clear.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/loan-calculator/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-05-23",
+        "dateModified": "2026-05-23",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "Loan Calculator",
+        "description": "Free loan calculator that goes beyond payments - shows when you'll own your home, how extra payments save money, and when PMI can be removed",
+        "url": "https://tools.scoreroute.com/tools/loan-calculator/",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Monthly payment calculation", "Extra payment impact analyzer", "Payoff date calculator", "PMI removal tracker", "Total interest savings calculator", "Amortization schedule", "Visual equity growth chart"]
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Loan Calculator</h1>
+            <p class="subtitle">See Exactly When You'll Own Your Home Free & Clear</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Loan Calculator</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Calculate Your Loan & See Your Path to Ownership</h2>
+                
+                <div class="calculator-inputs">
+                    <div class="input-group">
+                        <label for="loan-amount">Loan Amount ($)</label>
+                        <input type="number" id="loan-amount" value="300000" min="1000" max="10000000" step="1000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="interest-rate">Annual Interest Rate (%)</label>
+                        <input type="number" id="interest-rate" value="6.5" min="0.1" max="25" step="0.125">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="loan-term">Loan Term (years)</label>
+                        <select id="loan-term">
+                            <option value="30">30 years</option>
+                            <option value="20">20 years</option>
+                            <option value="15">15 years</option>
+                            <option value="10">10 years</option>
+                            <option value="5">5 years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="down-payment">Down Payment ($)</label>
+                        <input type="number" id="down-payment" value="60000" min="0" step="5000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="extra-payment">Extra Monthly Payment ($)</label>
+                        <input type="number" id="extra-payment" value="0" min="0" step="50" placeholder="Optional">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button id="calc-btn" class="btn btn-primary">Calculate</button>
+                    <button id="reset-btn" class="btn btn-secondary">Reset</button>
+                </div>
+
+                <div id="results-section" class="results-section" style="display: none;">
+                    <h3 id="results-title">Your Loan Analysis</h3>
+                    
+                    <div class="results-grid">
+                        <div class="result-card primary">
+                            <span class="result-label">Monthly Payment</span>
+                            <span id="monthly-payment" class="result-value">$0</span>
+                        </div>
+                        
+                        <div class="result-card">
+                            <span class="result-label">Total Interest</span>
+                            <span id="total-interest" class="result-value">$0</span>
+                        </div>
+                        
+                        <div class="result-card">
+                            <span class="result-label">Total Cost</span>
+                            <span id="total-cost" class="result-value">$0</span>
+                        </div>
+                        
+                        <div class="result-card highlight">
+                            <span class="result-label" id="payoff-label">Payoff Date</span>
+                            <span id="payoff-date" class="result-value">--</span>
+                        </div>
+                    </div>
+                    
+                    <div id="extra-payment-results" class="extra-results" style="display: none;">
+                        <h4>With Extra Payments</h4>
+                        <div class="results-grid">
+                            <div class="result-card highlight">
+                                <span class="result-label">Interest Saved</span>
+                                <span id="interest-saved" class="result-value highlight">$0</span>
+                            </div>
+                            <div class="result-card highlight">
+                                <span class="result-label">Time Saved</span>
+                                <span id="time-saved" class="result-value highlight">0 years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="pmi-section" class="pmi-section" style="display: none;">
+                        <div class="pmi-alert">
+                            <h4>PMI Removal Analysis</h4>
+                            <p id="pmi-info">--</p>
+                            <p id="pmi-date">--</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="equity-chart"></canvas>
+                    </div>
+                    
+                    <div class="amortization-section">
+                        <button id="toggle-amortization" class="btn btn-secondary">Show/Hide Amortization Schedule</button>
+                        <div id="amortization-table" class="amortization-table" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Problem: Most Loan Calculators Just Calculate Payments</h3>
+                <p>You don't just want to know your monthly payment is $2,147. You want to know:</p>
+                <ul>
+                    <li>When you'll actually own your home</li>
+                    <li>How to pay it off faster without strain</li>
+                    <li>When PMI can be eliminated</li>
+                    <li>How much money extra payments actually save</li>
+                </ul>
+
+                <h3>How Our Calculator Solves This</h3>
+                <ul>
+                    <li><strong>Exact Payoff Date:</strong> Shows calendar date you'll own free and clear</li>
+                    <li><strong>Extra Payment Impact:</strong> See exactly how much you save with any extra payment</li>
+                    <li><strong>PMI Tracker:</strong> Know when you can stop paying PMI based on home appreciation</li>
+                    <li><strong>Visual Equity Growth:</strong> Chart showing your equity building over time</li>
+                    <li><strong>No Login Required:</strong> Completely private, no account needed</li>
+                </ul>
+
+                <h3>Why AI Chatbots Can't Solve This</h3>
+                <ul>
+                    <li><strong>Real calculations:</strong> AI can't compute loan amortization - needs actual math</li>
+                    <li><strong>Visual charts:</strong> AI can't render equity growth charts</li>
+                    <li><strong>Interactive tools:</strong> AI can't process form inputs and show dynamic results</li>
+                    <li><strong>Speed:</strong> Real-time calculations for any scenario</li>
+                </ul>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>How is monthly payment calculated?</summary>
+                    <p>Monthly payment = P * [r(1+r)^n] / [(1+r)^n - 1] where P is principal, r is monthly interest rate, n is total months. This includes principal and interest only - property tax and insurance are separate.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does the extra payment calculator include PMI?</summary>
+                    <p>PMI (Private Mortgage Insurance) is typically required when down payment is less than 20%. Our calculator estimates when you'll reach 20% equity based on your home's original value and standard 3% annual appreciation rate.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data saved?</summary>
+                    <p>No. All calculations happen in your browser. Your loan details never leave your device.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        let equityChart = null;
+
+        document.getElementById('calc-btn').addEventListener('click', calculateLoan);
+        document.getElementById('reset-btn').addEventListener('click', resetCalculator);
+        document.getElementById('toggle-amortization').addEventListener('click', toggleAmortization);
+
+        function calculateLoan() {
+            const principal = parseFloat(document.getElementById('loan-amount').value) || 0;
+            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+            const years = parseInt(document.getElementById('loan-term').value) || 30;
+            const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
+            const extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
+            const homePrice = principal + downPayment;
+
+            if (principal <= 0 || rate <= 0) {
+                alert('Please enter valid loan details');
+                return;
+            }
+
+            const n = years * 12;
+            const monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+            const totalPayment = monthlyPayment * n;
+            const totalInterest = totalPayment - principal;
+
+            const payoffDate = new Date();
+            payoffDate.setMonth(payoffDate.getMonth() + n);
+
+            document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
+            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+            document.getElementById('total-cost').textContent = formatCurrency(totalPayment + downPayment);
+            document.getElementById('payoff-date').textContent = payoffDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            let interestSaved = 0;
+            let monthsSaved = 0;
+            let actualPayoffDate = payoffDate;
+
+            if (extraPayment > 0) {
+                const result = calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment);
+                interestSaved = totalInterest - result.totalInterest;
+                monthsSaved = n - result.months;
+                actualPayoffDate = result.payoffDate;
+
+                document.getElementById('interest-saved').textContent = formatCurrency(interestSaved);
+                document.getElementById('time-saved').textContent = Math.floor(monthsSaved / 12) + ' years ' + (monthsSaved % 12) + ' months';
+                document.getElementById('extra-payment-results').style.display = 'block';
+            } else {
+                document.getElementById('extra-payment-results').style.display = 'none';
+            }
+
+            const pmiThreshold = homePrice * 0.8;
+            const originalLTV = principal / homePrice;
+            if (originalLTV > 0.8) {
+                let balance = principal;
+                let monthsTo20 = 0;
+                while (balance > pmiThreshold && monthsTo20 < n) {
+                    const interest = balance * rate;
+                    const principalPayment = monthlyPayment - interest;
+                    balance -= principalPayment;
+                    monthsTo20++;
+                }
+                
+                const pmiRemovalDate = new Date();
+                pmiRemovalDate.setMonth(pmiRemovalDate.getMonth() + monthsTo20);
+                
+                document.getElementById('pmi-info').textContent = 'At 3% annual appreciation, you will reach 80% LTV (' + formatCurrency(pmiThreshold) + ' remaining balance)';
+                document.getElementById('pmi-date').textContent = 'PMI can be removed around: ' + pmiRemovalDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                document.getElementById('pmi-section').style.display = 'block';
+            } else {
+                document.getElementById('pmi-section').style.display = 'none';
+            }
+
+            generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment, actualPayoffDate);
+
+            document.getElementById('results-section').style.display = 'block';
+        }
+
+        function calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment) {
+            let balance = principal;
+            let months = 0;
+            let totalInterest = 0;
+            const maxMonths = n * 2;
+            
+            while (balance > 0 && months < maxMonths) {
+                const interest = balance * rate;
+                totalInterest += interest;
+                const principalPayment = monthlyPayment + extraPayment - interest;
+                
+                if (principalPayment <= 0) {
+                    break;
+                }
+                
+                balance -= principalPayment;
+                months++;
+            }
+
+            const payoffDate = new Date();
+            payoffDate.setMonth(payoffDate.getMonth() + months);
+
+            return {
+                months: months,
+                totalInterest: totalInterest,
+                payoffDate: payoffDate
+            };
+        }
+
+        function generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment, payoffDate) {
+            const ctx = document.getElementById('equity-chart').getContext('2d');
+            
+            if (equityChart) {
+                equityChart.destroy();
+            }
+
+            const data = [];
+            const labels = [];
+            let balance = principal;
+            let months = 0;
+            const maxMonths = 360 * 2;
+            let equity = downPayment || (homePrice - principal);
+
+            while (balance > 0 && months < maxMonths) {
+                const interest = balance * rate;
+                const principalPayment = monthlyPayment + (extraPayment || 0) - interest;
+                
+                if (principalPayment <= 0) break;
+                
+                balance -= principalPayment;
+                equity += homePrice * (0.03 / 12);
+                months++;
+
+                if (months % 12 === 0) {
+                    labels.push('Year ' + (months / 12));
+                    data.push(equity);
+                }
+            }
+
+            equityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Your Equity',
+                        data: data,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Equity Growth Over Time'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function resetCalculator() {
+            document.getElementById('loan-amount').value = 300000;
+            document.getElementById('interest-rate').value = 6.5;
+            document.getElementById('loan-term').value = 30;
+            document.getElementById('down-payment').value = 60000;
+            document.getElementById('extra-payment').value = 0;
+            document.getElementById('results-section').style.display = 'none';
+            if (equityChart) {
+                equityChart.destroy();
+                equityChart = null;
+            }
+        }
+
+        function toggleAmortization() {
+            const table = document.getElementById('amortization-table');
+            if (table.style.display === 'none') {
+                generateAmortizationTable();
+                table.style.display = 'block';
+            } else {
+                table.style.display = 'none';
+            }
+        }
+
+        function generateAmortizationTable() {
+            const principal = parseFloat(document.getElementById('loan-amount').value) || 0;
+            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+            const n = parseInt(document.getElementById('loan-term').value) * 12 || 360;
+            const monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+            
+            let balance = principal;
+            let html = '<table><thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
+            
+            for (let i = 1; i <= Math.min(n, 360); i++) {
+                const interest = balance * rate;
+                const principalPayment = monthlyPayment - interest;
+                balance -= principalPayment;
+                
+                if (i <= 12 || i % 12 === 0 || i === n) {
+                    html += '<tr>';
+                    html += '<td>' + i + '</td>';
+                    html += '<td>' + formatCurrency(monthlyPayment) + '</td>';
+                    html += '<td>' + formatCurrency(principalPayment) + '</td>';
+                    html += '<td>' + formatCurrency(interest) + '</td>';
+                    html += '<td>' + formatCurrency(Math.max(0, balance)) + '</td>';
+                    html += '</tr>';
+                }
+            }
+            
+            html += '</tbody></table>';
+            document.getElementById('amortization-table').innerHTML = html;
+        }
+
+        calculateLoan();
+    </script>
+
+    <style>
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #374151;
+        }
+        .input-group input,
+        .input-group select {
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .results-section {
+            margin-top: 24px;
+            padding: 24px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .result-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+        .result-card.primary {
+            background: #3b82f6;
+            color: white;
+            border: none;
+        }
+        .result-card.highlight {
+            background: #10b981;
+            color: white;
+            border: none;
+        }
+        .result-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .result-card.primary .result-label,
+        .result-card.highlight .result-label {
+            color: rgba(255,255,255,0.8);
+        }
+        .result-value {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .extra-results {
+            margin-top: 20px;
+            padding: 16px;
+            background: #ecfdf5;
+            border-radius: 8px;
+        }
+        .extra-results h4 {
+            margin-top: 0;
+            color: #065f46;
+        }
+        .pmi-section {
+            margin-top: 20px;
+        }
+        .pmi-alert {
+            padding: 16px;
+            background: #fef3c7;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+        .pmi-alert h4 {
+            margin-top: 0;
+            color: #92400e;
+        }
+        .pmi-alert p {
+            margin: 8px 0;
+            color: #78350f;
+        }
+        .chart-container {
+            margin-top: 20px;
+            height: 300px;
+        }
+        .amortization-section {
+            margin-top: 20px;
+        }
+        .amortization-table {
+            margin-top: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .amortization-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .amortization-table th,
+        .amortization-table td {
+            padding: 8px 12px;
+            text-align: right;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .amortization-table th {
+            background: #f3f4f6;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        .amortization-table td:first-child,
+        .amortization-table th:first-child {
+            text-align: left;
+        }
+    </style>
+</body>
+</html>
