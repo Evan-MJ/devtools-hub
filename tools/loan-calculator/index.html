@@ -1,32 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <meta property="og:image" content="/og-image.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Calculator - Mortgage & Extra Payment Optimizer | DevTools Hub</title>
     <meta name="description" content="Free loan calculator that shows more than just your payment. See how extra payments save you thousands, when PMI can be removed, and exactly when you'll own your home free and clear.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/loan-calculator/">
     <link rel="stylesheet" href="/styles.css">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "datePublished": "2026-05-23",
-        "dateModified": "2026-05-23",
-        "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "Loan Calculator",
-        "description": "Free loan calculator that goes beyond payments - shows when you'll own your home, how extra payments save money, and when PMI can be removed",
-        "url": "https://tools.scoreroute.com/tools/loan-calculator/",
-        "applicationCategory": "FinancialApplication",
-        "operatingSystem": "Any",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-        "featureList": ["Monthly payment calculation", "Extra payment impact analyzer", "Payoff date calculator", "PMI removal tracker", "Total interest savings calculator", "Amortization schedule", "Visual equity growth chart"]
-    }
-    </script>
 </head>
 <body>
     <header>
@@ -35,7 +15,6 @@
             <p class="subtitle">See Exactly When You'll Own Your Home Free & Clear</p>
             <nav class="breadcrumb">
                 <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>Loan Calculator</span>
-                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
             </nav>
         </div>
     </header>
@@ -43,7 +22,7 @@
     <main class="container">
         <section class="tool-page">
             <div class="tool-main">
-                <h2>Calculate Your Loan & See Your Path to Ownership</h2>
+                <h2>Calculate Your Loan</h2>
                 
                 <div class="calculator-inputs">
                     <div class="input-group">
@@ -74,7 +53,7 @@
                     
                     <div class="input-group">
                         <label for="extra-payment">Extra Monthly Payment ($)</label>
-                        <input type="number" id="extra-payment" value="0" min="0" step="50" placeholder="Optional">
+                        <input type="number" id="extra-payment" value="0" min="0" step="50">
                     </div>
                 </div>
 
@@ -113,11 +92,11 @@
                         <div class="results-grid">
                             <div class="result-card highlight">
                                 <span class="result-label">Interest Saved</span>
-                                <span id="interest-saved" class="result-value highlight">--</span>
+                                <span id="interest-saved" class="result-value">--</span>
                             </div>
                             <div class="result-card highlight">
                                 <span class="result-label">Time Saved</span>
-                                <span id="time-saved" class="result-value highlight">--</span>
+                                <span id="time-saved" class="result-value">--</span>
                             </div>
                         </div>
                     </div>
@@ -136,51 +115,29 @@
                     
                     <div class="amortization-section">
                         <button id="toggle-amortization" class="btn btn-secondary">Show/Hide Amortization Schedule</button>
-                        <div id="amortization-table" class="amortization-table" style="display: none;"></div>
+                        <div id="amortization-table" class="amortization-table"></div>
                     </div>
                 </div>
             </div>
 
             <div class="info-section">
                 <h3>Problem: Most Loan Calculators Just Calculate Payments</h3>
-                <p>You don't just want to know your monthly payment is $2,147. You want to know:</p>
-                <ul>
-                    <li>When you'll actually own your home</li>
-                    <li>How to pay it off faster without strain</li>
-                    <li>When PMI can be eliminated</li>
-                    <li>How much money extra payments actually save</li>
-                </ul>
+                <p>You don't just want to know your monthly payment - you want to know WHEN you'll own your home.</p>
 
                 <h3>How Our Calculator Solves This</h3>
                 <ul>
-                    <li><strong>Exact Payoff Date:</strong> Shows calendar date you'll own free and clear</li>
-                    <li><strong>Extra Payment Impact:</strong> See exactly how much you save with any extra payment</li>
-                    <li><strong>PMI Tracker:</strong> Know when you can stop paying PMI based on home appreciation</li>
-                    <li><strong>Visual Equity Growth:</strong> Chart showing your equity building over time</li>
-                    <li><strong>No Login Required:</strong> Completely private, no account needed</li>
+                    <li><strong>Exact Payoff Date:</strong> Shows calendar date</li>
+                    <li><strong>Extra Payment Impact:</strong> See exactly how much you save</li>
+                    <li><strong>PMI Tracker:</strong> Know when you can stop paying PMI</li>
+                    <li><strong>Visual Equity Growth:</strong> Chart showing your equity</li>
                 </ul>
 
                 <h3>Why AI Chatbots Can't Solve This</h3>
                 <ul>
-                    <li><strong>Real calculations:</strong> AI can't compute loan amortization - needs actual math</li>
+                    <li><strong>Real calculations:</strong> AI can't compute loan amortization</li>
                     <li><strong>Visual charts:</strong> AI can't render equity growth charts</li>
-                    <li><strong>Interactive tools:</strong> AI can't process form inputs and show dynamic results</li>
-                    <li><strong>Speed:</strong> Real-time calculations for any scenario</li>
+                    <li><strong>Interactive tools:</strong> AI can't process form inputs</li>
                 </ul>
-
-                <h3>Frequently Asked Questions</h3>
-                <details class="faq-item">
-                    <summary>How is monthly payment calculated?</summary>
-                    <p>Monthly payment = P * [r(1+r)^n] / [(1+r)^n - 1] where P is principal, r is monthly interest rate, n is total months. This includes principal and interest only - property tax and insurance are separate.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Does the extra payment calculator include PMI?</summary>
-                    <p>PMI (Private Mortgage Insurance) is typically required when down payment is less than 20%. Our calculator estimates when you'll reach 20% equity based on your home's original value and standard 3% annual appreciation rate.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Is my data saved?</summary>
-                    <p>No. All calculations happen in your browser. Your loan details never leave your device.</p>
-                </details>
             </div>
         </section>
     </main>
@@ -192,7 +149,7 @@
     <script src="/tools.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        let equityChart = null;
+        var equityChart = null;
 
         function formatCurrency(amount) {
             if (isNaN(amount) || !isFinite(amount)) {
@@ -207,32 +164,24 @@
         }
 
         function calculateLoan() {
-            const principal = parseFloat(document.getElementById('loan-amount').value) || 0;
-            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
-            const years = parseInt(document.getElementById('loan-term').value) || 30;
-            const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
-            const extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
-            const homePrice = principal + downPayment;
-
-            console.log('Principal:', principal);
-            console.log('Rate:', rate);
-            console.log('Years:', years);
-            console.log('Down Payment:', downPayment);
+            var principal = parseFloat(document.getElementById('loan-amount').value) || 0;
+            var rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+            var years = parseInt(document.getElementById('loan-term').value) || 30;
+            var downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
+            var extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
+            var homePrice = principal + downPayment;
 
             if (principal <= 0 || rate <= 0) {
                 alert('Please enter valid loan details');
                 return;
             }
 
-            const n = years * 12;
-            const monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
-            const totalPayment = monthlyPayment * n;
-            const totalInterest = totalPayment - principal;
+            var n = years * 12;
+            var monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+            var totalPayment = monthlyPayment * n;
+            var totalInterest = totalPayment - principal;
 
-            console.log('Monthly Payment:', monthlyPayment);
-            console.log('Total Interest:', totalInterest);
-
-            const payoffDate = new Date();
+            var payoffDate = new Date();
             payoffDate.setMonth(payoffDate.getMonth() + n);
 
             document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
@@ -240,15 +189,10 @@
             document.getElementById('total-cost').textContent = formatCurrency(totalPayment + downPayment);
             document.getElementById('payoff-date').textContent = payoffDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-            let interestSaved = 0;
-            let monthsSaved = 0;
-            let actualPayoffDate = payoffDate;
-
             if (extraPayment > 0) {
-                const result = calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment);
-                interestSaved = totalInterest - result.totalInterest;
-                monthsSaved = n - result.months;
-                actualPayoffDate = result.payoffDate;
+                var result = calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment);
+                var interestSaved = totalInterest - result.totalInterest;
+                var monthsSaved = n - result.months;
 
                 document.getElementById('interest-saved').textContent = formatCurrency(interestSaved);
                 document.getElementById('time-saved').textContent = Math.floor(monthsSaved / 12) + ' years ' + (monthsSaved % 12) + ' months';
@@ -257,22 +201,22 @@
                 document.getElementById('extra-payment-results').style.display = 'none';
             }
 
-            const pmiThreshold = homePrice * 0.8;
-            const originalLTV = principal / homePrice;
+            var pmiThreshold = homePrice * 0.8;
+            var originalLTV = principal / homePrice;
             if (originalLTV > 0.8) {
-                let balance = principal;
-                let monthsTo20 = 0;
+                var balance = principal;
+                var monthsTo20 = 0;
                 while (balance > pmiThreshold && monthsTo20 < n) {
-                    const interest = balance * rate;
-                    const principalPayment = monthlyPayment - interest;
+                    var interest = balance * rate;
+                    var principalPayment = monthlyPayment - interest;
                     balance -= principalPayment;
                     monthsTo20++;
                 }
                 
-                const pmiRemovalDate = new Date();
+                var pmiRemovalDate = new Date();
                 pmiRemovalDate.setMonth(pmiRemovalDate.getMonth() + monthsTo20);
                 
-                document.getElementById('pmi-info').textContent = 'At 3% annual appreciation, you will reach 80% LTV (' + formatCurrency(pmiThreshold) + ' remaining balance)';
+                document.getElementById('pmi-info').textContent = 'At 3% annual appreciation, you will reach 80% LTV';
                 document.getElementById('pmi-date').textContent = 'PMI can be removed around: ' + pmiRemovalDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
                 document.getElementById('pmi-section').style.display = 'block';
             } else {
@@ -283,15 +227,15 @@
         }
 
         function calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment) {
-            let balance = principal;
-            let months = 0;
-            let totalInterest = 0;
-            const maxMonths = n * 2;
+            var balance = principal;
+            var months = 0;
+            var totalInterest = 0;
+            var maxMonths = n * 2;
             
             while (balance > 0 && months < maxMonths) {
-                const interest = balance * rate;
+                var interest = balance * rate;
                 totalInterest += interest;
-                const principalPayment = monthlyPayment + extraPayment - interest;
+                var principalPayment = monthlyPayment + extraPayment - interest;
                 
                 if (principalPayment <= 0) {
                     break;
@@ -301,7 +245,7 @@
                 months++;
             }
 
-            const payoffDate = new Date();
+            var payoffDate = new Date();
             payoffDate.setMonth(payoffDate.getMonth() + months);
 
             return {
@@ -312,22 +256,22 @@
         }
 
         function generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment) {
-            const ctx = document.getElementById('equity-chart').getContext('2d');
+            var ctx = document.getElementById('equity-chart').getContext('2d');
             
             if (equityChart) {
                 equityChart.destroy();
             }
 
-            const data = [];
-            const labels = [];
-            let balance = principal;
-            let months = 0;
-            const maxMonths = 360 * 2;
-            let equity = downPayment || (homePrice - principal);
+            var data = [];
+            var labels = [];
+            var balance = principal;
+            var months = 0;
+            var maxMonths = 360 * 2;
+            var equity = downPayment || (homePrice - principal);
 
             while (balance > 0 && months < maxMonths) {
-                const interest = balance * rate;
-                const principalPayment = monthlyPayment + (extraPayment || 0) - interest;
+                var interest = balance * rate;
+                var principalPayment = monthlyPayment + (extraPayment || 0) - interest;
                 
                 if (principalPayment <= 0) break;
                 
@@ -394,8 +338,8 @@
         }
 
         function toggleAmortization() {
-            const table = document.getElementById('amortization-table');
-            if (table.style.display === 'none') {
+            var table = document.getElementById('amortization-table');
+            if (table.style.display === 'none' || table.style.display === '') {
                 generateAmortizationTable();
                 table.style.display = 'block';
             } else {
@@ -404,17 +348,17 @@
         }
 
         function generateAmortizationTable() {
-            const principal = parseFloat(document.getElementById('loan-amount').value) || 0;
-            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
-            const n = parseInt(document.getElementById('loan-term').value) * 12 || 360;
-            const monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+            var principal = parseFloat(document.getElementById('loan-amount').value) || 0;
+            var rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+            var n = parseInt(document.getElementById('loan-term').value) * 12 || 360;
+            var monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
             
-            let balance = principal;
-            let html = '<table><thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
+            var balance = principal;
+            var html = '<table><thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
             
-            for (let i = 1; i <= Math.min(n, 360); i++) {
-                const interest = balance * rate;
-                const principalPayment = monthlyPayment - interest;
+            for (var i = 1; i <= Math.min(n, 360); i++) {
+                var interest = balance * rate;
+                var principalPayment = monthlyPayment - interest;
                 balance -= principalPayment;
                 
                 if (i <= 12 || i % 12 === 0 || i === n) {
@@ -436,7 +380,7 @@
         document.getElementById('reset-btn').addEventListener('click', resetCalculator);
         document.getElementById('toggle-amortization').addEventListener('click', toggleAmortization);
 
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('load', function() {
             calculateLoan();
         });
     </script>
