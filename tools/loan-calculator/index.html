@@ -83,27 +83,27 @@
                     <button id="reset-btn" class="btn btn-secondary">Reset</button>
                 </div>
 
-                <div id="results-section" class="results-section" style="display: none;">
-                    <h3 id="results-title">Your Loan Analysis</h3>
+                <div id="results-section" class="results-section">
+                    <h3>Your Loan Analysis</h3>
                     
                     <div class="results-grid">
                         <div class="result-card primary">
                             <span class="result-label">Monthly Payment</span>
-                            <span id="monthly-payment" class="result-value">$0</span>
+                            <span id="monthly-payment" class="result-value">--</span>
                         </div>
                         
                         <div class="result-card">
                             <span class="result-label">Total Interest</span>
-                            <span id="total-interest" class="result-value">$0</span>
+                            <span id="total-interest" class="result-value">--</span>
                         </div>
                         
                         <div class="result-card">
                             <span class="result-label">Total Cost</span>
-                            <span id="total-cost" class="result-value">$0</span>
+                            <span id="total-cost" class="result-value">--</span>
                         </div>
                         
                         <div class="result-card highlight">
-                            <span class="result-label" id="payoff-label">Payoff Date</span>
+                            <span class="result-label">Payoff Date</span>
                             <span id="payoff-date" class="result-value">--</span>
                         </div>
                     </div>
@@ -113,11 +113,11 @@
                         <div class="results-grid">
                             <div class="result-card highlight">
                                 <span class="result-label">Interest Saved</span>
-                                <span id="interest-saved" class="result-value highlight">$0</span>
+                                <span id="interest-saved" class="result-value highlight">--</span>
                             </div>
                             <div class="result-card highlight">
                                 <span class="result-label">Time Saved</span>
-                                <span id="time-saved" class="result-value highlight">0 years</span>
+                                <span id="time-saved" class="result-value highlight">--</span>
                             </div>
                         </div>
                     </div>
@@ -194,9 +194,17 @@
     <script>
         let equityChart = null;
 
-        document.getElementById('calc-btn').addEventListener('click', calculateLoan);
-        document.getElementById('reset-btn').addEventListener('click', resetCalculator);
-        document.getElementById('toggle-amortization').addEventListener('click', toggleAmortization);
+        function formatCurrency(amount) {
+            if (isNaN(amount) || !isFinite(amount)) {
+                return '$0';
+            }
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
 
         function calculateLoan() {
             const principal = parseFloat(document.getElementById('loan-amount').value) || 0;
@@ -205,6 +213,11 @@
             const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
             const extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
             const homePrice = principal + downPayment;
+
+            console.log('Principal:', principal);
+            console.log('Rate:', rate);
+            console.log('Years:', years);
+            console.log('Down Payment:', downPayment);
 
             if (principal <= 0 || rate <= 0) {
                 alert('Please enter valid loan details');
@@ -215,6 +228,9 @@
             const monthlyPayment = principal * (rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
             const totalPayment = monthlyPayment * n;
             const totalInterest = totalPayment - principal;
+
+            console.log('Monthly Payment:', monthlyPayment);
+            console.log('Total Interest:', totalInterest);
 
             const payoffDate = new Date();
             payoffDate.setMonth(payoffDate.getMonth() + n);
@@ -263,9 +279,7 @@
                 document.getElementById('pmi-section').style.display = 'none';
             }
 
-            generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment, actualPayoffDate);
-
-            document.getElementById('results-section').style.display = 'block';
+            generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment);
         }
 
         function calculateWithExtraPayment(principal, rate, n, monthlyPayment, extraPayment) {
@@ -297,7 +311,7 @@
             };
         }
 
-        function generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment, payoffDate) {
+        function generateEquityChart(principal, rate, monthlyPayment, homePrice, downPayment, extraPayment) {
             const ctx = document.getElementById('equity-chart').getContext('2d');
             
             if (equityChart) {
@@ -366,26 +380,17 @@
             });
         }
 
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-
         function resetCalculator() {
             document.getElementById('loan-amount').value = 300000;
             document.getElementById('interest-rate').value = 6.5;
             document.getElementById('loan-term').value = 30;
             document.getElementById('down-payment').value = 60000;
             document.getElementById('extra-payment').value = 0;
-            document.getElementById('results-section').style.display = 'none';
             if (equityChart) {
                 equityChart.destroy();
                 equityChart = null;
             }
+            calculateLoan();
         }
 
         function toggleAmortization() {
@@ -427,7 +432,13 @@
             document.getElementById('amortization-table').innerHTML = html;
         }
 
-        calculateLoan();
+        document.getElementById('calc-btn').addEventListener('click', calculateLoan);
+        document.getElementById('reset-btn').addEventListener('click', resetCalculator);
+        document.getElementById('toggle-amortization').addEventListener('click', toggleAmortization);
+
+        window.addEventListener('DOMContentLoaded', function() {
+            calculateLoan();
+        });
     </script>
 
     <style>
