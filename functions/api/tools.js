@@ -4,7 +4,7 @@ const TOOL_CATEGORIES = {
     'converter': ['base64-encoder', 'url-encoder', 'binary-hex-converter', 'unit-converter', 'currency-converter', 'timestamp-converter', 'time-zone-converter', 'color-palette-extractor'],
     'network': ['dns-lookup', 'ssl-checker', 'ip-address-lookup', 'speed-test', 'email-verifier'],
     'testing': ['regex-tester', 'jwt-decoder'],
-    'math': ['calculator', 'bmi-calculator', 'loan-calculator', 'math-solver', 'tip-calculator'],
+    'math': ['calculator', 'bmi-calculator', 'loan-calculator', 'math-solver', 'age-calculator', 'tip-calculator'],
     'image': ['image-compressor', 'image-resizer', 'image-to-text', 'screenshot-tool'],
     'pdf': ['pdf-merger', 'pdf-splitter'],
     'other': ['weather-forecast', 'crypto-price-tracker', 'translator', 'grammar-checker', 'word-counter', 'online-timer', 'text-diff', 'text-to-speech', 'feedback']
@@ -52,6 +52,7 @@ const TOOL_DISPLAY_NAMES = {
     'bmi-calculator': 'BMI Calculator',
     'loan-calculator': 'Loan Calculator',
     'math-solver': 'Math Solver',
+    'age-calculator': 'Age Calculator',
     'tip-calculator': 'Tip Calculator',
     'image-compressor': 'Image Compressor',
     'image-resizer': 'Image Resizer',
