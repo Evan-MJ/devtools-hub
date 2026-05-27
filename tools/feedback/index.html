@@ -12,8 +12,115 @@
     <link rel="canonical" href="https://tools.scoreroute.com/tools/feedback/">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Report a Problem - DevTools Hub","description":"Submit feedback about issues with DevTools Hub tools","url":"https://tools.scoreroute.com/tools/feedback/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-27","author":{"@type":"Person","name":"BAOMING"},"name":"Report a Problem - DevTools Hub","description":"Submit feedback about issues with DevTools Hub tools","url":"https://tools.scoreroute.com/tools/feedback/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
+    <style>
+        .feedback-form-container {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .feedback-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .feedback-columns { grid-template-columns: 1fr; }
+        }
+        .feedback-column {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .feedback-column h3 {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+        .feedback-column.open h3 { color: var(--primary); border-color: var(--primary); }
+        .feedback-column.resolved h3 { color: var(--success); border-color: var(--success); }
+        .feedback-item {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        .feedback-item.resolved {
+            border-left-color: var(--success);
+            opacity: 0.75;
+        }
+        .feedback-header {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .feedback-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .feedback-badge.bug { background: #ef444440; color: #ef4444; }
+        .feedback-badge.suggestion { background: #3b82f640; color: #3b82f6; }
+        .feedback-badge.content { background: #f59e0b40; color: #f59e0b; }
+        .feedback-badge.performance { background: #8b5cf640; color: #8b5cf6; }
+        .feedback-badge.other { background: #6b728040; color: #9ca3af; }
+        .feedback-badge.resolved-badge { background: #22c55e40; color: #22c55e; }
+        .feedback-category, .feedback-tool {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .feedback-tool a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .feedback-tool a:hover { text-decoration: underline; }
+        .feedback-description {
+            color: var(--text);
+            margin: 8px 0;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feedback-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .admin-note {
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--success);
+        }
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        .no-feedback {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 24px;
+            font-size: 0.9rem;
+        }
+        .loading { text-align: center; color: var(--text-muted); padding: 24px; }
+        .column-count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -22,7 +129,6 @@
             <p class="subtitle">Help Us Improve Our Free Developer Tools</p>
             <nav class="breadcrumb">
                 <a href="/">Home</a> &gt; <span>Feedback</span>
-              <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
             </nav>
         </div>
     </header>
@@ -38,13 +144,6 @@
                             <label for="category">Category *</label>
                             <select id="category" required onchange="updateTools()">
                                 <option value="">Select a category</option>
-                                <option value="formatter">Formatters</option>
-                                <option value="generator">Generators</option>
-                                <option value="converter">Converters</option>
-                                <option value="network">Network Tools</option>
-                                <option value="testing">Code Testing</option>
-                                <option value="math">Calculators & Math</option>
-                                <option value="other">Other</option>
                             </select>
                         </div>
 
@@ -69,7 +168,7 @@
 
                         <div class="form-group">
                             <label for="description">Description *</label>
-                            <textarea id="description" rows="5" placeholder="Please describe the problem in detail..." required></textarea>
+                            <textarea id="description" rows="4" placeholder="Please describe the problem in detail..." required></textarea>
                         </div>
 
                         <div class="form-group">
@@ -85,10 +184,20 @@
                     </div>
                 </div>
 
-                <div class="recent-feedback">
-                    <h2>Recent Feedback</h2>
-                    <div id="feedback-list">
-                        <p class="no-feedback">No feedback submitted yet. Be the first to report!</p>
+                <div class="feedback-columns">
+                    <div class="feedback-column open">
+                        <h3>Open Issues</h3>
+                        <p class="column-count" id="open-count">Loading...</p>
+                        <div id="open-list">
+                            <p class="loading">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="feedback-column resolved">
+                        <h3>Resolved</h3>
+                        <p class="column-count" id="resolved-count"></p>
+                        <div id="resolved-list">
+                            <p class="loading">Loading...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,343 +225,194 @@
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 DevTools Hub. All rights reserved.</p>
-        </div>
+        <p>&copy; 2026 DevTools Hub | Free Developer Tools | <a href="/sitemap.xml">Sitemap</a></p>
     </footer>
 
     <script>
-    const TOOLS_BY_CATEGORY = {
-        'formatter': ['JSON Formatter', 'HTML Formatter', 'SQL Formatter'],
-        'generator': ['QR Code Generator', 'Password Generator', 'Hash Generator', 'UUID Generator', 'Cron Generator'],
-        'converter': ['Timestamp Converter', 'Color Picker', 'Word Counter', 'Base64 Encoder', 'URL Encoder', 'Currency Converter', 'Time Zone Converter'],
-        'network': ['Speed Test', 'IP Address Lookup'],
-        'testing': ['Regex Tester', 'JWT Decoder'],
-        'math': ['Calculator', 'Math Solver'],
-        'other': ['Other (please specify in description)']
-    };
+        let toolData = { categories: {}, tools: [] };
 
-    const TOOL_URLS = {
-        'JSON Formatter': '/tools/json-formatter/',
-        'HTML Formatter': '/tools/html-formatter/',
-        'SQL Formatter': '/tools/sql-formatter/',
-        'QR Code Generator': '/tools/qr-code-generator/',
-        'Password Generator': '/tools/password-generator/',
-        'Hash Generator': '/tools/hash-generator/',
-        'UUID Generator': '/tools/uuid-generator/',
-        'Cron Generator': '/tools/cron-generator/',
-        'Timestamp Converter': '/tools/timestamp-converter/',
-        'Color Picker': '/tools/color-picker/',
-        'Word Counter': '/tools/word-counter/',
-        'Base64 Encoder': '/tools/base64-encoder/',
-        'URL Encoder': '/tools/url-encoder/',
-        'Currency Converter': '/tools/currency-converter/',
-        'Time Zone Converter': '/tools/time-zone-converter/',
-        'Speed Test': '/tools/speed-test/',
-        'IP Address Lookup': '/tools/ip-address-lookup/',
-        'Regex Tester': '/tools/regex-tester/',
-        'JWT Decoder': '/tools/jwt-decoder/',
-        'Calculator': '/tools/calculator/',
-        'Math Solver': '/tools/math-solver/',
-        'Other (please specify in description)': null
-    };
-
-    let feedbackData = JSON.parse(localStorage.getItem('feedbackData') || '[]');
-
-    function updateTools() {
-        const category = document.getElementById('category').value;
-        const toolGroup = document.getElementById('tool-group');
-        const toolSelect = document.getElementById('tool');
-        
-        toolSelect.innerHTML = '<option value="">Select a tool</option>';
-        
-        if (category && TOOLS_BY_CATEGORY[category]) {
-            toolGroup.style.display = 'block';
-            TOOLS_BY_CATEGORY[category].forEach(tool => {
-                const option = document.createElement('option');
-                option.value = tool;
-                option.textContent = tool;
-                toolSelect.appendChild(option);
-            });
-        } else {
-            toolGroup.style.display = 'none';
-        }
-    }
-
-    function submitFeedback(event) {
-        event.preventDefault();
-        
-        const feedback = {
-            id: Date.now(),
-            timestamp: new Date().toISOString(),
-            category: document.getElementById('category').value,
-            tool: document.getElementById('tool').value,
-            type: document.getElementById('feedback-type').value,
-            description: document.getElementById('description').value.trim(),
-            email: document.getElementById('email').value.trim() || null
-        };
-
-        feedbackData.unshift(feedback);
-        if (feedbackData.length > 100) {
-            feedbackData = feedbackData.slice(0, 100);
-        }
-        
-        localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
-        
-        document.getElementById('feedback-form').reset();
-        document.getElementById('tool-group').style.display = 'none';
-        document.getElementById('submit-success').style.display = 'block';
-        
-        renderFeedback();
-        
-        setTimeout(() => {
-            document.getElementById('submit-success').style.display = 'none';
-        }, 5000);
-    }
-
-    function getCategoryLabel(cat) {
-        const labels = {
-            'formatter': 'Formatters',
-            'generator': 'Generators',
-            'converter': 'Converters',
-            'network': 'Network Tools',
-            'testing': 'Code Testing',
-            'math': 'Calculators & Math',
-            'other': 'Other'
-        };
-        return labels[cat] || cat;
-    }
-
-    function getTypeLabel(type) {
-        const labels = {
-            'bug': 'Bug',
-            'suggestion': 'Suggestion',
-            'content': 'Content Error',
-            'performance': 'Performance',
-            'other': 'Other'
-        };
-        return labels[type] || type;
-    }
-
-    function renderFeedback() {
-        const list = document.getElementById('feedback-list');
-        
-        if (feedbackData.length === 0) {
-            list.innerHTML = '<p class="no-feedback">No feedback submitted yet. Be the first to report!</p>';
-            return;
+        async function loadToolData() {
+            try {
+                const response = await fetch('/api/tools');
+                toolData = await response.json();
+                populateCategories();
+            } catch (e) {
+                console.error('Failed to load tools:', e);
+            }
         }
 
-        list.innerHTML = feedbackData.map(f => {
-            const toolUrl = TOOL_URLS[f.tool];
-            const toolLink = toolUrl ? `<a href="${toolUrl}">${f.tool}</a>` : f.tool;
+        function populateCategories() {
+            const categorySelect = document.getElementById('category');
+            categorySelect.innerHTML = '<option value="">Select a category</option>';
             
+            for (const [key, label] of Object.entries(toolData.categories)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = label;
+                categorySelect.appendChild(option);
+            }
+        }
+
+        function updateTools() {
+            const category = document.getElementById('category').value;
+            const toolGroup = document.getElementById('tool-group');
+            const toolSelect = document.getElementById('tool');
+            
+            toolSelect.innerHTML = '<option value="">Select a tool</option>';
+            
+            if (!category) {
+                toolGroup.style.display = 'none';
+                return;
+            }
+            
+            const toolsInCategory = toolData.tools.filter(t => t.category === category);
+            
+            if (toolsInCategory.length > 0) {
+                toolGroup.style.display = 'block';
+                toolsInCategory.forEach(tool => {
+                    const option = document.createElement('option');
+                    option.value = tool.name;
+                    option.textContent = tool.name;
+                    toolSelect.appendChild(option);
+                });
+            } else {
+                toolGroup.style.display = 'none';
+            }
+        }
+
+        async function loadFeedback() {
+            try {
+                const response = await fetch('/api/feedback');
+                const feedbackData = await response.json();
+                renderFeedback(feedbackData);
+            } catch (e) {
+                document.getElementById('open-list').innerHTML = '<p class="no-feedback">Failed to load feedback.</p>';
+                document.getElementById('resolved-list').innerHTML = '<p class="no-feedback">Failed to load feedback.</p>';
+            }
+        }
+
+        async function submitFeedback(event) {
+            event.preventDefault();
+            
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const data = {
+                category: document.getElementById('category').value,
+                tool: document.getElementById('tool').value || 'Other',
+                type: document.getElementById('feedback-type').value,
+                description: document.getElementById('description').value.trim(),
+                email: document.getElementById('email').value.trim() || ''
+            };
+
+            try {
+                const response = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    document.getElementById('feedback-form').reset();
+                    document.getElementById('tool-group').style.display = 'none';
+                    document.getElementById('submit-success').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        document.getElementById('submit-success').style.display = 'none';
+                    }, 5000);
+                    
+                    loadFeedback();
+                } else {
+                    alert('Failed to submit feedback. Please try again.');
+                }
+            } catch (e) {
+                alert('Failed to submit feedback. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Feedback';
+            }
+        }
+
+        function getCategoryLabel(cat) {
+            return toolData.categories[cat] || cat;
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'bug': 'Bug',
+                'suggestion': 'Suggestion',
+                'content': 'Content',
+                'performance': 'Performance',
+                'other': 'Other'
+            };
+            return labels[type] || type;
+        }
+
+        function renderFeedback(feedbackData) {
+            feedbackData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            const openList = document.getElementById('open-list');
+            const resolvedList = document.getElementById('resolved-list');
+            const openCount = document.getElementById('open-count');
+            const resolvedCount = document.getElementById('resolved-count');
+            
+            const unresolved = feedbackData.filter(f => !f.resolved);
+            const resolved = feedbackData.filter(f => f.resolved);
+            
+            openCount.textContent = unresolved.length + ' open issue' + (unresolved.length !== 1 ? 's' : '');
+            resolvedCount.textContent = resolved.length + ' resolved' + (resolved.length !== 1 ? 's' : '');
+            
+            if (unresolved.length === 0) {
+                openList.innerHTML = '<p class="no-feedback">No open issues. Great!</p>';
+            } else {
+                openList.innerHTML = unresolved.map(f => createFeedbackHTML(f, false)).join('');
+            }
+            
+            if (resolved.length === 0) {
+                resolvedList.innerHTML = '<p class="no-feedback">No resolved issues yet.</p>';
+            } else {
+                resolvedList.innerHTML = resolved.map(f => createFeedbackHTML(f, true)).join('');
+            }
+        }
+
+        function createFeedbackHTML(f, isResolved) {
             return `
-                <div class="feedback-item">
+                <div class="feedback-item ${isResolved ? 'resolved' : ''}">
                     <div class="feedback-header">
                         <span class="feedback-badge ${f.type}">${getTypeLabel(f.type)}</span>
+                        ${isResolved ? '<span class="feedback-badge resolved-badge">Resolved</span>' : ''}
                         <span class="feedback-category">${getCategoryLabel(f.category)}</span>
-                        <span class="feedback-tool">${toolLink}</span>
+                        <span class="feedback-tool">${escapeHtml(f.tool || 'Other')}</span>
                     </div>
                     <div class="feedback-description">${escapeHtml(f.description)}</div>
                     <div class="feedback-meta">
-                        <span class="feedback-time">${formatTime(f.timestamp)}</span>
-                        ${f.email ? `<span class="feedback-email">${escapeHtml(f.email)}</span>` : ''}
+                        <span>${formatTime(f.timestamp)}</span>
+                        ${f.email ? `<span>${escapeHtml(f.email)}</span>` : ''}
                     </div>
+                    ${f.adminNote ? `<div class="admin-note"><strong>Admin:</strong> ${escapeHtml(f.adminNote)}</div>` : ''}
                 </div>
             `;
-        }).join('');
-    }
+        }
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
 
-    function formatTime(isoString) {
-        const date = new Date(isoString);
-        return date.toLocaleString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
+        function formatTime(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
 
-    // Render feedback on page load
-    renderFeedback();
+        loadToolData();
+        loadFeedback();
     </script>
-
-    <style>
-    .feedback-form-container {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 20px;
-    }
-
-    .feedback-form-container h2 {
-        margin-bottom: 20px;
-        font-size: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 16px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 500;
-        color: var(--text);
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid var(--border);
-        border-radius: 8px;
-        background: var(--bg-secondary);
-        color: var(--text);
-        font-size: 14px;
-        font-family: inherit;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: var(--primary);
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 100px;
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 14px;
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    .submit-btn:hover {
-        background: var(--primary-dark);
-    }
-
-    .success-message {
-        padding: 16px;
-        background: #d1fae5;
-        border: 1px solid #10b981;
-        border-radius: 8px;
-        color: #065f46;
-        text-align: center;
-        margin-top: 16px;
-    }
-
-    .recent-feedback {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 24px;
-    }
-
-    .recent-feedback h2 {
-        margin-bottom: 16px;
-        font-size: 18px;
-    }
-
-    .no-feedback {
-        color: var(--text-secondary);
-        text-align: center;
-        padding: 20px;
-    }
-
-    .feedback-item {
-        padding: 16px;
-        background: var(--bg-secondary);
-        border-radius: 8px;
-        margin-bottom: 12px;
-        border-left: 4px solid var(--primary);
-    }
-
-    .feedback-header {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 8px;
-        align-items: center;
-    }
-
-    .feedback-badge {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .feedback-badge.bug { background: #fef2f2; color: #dc2626; }
-    .feedback-badge.suggestion { background: #eff6ff; color: #2563eb; }
-    .feedback-badge.content { background: #fef3c7; color: #d97706; }
-    .feedback-badge.performance { background: #f3e8ff; color: #9333ea; }
-    .feedback-badge.other { background: #f1f5f9; color: #64748b; }
-
-    .feedback-category {
-        font-size: 12px;
-        color: var(--text-secondary);
-    }
-
-    .feedback-tool {
-        font-size: 13px;
-        color: var(--primary);
-    }
-
-    .feedback-tool a {
-        color: var(--primary);
-        text-decoration: none;
-    }
-
-    .feedback-tool a:hover {
-        text-decoration: underline;
-    }
-
-    .feedback-description {
-        color: var(--text);
-        line-height: 1.5;
-        white-space: pre-wrap;
-        word-break: break-word;
-    }
-
-    .feedback-meta {
-        margin-top: 8px;
-        font-size: 12px;
-        color: var(--text-secondary);
-        display: flex;
-        gap: 16px;
-    }
-
-    .faq-item {
-        margin-bottom: 16px;
-    }
-
-    .faq-item h3 {
-        font-size: 15px;
-        color: var(--text);
-        margin-bottom: 6px;
-    }
-
-    .faq-item p {
-        font-size: 14px;
-        color: var(--text-secondary);
-    }
-    </style>
 </body>
 </html>

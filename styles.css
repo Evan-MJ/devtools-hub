@@ -76,6 +76,53 @@ header h1 { font-size: 2.2rem; margin-bottom: 8px; font-weight: 700; background:
 footer { text-align: center; padding: 40px 0; color: #555; font-size: 0.85rem; border-top: 1px solid #1a1a2e; margin-top: 40px; }
 footer a { color: #667eea; }
 
+
+/* Search Section Styles */
+.search-section {
+    padding: 24px 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #2a2a4a;
+}
+.search-container {
+    display: flex;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+#tool-search {
+    flex: 1;
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+#tool-search:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+#tool-search::placeholder {
+    color: #666;
+}
+.search-results-count {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 12px;
+    min-height: 20px;
+}
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+}
+.no-results h3 {
+    color: #667eea;
+    margin-bottom: 8px;
+}
 @media (max-width: 768px) {
     header h1 { font-size: 1.6rem; }
     .tools-grid { grid-template-columns: 1fr; }

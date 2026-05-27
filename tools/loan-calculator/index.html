@@ -104,18 +104,14 @@
                     <div id="pmi-section" class="pmi-section" style="display: none;">
                         <div class="pmi-alert">
                             <h4>PMI Removal Analysis</h4>
-                            <p id="pmi-info">--</p>
+                            <p id="pmi-info">Based on your loan-to-value ratio, private mortgage insurance (PMI) is required.</p>
                             <p id="pmi-date">--</p>
                         </div>
                     </div>
                     
-                    <div class="chart-container">
-                        <canvas id="equity-chart"></canvas>
-                    </div>
-                    
-                    <div class="amortization-section">
-                        <button id="toggle-amortization" class="btn btn-secondary">Show/Hide Amortization Schedule</button>
-                        <div id="amortization-table" class="amortization-table"></div>
+                    <div id="amortization-section" class="amortization-section">
+                        <button id="toggle-amortization" class="btn btn-secondary">Show Amortization Schedule</button>
+                        <div id="amortization-table" class="amortization-table" style="display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -129,7 +125,7 @@
                     <li><strong>Exact Payoff Date:</strong> Shows calendar date</li>
                     <li><strong>Extra Payment Impact:</strong> See exactly how much you save</li>
                     <li><strong>PMI Tracker:</strong> Know when you can stop paying PMI</li>
-                    <li><strong>Visual Equity Growth:</strong> Chart showing your equity</li>
+                    <li><strong>Amortization Schedule:</strong> Full payment breakdown</li>
                 </ul>
 
                 <h3>Why AI Chatbots Can't Solve This</h3>
@@ -147,10 +143,7 @@
     </footer>
 
     <script src="/tools.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        var equityChart = null;
-
         function fmt(amount) {
             return '$' + Math.round(amount).toLocaleString();
         }
@@ -165,7 +158,7 @@
             var n = y * 12;
             
             if (p <= 0 || r <= 0) {
-                alert('Enter valid loan details');
+                alert('Please enter valid loan details');
                 return;
             }
             
@@ -206,7 +199,7 @@
                 }
                 var pmi = new Date();
                 pmi.setMonth(pmi.getMonth() + m20);
-                document.getElementById('pmi-date').textContent = '~' + pmi.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+                document.getElementById('pmi-date').textContent = 'Estimated PMI removal: ' + pmi.toLocaleDateString('en-US', {month:'long', year:'numeric'});
                 document.getElementById('pmi-section').style.display = 'block';
             } else {
                 document.getElementById('pmi-section').style.display = 'none';
@@ -224,13 +217,14 @@
 
         function toggleAmort() {
             var t = document.getElementById('amortization-table');
-            t.style.display = (t.style.display === 'none' || t.style.display === '') ? 'block' : 'none';
-            if (t.style.display === 'block') {
+            var btn = document.getElementById('toggle-amortization');
+            if (t.style.display === 'none') {
                 var p = parseFloat(document.getElementById('loan-amount').value) || 0;
                 var r = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
                 var y = parseInt(document.getElementById('loan-term').value) * 12 || 360;
                 var mp = p * (r * Math.pow(1 + r, y)) / (Math.pow(1 + r, y) - 1);
-                var bal = p, html = '<table><tr><th>M</th><th>Pay</th><th>Prin</th><th>Int</th><th>Bal</th></tr>';
+                var bal = p;
+                var html = '<table><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr>';
                 for (var i = 1; i <= Math.min(y, 360); i++) {
                     var int = bal * r;
                     var pp = mp - int;
@@ -240,43 +234,48 @@
                     }
                 }
                 t.innerHTML = html + '</table>';
+                t.style.display = 'block';
+                btn.textContent = 'Hide Amortization Schedule';
+            } else {
+                t.style.display = 'none';
+                btn.textContent = 'Show Amortization Schedule';
             }
         }
 
-        document.getElementById('calc-btn').onclick = calc;
-        document.getElementById('reset-btn').onclick = reset;
-        document.getElementById('toggle-amortization').onclick = toggleAmort;
+        document.getElementById('calc-btn').addEventListener('click', calc);
+        document.getElementById('reset-btn').addEventListener('click', reset);
+        document.getElementById('toggle-amortization').addEventListener('click', toggleAmort);
         
-        window.onload = function() {
-            setTimeout(calc, 100);
-        };
+        window.addEventListener('DOMContentLoaded', function() {
+            calc();
+        });
     </script>
 
     <style>
         .calculator-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-weight: 500; margin-bottom: 4px; color: #374151; }
-        .input-group input, .input-group select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; }
+        .input-group input, .input-group select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; background: #fff; color: #000; }
         .results-section { margin-top: 24px; padding: 24px; background: #f9fafb; border-radius: 12px; }
         .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 20px; }
-        .result-card { background: white; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb; }
-        .result-card.primary { background: #3b82f6; color: white; border: none; }
-        .result-card.highlight { background: #10b981; color: white; border: none; }
+        .result-card { background: #fff; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb; color: #111; }
+        .result-card.primary { background: #3b82f6; color: #fff; border: none; }
+        .result-card.highlight { background: #10b981; color: #fff; border: none; }
         .result-label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; }
         .result-card.primary .result-label, .result-card.highlight .result-label { color: rgba(255,255,255,0.8); }
-        .result-value { display: block; font-size: 24px; font-weight: 700; }
+        .result-value { display: block; font-size: 24px; font-weight: 700; color: inherit; }
+        .result-card:not(.primary):not(.highlight) .result-value { color: #111; }
         .extra-results { margin-top: 20px; padding: 16px; background: #ecfdf5; border-radius: 8px; }
         .extra-results h4 { margin-top: 0; color: #065f46; }
         .pmi-section { margin-top: 20px; }
         .pmi-alert { padding: 16px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b; }
         .pmi-alert h4 { margin-top: 0; color: #92400e; }
         .pmi-alert p { margin: 8px 0; color: #78350f; }
-        .chart-container { margin-top: 20px; height: 300px; }
         .amortization-section { margin-top: 20px; }
-        .amortization-table { margin-top: 16px; max-height: 400px; overflow-y: auto; }
-        .amortization-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .amortization-table { margin-top: 16px; max-height: 400px; overflow-y: auto; background: #fff; border-radius: 8px; }
+        .amortization-table table { width: 100%; border-collapse: collapse; font-size: 14px; color: #111; }
         .amortization-table th, .amortization-table td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #e5e7eb; }
-        .amortization-table th { background: #f3f4f6; font-weight: 600; }
+        .amortization-table th { background: #f3f4f6; font-weight: 600; color: #374151; }
         .amortization-table td:first-child, .amortization-table th:first-child { text-align: left; }
     </style>
 </body>
