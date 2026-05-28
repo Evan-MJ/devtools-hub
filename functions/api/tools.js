@@ -5,7 +5,7 @@ const TOOL_CATEGORIES = {
     'network': ['dns-lookup', 'ssl-checker', 'ip-address-lookup', 'speed-test', 'email-verifier'],
     'testing': ['regex-tester', 'jwt-decoder'],
     'math': ['calculator', 'bmi-calculator', 'loan-calculator', 'math-solver', 'age-calculator', 'tip-calculator'],
-    'image': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool'],
+    'image': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'video-to-audio', 'screenshot-tool'],
     'pdf': ['pdf-merger', 'pdf-splitter'],
     'other': ['weather-forecast', 'crypto-price-tracker', 'translator', 'grammar-checker', 'word-counter', 'online-timer', 'text-diff', 'text-to-speech', 'audio-to-text', 'feedback']
 };
@@ -58,6 +58,7 @@ const TOOL_DISPLAY_NAMES = {
     'image-resizer': 'Image Resizer',
     'image-to-text': 'Image to Text',
     'background-remover': 'Background Remover',
+    'video-to-audio': 'Video to Audio Converter',
     'screenshot-tool': 'Screenshot Tool',
     'pdf-merger': 'PDF Merger',
     'pdf-splitter': 'PDF Splitter',
