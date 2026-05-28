@@ -11,48 +11,48 @@
 <meta property="og:url" content="https://tools.scoreroute.com/tools/video-to-audio/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Video to Audio Converter",
-  "url": "https://tools.scoreroute.com/tools/video-to-audio/",
-  "description": "Free online video to audio converter using browser-based audio extraction. Extract MP3, WebM audio from video files.",
-  "applicationCategory": "Multimedia",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires Chrome, Edge, or Firefox"
-}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Video to Audio Converter","url":"https://tools.scoreroute.com/tools/video-to-audio/","description":"Free online video to audio converter using browser-based audio extraction.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 <link rel="stylesheet" href="/styles.css">
 <style>
 .converter-area { max-width: 800px; margin: 2rem auto; }
-.dropzone { border: 3px dashed #dee2e6; border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: border-color 0.3s; background: #f8f9fa; }
-.dropzone:hover, .dropzone.dragover { border-color: #007bff; background: #e8f0fe; }
-.dropzone.has-file { border-color: #28a745; background: #d4edda; }
+.converter-area * { color: #ccc; }
+.dropzone { border: 3px dashed #555; border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.3s; background: #1a1a3e; }
+.dropzone:hover, .dropzone.dragover { border-color: #667eea; background: #222250; }
+.dropzone.has-file { border-color: #28a745; background: #1a3e2a; }
 .dropzone-icon { font-size: 3rem; margin-bottom: 1rem; }
-.dropzone-text { color: #6c757d; font-size: 1.1rem; }
-.dropzone-text strong { color: #007bff; }
-.file-info { display: none; margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; }
+.dropzone-text { font-size: 1.1rem; }
+.dropzone-text strong { color: #667eea; }
+.file-info { display: none; margin: 1rem 0; padding: 1rem; background: #1a1a3e; border-radius: 8px; border: 1px solid #333; }
 .file-info.visible { display: block; }
 .file-info-row { display: flex; justify-content: space-between; padding: 0.3rem 0; }
-.file-info-label { color: #6c757d; }
+.file-info-label { color: #888; }
 .preview-area { display: none; margin: 1rem 0; }
 .preview-area.visible { display: block; }
 .preview-area video { max-width: 100%; max-height: 300px; border-radius: 8px; }
-.progress-area { display: none; margin: 1rem 0; }
+.progress-area { display: none; margin: 1rem 0; padding: 1rem; background: #1a1a3e; border-radius: 8px; border: 1px solid #333; }
 .progress-area.visible { display: block; }
-.progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
-.progress-fill { height: 100%; background: #28a745; width: 0%; transition: width 0.3s; border-radius: 4px; }
-.result-area { display: none; margin: 1rem 0; padding: 1.5rem; background: #d4edda; border-radius: 8px; text-align: center; }
+.progress-bar { height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+.progress-fill { height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: 0%; transition: width 0.3s; border-radius: 4px; }
+.result-area { display: none; margin: 1rem 0; padding: 1.5rem; background: #1a3e2a; border-radius: 8px; text-align: center; border: 1px solid #28a745; }
 .result-area.visible { display: block; }
+.result-area p { color: #fff; }
 .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: opacity 0.2s; }
 .btn:hover { opacity: 0.9; }
-.btn-primary { background: #007bff; color: white; }
-.btn-success { background: #28a745; color: white; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.format-select { padding: 0.5rem; border-radius: 4px; border: 1px solid #dee2e6; font-size: 0.9rem; margin: 0.5rem; }
-.quality-select { padding: 0.5rem; border-radius: 4px; border: 1px solid #dee2e6; font-size: 0.9rem; margin: 0.5rem; }
+.btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+.btn-success { background: #28a745; color: #fff; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.format-select { padding: 0.5rem; border-radius: 4px; border: 1px solid #555; font-size: 0.9rem; margin: 0.5rem; background: #1a1a3e; color: #fff; }
+.format-select option { background: #0f0f23; color: #fff; }
+label { color: #ccc; font-weight: 500; }
+section h2 { color: #fff; margin-top: 2rem; }
+section p, section li { color: #ccc; }
 .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-.feature-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #007bff; }
+.feature-card { background: #1a1a3e; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #667eea; }
+.feature-card h3 { color: #fff; margin-bottom: 0.5rem; }
+.feature-card p { color: #aaa; }
+.hero-text { color: #ccc; font-size: 1.1rem; }
+ol li, ul li { margin: 0.5rem 0; }
 </style>
 </head>
 <body>
@@ -79,19 +79,19 @@
       <div class="dropzone-icon">🎬</div>
       <div class="dropzone-text">
         <strong>Click to upload</strong> or drag &amp; drop<br>
-        MP4, WebM, MOV, AVI, MKV, FLV (max 2GB)
+        MP4, WebM, MOV, AVI, MKV, FLV
       </div>
       <input type="file" id="fileInput" accept="video/*" style="display:none">
     </div>
 
-    <div class="form-row" style="display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap">
-      <label style="font-weight:500">Output format:</label>
+    <div style="display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap">
+      <label>Output:</label>
       <select class="format-select" id="formatSelect">
-        <option value="audio/webm;codecs=opus">MP3-like (WebM Opus)</option>
+        <option value="audio/webm;codecs=opus">WebM Opus (best quality)</option>
         <option value="audio/webm">WebM Audio</option>
         <option value="audio/ogg;codecs=opus">OGG Opus</option>
       </select>
-      <label style="font-weight:500">Download format:</label>
+      <label>Download as:</label>
       <select class="format-select" id="downloadFormat">
         <option value="mp3">.mp3</option>
         <option value="webm">.webm</option>
@@ -100,9 +100,9 @@
     </div>
 
     <div class="file-info" id="fileInfo">
-      <div class="file-info-row"><span class="file-info-label">File:</span><span id="fileName">-</span></div>
-      <div class="file-info-row"><span class="file-info-label">Size:</span><span id="fileSize">-</span></div>
-      <div class="file-info-row"><span class="file-info-label">Duration:</span><span id="fileDuration">-</span></div>
+      <div class="file-info-row"><span class="file-info-label">File:</span><span style="color:#fff" id="fileName">-</span></div>
+      <div class="file-info-row"><span class="file-info-label">Size:</span><span style="color:#fff" id="fileSize">-</span></div>
+      <div class="file-info-row"><span class="file-info-label">Duration:</span><span style="color:#fff" id="fileDuration">-</span></div>
     </div>
 
     <div class="preview-area" id="previewArea">
@@ -114,13 +114,13 @@
     </div>
 
     <div class="progress-area" id="progressArea">
-      <p id="progressText">Processing...</p>
+      <p id="progressText" style="color:#fff">Processing...</p>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
 
     <div class="result-area" id="resultArea">
-      <p style="font-size:1.2rem;font-weight:500">✅ Audio extracted successfully!</p>
-      <p style="color:#6c757d" id="resultInfo"></p>
+      <p style="font-size:1.2rem;font-weight:500">Audio extracted successfully!</p>
+      <p style="color:#aaa" id="resultInfo"></p>
       <button class="btn btn-success" id="downloadBtn">Download Audio</button>
       <button class="btn btn-primary" id="convertAnother" style="margin-left:0.5rem">Convert Another</button>
     </div>
@@ -130,10 +130,10 @@
     <h2>Why Use This Tool?</h2>
     <div class="feature-grid">
       <div class="feature-card"><h3>100% Private</h3><p>Video stays in your browser. No upload to any server.</p></div>
-      <div class="feature-card"><h3>Multiple Formats</h3><p>Supports MP4, WebM, MOV, AVI, MKV, FLV input. Output as MP3 or WebM.</p></div>
+      <div class="feature-card"><h3>Multiple Formats</h3><p>Supports MP4, WebM, MOV, AVI, MKV, FLV input. Output as WebM audio.</p></div>
       <div class="feature-card"><h3>No Sign-Up</h3><p>Start extracting immediately. No account or email required.</p></div>
-      <div class="feature-card"><h3>Fast Processing</h3><p>Extracts audio in real-time using your browser's built-in capabilities.</p></div>
-      <div class="feature-card"><h3>No File Size Limit</h3><p>Process videos up to 2GB. Limited only by your browser's memory.</p></div>
+      <div class="feature-card"><h3>Fast Processing</h3><p>Extracts audio in real-time using your browser's capabilities.</p></div>
+      <div class="feature-card"><h3>No File Size Limit</h3><p>Process videos up to 2GB. Limited only by browser memory.</p></div>
       <div class="feature-card"><h3>Free Forever</h3><p>No hidden costs, no premium tiers. All features are completely free.</p></div>
     </div>
   </section>
@@ -142,8 +142,8 @@
     <h2>How to Extract Audio from Video</h2>
     <ol>
       <li><strong>Upload</strong> your video file (click or drag &amp; drop)</li>
-      <li><strong>Choose</strong> output format (WebM Opus recommended for best quality)</li>
-      <li><strong>Click "Extract Audio"</strong> — processing starts instantly</li>
+      <li><strong>Choose</strong> output format</li>
+      <li><strong>Click Extract Audio</strong> — processing starts instantly</li>
       <li><strong>Download</strong> your audio file when ready</li>
     </ol>
   </section>
@@ -155,17 +155,15 @@
       <li><strong>Content Creators:</strong> Repurpose video content as podcasts</li>
       <li><strong>Students:</strong> Save lecture audio for offline listening</li>
       <li><strong>Editors:</strong> Get audio tracks for editing projects</li>
-      <li><strong>Archivists:</strong> Preserve audio from old video recordings</li>
     </ul>
   </section>
 
   <section>
-    <h2>Frequently Asked Questions</h2>
-    <details><summary>Is my video uploaded to a server?</summary><p>No. All processing happens in your browser using the Web Audio API. Your video never leaves your device.</p></details>
-    <details><summary>What video formats are supported?</summary><p>Any format your browser can play: MP4, WebM, MOV, AVI, MKV, FLV. Chrome and Edge support the widest range of formats.</p></details>
-    <details><summary>What is the output audio quality?</summary><p>Opus codec at 192 kbps — excellent quality comparable to MP3 at 320 kbps. Perfect for music, podcasts, and voice recordings.</p></details>
-    <details><summary>Is there a file size limit?</summary><p>No hard limit, but very large files may be limited by your browser's memory. 2GB should work on modern devices.</p></details>
-    <details><summary>Can I extract audio from YouTube videos?</summary><p>No. This tool works with local video files you upload. Use a dedicated YouTube downloader for online videos.</p></details>
+    <h2>FAQs</h2>
+    <details><summary>Is my video uploaded to a server?</summary><p>No. All processing happens in your browser. Your video never leaves your device.</p></details>
+    <details><summary>What video formats are supported?</summary><p>Any format your browser can play: MP4 (H.264), WebM (VP8/VP9), MOV, AVI, MKV.</p></details>
+    <details><summary>What is the output quality?</summary><p>Opus codec at 192 kbps — excellent quality comparable to MP3 320 kbps.</p></details>
+    <details><summary>Is there a file size limit?</summary><p>No hard limit. Very large files limited by browser memory.</p></details>
   </section>
 </main>
 <footer class="site-footer">
@@ -175,62 +173,76 @@
 </footer>
 <script>
 (function(){
-  const dz = document.getElementById('dropzone');
-  const fi = document.getElementById('fileInput');
-  const finfo = document.getElementById('fileInfo');
-  const fname = document.getElementById('fileName');
-  const fsize = document.getElementById('fileSize');
-  const fdur = document.getElementById('fileDuration');
-  const preview = document.getElementById('previewArea');
-  const vid = document.getElementById('videoPreview');
-  const extBtn = document.getElementById('extractBtn');
-  const prog = document.getElementById('progressArea');
-  const progText = document.getElementById('progressText');
-  const progFill = document.getElementById('progressFill');
-  const res = document.getElementById('resultArea');
-  const resInfo = document.getElementById('resultInfo');
-  const dlBtn = document.getElementById('downloadBtn');
-  const convBtn = document.getElementById('convertAnother');
-  const fmt = document.getElementById('formatSelect');
-  const dlFmt = document.getElementById('downloadFormat');
-  const statusMsg = document.getElementById('statusMsg');
+  var dz = document.getElementById('dropzone');
+  var fi = document.getElementById('fileInput');
+  var finfo = document.getElementById('fileInfo');
+  var fname = document.getElementById('fileName');
+  var fsize = document.getElementById('fileSize');
+  var fdur = document.getElementById('fileDuration');
+  var preview = document.getElementById('previewArea');
+  var vid = document.getElementById('videoPreview');
+  var extBtn = document.getElementById('extractBtn');
+  var prog = document.getElementById('progressArea');
+  var progText = document.getElementById('progressText');
+  var progFill = document.getElementById('progressFill');
+  var res = document.getElementById('resultArea');
+  var resInfo = document.getElementById('resultInfo');
+  var dlBtn = document.getElementById('downloadBtn');
+  var convBtn = document.getElementById('convertAnother');
+  var fmt = document.getElementById('formatSelect');
+  var dlFmt = document.getElementById('downloadFormat');
 
-  let currentFile = null;
-  let audioUrl = null;
-  let audioBlob = null;
-  let recordingDuration = 0;
+  var currentFile = null;
+  var audioUrl = null;
+  var audioBlob = null;
+  var recordingDuration = 0;
 
-  dz.addEventListener('click', function() { fi.click(); });
+  dz.addEventListener('click', function(e) { if(e.target.closest('input')) return; fi.click(); });
   dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('dragover'); });
   dz.addEventListener('dragleave', function() { dz.classList.remove('dragover'); });
   dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('dragover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
   fi.addEventListener('change', function() { if(this.files.length) handleFile(this.files[0]); });
 
   function handleFile(file) {
-    if(!file.type.startsWith('video/')) { alert('Please select a video file.'); return; }
+    if(!file) return;
+    var isVideo = file.type.startsWith('video/') || file.name.match(/\.(mp4|webm|mov|avi|mkv|flv|m4v|3gp)$/i);
+    if(!isVideo) { alert('Please select a video file.'); return; }
+    resetAll();
     currentFile = file;
     dz.classList.add('has-file');
     dz.querySelector('.dropzone-text').innerHTML = '<strong>' + file.name + '</strong><br>' + formatSize(file.size);
     fname.textContent = file.name;
     fsize.textContent = formatSize(file.size);
+    fdur.textContent = 'Loading...';
+    fdur.style.color = '#888';
     finfo.classList.add('visible');
 
-    const url = URL.createObjectURL(file);
+    var url = URL.createObjectURL(file);
     vid.src = url;
-    vid.onerror = function() {
-      statusBar.className = 'status-bar error';
-      statusDot.className = 'status-dot error';
-      statusText.textContent = 'Error: Could not load video. Try a different format (H.264 MP4 or VP8 WebM recommended).';
+    vid.load();
+
+    var loadTimer = setTimeout(function() {
+      fdur.textContent = 'Unsupported format';
+      fdur.style.color = '#dc3545';
       extBtn.disabled = true;
-    };
+    }, 10000);
+
     vid.onloadedmetadata = function() {
-      const min = Math.floor(vid.duration / 60);
-      const sec = Math.floor(vid.duration % 60);
+      clearTimeout(loadTimer);
+      var min = Math.floor(vid.duration / 60);
+      var sec = Math.floor(vid.duration % 60);
       fdur.textContent = min + 'm ' + sec + 's';
+      fdur.style.color = '#fff';
       recordingDuration = vid.duration;
       preview.classList.add('visible');
       extBtn.disabled = false;
-      resetResult();
+    };
+
+    vid.onerror = function() {
+      clearTimeout(loadTimer);
+      fdur.textContent = 'Unsupported format';
+      fdur.style.color = '#dc3545';
+      extBtn.disabled = true;
     };
   }
 
@@ -245,93 +257,96 @@
     extBtn.disabled = true;
     prog.classList.add('visible');
     progFill.style.width = '0%';
-    progText.textContent = 'Preparing audio extraction...';
+    progText.textContent = 'Preparing...';
 
-    startExtraction();
-  });
-
-  function startExtraction() {
-    const video = document.createElement('video');
+    var video = document.createElement('video');
     video.crossOrigin = 'anonymous';
     video.src = URL.createObjectURL(currentFile);
     video.muted = true;
     video.playsInline = true;
+    video.preload = 'auto';
 
     video.onloadedmetadata = function() {
-      video.currentTime = 0;
       video.play().then(function() {
-        const stream = video.captureStream();
-        const audioTrack = stream.getAudioTracks()[0];
-        if(!audioTrack) { errorState('No audio track found in this video.'); return; }
-
-        const audioStream = new MediaStream([audioTrack]);
-        let mimeType = fmt.value;
-        if(!MediaRecorder.isTypeSupported(mimeType)) {
-          if(MediaRecorder.isTypeSupported('audio/webm')) mimeType = 'audio/webm';
-          else if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType = 'audio/ogg;codecs=opus';
-          else { errorState('Audio recording not supported in your browser. Try Chrome or Edge.'); return; }
+        var stream;
+        try { stream = video.captureStream(); } catch(e) {
+          errorState('captureStream not supported. Try Chrome or Edge.');
+          return;
+        }
+        var audioTrack = stream.getAudioTracks()[0];
+        if(!audioTrack) {
+          errorState('No audio track found in this video.');
+          return;
+        }
+        var audioStream = new MediaStream([audioTrack]);
+        var mimeType = fmt.value;
+        if(typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported(mimeType)) {
+          if(MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) mimeType = 'audio/webm';
+          else { errorState('MediaRecorder not supported. Try Chrome or Edge.'); return; }
         }
 
-        const chunks = [];
-        const recorder = new MediaRecorder(audioStream, { mimeType: mimeType });
+        var chunks = [];
+        var recorder = new MediaRecorder(audioStream, { mimeType: mimeType });
         var totalDuration = video.duration;
 
         recorder.ondataavailable = function(e) {
           if(e.data.size > 0) chunks.push(e.data);
         };
-
         recorder.onstop = function() {
           audioBlob = new Blob(chunks, { type: mimeType });
           audioUrl = URL.createObjectURL(audioBlob);
           progFill.style.width = '100%';
-          progText.textContent = 'Extraction complete!';
+          progText.textContent = 'Complete!';
           showResult(mimeType, audioBlob.size);
           video.pause();
           video.src = '';
-          URL.revokeObjectURL(video.src);
         };
-
-        recorder.onerror = function() {
-          errorState('Recording failed. Try a different browser.');
-        };
-
+        recorder.onerror = function() { errorState('Recording failed.'); };
         recorder.start(100);
-        progText.textContent = 'Extracting audio... (video must play fully)';
+        progText.textContent = 'Extracting audio (' + Math.round(totalDuration) + 's)...';
 
         var updateInterval = setInterval(function() {
           var pct = Math.min((video.currentTime / totalDuration) * 100, 99);
           progFill.style.width = pct + '%';
           if(video.ended || video.currentTime >= totalDuration) {
             clearInterval(updateInterval);
-            recorder.stop();
+            try { recorder.stop(); } catch(e) {}
           }
         }, 200);
 
         video.playbackRate = 2;
-        video.play().catch(function() {});
-      }).catch(function() { errorState('Could not play video. Try a different file format.'); });
+        video.play().catch(function() { errorState('Could not play video.'); });
+      }).catch(function() { errorState('Could not play video.'); });
     };
-
-    video.onerror = function() { errorState('Could not load video file.'); };
-  }
+    video.onerror = function() { errorState('Could not load video.'); };
+  });
 
   function showResult(mimeType, size) {
     res.classList.add('visible');
     var fmtLabel = 'audio';
     if(mimeType.includes('opus')) fmtLabel = 'Opus';
     else if(mimeType.includes('webm')) fmtLabel = 'WebM';
-    else if(mimeType.includes('ogg')) fmtLabel = 'OGG';
-    resInfo.textContent = 'Format: ' + fmtLabel + ' | Size: ' + formatSize(size) + ' | Duration: ' + Math.round(recordingDuration) + 's';
+    resInfo.textContent = 'Format: ' + fmtLabel + ' | Size: ' + formatSize(size);
     dlBtn.onclick = function() {
-      var ext = dlFmt.value;
+      var ext = (dlFmt ? dlFmt.value : 'mp3');
       var a = document.createElement('a');
       a.href = audioUrl;
-      a.download = currentFile.name.replace(/\.[^.]+$/, '') + '_audio.' + ext;
+      a.download = (currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'audio') + '_audio.' + ext;
       a.click();
     };
   }
 
-  function resetResult() { res.classList.remove('visible'); prog.classList.remove('visible'); }
+  function resetAll() {
+    res.classList.remove('visible');
+    prog.classList.remove('visible');
+    preview.classList.remove('visible');
+    finfo.classList.remove('visible');
+    if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+    if(vid.src) { URL.revokeObjectURL(vid.src); vid.src = ''; }
+    audioBlob = null;
+    extBtn.disabled = true;
+  }
+
   function errorState(msg) {
     progText.textContent = 'Error: ' + msg;
     progFill.style.width = '0%';
@@ -340,10 +355,10 @@
 
   convBtn.addEventListener('click', function() {
     currentFile = null;
-    audioUrl = null;
+    if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
     audioBlob = null;
     dz.classList.remove('has-file');
-    dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag &amp; drop<br>MP4, WebM, MOV, AVI, MKV, FLV (max 2GB)';
+    dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag & drop<br>MP4, WebM, MOV, AVI, MKV, FLV';
     finfo.classList.remove('visible');
     preview.classList.remove('visible');
     vid.src = '';
