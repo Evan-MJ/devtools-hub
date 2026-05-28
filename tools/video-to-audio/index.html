@@ -106,7 +106,7 @@ ol li, ul li { margin: 0.5rem 0; }
     </div>
 
     <div class="preview-area" id="previewArea">
-      <video id="videoPreview" controls></video>
+      <video id="videoPreview" controls preload="auto" muted playsinline></video>
     </div>
 
     <div style="text-align:center;margin:1rem 0">
@@ -210,7 +210,7 @@ ol li, ul li { margin: 0.5rem 0; }
     resetAll();
     currentFile = file;
     dz.classList.add('has-file');
-    dz.querySelector('.dropzone-text').innerHTML = '<strong>' + file.name + '</strong><br>' + formatSize(file.size);
+    dz.querySelector('.dropzone-text').innerHTML = '<strong style="color:#1a3e2a">' + file.name + '</strong><br>' + formatSize(file.size); dz.querySelector('.dropzone-text').style.color = '#1a3e2a';
     fname.textContent = file.name;
     fsize.textContent = formatSize(file.size);
     fdur.textContent = 'Loading...';
@@ -219,13 +219,6 @@ ol li, ul li { margin: 0.5rem 0; }
 
     var url = URL.createObjectURL(file);
     vid.src = url;
-    vid.load();
-
-    var loadTimer = setTimeout(function() {
-      fdur.textContent = 'Unsupported format';
-      fdur.style.color = '#dc3545';
-      extBtn.disabled = true;
-    }, 10000);
 
     vid.onloadedmetadata = function() {
       clearTimeout(loadTimer);
@@ -236,14 +229,26 @@ ol li, ul li { margin: 0.5rem 0; }
       recordingDuration = vid.duration;
       preview.classList.add('visible');
       extBtn.disabled = false;
+      console.log('Video metadata loaded successfully');
     };
 
     vid.onerror = function() {
       clearTimeout(loadTimer);
-      fdur.textContent = 'Unsupported format';
+      fdur.textContent = 'Unsupported format - try H.264 MP4';
       fdur.style.color = '#dc3545';
       extBtn.disabled = true;
+      console.log('Video error event, readyState:', vid.readyState, 'networkState:', vid.networkState);
     };
+
+    vid.onloadstart = function() {
+      console.log('Video load started');
+    };
+
+    var loadTimer = setTimeout(function() {
+      if(extBtn.disabled) return;
+      fdur.textContent = 'Loading slow - still processing?';
+      fdur.style.color = '#ffc107';
+    }, 15000);
   }
 
   function formatSize(bytes) {
