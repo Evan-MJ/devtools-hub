@@ -217,9 +217,6 @@
 
     const url = URL.createObjectURL(file);
     vid.src = url;
-    vid.onerror = function() {
-      errorState("Could not load video. Try a different format or codec (H.264 MP4 or VP8 WebM recommended).");
-    };
     vid.onloadedmetadata = function() {
       const min = Math.floor(vid.duration / 60);
       const sec = Math.floor(vid.duration % 60);
