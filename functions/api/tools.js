@@ -7,7 +7,7 @@ const TOOL_CATEGORIES = {
     'math': ['calculator', 'bmi-calculator', 'loan-calculator', 'math-solver', 'age-calculator', 'tip-calculator'],
     'image': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool'],
     'pdf': ['pdf-merger', 'pdf-splitter'],
-    'other': ['weather-forecast', 'crypto-price-tracker', 'translator', 'grammar-checker', 'word-counter', 'online-timer', 'text-diff', 'text-to-speech', 'feedback']
+    'other': ['weather-forecast', 'crypto-price-tracker', 'translator', 'grammar-checker', 'word-counter', 'online-timer', 'text-diff', 'text-to-speech', 'audio-to-text', 'feedback']
 };
 
 const CATEGORY_LABELS = {
@@ -64,6 +64,7 @@ const TOOL_DISPLAY_NAMES = {
     'weather-forecast': 'Weather Forecast',
     'crypto-price-tracker': 'Crypto Price Tracker',
     'translator': 'Translator',
+    'audio-to-text': 'Audio to Text Converter',
     'grammar-checker': 'Grammar Checker',
     'word-counter': 'Word Counter',
     'online-timer': 'Online Timer',
