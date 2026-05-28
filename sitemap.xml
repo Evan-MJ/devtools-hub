@@ -98,6 +98,7 @@
   </url>
   <url>
     <loc>https://tools.scoreroute.com/tools/image-to-text/</loc>
+    <loc>https://tools.scoreroute.com/tools/background-remover/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
