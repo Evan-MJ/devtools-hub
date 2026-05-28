@@ -218,7 +218,10 @@
     const url = URL.createObjectURL(file);
     vid.src = url;
     vid.onerror = function() {
-      errorState("Could not load video. Try a different format or codec (H.264 MP4 or VP8 WebM recommended).");
+      statusBar.className = 'status-bar error';
+      statusDot.className = 'status-dot error';
+      statusText.textContent = 'Error: Could not load video. Try a different format (H.264 MP4 or VP8 WebM recommended).';
+      extBtn.disabled = true;
     };
     vid.onloadedmetadata = function() {
       const min = Math.floor(vid.duration / 60);
