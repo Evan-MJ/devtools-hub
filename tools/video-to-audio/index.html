@@ -266,66 +266,60 @@ ol li, ul li { margin: 0.5rem 0; }
     progFill.style.width = '0%';
     progText.textContent = 'Preparing...';
 
-    var video = document.createElement('video');
-    video.crossOrigin = 'anonymous';
-    video.src = URL.createObjectURL(currentFile);
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
+    if(vid.readyState < 2) {
+      errorState('Video not loaded yet. Try again.');
+      return;
+    }
+    vid.pause();
+    vid.currentTime = 0;
 
-    video.onloadedmetadata = function() {
-      video.play().then(function() {
-        var stream;
-        try { stream = video.captureStream(); } catch(e) {
-          errorState('captureStream not supported. Try Chrome or Edge.');
-          return;
-        }
-        var audioTrack = stream.getAudioTracks()[0];
-        if(!audioTrack) {
-          errorState('No audio track found in this video.');
-          return;
-        }
-        var audioStream = new MediaStream([audioTrack]);
-        var mimeType = fmt.value;
-        if(typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported(mimeType)) {
-          if(MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) mimeType = 'audio/webm';
-          else { errorState('MediaRecorder not supported. Try Chrome or Edge.'); return; }
-        }
+    var stream;
+    try { stream = vid.captureStream(); } catch(e) {
+      errorState('captureStream not supported. Try Chrome or Edge.');
+      return;
+    }
+    var audioTrack = stream.getAudioTracks()[0];
+    if(!audioTrack) {
+      errorState('No audio track found in this video.');
+      return;
+    }
+    var audioStream = new MediaStream([audioTrack]);
+    var mimeType = fmt.value;
+    if(typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported(mimeType)) {
+      if(MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) mimeType = 'audio/webm';
+      else { errorState('MediaRecorder not supported. Try Chrome or Edge.'); return; }
+    }
 
-        var chunks = [];
-        var recorder = new MediaRecorder(audioStream, { mimeType: mimeType });
-        var totalDuration = video.duration;
+    var chunks = [];
+    var recorder = new MediaRecorder(audioStream, { mimeType: mimeType });
+    var totalDuration = vid.duration;
 
-        recorder.ondataavailable = function(e) {
-          if(e.data.size > 0) chunks.push(e.data);
-        };
-        recorder.onstop = function() {
-          audioBlob = new Blob(chunks, { type: mimeType });
-          audioUrl = URL.createObjectURL(audioBlob);
-          progFill.style.width = '100%';
-          progText.textContent = 'Complete!';
-          showResult(mimeType, audioBlob.size);
-          video.pause();
-          video.src = '';
-        };
-        recorder.onerror = function() { errorState('Recording failed.'); };
-        recorder.start(100);
-        progText.textContent = 'Extracting audio (' + Math.round(totalDuration) + 's)...';
-
-        var updateInterval = setInterval(function() {
-          var pct = Math.min((video.currentTime / totalDuration) * 100, 99);
-          progFill.style.width = pct + '%';
-          if(video.ended || video.currentTime >= totalDuration) {
-            clearInterval(updateInterval);
-            try { recorder.stop(); } catch(e) {}
-          }
-        }, 200);
-
-        video.playbackRate = 2;
-        video.play().catch(function() { errorState('Could not play video.'); });
-      }).catch(function() { errorState('Could not play video.'); });
+    recorder.ondataavailable = function(e) {
+      if(e.data.size > 0) chunks.push(e.data);
     };
-    video.onerror = function() { errorState('Could not load video.'); };
+    recorder.onstop = function() {
+      audioBlob = new Blob(chunks, { type: mimeType });
+      audioUrl = URL.createObjectURL(audioBlob);
+      progFill.style.width = '100%';
+      progText.textContent = 'Complete!';
+      showResult(mimeType, audioBlob.size);
+      vid.pause();
+    };
+    recorder.onerror = function() { errorState('Recording failed.'); };
+    recorder.start(100);
+    progText.textContent = 'Extracting audio (' + Math.round(totalDuration) + 's)...';
+
+    vid.playbackRate = 2;
+    vid.play().then(function() {
+      var updateInterval = setInterval(function() {
+        var pct = Math.min((vid.currentTime / totalDuration) * 100, 99);
+        progFill.style.width = pct + '%';
+        if(vid.ended || vid.currentTime >= totalDuration) {
+          clearInterval(updateInterval);
+          try { recorder.stop(); } catch(e) {}
+        }
+      }, 200);
+    }).catch(function() { errorState('Could not play video.'); });
   });
 
   function showResult(mimeType, size) {
