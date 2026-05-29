@@ -416,7 +416,12 @@ ol li, ul li { margin: 0.5rem 0; }
       ffmpeg.deleteFile('output.' + ext);
       ffmpeg.terminate();
     } catch(e) {
-      errorState('FFmpeg failed: ' + e.message);
+      var msg = e.message || '';
+      if(msg.includes('Worker')) {
+        errorState('FFmpeg Worker blocked (browser security). Use captureStream-compatible format or desktop Chrome.');
+      } else {
+        errorState('FFmpeg failed: ' + msg.substring(0,80));
+      }
       console.error('FFmpeg error:', e);
     }
   }
