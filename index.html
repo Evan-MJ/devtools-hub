@@ -22,32 +22,6 @@
             "@type": "SearchAction",
             "target": "https://tools.scoreroute.com/tools/{search_term_string}/",
             "query-input": "required name=search_term_string"
-        },
-        "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Developer Tools",
-            "itemListElement": [
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "JSON Formatter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "HTML Formatter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SQL Formatter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Base64 Encoder"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "URL Encoder"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hash Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "UUID Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cron Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Password Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "QR Code Generator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Timestamp Converter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Time Zone Converter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Color Picker"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Word Counter"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IP Address Lookup"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Regex Tester"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "JWT Decoder"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Calculator"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Speed Test"}},
-                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Currency Converter"}},
-            ]
         }
     }
     </script>
@@ -59,6 +33,21 @@
             <p class="subtitle">Free Online Developer Tools - No Signup Required</p>
         </div>
     </header>
+
+    <nav class="category-nav">
+        <div class="container">
+            <button class="nav-btn" data-target="formatters">Formatters</button>
+            <button class="nav-btn" data-target="calculators">Calculators</button>
+            <button class="nav-btn" data-target="generators">Generators</button>
+            <button class="nav-btn" data-target="converters">Converters</button>
+            <button class="nav-btn" data-target="media">Media Tools</button>
+            <button class="nav-btn" data-target="network">Network Tools</button>
+            <button class="nav-btn" data-target="code-testing">Code Testing</button>
+            <button class="nav-btn" data-target="pdf-tools">PDF Tools</button>
+            <button class="nav-btn" data-target="data-live">Data & Live</button>
+            <button class="nav-btn" data-target="ai-language">AI Language</button>
+        </div>
+    </nav>
 
     <main class="container">
         <section class="hero-section">
@@ -74,7 +63,7 @@
             <div id="search-results-count" class="search-results-count"></div>
         </section>
 
-        <section class="tools-section">
+        <section class="tools-section" id="formatters">
             <h2>Formatters</h2>
             <p class="category-desc">Format and beautify code for better readability and debugging.</p>
             <div class="tools-grid">
@@ -97,8 +86,8 @@
             </div>
         </section>
 
-        <section class="tools-section">
-            <h2>Calculators & Math Tools</h2>
+        <section class="tools-section" id="calculators">
+            <h2>Calculators</h2>
             <p class="category-desc">Solve everyday math problems from basic arithmetic to loan calculations.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="calculator scientific basic math bmi loan">
@@ -106,28 +95,67 @@
                     <p>Basic, Scientific, Unit Converter, Loan Calculator, and BMI Calculator. Free online math solver.</p>
                     <span class="tool-tag">Popular</span>
                 </div>
-                <div class="tool-card" data-search="tip calculator restaurant bill split percentage">
-                    <h3><a href="/tools/tip-calculator/">Tip Calculator</a></h3>
-                    <p>Calculate restaurant tips, split bills among friends. Custom tip percentages and tax exclusion. Free online tip calculator.</p>
-                </div>
                 <div class="tool-card" data-search="bmi body mass index health weight calculator">
                     <h3><a href="/tools/bmi-calculator/">BMI Calculator</a></h3>
+                    <p>Calculate Body Mass Index with standard and metric units. Health assessment tool.</p>
+                </div>
                 <div class="tool-card" data-search="age calculator birthday how old am i years months days">
                     <h3><a href="/tools/age-calculator/">Age Calculator</a></h3>
                     <p>Calculate exact age in years, months, days, hours, minutes. See birthday countdown.</p>
-                </div>
-                    <p>Calculate Body Mass Index with standard and metric units. Health assessment tool.</p>
                 </div>
                 <div class="tool-card" data-search="loan calculator mortgage payment interest amortization">
                     <h3><a href="/tools/loan-calculator/">Loan Calculator</a></h3>
                     <p>Calculate monthly payments, interest, and payoff date. Includes extra payment analyzer.</p>
                 </div>
+                <div class="tool-card" data-search="tip calculator restaurant bill split percentage">
+                    <h3><a href="/tools/tip-calculator/">Tip Calculator</a></h3>
+                    <p>Calculate restaurant tips, split bills among friends. Custom tip percentages and tax exclusion.</p>
+                </div>
             </div>
         </section>
 
-        <section class="tools-section">
-            <h2>Encoders & Decoders</h2>
-            <p class="category-desc">Encode and decode data for safe transmission and storage.</p>
+        <section class="tools-section" id="generators">
+            <h2>Generators</h2>
+            <p class="category-desc">Generate hashes, identifiers, QR codes, and expressions for development tasks.</p>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="qr code generator barcode scan wifi url text email vcard">
+                    <h3><a href="/tools/qr-code-generator/">QR Code Generator</a></h3>
+                    <p>Create QR codes for URLs, text, WiFi, email, SMS, vCards. Download as PNG.</p>
+                </div>
+                <div class="tool-card" data-search="barcode generator code 128 ean upc product">
+                    <h3><a href="/tools/barcode-generator/">Barcode Generator</a></h3>
+                    <p>Create barcodes in Code 128, EAN, UPC, QR Code and more. Download as PNG or SVG.</p>
+                </div>
+                <div class="tool-card" data-search="password generator secure random strong entropy nist">
+                    <h3><a href="/tools/password-generator/">Password Generator</a></h3>
+                    <p>Generate strong passwords with NIST compliance checking and entropy analysis.</p>
+                </div>
+                <div class="tool-card" data-search="uuid generator guid identifier unique bulk">
+                    <h3><a href="/tools/uuid-generator/">UUID Generator</a></h3>
+                    <p>Generate UUID v1, v4, and v7 identifiers. Bulk generation supported.</p>
+                </div>
+                <div class="tool-card" data-search="hash md5 sha1 sha256 sha512 checksum fingerprint">
+                    <h3><a href="/tools/hash-generator/">Hash Generator</a></h3>
+                    <p>Generate MD5, SHA-1, SHA-256, and SHA-512 checksums instantly.</p>
+                </div>
+                <div class="tool-card" data-search="cron schedule expression validator linux">
+                    <h3><a href="/tools/cron-generator/">Cron Generator</a></h3>
+                    <p>Create and validate cron expressions. See next execution times.</p>
+                </div>
+                <div class="tool-card" data-search="text to speech tts voice audio browser ai">
+                    <h3><a href="/tools/text-to-speech/">Text to Speech</a></h3>
+                    <p>Convert text to natural speech with browser TTS or AI voices. 200+ free voices.</p>
+                </div>
+                <div class="tool-card" data-search="wordle helper solver word game">
+                    <h3><a href="/tools/wordle-helper/">Wordle Helper</a></h3>
+                    <p>Get word suggestions for Wordle. Track letters and find the best words.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tools-section" id="converters">
+            <h2>Converters</h2>
+            <p class="category-desc">Convert between different formats, timestamps, and representations.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="base64 encode decode string binary">
                     <h3><a href="/tools/base64-encoder/">Base64 Encoder</a></h3>
@@ -137,62 +165,25 @@
                     <h3><a href="/tools/url-encoder/">URL Encoder</a></h3>
                     <p>Encode and decode URLs for safe transmission. Handles special characters.</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="tools-section">
-            <h2>Generators</h2>
-            <p class="category-desc">Generate hashes, identifiers, QR codes, and expressions for development tasks.</p>
-            <div class="tools-grid">
-                <div class="tool-card" data-search="qr code generator barcode scan wifi url text email vcard">
-                    <h3><a href="/tools/qr-code-generator/">QR Code Generator</a></h3>
-                    <p>Create QR codes for URLs, text, WiFi, email, SMS, vCards. Download as PNG.</p>
-                </div>
-                <div class="tool-card" data-search="password generator secure random strong entropy nist">
-                    <h3><a href="/tools/password-generator/">Password Generator</a></h3>
-                    <p>Generate strong passwords with NIST compliance checking and entropy analysis.</p>
-                </div>
-                <div class="tool-card" data-search="hash md5 sha1 sha256 sha512 checksum fingerprint">
-                    <h3><a href="/tools/hash-generator/">Hash Generator</a></h3>
-                    <p>Generate MD5, SHA-1, SHA-256, and SHA-512 checksums instantly.</p>
-                </div>
                 <div class="tool-card" data-search="binary hex decimal converter ascii encoding numbers">
                     <h3><a href="/tools/binary-hex-converter/">Binary Hex Converter</a></h3>
                     <p>Convert binary, decimal, hex and ASCII. Essential developer tool for encoding.</p>
-                    <span class="tool-tag">New</span>
                 </div>
-                <div class="tool-card" data-search="uuid generator guid identifier unique bulk">
-                    <h3><a href="/tools/uuid-generator/">UUID Generator</a></h3>
-                    <p>Generate UUID v1, v4, and v7 identifiers. Bulk generation supported.</p>
+                <div class="tool-card" data-search="unit converter measurement length weight temperature volume speed area data time pressure energy">
+                    <h3><a href="/tools/unit-converter/">Unit Converter</a></h3>
+                    <p>Convert between 100+ units. Length, weight, temperature, volume, speed, and more.</p>
                 </div>
-                <div class="tool-card" data-search="cron schedule expression validator linux">
-                    <h3><a href="/tools/cron-generator/">Cron Generator</a></h3>
-                    <p>Create and validate cron expressions. See next execution times.</p>
+                <div class="tool-card" data-search="currency converter exchange rate money usd eur gbp">
+                    <h3><a href="/tools/currency-converter/">Currency Converter</a></h3>
+                    <p>Convert between 166+ world currencies with live exchange rates. Free online currency calculator.</p>
                 </div>
-                <div class="tool-card" data-search="barcode generator code 128 ean upc product">
-                    <h3><a href="/tools/barcode-generator/">Barcode Generator</a></h3>
-                    <p>Create barcodes in Code 128, EAN, UPC, QR Code and more. Download as PNG or SVG.</p>
-                    <span class="tool-tag">New</span>
-                </div>
-                <div class="tool-card" data-search="text to speech tts voice audio browser ai">
-                    <h3><a href="/tools/text-to-speech/">Text to Speech</a></h3>
-                    <p>Convert text to natural speech with browser TTS or AI voices. 200+ free voices.</p>
-                    <span class="tool-tag">New</span>
-                </div>
-                <div class="tool-card" data-search="wordle helper solver word game">
-                    <h3><a href="/tools/wordle-helper/">Wordle Helper</a></h3>
-                    <p>Get word suggestions for Wordle. Track letters and find the best words.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="tools-section">
-            <h2>Converters</h2>
-            <p class="category-desc">Convert between different formats, timestamps, and representations.</p>
-            <div class="tools-grid">
                 <div class="tool-card" data-search="timestamp unix epoch date converter">
                     <h3><a href="/tools/timestamp-converter/">Timestamp Converter</a></h3>
                     <p>Convert between Unix timestamps and human-readable dates. Shows current time.</p>
+                </div>
+                <div class="tool-card" data-search="timezone converter world time cities">
+                    <h3><a href="/tools/time-zone-converter/">Time Zone Converter</a></h3>
+                    <p>Convert time between cities worldwide. See current time in multiple locations instantly.</p>
                 </div>
                 <div class="tool-card" data-search="color picker hex rgb hsl converter">
                     <h3><a href="/tools/color-picker/">Color Picker</a></h3>
@@ -201,47 +192,29 @@
                 <div class="tool-card" data-search="color palette extractor image dominant colors hex rgb hsl css json">
                     <h3><a href="/tools/color-palette-extractor/">Color Palette Extractor</a></h3>
                     <p>Extract dominant colors from any image. Get HEX, RGB, HSL values. Export CSS or JSON.</p>
-                    <span class="tool-tag">New</span>
-                </div>
-                <div class="tool-card" data-search="word counter character count readability density">
-                    <h3><a href="/tools/word-counter/">Word Counter</a></h3>
-                    <p>Count words, characters, sentences with readability scores and keyword density analysis.</p>
-                </div>
-                <div class="tool-card" data-search="currency converter exchange rate money usd eur gbp">
-                    <h3><a href="/tools/currency-converter/">Currency Converter</a></h3>
-                    <p>Convert between 166+ world currencies with live exchange rates. Free online currency calculator.</p>
-                </div>
-                <div class="tool-card" data-search="timezone converter world time cities">
-                    <h3><a href="/tools/time-zone-converter/">Time Zone Converter</a></h3>
-                    <p>Convert time between cities worldwide. See current time in multiple locations instantly.</p>
-                </div>
-                <div class="tool-card" data-search="unit converter measurement length weight temperature volume speed area data time pressure energy">
-                    <h3><a href="/tools/unit-converter/">Unit Converter</a></h3>
-                    <p>Convert between 100+ units. Length, weight, temperature, volume, speed, and more.</p>
                 </div>
             </div>
         </section>
 
-                <section class="tools-section">
-            <h2>Image Tools</h2>
-            <p class="category-desc">Compress, convert, and extract text from images. All processing happens locally in your browser.</p>
+        <section class="tools-section" id="media">
+            <h2>Media Tools</h2>
+            <p class="category-desc">Compress, convert, extract text from images, and process audio/video. All processing happens locally in your browser.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="image compressor jpg png webp compress optimize">
                     <h3><a href="/tools/image-compressor/">Image Compressor</a></h3>
                     <p>Reduce image file size without losing quality. JPG, PNG, WebP support. Privacy-first client-side processing.</p>
                 </div>
-                <div class="tool-card" data-search="image to text ocr extract文字识别">
-                    <h3><a href="/tools/image-to-text/">Image to Text (OCR)</a></h3>
-                <div class="tool-card" data-search="background remover remove image bg transparent png ai">
-                    <h3><a href="/tools/background-remover/">Background Remover</a></h3>
-                    <p>Remove image backgrounds with AI. Free, fast, no signup needed.</p>
-                </div>
-                    <p>Extract text from any image instantly. 100% private - your images never leave your device.</p>
-                    <span class="tool-tag">New</span>
-                </div>
                 <div class="tool-card" data-search="image resizer resize dimensions pixels social media">
                     <h3><a href="/tools/image-resizer/">Image Resizer</a></h3>
                     <p>Resize images to exact dimensions. Social media presets included.</p>
+                </div>
+                <div class="tool-card" data-search="image to text ocr extract文字识别">
+                    <h3><a href="/tools/image-to-text/">Image to Text (OCR)</a></h3>
+                    <p>Extract text from any image instantly. 100% private - your images never leave your device.</p>
+                </div>
+                <div class="tool-card" data-search="background remover remove image bg transparent png ai">
+                    <h3><a href="/tools/background-remover/">Background Remover</a></h3>
+                    <p>Remove image backgrounds with AI. Free, fast, no signup needed.</p>
                 </div>
                 <div class="tool-card" data-search="screenshot capture webpage full page">
                     <h3><a href="/tools/screenshot-tool/">Screenshot Tool</a></h3>
@@ -250,18 +223,21 @@
                 <div class="tool-card" data-search="video to audio converter extract mp3 from video online free audio extraction mp4 to mp3 youtube to mp3 video audio extractor download audio from video">
                     <h3><a href="/tools/video-to-audio/">Video to Audio Converter</a></h3>
                     <p>Extract audio from MP4, WebM, MOV videos instantly. Free online audio extraction in your browser.</p>
-                                    </div>
+                </div>
+                <div class="tool-card" data-search="audio to text speech recognition voice typing transcribe dictation">
+                    <h3><a href="/tools/audio-to-text/">Audio to Text Converter</a></h3>
+                    <p>Convert speech to text in real-time. Free voice typing and transcription using your browser.</p>
+                </div>
             </div>
         </section>
 
-<section class="tools-section">
-            <h2>Network & Internet Tools</h2>
-            <p class="category-desc">Speed tests, IP lookup, and network utilities for developers.</p>
+        <section class="tools-section" id="network">
+            <h2>Network Tools</h2>
+            <p class="category-desc">Speed tests, IP lookup, DNS, SSL, and email verification utilities.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="speed test internet bandwidth download upload latency">
                     <h3><a href="/tools/speed-test/">Speed Test</a></h3>
                     <p>Free internet speed test. Check your download speed, upload speed, and latency instantly in your browser.</p>
-                    <span class="tool-tag">New</span>
                 </div>
                 <div class="tool-card" data-search="ip address lookup geolocation isp vpn">
                     <h3><a href="/tools/ip-address-lookup/">IP Address Lookup</a></h3>
@@ -275,10 +251,6 @@
                     <h3><a href="/tools/ssl-checker/">SSL Certificate Checker</a></h3>
                     <p>Check SSL/TLS certificate security grade. Verify HTTPS configuration.</p>
                 </div>
-                <div class="tool-card" data-search="weather forecast temperature climate humidity">
-                    <h3><a href="/tools/weather-forecast/">Weather Forecast</a></h3>
-                    <p>Check current weather and 7-day forecast. Real-time data for any location.</p>
-                </div>
                 <div class="tool-card" data-search="email verifier validator checker disposable smtp verify">
                     <h3><a href="/tools/email-verifier/">Email Verifier</a></h3>
                     <p>Verify email addresses. Check if emails are real and can receive messages.</p>
@@ -286,9 +258,9 @@
             </div>
         </section>
 
-        <section class="tools-section">
+        <section class="tools-section" id="code-testing">
             <h2>Code Testing</h2>
-            <p class="category-desc">Test and decode tokens, patterns, and expressions.</p>
+            <p class="category-desc">Test regex, decode JWT tokens, check grammar, and compare text differences.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="regex tester regular expression pattern match javascript">
                     <h3><a href="/tools/regex-tester/">Regex Tester</a></h3>
@@ -298,18 +270,17 @@
                     <h3><a href="/tools/jwt-decoder/">JWT Decoder</a></h3>
                     <p>Decode and verify JSON Web Tokens. Inspect claims, validate format.</p>
                 </div>
+                <div class="tool-card" data-search="grammar checker spell english writing errors">
+                    <h3><a href="/tools/grammar-checker/">Grammar Checker</a></h3>
+                    <p>Check grammar and spelling errors with AI-powered explanations.</p>
+                </div>
                 <div class="tool-card" data-search="text diff compare difference checker">
                     <h3><a href="/tools/text-diff/">Text Diff Checker</a></h3>
                     <p>Compare text and code side by side. Find differences instantly with syntax highlighting.</p>
-                    <span class="tool-tag">New</span>
                 </div>
                 <div class="tool-card" data-search="math solver equation algebra calculus calculator">
                     <h3><a href="/tools/math-solver/">Math Solver</a></h3>
                     <p>Solve math problems step by step. Algebra, calculus, equations, and more.</p>
-                </div>
-                <div class="tool-card" data-search="grammar checker spell english writing errors">
-                    <h3><a href="/tools/grammar-checker/">Grammar Checker</a></h3>
-                    <p>Check grammar and spelling errors with AI-powered explanations.</p>
                 </div>
                 <div class="tool-card" data-search="online timer stopwatch countdown pomodoro alarm">
                     <h3><a href="/tools/online-timer/">Online Timer</a></h3>
@@ -318,8 +289,8 @@
             </div>
         </section>
 
-        <section class="tools-section">
-            <h2>Document Tools</h2>
+        <section class="tools-section" id="pdf-tools">
+            <h2>PDF Tools</h2>
             <p class="category-desc">Merge, split, and manipulate PDF documents. All processing happens locally in your browser.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="pdf merger combine join documents">
@@ -333,32 +304,32 @@
             </div>
         </section>
 
-        <section class="tools-section">
-            <h2>Finance Tools</h2>
-            <p class="category-desc">Track cryptocurrency prices and convert between currencies with live exchange rates.</p>
+        <section class="tools-section" id="data-live">
+            <h2>Data & Live</h2>
+            <p class="category-desc">Track live cryptocurrency prices and check real-time weather forecasts.</p>
             <div class="tools-grid">
-                <div class="tool-card" data-search="crypto price tracker bitcoin ethereumereum cryptocurrency">
+                <div class="tool-card" data-search="weather forecast temperature climate humidity">
+                    <h3><a href="/tools/weather-forecast/">Weather Forecast</a></h3>
+                    <p>Check current weather and 7-day forecast. Real-time data for any location.</p>
+                </div>
+                <div class="tool-card" data-search="crypto price tracker bitcoin ethereum cryptocurrency">
                     <h3><a href="/tools/crypto-price-tracker/">Crypto Price Tracker</a></h3>
                     <p>Track live prices for 17,000+ cryptocurrencies. Market cap, charts, and trending coins.</p>
                 </div>
             </div>
         </section>
 
-        <section class="tools-section">
-            <h2>AI Tools</h2>
-            <p class="category-desc">AI-powered tools for translation and language processing.</p>
+        <section class="tools-section" id="ai-language">
+            <h2>AI Language</h2>
+            <p class="category-desc">AI-powered translation and language processing tools.</p>
             <div class="tools-grid">
                 <div class="tool-card" data-search="translator language translate english chinese spanish french german">
                     <h3><a href="/tools/translator/">Translator</a></h3>
                     <p>Translate text between 50+ languages. AI-powered translation with high accuracy.</p>
-                <div class="tool-card" data-search="audio to text speech recognition voice typing transcribe dictation">
-                    <h3><a href="/tools/audio-to-text/">Audio to Text Converter</a></h3>
-                    <p>Convert speech to text in real-time. Free voice typing and transcription using your browser.</p>
                 </div>
-                </div>
-                <div class="tool-card" data-search="audio to text speech recognition voice typing transcribe dictation">
-                    <h3><a href="/tools/audio-to-text/">Audio to Text Converter</a></h3>
-                    <p>Convert speech to text in real-time. Free voice typing and transcription using your browser.</p>
+                <div class="tool-card" data-search="word counter character count readability density">
+                    <h3><a href="/tools/word-counter/">Word Counter</a></h3>
+                    <p>Count words, characters, sentences with readability scores and keyword density analysis.</p>
                 </div>
             </div>
         </section>
@@ -414,31 +385,31 @@
         <p>&copy; 2026 DevTools Hub | Free Developer Tools | <a href="/sitemap.xml">Sitemap</a></p>
     </footer>
 
-    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('tool-search');
-        const clearBtn = document.getElementById('clear-search-btn');
-        const resultsCount = document.getElementById('search-results-count');
-        const toolCards = document.querySelectorAll('.tool-card');
-        const toolSections = document.querySelectorAll('.tools-section');
+        var searchInput = document.getElementById('tool-search');
+        var clearBtn = document.getElementById('clear-search-btn');
+        var resultsCount = document.getElementById('search-results-count');
+        var toolCards = document.querySelectorAll('.tool-card');
+        var toolSections = document.querySelectorAll('.tools-section');
+        var navButtons = document.querySelectorAll('.nav-btn');
 
         function normalizeText(text) {
             return text.toLowerCase().trim();
         }
 
         function searchTools(query) {
-            const normalizedQuery = normalizeText(query);
-            let visibleCount = 0;
-            let totalCount = toolCards.length;
+            var normalizedQuery = normalizeText(query);
+            var visibleCount = 0;
+            var totalCount = toolCards.length;
 
-            toolCards.forEach(card => {
-                const searchData = card.getAttribute('data-search') || '';
-                const toolName = card.querySelector('h3').textContent.toLowerCase();
-                const toolDesc = card.querySelector('p').textContent.toLowerCase();
-                const fullSearchText = (searchData + ' ' + toolName + ' ' + toolDesc).toLowerCase();
+            toolCards.forEach(function(card) {
+                var searchData = card.getAttribute('data-search') || '';
+                var toolName = card.querySelector('h3').textContent.toLowerCase();
+                var toolDesc = card.querySelector('p').textContent.toLowerCase();
+                var fullSearchText = (searchData + ' ' + toolName + ' ' + toolDesc).toLowerCase();
 
-                if (normalizedQuery === '' || fullSearchText.includes(normalizedQuery)) {
+                if (normalizedQuery === '' || fullSearchText.indexOf(normalizedQuery) !== -1) {
                     card.style.display = 'block';
                     visibleCount++;
                 } else {
@@ -446,12 +417,11 @@
                 }
             });
 
-            // Show/hide entire sections if all tools in section are hidden
-            toolSections.forEach(section => {
-                const cards = section.querySelectorAll('.tool-card');
-                let hasVisibleCard = false;
-                cards.forEach(card => {
-                    const style = card.getAttribute('style');
+            toolSections.forEach(function(section) {
+                var cards = section.querySelectorAll('.tool-card');
+                var hasVisibleCard = false;
+                cards.forEach(function(card) {
+                    var style = card.getAttribute('style');
                     if (!style || style !== 'display: none;') {
                         hasVisibleCard = true;
                     }
@@ -463,12 +433,11 @@
                 }
             });
 
-            // Update results count
             if (normalizedQuery === '') {
                 resultsCount.textContent = '';
                 clearBtn.style.display = 'none';
             } else {
-                resultsCount.textContent = `Found ${visibleCount} of ${totalCount} tools`;
+                resultsCount.textContent = 'Found ' + visibleCount + ' of ' + totalCount + ' tools';
                 clearBtn.style.display = 'inline-block';
             }
         }
@@ -483,16 +452,23 @@
             searchInput.focus();
         };
 
-        // Allow Enter key in search
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 clearSearch();
             }
         });
+
+        navButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var target = this.getAttribute('data-target');
+                var section = document.getElementById(target);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
     });
     </script>
-<!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script>
-    <!-- End Cloudflare Web Analytics -->
 </body>
 </html>

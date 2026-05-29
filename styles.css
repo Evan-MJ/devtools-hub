@@ -496,3 +496,42 @@ input, select, textarea, button {
 }
 /* Feedback link styles */
 .feedback-link { float: right; font-size: 13px; color: var(--text-secondary); text-decoration: none; padding: 4px 10px; background: var(--bg-secondary); border-radius: 4px; } .feedback-link:hover { color: var(--primary); background: var(--border); }
+
+/* Category Navigation Bar */
+.category-nav {
+    background: #1a1a2e;
+    border-bottom: 1px solid #2a2a4a;
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.category-nav .container {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+}
+.nav-btn {
+    background: #252545;
+    color: #888;
+    border: 1px solid #3a3a5a;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.nav-btn:hover {
+    background: #2d2d55;
+    border-color: #667eea;
+    color: #667eea;
+}
+.nav-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+}
