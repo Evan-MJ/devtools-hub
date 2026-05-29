@@ -217,9 +217,6 @@ ol li, ul li { margin: 0.5rem 0; }
     fdur.style.color = '#888';
     finfo.classList.add('visible');
 
-    var url = URL.createObjectURL(file);
-    vid.src = url;
-
     vid.onloadedmetadata = function() {
       clearTimeout(loadTimer);
       var min = Math.floor(vid.duration / 60);
@@ -250,6 +247,7 @@ ol li, ul li { margin: 0.5rem 0; }
       fdur.style.color = '#ffc107';
     }, 15000);
 
+    vid.src = URL.createObjectURL(file);
     vid.load();
   }
 
