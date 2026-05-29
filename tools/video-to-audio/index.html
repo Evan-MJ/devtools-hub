@@ -235,7 +235,7 @@ ol li, ul li { margin: 0.5rem 0; }
     vid.onerror = function() {
       metadataLoaded = true;
       clearTimeout(loadTimer);
-      fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + ')';
+      fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + '). Most phones record in HEVC/H.265 which many browsers do not support. Try using a video with H.264 encoding, or use Chrome/Edge on desktop.';
       fdur.style.color = '#dc3545';
       extBtn.disabled = true;
       console.log('Video error event, readyState:', vid.readyState, 'networkState:', vid.networkState);
@@ -252,7 +252,6 @@ ol li, ul li { margin: 0.5rem 0; }
     }, 15000);
 
     vid.src = URL.createObjectURL(file);
-    vid.load();
   }
 
   function formatSize(bytes) {
