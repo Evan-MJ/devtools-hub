@@ -55,7 +55,8 @@ section p, section li { color: #ccc; }
 ol li, ul li { margin: 0.5rem 0; }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<link rel="preload" as="fetch" href="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
 </head>
 <body>
 <header class="site-header">
@@ -374,7 +375,7 @@ ol li, ul li { margin: 0.5rem 0; }
     extBtn.disabled = false;
   }
 
-  window.tryFFmpegExtract = async function(file) {
+  window.tryFFmpegExtract = async function(file) { console.log('tryFFmpegExtract called, file=', file ? file.name : 'null');
     try {
       var { createFFmpeg, fetchFile } = window.FFmpeg;
       var ffmpeg = createFFmpeg({
