@@ -208,6 +208,9 @@ ol li, ul li { margin: 0.5rem 0; }
   fi.addEventListener('change', function() { if(this.files.length) handleFile(this.files[0]); });
 
   function handleFile(file) {
+    vid.onloadedmetadata = null;
+    vid.onerror = null;
+    vid.onloadstart = null;
     if(!file) return;
     var isVideo = file.type.startsWith('video/') || file.name.match(/\.(mp4|webm|mov|avi|mkv|flv|m4v|3gp)$/i);
     if(!isVideo) { alert('Please select a video file.'); return; }
@@ -493,6 +496,9 @@ ol li, ul li { margin: 0.5rem 0; }
     dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag & drop<br>MP4, WebM, MOV, AVI, MKV, FLV'; dz.querySelector('.dropzone-text').style.color = '';
     finfo.classList.remove('visible');
     preview.classList.remove('visible');
+    vid.onloadedmetadata = null;
+    vid.onerror = null;
+    vid.onloadstart = null;
     vid.src = '';
     res.classList.remove('visible');
     prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
