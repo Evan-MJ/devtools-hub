@@ -113,7 +113,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
     <div style="text-align:center;margin:1rem 0">
       <button class="btn btn-primary" id="extractBtn" disabled>Extract Audio</button>
-      <button class="btn" id="ffmpegBtn" style="display:none;background:#ffc107;color:#212529;margin-left:0.5rem" onclick="tryFFmpegExtract(currentFile)">Extract via FFmpeg (slow)</button>
+
     </div>
 
     <div class="progress-area" id="progressArea">
@@ -241,15 +241,17 @@ ol li, ul li { margin: 0.5rem 0; }
       clearTimeout(loadTimer);
       fdur.style.color = '#dc3545';
       extBtn.disabled = true;
-      var errMsg = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + ')';
-      if(window.FFmpeg && vid.error && vid.error.code === 4) {
-        errMsg += '; FFmpeg fallback available';
-        document.getElementById('ffmpegBtn').style.display = 'inline-block';
+      if(window.FFmpeg && currentFile) {
+        fdur.textContent = 'Browser cannot decode this. Trying FFmpeg.wasm...';
+        fdur.style.color = '#ffc107';
+        prog.classList.add('visible');
+        progFill.style.width = '0%';
+        progText.textContent = 'Downloading FFmpeg engine (first load slow)...';
+        window.tryFFmpegExtract(currentFile);
       } else {
-        errMsg += '. Most phones record in HEVC/H.265 which many browsers do not support. Try using a video with H.264 encoding.';
+        fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + '). Most phones record in HEVC/H.265. Try desktop Chrome.';
+        console.log('Video error, readyState:', vid.readyState, 'networkState:', vid.networkState);
       }
-      fdur.textContent = errMsg;
-      console.log('Video error event, readyState:', vid.readyState, 'networkState:', vid.networkState);
     };
 
     vid.onloadstart = function() {
