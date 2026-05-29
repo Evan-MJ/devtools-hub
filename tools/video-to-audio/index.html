@@ -169,7 +169,7 @@ ol li, ul li { margin: 0.5rem 0; }
     <details><summary>Is there a file size limit?</summary><p>No hard limit. Very large files limited by browser memory.</p></details>
   </section>
 </main>
-<p id="ffmpegNote" style="display:none;text-align:center;color:#ffc107;margin:0.5rem 0;font-size:0.85rem">FFmpeg.wasm fallback ready for unsupported formats. Extraction may be slower.</p>
+
 <footer class="site-footer">
   <div class="container">
     <p>&copy; 2026 DevTools Hub. Free online developer tools.</p>
@@ -243,7 +243,7 @@ ol li, ul li { margin: 0.5rem 0; }
       extBtn.disabled = true;
       fname.textContent = file.name;
       fsize.textContent = formatSize(file.size);
-      fdur.textContent = 'Format not supported by browser. Trying FFmpeg...';
+      fdur.textContent = 'Your browser cannot decode this video (codec ' + (vid.error ? 'code ' + vid.error.code : 'unknown') + '). Trying FFmpeg engine...';
       fdur.style.color = '#ffc107';
       prog.classList.add('visible');
       progFill.style.width = '0%';
