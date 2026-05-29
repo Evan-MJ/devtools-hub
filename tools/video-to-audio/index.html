@@ -217,7 +217,10 @@ ol li, ul li { margin: 0.5rem 0; }
     fdur.style.color = '#888';
     finfo.classList.add('visible');
 
+    var metadataLoaded = false;
+
     vid.onloadedmetadata = function() {
+      metadataLoaded = true;
       clearTimeout(loadTimer);
       var min = Math.floor(vid.duration / 60);
       var sec = Math.floor(vid.duration % 60);
@@ -230,6 +233,7 @@ ol li, ul li { margin: 0.5rem 0; }
     };
 
     vid.onerror = function() {
+      metadataLoaded = true;
       clearTimeout(loadTimer);
       fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + ')';
       fdur.style.color = '#dc3545';
@@ -242,7 +246,7 @@ ol li, ul li { margin: 0.5rem 0; }
     };
 
     var loadTimer = setTimeout(function() {
-      if(extBtn.disabled) return;
+      if(metadataLoaded) return;
       fdur.textContent = 'Still loading... large file? (' + (vid.error ? 'err ' + vid.error.code : 'waiting') + ')';
       fdur.style.color = '#ffc107';
     }, 15000);
