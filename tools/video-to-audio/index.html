@@ -275,6 +275,7 @@ ol li, ul li { margin: 0.5rem 0; }
     }, 15000);
 
     vid.src = URL.createObjectURL(file);
+    vid.load();
   }
 
   function formatSize(bytes) {
@@ -359,7 +360,7 @@ ol li, ul li { margin: 0.5rem 0; }
     else if(mimeType.includes('webm')) fmtLabel = 'WebM';
     resInfo.textContent = 'Format: ' + fmtLabel + ' | Size: ' + formatSize(size);
     dlBtn.onclick = function() {
-      var ext = (dlFmt ? dlFmt.value : 'mp3');
+      var ext = (dlFmt ? dlFmt.value : 'webm');
       var a = document.createElement('a');
       a.href = audioUrl;
       a.download = (currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'audio') + '_audio.' + ext;
@@ -369,7 +370,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
   function resetAll() {
     res.classList.remove('visible');
-    prog.classList.remove('visible');
+    prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
     preview.classList.remove('visible');
     finfo.classList.remove('visible');
     if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
@@ -382,29 +383,88 @@ ol li, ul li { margin: 0.5rem 0; }
     progText.textContent = 'Error: ' + msg;
     progFill.style.width = '0%';
     extBtn.disabled = false;
+    res.classList.remove('visible');
   }
 
   window.tryFFmpegExtract = async function(file) {
+    if(!window.FFmpegWASM || !window.FFmpegWASM.FFmpeg) {
+      fdur.textContent = 'Browser cannot decode this video. FFmpeg.wasm not available. Try desktop Chrome/Edge.';
+      fdur.style.color = '#dc3545';
+      errorState('FFmpeg.wasm not loaded. Refresh page and try again.');
+      return;
+    }
+    var ffmpeg = new window.FFmpegWASM.FFmpeg();
+    var ext = (dlFmt ? dlFmt.value : 'webm');
+
+    // Phase 1: Download FFmpeg core WASM with real progress
+    progFill.style.width = '2%';
+    progText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
     try {
-      var FFmpegClass = window.FFmpegWASM ? window.FFmpegWASM.FFmpeg : null;
-      if(!FFmpegClass) {
-        errorState('FFmpeg not loaded. Please refresh.');
-        return;
+      var downloadStart = Date.now();
+      var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
+      var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
+      var reader = wasmResp.body.getReader();
+      var received = 0;
+      var wasmChunks = [];
+      while(true) {
+        var readResult = await reader.read();
+        if(readResult.done) break;
+        wasmChunks.push(readResult.value);
+        received += readResult.value.length;
+        var pct = Math.min(2 + (received / contentLen) * 28, 30);
+        progFill.style.width = pct + '%';
+        var elapsed = (Date.now() - downloadStart) / 1000;
+        var speedMBs = received / elapsed / 1048576;
+        var remainingMB = (contentLen - received) / 1048576;
+        var eta = speedMBs > 0.1 ? Math.round(remainingMB / speedMBs) : '?';
+        progText.textContent = 'Downloading FFmpeg (' + (received/1048576).toFixed(1) + '/' + (contentLen/1048576).toFixed(1) + ' MB, ~' + eta + 's)';
       }
-      var ffmpeg = new FFmpegClass();
-      progText.textContent = 'Loading FFmpeg engine (~30MB)...';
-      await ffmpeg.load();
-      progText.textContent = 'Reading file...';
-      var reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      var buf = await new Promise(function(resolve, reject) {
+      var wasmTotal = new Uint8Array(received);
+      var wasmPos = 0;
+      for(var ci = 0; ci < wasmChunks.length; ci++) {
+        wasmTotal.set(wasmChunks[ci], wasmPos);
+        wasmPos += wasmChunks[ci].length;
+      }
+      var wasmBlob = new Blob([wasmTotal], { type: 'application/wasm' });
+      var wasmUrlObj = URL.createObjectURL(wasmBlob);
+      progFill.style.width = '32%';
+      progText.textContent = 'Initializing FFmpeg...';
+      await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', wasmURL: wasmUrlObj });
+    } catch(e) {
+      fdur.textContent = 'FFmpeg download/init failed (' + (e.message || 'unknown').substring(0,40) + '). Try again on faster connection.';
+      fdur.style.color = '#dc3545';
+      errorState('FFmpeg download failed. Check internet or use desktop Chrome.');
+      return;
+    }
+    progFill.style.width = '35%';
+    progText.textContent = 'Reading video file...';
+
+    // Phase 2: Read file into memory
+    var reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    var buf;
+    try {
+      buf = await new Promise(function(resolve, reject) {
         reader.onload = function() { resolve(new Uint8Array(reader.result)); };
-        reader.onerror = function() { reject(new Error('Failed to read file')); };
+        reader.onerror = function() { reject(new Error('Read failed')); };
       });
-      var ext = dlFmt ? dlFmt.value : 'mp3';
+    } catch(e) {
+      errorState('Failed to read video file.');
+      return;
+    }
+    progFill.style.width = '40%';
+
+    // Phase 3: Extract audio with progress
+    progText.textContent = 'Extracting audio track...';
+    ffmpeg.on('progress', function(ev) {
+      var p = ev.progress || 0;
+      progFill.style.width = Math.min(40 + p * 55, 95) + '%';
+    });
+    try {
       ffmpeg.writeFile('input', buf);
-      progText.textContent = 'Extracting audio...';
       await ffmpeg.exec(['-i', 'input', '-vn', '-acodec', 'libmp3lame', 'output.' + ext]);
+      progFill.style.width = '96%';
+      progText.textContent = 'Finalizing...';
       var data = ffmpeg.readFile('output.' + ext);
       audioBlob = new Blob([data.buffer], { type: 'audio/' + ext });
       audioUrl = URL.createObjectURL(audioBlob);
@@ -414,14 +474,14 @@ ol li, ul li { margin: 0.5rem 0; }
       ffmpeg.deleteFile('input');
       ffmpeg.deleteFile('output.' + ext);
       ffmpeg.terminate();
+      URL.revokeObjectURL(wasmUrlObj);
     } catch(e) {
-      var msg = e.message || '';
+      var msg = (e.message || '');
       if(msg.includes('Worker')) {
-        errorState('FFmpeg Worker blocked (browser security). Use captureStream-compatible format or desktop Chrome.');
+        errorState('Your browser blocks FFmpeg. Try Chrome/Edge on desktop.');
       } else {
-        errorState('FFmpeg failed: ' + msg.substring(0,80));
+        errorState('FFmpeg error: ' + msg.substring(0,80));
       }
-      console.error('FFmpeg error:', e);
     }
   }
 
@@ -430,12 +490,12 @@ ol li, ul li { margin: 0.5rem 0; }
     if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
     audioBlob = null;
     dz.classList.remove('has-file');
-    dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag & drop<br>MP4, WebM, MOV, AVI, MKV, FLV';
+    dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag & drop<br>MP4, WebM, MOV, AVI, MKV, FLV'; dz.querySelector('.dropzone-text').style.color = '';
     finfo.classList.remove('visible');
     preview.classList.remove('visible');
     vid.src = '';
     res.classList.remove('visible');
-    prog.classList.remove('visible');
+    prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
     extBtn.disabled = true;
   });
 })();
