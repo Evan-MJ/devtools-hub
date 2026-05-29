@@ -231,7 +231,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
     vid.onerror = function() {
       clearTimeout(loadTimer);
-      fdur.textContent = 'Unsupported format - try H.264 MP4';
+      fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + ')';
       fdur.style.color = '#dc3545';
       extBtn.disabled = true;
       console.log('Video error event, readyState:', vid.readyState, 'networkState:', vid.networkState);
@@ -243,7 +243,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
     var loadTimer = setTimeout(function() {
       if(extBtn.disabled) return;
-      fdur.textContent = 'Loading slow - still processing?';
+      fdur.textContent = 'Still loading... large file? (' + (vid.error ? 'err ' + vid.error.code : 'waiting') + ')';
       fdur.style.color = '#ffc107';
     }, 15000);
 
