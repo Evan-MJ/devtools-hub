@@ -377,7 +377,9 @@ ol li, ul li { margin: 0.5rem 0; }
     preview.classList.remove('visible');
     finfo.classList.remove('visible');
     if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
-    if(vid.src) { URL.revokeObjectURL(vid.src); vid.src = ''; }
+    if(vid.src) { URL.revokeObjectURL(vid.src); }
+    vid.removeAttribute('src');
+    vid.load();
     audioBlob = null;
     extBtn.disabled = true;
   }
@@ -499,7 +501,8 @@ ol li, ul li { margin: 0.5rem 0; }
     vid.onloadedmetadata = null;
     vid.onerror = null;
     vid.onloadstart = null;
-    vid.src = '';
+    vid.removeAttribute('src');
+    vid.load();
     res.classList.remove('visible');
     prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
     extBtn.disabled = true;
