@@ -54,6 +54,8 @@ section p, section li { color: #ccc; }
 .hero-text { color: #ccc; font-size: 1.1rem; }
 ol li, ul li { margin: 0.5rem 0; }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -111,6 +113,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
     <div style="text-align:center;margin:1rem 0">
       <button class="btn btn-primary" id="extractBtn" disabled>Extract Audio</button>
+      <button class="btn" id="ffmpegBtn" style="display:none;background:#ffc107;color:#212529;margin-left:0.5rem" onclick="tryFFmpegExtract(currentFile)">Extract via FFmpeg (slow)</button>
     </div>
 
     <div class="progress-area" id="progressArea">
@@ -166,6 +169,7 @@ ol li, ul li { margin: 0.5rem 0; }
     <details><summary>Is there a file size limit?</summary><p>No hard limit. Very large files limited by browser memory.</p></details>
   </section>
 </main>
+<p id="ffmpegNote" style="display:none;text-align:center;color:#ffc107;margin:0.5rem 0;font-size:0.85rem">FFmpeg.wasm fallback ready for unsupported formats. Extraction may be slower.</p>
 <footer class="site-footer">
   <div class="container">
     <p>&copy; 2026 DevTools Hub. Free online developer tools.</p>
@@ -235,9 +239,16 @@ ol li, ul li { margin: 0.5rem 0; }
     vid.onerror = function() {
       metadataLoaded = true;
       clearTimeout(loadTimer);
-      fdur.textContent = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + '). Most phones record in HEVC/H.265 which many browsers do not support. Try using a video with H.264 encoding, or use Chrome/Edge on desktop.';
       fdur.style.color = '#dc3545';
       extBtn.disabled = true;
+      var errMsg = 'Unsupported format (' + (vid.error ? 'code ' + vid.error.code : 'unknown') + ')';
+      if(window.FFmpeg && vid.error && vid.error.code === 4) {
+        errMsg += '; FFmpeg fallback available';
+        document.getElementById('ffmpegBtn').style.display = 'inline-block';
+      } else {
+        errMsg += '. Most phones record in HEVC/H.265 which many browsers do not support. Try using a video with H.264 encoding.';
+      }
+      fdur.textContent = errMsg;
       console.log('Video error event, readyState:', vid.readyState, 'networkState:', vid.networkState);
     };
 
@@ -281,6 +292,12 @@ ol li, ul li { margin: 0.5rem 0; }
     }
     var audioTrack = stream.getAudioTracks()[0];
     if(!audioTrack) {
+      if(window.FFmpeg && currentFile) {
+        console.log('captureStream failed, trying FFmpeg.wasm...');
+        progText.textContent = 'Loading FFmpeg (first time may be slow)...';
+        tryFFmpegExtract(currentFile);
+        return;
+      }
       errorState('No audio track found in this video.');
       return;
     }
@@ -353,6 +370,31 @@ ol li, ul li { margin: 0.5rem 0; }
     progText.textContent = 'Error: ' + msg;
     progFill.style.width = '0%';
     extBtn.disabled = false;
+  }
+
+  window.tryFFmpegExtract = async function(file) {
+    try {
+      var { createFFmpeg, fetchFile } = window.FFmpeg;
+      var ffmpeg = createFFmpeg({
+        corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js',
+        log: false,
+      });
+      await ffmpeg.load();
+      progText.textContent = 'Extracting audio via FFmpeg...';
+      ffmpeg.FS('writeFile', 'input', await fetchFile(file));
+      var outName = 'output.' + (dlFmt ? dlFmt.value : 'mp3');
+      await ffmpeg.run('-i', 'input', '-vn', '-acodec', 'copy', outName);
+      var data = ffmpeg.FS('readFile', outName);
+      audioBlob = new Blob([data.buffer], { type: 'audio/' + (dlFmt ? dlFmt.value : 'mp3') });
+      audioUrl = URL.createObjectURL(audioBlob);
+      progFill.style.width = '100%';
+      progText.textContent = 'Complete!';
+      showResult('audio/' + (dlFmt ? dlFmt.value : 'mp3'), audioBlob.size);
+      ffmpeg.FS('unlink', 'input');
+      ffmpeg.FS('unlink', outName);
+    } catch(e) {
+      errorState('FFmpeg extraction failed: ' + e.message);
+    }
   }
 
   convBtn.addEventListener('click', function() {
