@@ -8,7 +8,7 @@
     <meta name="keywords" content="video compressor, compress video, reduce video size, videooptimizer, shrink video, video file smaller">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/video-compressor/">
     <link rel="stylesheet" href="../../styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
 </head>
 <body>
     <div class="container tool-page">
@@ -216,6 +216,20 @@
             progressBar.style.width = '10%';
 
             try {
+                // Wait for FFmpegWASM to be available if not already loaded
+                if (!window.FFmpegWASM) {
+                    progressText.textContent = 'Waiting for FFmpeg engine...';
+                    await new Promise(function(resolve) {
+                        var checkFFmpeg = setInterval(function() {
+                            if (window.FFmpegWASM) {
+                                clearInterval(checkFFmpeg);
+                                resolve();
+                            }
+                        }, 100);
+                        setTimeout(function() { clearInterval(checkFFmpeg); resolve(); }, 15000);
+                    });
+                }
+                
                 if (!window.FFmpegWASM) {
                     showError('FFmpeg engine failed to load. Please refresh and try again.');
                     progressContainer.style.display = 'none';
