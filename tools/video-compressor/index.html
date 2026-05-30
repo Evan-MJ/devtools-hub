@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video to Audio Converter - Extract MP3 from Video Free | DevTools Hub</title>
+<title>Video Compressor - Extract MP3 from Video Free | DevTools Hub</title>
 <meta name="description" content="Free online video to audio converter. Extract MP3 audio from MP4, WebM, MOV, AVI files. No upload, 100% private, in-browser processing.">
-<link rel="canonical" href="https://tools.scoreroute.com/tools/video-to-audio/">
-<meta property="og:title" content="Video to Audio Converter - Extract MP3 from Video Free">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/video-compressor/">
+<meta property="og:title" content="Video Compressor - Extract MP3 from Video Free">
 <meta property="og:description" content="Free online video to audio converter. Extract audio from video files in your browser. No upload, 100% private.">
-<meta property="og:url" content="https://tools.scoreroute.com/tools/video-to-audio/">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/video-compressor/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Video to Audio Converter","url":"https://tools.scoreroute.com/tools/video-to-audio/","description":"Free online video to audio converter using browser-based audio extraction.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Video Compressor","url":"https://tools.scoreroute.com/tools/video-compressor/","description":"Free online video to audio converter using browser-based audio extraction.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 <link rel="stylesheet" href="/styles.css">
 <style>
@@ -71,9 +71,9 @@ ol li, ul li { margin: 0.5rem 0; }
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="/">Home</a>
     <span>/</span>
-    <span aria-current="page">Video to Audio Converter</span>
+    <span aria-current="page">Video Compressor</span>
   </nav>
-  <h1>Video to Audio Converter</h1>
+  <h1>Video Compressor</h1>
   <p class="hero-text">Extract audio from video files instantly. Upload MP4, WebM, MOV, or AVI — download as MP3 or WebM audio. No upload to servers, 100% private, all processing happens in your browser.</p>
 
   <div class="converter-area">
@@ -89,8 +89,8 @@ ol li, ul li { margin: 0.5rem 0; }
     <div style="display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap">
       <label>Output:</label>
       <select class="format-select" id="formatSelect">
-        <option value="audio/webm;codecs=opus">WebM Opus (best quality)</option>
-        <option value="audio/webm">WebM Audio</option>
+        <option value="video/mp4;codecs=opus">WebM Opus (best quality)</option>
+        <option value="video/mp4">WebM Audio</option>
         <option value="audio/ogg;codecs=opus">OGG Opus</option>
       </select>
       <label>Download as:</label>
@@ -112,7 +112,7 @@ ol li, ul li { margin: 0.5rem 0; }
     </div>
 
     <div style="text-align:center;margin:1rem 0">
-      <button class="btn btn-primary" id="extractBtn" disabled>Extract Audio</button>
+      <button class="btn btn-primary" id="compressBtn" disabled>Compress Video</button>
 
     </div>
 
@@ -124,8 +124,8 @@ ol li, ul li { margin: 0.5rem 0; }
     <div class="result-area" id="resultArea">
       <p style="font-size:1.2rem;font-weight:500">Audio extracted successfully!</p>
       <p style="color:#aaa" id="resultInfo"></p>
-      <button class="btn btn-success" id="downloadBtn">Download Audio</button>
-      <button class="btn btn-primary" id="convertAnother" style="margin-left:0.5rem">Convert Another</button>
+      <button class="btn btn-success" id="downloadBtn">Download Video</button>
+      <button class="btn btn-primary" id="convertAnother" style="margin-left:0.5rem">Compress Another</button>
     </div>
   </div>
 
@@ -142,11 +142,11 @@ ol li, ul li { margin: 0.5rem 0; }
   </section>
 
   <section>
-    <h2>How to Extract Audio from Video</h2>
+    <h2>How to Compress Video from Video</h2>
     <ol>
       <li><strong>Upload</strong> your video file (click or drag &amp; drop)</li>
       <li><strong>Choose</strong> output format</li>
-      <li><strong>Click Extract Audio</strong> — processing starts instantly</li>
+      <li><strong>Click Compress Video</strong> — processing starts instantly</li>
       <li><strong>Download</strong> your audio file when ready</li>
     </ol>
   </section>
@@ -319,7 +319,7 @@ ol li, ul li { margin: 0.5rem 0; }
     var audioStream = new MediaStream([audioTrack]);
     var mimeType = fmt.value;
     if(typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported(mimeType)) {
-      if(MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) mimeType = 'audio/webm';
+      if(MediaRecorder && MediaRecorder.isTypeSupported('video/mp4')) mimeType = 'video/mp4';
       else { errorState('MediaRecorder not supported. Try Chrome or Edge.'); return; }
     }
 
