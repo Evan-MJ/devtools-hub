@@ -8,7 +8,7 @@
     <meta name="keywords" content="video compressor, compress video, reduce video size, videooptimizer, shrink video, video file smaller">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/video-compressor/">
     <link rel="stylesheet" href="../../styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
 </head>
 <body>
     <div class="container tool-page">
@@ -230,17 +230,13 @@
                     progressText.textContent = 'Compressing... ' + pct + '%';
                 });
 
-                progressBar.style.width = '15%';
-                progressText.textContent = 'Downloading FFmpeg core...';
-
-                var coreResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js');
-                var coreTotal = await coreResponse.arrayBuffer();
-                var coreBlob = new Blob([coreTotal], { type: 'application/javascript' });
-                var coreUrlObj = URL.createObjectURL(coreBlob);
+                progressBar.style.width = '2%';
+                progressText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
                 
-                var wasmResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
-                var contentLen = parseInt(wasmResponse.headers.get('Content-Length') || '31000000');
-                var reader = wasmResponse.body.getReader();
+                var downloadStart = Date.now();
+                var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
+                var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
+                var reader = wasmResp.body.getReader();
                 var received = 0;
                 var wasmChunks = [];
                 while(true) {
@@ -248,9 +244,13 @@
                     if(readResult.done) break;
                     wasmChunks.push(readResult.value);
                     received += readResult.value.length;
-                    var pct = Math.min(25 + (received / contentLen) * 10, 35);
+                    var pct = Math.min(2 + (received / contentLen) * 28, 30);
                     progressBar.style.width = pct + '%';
-                    progressText.textContent = 'Downloading FFmpeg (' + (received/1048576).toFixed(1) + ' MB)...';
+                    var elapsed = (Date.now() - downloadStart) / 1000;
+                    var speedMBs = received / elapsed / 1048576;
+                    var remainingMB = (contentLen - received) / 1048576;
+                    var eta = speedMBs > 0.1 ? Math.round(remainingMB / speedMBs) : '?';
+                    progressText.textContent = 'Downloading FFmpeg (' + (received/1048576).toFixed(1) + '/' + (contentLen/1048576).toFixed(1) + ' MB, ~' + eta + 's)';
                 }
                 var wasmTotal = new Uint8Array(received);
                 var wasmPos = 0;
@@ -260,22 +260,11 @@
                 }
                 var wasmBlob = new Blob([wasmTotal], { type: 'application/wasm' });
                 var wasmUrlObj = URL.createObjectURL(wasmBlob);
-                
-                progressBar.style.width = '40%';
-                progressText.textContent = 'Downloading FFmpeg worker...';
-
-                var workerResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.worker.js');
-                var workerData = await workerResp.arrayBuffer();
-                progressBar.style.width = '45%';
+                progressBar.style.width = '32%';
                 progressText.textContent = 'Initializing FFmpeg...';
-
-                await ffmpeg.load({ 
-                    coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', 
-                    wasmURL: wasmUrlObj 
-                });
-
+                await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', wasmURL: wasmUrlObj });
+                
                 ffmpegLoaded = true;
-                URL.revokeObjectURL(coreUrlObj);
                 URL.revokeObjectURL(wasmUrlObj);
                 return true;
             } catch (e) {
