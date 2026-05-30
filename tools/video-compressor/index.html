@@ -141,10 +141,6 @@
             font-size: 1.1rem;
             font-weight: 500;
         }
-        #compressedOutput {
-            display: none;
-            margin-top: 16px;
-        }
     </style>
 </head>
 <body>
@@ -237,15 +233,6 @@
                 <li><strong>Large Files</strong>: Handle videos up to 2GB</li>
             </ul>
 
-            <h3>Why Our Video Compressor?</h3>
-            <p style="color:#aaa;line-height:1.7;">Unlike cloud-based compressors that upload your videos to servers, our tool processes everything locally in your browser. This means:</p>
-            <ul style="color:#aaa;line-height:1.8;margin-left:20px;">
-                <li>No upload wait time - processing starts immediately</li>
-                <li>Your videos are never stored or transmitted</li>
-                <li>Works offline once loaded</li>
-                <li>No file size limits from server constraints</li>
-            </ul>
-
             <h3>Problem Solved</h3>
             <p style="color:#aaa;line-height:1.7;"><strong>"How do I make my video file smaller?"</strong> - Whether you need to send a large video via email, upload to a platform with file size limits, or save storage space, our compressor solves this without requiring expensive software or cloud subscriptions.</p>
 
@@ -262,29 +249,30 @@
 
     <script>
     (function() {
-        const dropzone = document.getElementById('dropzone');
-        const videoInput = document.getElementById('videoInput');
-        const settingsPanel = document.getElementById('settingsPanel');
-        const compressBtn = document.getElementById('compressBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const resultBox = document.getElementById('resultBox');
-        const errorBox = document.getElementById('errorBox');
-        const qualitySlider = document.getElementById('qualitySlider');
-        const qualityValue = document.getElementById('qualityValue');
-        const resolutionSelect = document.getElementById('resolutionSelect');
-        const speedSelect = document.getElementById('speedSelect');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const originalSizeEl = document.getElementById('originalSize');
-        const compressedSizeEl = document.getElementById('compressedSize');
-        const compressionRatioEl = document.getElementById('compressionRatio');
+        var dropzone = document.getElementById('dropzone');
+        var videoInput = document.getElementById('videoInput');
+        var settingsPanel = document.getElementById('settingsPanel');
+        var compressBtn = document.getElementById('compressBtn');
+        var resetBtn = document.getElementById('resetBtn');
+        var progressContainer = document.getElementById('progressContainer');
+        var progressBar = document.getElementById('progressBar');
+        var progressText = document.getElementById('progressText');
+        var resultBox = document.getElementById('resultBox');
+        var errorBox = document.getElementById('errorBox');
+        var qualitySlider = document.getElementById('qualitySlider');
+        var qualityValue = document.getElementById('qualityValue');
+        var resolutionSelect = document.getElementById('resolutionSelect');
+        var speedSelect = document.getElementById('speedSelect');
+        var downloadBtn = document.getElementById('downloadBtn');
+        var originalSizeEl = document.getElementById('originalSize');
+        var compressedSizeEl = document.getElementById('compressedSize');
+        var compressionRatioEl = document.getElementById('compressionRatio');
 
-        let videoFile = null;
-        let compressedBlob = null;
-        let ffmpeg = null;
-        let ffmpegLoaded = false;
+        var videoFile = null;
+        var compressedBlob = null;
+        var ffmpeg = null;
+        var ffmpegLoaded = false;
+        var fetchFileFn = null;
 
         function formatSize(bytes) {
             if (bytes < 1024) return bytes + ' B';
@@ -314,6 +302,7 @@
             resultBox.style.display = 'none';
             hideError();
             videoInput.value = '';
+            dropzone.innerHTML = '<div class="dropzone-icon">🎬</div><div class="dropzone-text">Drag & drop video file here</div><div class="dropzone-hint">or click to browse • MP4, WebM, MOV, AVI supported</div><input type="file" id="videoInput" accept="video/*" style="display:none;">';
         }
 
         function handleFile(file) {
@@ -327,26 +316,26 @@
             }
             videoFile = file;
             hideError();
-            dropzone.innerHTML = '<div class="dropzone-icon">✓</div><div class="dropzone-text"><span class="filename">' + file.name + '</span></div><div class="dropzone-hint">' + formatSize(file.size) + '</div>';
+            dropzone.innerHTML = '<div class="dropzone-icon">✓</div><div class="dropzone-text"><span class="filename">' + file.name + '</span></div><div class="dropzone-hint">' + formatSize(file.size) + '</div><input type="file" id="videoInput" accept="video/*" style="display:none;">';
             settingsPanel.style.display = 'block';
             compressBtn.disabled = false;
             resetBtn.style.display = 'inline-block';
             resultBox.style.display = 'none';
         }
 
-        dropzone.addEventListener('click', () => videoInput.click());
-        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-        dropzone.addEventListener('drop', (e) => {
+        dropzone.addEventListener('click', function() { videoInput.click(); });
+        dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('dragover'); });
+        dropzone.addEventListener('drop', function(e) {
             e.preventDefault();
             dropzone.classList.remove('dragover');
             if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
         });
-        videoInput.addEventListener('change', () => {
+        videoInput.addEventListener('change', function() {
             if (videoInput.files.length) handleFile(videoInput.files[0]);
         });
 
-        qualitySlider.addEventListener('input', () => {
+        qualitySlider.addEventListener('input', function() {
             qualityValue.textContent = qualitySlider.value + '%';
         });
 
@@ -354,44 +343,59 @@
 
         async function loadFFmpeg() {
             if (ffmpegLoaded) return true;
-            showError('');
+            hideError();
             progressText.textContent = 'Loading compression engine...';
             progressContainer.style.display = 'block';
             progressBar.style.width = '10%';
 
             try {
-                const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
-                const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
+                var FFmpegModule = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm');
+                var FFmpegUtil = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm');
                 
+                var FFmpeg = FFmpegModule.FFmpeg;
+                fetchFileFn = FFmpegUtil.fetchFile;
                 ffmpeg = new FFmpeg();
                 
-                ffmpeg.on('progress', ({ progress }) => {
-                    const pct = Math.min(90, 20 + Math.round(progress * 70));
+                ffmpeg.on('progress', function(data) {
+                    var pct = Math.min(90, 20 + Math.round(data.progress * 70));
                     progressBar.style.width = pct + '%';
                     progressText.textContent = 'Compressing... ' + pct + '%';
                 });
 
-                window.fetchFile = fetchFile;
-                
                 progressBar.style.width = '15%';
                 progressText.textContent = 'Downloading FFmpeg core...';
 
+                var coreResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm/ffmpeg-core.js');
+                var coreTotal = await coreResponse.arrayBuffer();
+                var coreBlob = new Blob([coreTotal], { type: 'application/javascript' });
+                var coreUrlObj = URL.createObjectURL(coreBlob);
+                
+                var wasmResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm/ffmpeg-core.wasm');
+                var wasmTotal = await wasmResponse.arrayBuffer();
+                var wasmBlob = new Blob([wasmTotal], { type: 'application/wasm' });
+                var wasmUrlObj = URL.createObjectURL(wasmBlob);
+                
+                progressBar.style.width = '25%';
+                progressText.textContent = 'Initializing FFmpeg...';
+
                 await ffmpeg.load({
-                    coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm/ffmpeg-core.js',
-                    wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm/ffmpeg-core.wasm'
+                    coreURL: coreUrlObj,
+                    wasmURL: wasmUrlObj
                 });
 
                 ffmpegLoaded = true;
+                URL.revokeObjectURL(coreUrlObj);
+                URL.revokeObjectURL(wasmUrlObj);
                 return true;
             } catch (e) {
                 console.error('FFmpeg load error:', e);
-                showError('Failed to load compression engine. Please try again.');
+                showError('Failed to load compression engine: ' + e.message);
                 progressContainer.style.display = 'none';
                 return false;
             }
         }
 
-        compressBtn.addEventListener('click', async () => {
+        compressBtn.addEventListener('click', async function() {
             if (!videoFile) return;
             
             hideError();
@@ -400,7 +404,7 @@
             progressBar.style.width = '0%';
             progressText.textContent = 'Starting...';
 
-            const loaded = await loadFFmpeg();
+            var loaded = await loadFFmpeg();
             if (!loaded) {
                 compressBtn.disabled = false;
                 return;
@@ -410,19 +414,19 @@
                 progressBar.style.width = '20%';
                 progressText.textContent = 'Reading video...';
 
-                const inputName = 'input' + videoFile.name.replace(/[^a-zA-Z0-9.]/g, '');
-                const outputName = 'output_' + Date.now() + '.mp4';
+                var inputName = 'input' + videoFile.name.replace(/[^a-zA-Z0-9.]/g, '');
+                var outputName = 'output_' + Date.now() + '.mp4';
                 
-                await ffmpeg.writeFile(inputName, await window.fetchFile(videoFile));
+                await ffmpeg.writeFile(inputName, await fetchFileFn(videoFile));
 
                 progressBar.style.width = '25%';
                 progressText.textContent = 'Compressing video...';
 
-                const crf = Math.round(51 - (qualitySlider.value / 100) * 40);
-                const resolution = resolutionSelect.value;
-                const speed = speedSelect.value;
+                var crf = Math.round(51 - (qualitySlider.value / 100) * 40);
+                var resolution = resolutionSelect.value;
+                var speed = speedSelect.value;
                 
-                const ffmpegArgs = [
+                var ffmpegArgs = [
                     '-i', inputName,
                     '-crf', crf.toString(),
                     '-preset', speed,
@@ -443,7 +447,7 @@
                 progressBar.style.width = '95%';
                 progressText.textContent = 'Finalizing...';
 
-                const data = await ffmpeg.readFile(outputName);
+                var data = await ffmpeg.readFile(outputName);
                 compressedBlob = new Blob([data.buffer], { type: 'video/mp4' });
 
                 await ffmpeg.deleteFile(inputName);
@@ -452,7 +456,7 @@
                 originalSizeEl.textContent = formatSize(videoFile.size);
                 compressedSizeEl.textContent = formatSize(compressedBlob.size);
                 
-                const ratio = Math.round((1 - compressedBlob.size / videoFile.size) * 100);
+                var ratio = Math.round((1 - compressedBlob.size / videoFile.size) * 100);
                 compressionRatioEl.textContent = ratio > 0 ? 'Reduced by ' + ratio + '%!' : 'Size increase: ' + (-ratio) + '%';
 
                 progressContainer.style.display = 'none';
@@ -460,13 +464,13 @@
                 resetBtn.style.display = 'inline-block';
                 compressBtn.style.display = 'none';
 
-                downloadBtn.onclick = () => {
-                    const url = URL.createObjectURL(compressedBlob);
-                    const a = document.createElement('a');
+                downloadBtn.onclick = function() {
+                    var url = URL.createObjectURL(compressedBlob);
+                    var a = document.createElement('a');
                     a.href = url;
                     a.download = 'compressed_' + videoFile.name;
                     a.click();
-                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
                 };
 
             } catch (e) {
