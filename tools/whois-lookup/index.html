@@ -20,6 +20,7 @@
 .search-box { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
 .search-box input { flex: 1; padding: 1rem; border: 1px solid #555; border-radius: 8px; background: #1a1a3e; color: #fff; font-size: 1rem; min-width: 200px; }
 .search-box input:focus { outline: none; border-color: #667eea; }
+.search-box input::placeholder { color: #666; }
 .btn { padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: opacity 0.2s; }
 .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
 .btn-primary:hover { opacity: 0.9; }
@@ -27,8 +28,9 @@
 .result-area { display: none; margin: 1.5rem 0; padding: 1.5rem; background: #1a1a3e; border-radius: 8px; border: 1px solid #333; }
 .result-area.visible { display: block; }
 .result-area.error { border-color: #dc3545; background: #2a1a1e; }
+.result-domain { color: #667eea; font-size: 1.3rem; margin-bottom: 1rem; word-break: break-all; }
 .result-title { color: #fff; font-size: 1.2rem; margin-bottom: 1rem; }
-.result-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #333; }
+.result-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #333; flex-wrap: wrap; }
 .result-row:last-child { border-bottom: none; }
 .result-label { color: #888; }
 .result-value { color: #667eea; font-weight: 500; word-break: break-all; text-align: right; }
@@ -44,6 +46,7 @@ section p, section li { color: #ccc; }
 .feature-card p { color: #aaa; }
 .hero-text { color: #ccc; font-size: 1.1rem; }
 ol li, ul li { margin: 0.5rem 0; }
+.hint { color: #888; font-size: 0.9rem; margin-top: 0.5rem; }
 </style>
 </head>
 <body>
@@ -67,9 +70,10 @@ ol li, ul li { margin: 0.5rem 0; }
 
   <div class="lookup-area">
     <div class="search-box">
-      <input type="text" id="domainInput" placeholder="Enter domain (e.g., google.com)" autocomplete="off">
+      <input type="text" id="domainInput" placeholder="Enter domain or full URL (e.g., google.com or https://example.com)" autocomplete="off">
       <button id="lookupBtn" class="btn btn-primary">Lookup</button>
     </div>
+    <p class="hint">Supports both domain names (google.com) and full URLs (https://google.com)</p>
 
     <div id="loading" class="loading">
       <div class="spinner"></div>
@@ -77,6 +81,7 @@ ol li, ul li { margin: 0.5rem 0; }
     </div>
 
     <div id="resultArea" class="result-area">
+      <div id="resultDomain" class="result-domain"></div>
       <div class="result-title">WHOIS Information</div>
       <div id="resultContent"></div>
     </div>
@@ -90,7 +95,7 @@ ol li, ul li { margin: 0.5rem 0; }
   <section>
     <h2>How to Use</h2>
     <ol>
-      <li><strong>Enter a domain</strong> in the search box above (e.g., example.com)</li>
+      <li><strong>Enter a domain or URL</strong> in the search box above (e.g., google.com or https://google.com)</li>
       <li><strong>Click "Lookup"</strong> or press Enter to search</li>
       <li><strong>View results</strong> including registration status, dates, and name servers</li>
     </ol>
@@ -100,8 +105,8 @@ ol li, ul li { margin: 0.5rem 0; }
     <h2>Features</h2>
     <div class="feature-grid">
       <div class="feature-card">
-        <h3>Instant Results</h3>
-        <p>Get domain registration information in seconds. No delays or waiting.</p>
+        <h3>URL or Domain</h3>
+        <p>Enter a full URL like https://google.com or just the domain like google.com</p>
       </div>
       <div class="feature-card">
         <h3>Complete Data</h3>
@@ -124,19 +129,31 @@ ol li, ul li { margin: 0.5rem 0; }
   var lookupBtn = document.getElementById('lookupBtn');
   var loading = document.getElementById('loading');
   var resultArea = document.getElementById('resultArea');
+  var resultDomain = document.getElementById('resultDomain');
   var resultContent = document.getElementById('resultContent');
 
-  function formatDate(dateStr) {
-    if (!dateStr) return 'N/A';
+  function extractDomain(input) {
+    input = input.trim();
+    if (!input) return null;
+    
     try {
-      var d = new Date(dateStr);
-      return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+      var url;
+      if (input.startsWith('http://') || input.startsWith('https://')) {
+        url = new URL(input);
+        return url.hostname;
+      } else if (input.includes('.')) {
+        var domainPattern = /^([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+        if (domainPattern.test(input)) {
+          return input;
+        }
+      }
+      return null;
     } catch(e) {
-      return dateStr;
+      return null;
     }
   }
 
-  function renderResult(data) {
+  function renderResult(data, queriedDomain) {
     var html = '';
     var fields = [
       ['Domain', 'domain'],
@@ -171,34 +188,38 @@ ol li, ul li { margin: 0.5rem 0; }
       html = '<p style="color:#888;">No detailed information available for this domain.</p>';
     }
     
+    resultDomain.textContent = 'Queried: ' + (data.domain || queriedDomain);
     resultContent.innerHTML = html;
     resultArea.classList.add('visible');
     resultArea.classList.remove('error');
   }
 
   function renderError(message) {
+    resultDomain.textContent = '';
     resultContent.innerHTML = '<p style="color:#dc3545;">Error: ' + message + '</p>';
     resultArea.classList.add('visible');
     resultArea.classList.add('error');
   }
 
   async function doLookup() {
-    var domain = domainInput.value.trim();
+    var input = domainInput.value.trim();
     
-    if (!domain) {
-      renderError('Please enter a domain name');
+    if (!input) {
+      renderError('Please enter a domain or URL');
       return;
     }
     
-    var domainPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)+$/;
-    if (!domainPattern.test(domain)) {
-      renderError('Invalid domain format. Example: google.com');
+    var domain = extractDomain(input);
+    
+    if (!domain) {
+      renderError('Invalid format. Please enter a domain (google.com) or URL (https://google.com)');
       return;
     }
     
     lookupBtn.disabled = true;
     loading.classList.add('visible');
     resultArea.classList.remove('visible');
+    resultDomain.textContent = '';
     resultContent.innerHTML = '';
     
     try {
@@ -208,7 +229,7 @@ ol li, ul li { margin: 0.5rem 0; }
       if (data.error) {
         renderError(data.error);
       } else {
-        renderResult(data);
+        renderResult(data, domain);
       }
     } catch(e) {
       renderError('Network error. Please try again.');
