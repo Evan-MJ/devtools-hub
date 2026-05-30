@@ -248,7 +248,7 @@
                 progressText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
                 
                 var downloadStart = Date.now();
-                var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
+                var wasmResp = await fetch('https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm');
                 var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
                 var reader = wasmResp.body.getReader();
                 var received = 0;
@@ -276,7 +276,8 @@
                 var wasmUrlObj = URL.createObjectURL(wasmBlob);
                 progressBar.style.width = '32%';
                 progressText.textContent = 'Initializing FFmpeg...';
-                await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', wasmURL: wasmUrlObj });
+                await ffmpeg.load({ coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: wasmUrlObj });
+                URL.revokeObjectURL(wasmUrlObj);
                 
                 ffmpegLoaded = true;
                 URL.revokeObjectURL(wasmUrlObj);
