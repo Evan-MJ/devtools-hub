@@ -264,21 +264,13 @@
                 progressBar.style.width = '40%';
                 progressText.textContent = 'Downloading FFmpeg worker...';
 
-                var workerResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.worker.js');
-                var workerTotal = await workerResponse.arrayBuffer();
-                var workerBlob = new Blob([workerTotal], { type: 'application/javascript' });
-                var workerUrlObj = URL.createObjectURL(workerBlob);
-                
                 progressBar.style.width = '45%';
                 progressText.textContent = 'Initializing FFmpeg...';
 
-                await ffmpeg.load({
-                    coreURL: coreUrlObj,
-                    wasmURL: wasmUrlObj,
-                    workerURL: workerUrlObj
+                await ffmpeg.load({ 
+                    coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', 
+                    wasmURL: wasmUrlObj 
                 });
-
-                URL.revokeObjectURL(workerUrlObj);
 
                 ffmpegLoaded = true;
                 URL.revokeObjectURL(coreUrlObj);
