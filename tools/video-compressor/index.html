@@ -264,6 +264,8 @@
                 progressBar.style.width = '40%';
                 progressText.textContent = 'Downloading FFmpeg worker...';
 
+                var workerResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.worker.js');
+                var workerData = await workerResp.arrayBuffer();
                 progressBar.style.width = '45%';
                 progressText.textContent = 'Initializing FFmpeg...';
 
