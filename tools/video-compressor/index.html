@@ -405,7 +405,7 @@ ol li, ul li { margin: 0.5rem 0; }
     progText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
     try {
       var downloadStart = Date.now();
-      var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
+      var wasmResp = await fetch('https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm');
       var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
       var reader = wasmResp.body.getReader();
       var received = 0;
@@ -433,7 +433,7 @@ ol li, ul li { margin: 0.5rem 0; }
       var wasmUrlObj = URL.createObjectURL(wasmBlob);
       progFill.style.width = '32%';
       progText.textContent = 'Initializing FFmpeg...';
-      await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', wasmURL: wasmUrlObj });
+      await ffmpeg.load({ coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: wasmUrlObj });
     } catch(e) {
       fdur.textContent = 'FFmpeg download/init failed (' + (e.message || 'unknown').substring(0,40) + '). Try again on faster connection.';
       fdur.style.color = '#dc3545';
