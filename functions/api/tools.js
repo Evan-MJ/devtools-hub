@@ -1,14 +1,14 @@
 const TOOL_CATEGORIES = {
-    'formatter': ['json-formatter', 'html-formatter', 'sql-formatter', 'yaml-validator'],
+    'formatter': ['json-formatter', 'html-formatter', 'sql-formatter', 'yaml-validator', 'css-formatter'],
     'calculator': ['calculator', 'bmi-calculator', 'loan-calculator', 'age-calculator', 'tip-calculator'],
     'generator': ['qr-code-generator', 'barcode-generator', 'password-generator', 'uuid-generator', 'hash-generator', 'cron-generator', 'text-to-speech', 'wordle-helper'],
     'converter': ['base64-encoder', 'url-encoder', 'binary-hex-converter', 'unit-converter', 'currency-converter', 'timestamp-converter', 'time-zone-converter', 'color-picker', 'color-palette-extractor'],
-    'media': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool', 'video-to-audio', 'video-compressor', 'audio-to-text', 'audio-cutter', 'image-format-converter', 'whois-lookup'],
+    'media': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool', 'video-to-audio', 'video-compressor', 'audio-to-text', 'audio-cutter', 'image-format-converter', 'screen-recorder', 'whois-lookup'],
     'network': ['speed-test', 'ip-address-lookup', 'dns-lookup', 'ssl-checker', 'email-verifier'],
     'code-testing': ['regex-tester', 'jwt-decoder', 'grammar-checker', 'text-diff', 'math-solver', 'online-timer'],
     'pdf': ['pdf-merger', 'pdf-splitter', 'pdf-editor'],
     'data-live': ['weather-forecast', 'crypto-price-tracker'],
-    'ai-language': ['translator', 'word-counter', 'feedback']
+    'ai-language': ['translator', 'word-counter', 'feedback', 'paraphrasing-tool', 'plagiarism-checker']
 };
 
 const CATEGORY_LABELS = {
@@ -29,6 +29,7 @@ const TOOL_DISPLAY_NAMES = {
     'html-formatter': 'HTML Formatter',
     'sql-formatter': 'SQL Formatter',
     'yaml-validator': 'YAML Validator',
+    'css-formatter': 'CSS Formatter',
     'qr-code-generator': 'QR Code Generator',
     'barcode-generator': 'Barcode Generator',
     'password-generator': 'Password Generator',
@@ -72,7 +73,8 @@ const TOOL_DISPLAY_NAMES = {
     'audio-to-text': 'Audio to Text Converter',
     'audio-cutter': 'Audio Cutter',
     'image-format-converter': 'Image Format Converter',
-    'whois-lookup': 'WHOIS Lookup',
+    'screen-recorder', 'whois-lookup': 'WHOIS Lookup',
+    'screen-recorder': 'Screen Recorder',
     'pdf-merger': 'PDF Merger',
     'pdf-editor': 'PDF Editor',
     'pdf-splitter': 'PDF Splitter',
@@ -80,6 +82,8 @@ const TOOL_DISPLAY_NAMES = {
     'crypto-price-tracker': 'Crypto Price Tracker',
     'translator': 'Translator',
     'word-counter': 'Word Counter',
+    'paraphrasing-tool': 'Paraphrasing Tool',
+    'plagiarism-checker': 'Plagiarism Checker',
     'feedback': 'Feedback'
 };
 
