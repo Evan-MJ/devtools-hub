@@ -6,7 +6,7 @@ const TOOL_CATEGORIES = {
     'media': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool', 'video-to-audio', 'video-compressor', 'audio-to-text', 'audio-cutter', 'image-format-converter', 'whois-lookup'],
     'network': ['speed-test', 'ip-address-lookup', 'dns-lookup', 'ssl-checker', 'email-verifier'],
     'code-testing': ['regex-tester', 'jwt-decoder', 'grammar-checker', 'text-diff', 'math-solver', 'online-timer'],
-    'pdf': ['pdf-merger', 'pdf-splitter'],
+    'pdf': ['pdf-merger', 'pdf-splitter', 'pdf-editor'],
     'data-live': ['weather-forecast', 'crypto-price-tracker'],
     'ai-language': ['translator', 'word-counter', 'feedback']
 };
@@ -74,6 +74,7 @@ const TOOL_DISPLAY_NAMES = {
     'image-format-converter': 'Image Format Converter',
     'whois-lookup': 'WHOIS Lookup',
     'pdf-merger': 'PDF Merger',
+    'pdf-editor': 'PDF Editor',
     'pdf-splitter': 'PDF Splitter',
     'weather-forecast': 'Weather Forecast',
     'crypto-price-tracker': 'Crypto Price Tracker',
