@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online Screen Recorder - No Download, No Watermark | DevTools Hub</title>
-    <meta name="description" content="Free online screen recorder - no download, no signup, no watermark. Record your screen, webcam, and microphone directly in your browser. 100% private, all processing stays on your device.">
+    <title>Free Online Screen Recorder - No Download, No Watermark</title>
+    <meta name="description" content="Free online screen recorder - no download, no signup, no watermark. Record screen, webcam, and mic in browser. 100% private, stays on your device.">
     <meta name="keywords" content="screen recorder, online screen recorder, free screen recorder, record screen online, no download screen recorder, no watermark, browser screen recording, screen capture online, webcam recorder, free recording tool">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/screen-recorder/">
     <meta property="og:title" content="Free Online Screen Recorder - No Download, No Watermark">
-    <meta property="og:description" content="Record your screen, webcam, and microphone instantly in your browser. No download, no signup, no watermark. 100% private.">
+    <meta property="og:description" content="Free online screen recorder - no download, no signup, no watermark. Record screen, webcam, and mic in browser. 100% private, stays on your device.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/screen-recorder/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEVTOOLHUB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-DEVTOOLHUB');
-    </script>
     <style>
         :root {
             --primary: #2563eb;
@@ -217,10 +214,13 @@
             padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
             background: var(--bg); color: var(--text); font-size: 0.875rem; width: 100%;
         }
-        .quality-select:focus { outline: none; border-color: var(--primary); }
+        .quality-select:focus { outline: 2px solid transparent; border-color: var(--primary); }
+        /* BUG-308 (WCAG 2.4.7): this page does not link /styles.css, so the sitewide
+           *:focus-visible rule there cannot reach it. Same 3px/#7eb3ff token. */
+        *:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Screen Recorder","url":"https://tools.scoreroute.com/tools/screen-recorder/","description":"Free online screen recorder. Record your screen, webcam, and microphone directly in your browser. No download, no signup, no watermark.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires Chrome, Edge, or Firefox on desktop"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Free Online Screen Recorder - No Download, No Watermark","url":"https://tools.scoreroute.com/tools/screen-recorder/","description":"Free online screen recorder - no download, no signup, no watermark. Record screen, webcam, and mic in browser. 100% private, stays on your device.","applicationCategory":"Multimedia","operatingSystem":"All","browserRequirements":"Requires Chrome, Edge, or Firefox on desktop"}
 </script>
 </head>
 <body>
@@ -299,12 +299,12 @@
                     <label>Audio & Webcam</label>
                     <div class="toggle-row">
                         <label class="toggle">
-                            <input type="checkbox" id="micToggle" checked>
+                            <input type="checkbox" id="micToggle" checked aria-label="Mic Toggle">
                             <span class="toggle-slider"></span>
                             Microphone
                         </label>
                         <label class="toggle">
-                            <input type="checkbox" id="webcamToggle">
+                            <input type="checkbox" id="webcamToggle" aria-label="Webcam Toggle">
                             <span class="toggle-slider"></span>
                             Webcam
                         </label>
@@ -312,7 +312,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label>Quality</label>
+                    <label for="qualitySelect">Quality</label>
                     <select class="quality-select" id="qualitySelect">
                         <option value="720">720p (Recommended)</option>
                         <option value="1080">1080p</option>
@@ -704,5 +704,9 @@
         }
     })();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

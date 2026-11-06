@@ -7,15 +7,23 @@
     <meta property="og:image" content="/og-image.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTools Hub - Free Online Developer Tools Collection</title>
-    <meta name="description" content="Free developer tools: JSON formatter, HTML formatter, SQL formatter, Base64 encoder, Password Generator, QR Code Generator, Calculator, Speed Test and more. No signup required.">
+    <title>DevTools Hub - Free Online Developer Tools</title>
+    <meta name="description" content="Hundreds of free online developer tools including a free JSON formatter online and a free image compressor free. QR maker, AI chat, PDF merger & more. No signup.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">
+    <meta property="og:title" content="DevTools Hub - Free Online Developer Tools">
+    <meta property="og:description" content="Hundreds of free online developer tools including a free JSON formatter online and a free image compressor free. QR maker, AI chat, PDF merger & more. No signup.">
+    <meta property="og:url" content="https://tools.scoreroute.com/">
+    <meta property="og:type" content="website">
     <link rel="canonical" href="https://tools.scoreroute.com/">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "DevTools Hub",
+        "datePublished": "2026-05-21",
+        "dateModified": "2026-07-22",
+        "author": {"@type": "Person", "name": "BAOMING"},
         "description": "Free online developer tools for common coding tasks",
         "url": "https://tools.scoreroute.com/",
         "potentialAction": {
@@ -29,8 +37,8 @@
 <body>
     <header>
         <div class="container">
-            <h1>DevTools Hub</h1>
-            <p class="subtitle">Free Online Developer Tools - No Signup Required</p>
+            <h1>DevTools Hub - Free Online Developer Tools</h1>
+            <p class="subtitle">Free Online Developer Tools Collection - No Signup Required</p>
         </div>
     </header>
 
@@ -44,7 +52,7 @@
             <button class="nav-btn" data-target="network">Network Tools</button>
             <button class="nav-btn" data-target="code-testing">Code Testing</button>
             <button class="nav-btn" data-target="pdf-tools">PDF Tools</button>
-            <button class="nav-btn" data-target="data-live">Data & Live</button>
+            <button class="nav-btn" data-target="data-live">Data &amp; Live (Legacy)</button>
             <button class="nav-btn" data-target="ai-language">AI Language</button>
         </div>
     </nav>
@@ -57,7 +65,7 @@
 
         <section class="search-section">
             <div class="search-container">
-                <input type="text" id="tool-search" placeholder="Search tools by name, keyword, or scenario... (e.g., "json", "format code", "calculate tips")">
+                <input type="text" id="tool-search" aria-label="Search tools" placeholder="Search tools by name, keyword, or scenario... (e.g., "json", "format code", "calculate tips")">
                 <button onclick="clearSearch()" class="btn btn-secondary" id="clear-search-btn" style="display:none;">Clear</button>
             </div>
             <div id="search-results-count" class="search-results-count"></div>
@@ -87,6 +95,14 @@
                     <h3><a href="/tools/css-formatter/">CSS Formatter</a></h3>
                     <p>Beautify and minify CSS. Validate syntax and fix common errors.</p>
                 </div>
+                <div class="tool-card" data-search="js javascript formatter beautifier beautify minify format validate code">
+                    <h3><a href="/tools/js-formatter/"><span class="tool-new-badge">New</span> JS Formatter</a></h3>
+                    <p>Beautify, minify, and validate JavaScript code. Supports ES6+, JSX, and TypeScript.</p>
+                </div>
+                <div class="tool-card" data-search="xml format beautify minify validate rss sitemap svg">
+                    <h3><a href="/tools/xml-formatter/"><span class="tool-new-badge">New</span> XML Formatter</a></h3>
+                    <p>Format, beautify, minify, and validate XML. Convert to JSON. Browser-based, no upload, 100% private.</p>
+                </div>
             </div>
         </section>
 
@@ -114,6 +130,10 @@
                 <div class="tool-card" data-search="tip calculator restaurant bill split percentage">
                     <h3><a href="/tools/tip-calculator/">Tip Calculator</a></h3>
                     <p>Calculate restaurant tips, split bills among friends. Custom tip percentages and tax exclusion.</p>
+                </div>
+                <div class="tool-card" data-search="date calculator days between dates add subtract business days weeks months years arithmetic">
+                    <h3><a href="/tools/date-calculator/"><span class="tool-new-badge">New</span> Date Calculator</a></h3>
+                    <p>Calculate days between dates, add/subtract time, count business days. AI cannot do date math reliably - we do.</p>
                 </div>
             </div>
         </section>
@@ -154,6 +174,14 @@
                     <h3><a href="/tools/wordle-helper/">Wordle Helper</a></h3>
                     <p>Get word suggestions for Wordle. Track letters and find the best words.</p>
                 </div>
+                <div class="tool-card" data-search="wordle game daily puzzle guess 5-letter wordle game free online">
+                    <h3><a href="/tools/wordle-game/"><span class="tool-new-badge">New</span> Wordle Game</a></h3>
+                    <p>Play free daily Wordle puzzle. 6 tries to guess the 5-letter word. Stats, streaks, share results.</p>
+                </div>
+            <div class="tool-card" data-search="word search maker puzzle generator printable answer key grid spelling teacher">
+                <h3><a href="/tools/word-search-maker/"><span class="tool-new-badge">New</span> Word Search Maker</a></h3>
+                <p>Turn any word list into a printable word search puzzle with answer key. PDF, PNG, print, no signup.</p>
+            </div>
             </div>
         </section>
 
@@ -169,20 +197,28 @@
                     <h3><a href="/tools/url-encoder/">URL Encoder</a></h3>
                     <p>Encode and decode URLs for safe transmission. Handles special characters.</p>
                 </div>
+                <div class="tool-card" data-search="url shortener shorten link short bitly tiny"><h3><a href="/tools/url-shortener/">URL Shortener</a></h3><p>Shorten long URLs into clean, shareable links. Free, no signup, no tracking.</p></div>
                 <div class="tool-card" data-search="binary hex decimal converter ascii encoding numbers">
                     <h3><a href="/tools/binary-hex-converter/">Binary Hex Converter</a></h3>
+                <div class="tool-card" data-search="case converter uppercase lowercase title camelcase snakecase kebab"><h3><a href="/tools/case-converter/">Case Converter</a></h3><p>Convert text between 8 cases: uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case, PascalCase.</p></div>
                     <p>Convert binary, decimal, hex and ASCII. Essential developer tool for encoding.</p>
                 </div>
+                <div class="tool-card" data-search="stock tracker price market share aapl tsla googl msft amzn nvda"><h3><a href="/tools/stock-tracker/">Stock Tracker</a></h3><p>Track real-time stock prices, daily changes, highs, lows, and volume. Free no signup.</p></div>
                 <div class="tool-card" data-search="unit converter measurement length weight temperature volume speed area data time pressure energy">
                     <h3><a href="/tools/unit-converter/">Unit Converter</a></h3>
+                <div class="tool-card" data-search="online notepad notes writing text editor quick jot down"><h3><a href="/tools/online-notepad/">Online Notepad</a></h3><p>Browser-based notepad with auto-save. Free, private, no signup needed.</p></div>
                     <p>Convert between 100+ units. Length, weight, temperature, volume, speed, and more.</p>
                 </div>
+                <div class="tool-card" data-search="citation generator apa mla chicago harvard ieee reference bibliography cite"><h3><a href="/tools/citation-generator/">Citation Generator</a></h3><p>Generate citations in APA, MLA, Chicago, Harvard, and IEEE formats. Describe your source, get a formatted citation.</p></div>
                 <div class="tool-card" data-search="currency converter exchange rate money usd eur gbp">
                     <h3><a href="/tools/currency-converter/">Currency Converter</a></h3>
+                <div class="tool-card" data-search="lottery number generator random pick 3 4 5 6 powerball mega millions winning"><h3><a href="/tools/lottery-number-generator/">Lottery Number Generator</a></h3><p>Generate random lottery numbers for Pick 3/4/5/6, Powerball, Mega Millions. True randomness in your browser.</p></div>
                     <p>Convert between 166+ world currencies with live exchange rates. Free online currency calculator.</p>
                 </div>
+                <div class="tool-card" data-search="resume builder cv maker professional job application ai"><h3><a href="/tools/resume-builder/">Resume Builder</a></h3><p>Generate a professional AI-powered resume. Enter your details, get a formatted resume instantly. Free no signup.</p></div>
                 <div class="tool-card" data-search="timestamp unix epoch date converter">
                     <h3><a href="/tools/timestamp-converter/">Timestamp Converter</a></h3>
+                <div class="tool-card" data-search="package tracker tracking number usps ups fedex dhl amazon detect carrier"><h3><a href="/tools/package-tracker/">Package Tracker</a></h3><p>Track any package. Enter tracking number, auto-detect carrier, get direct link to tracking page. 11 carriers supported.</p></div>
                     <p>Convert between Unix timestamps and human-readable dates. Shows current time.</p>
                 </div>
                 <div class="tool-card" data-search="timezone converter world time cities">
@@ -196,6 +232,11 @@
                 <div class="tool-card" data-search="color palette extractor image dominant colors hex rgb hsl css json">
                     <h3><a href="/tools/color-palette-extractor/">Color Palette Extractor</a></h3>
                     <p>Extract dominant colors from any image. Get HEX, RGB, HSL values. Export CSS or JSON.</p>
+                </div>
+                <div class="tool-card" data-search="qr code reader scanner decode scan extract url wifi vcard"><h3><a href="/tools/qr-code-reader/">QR Code Reader</a></h3><p>Decode QR codes from images, screenshots, or live camera. Extract URLs, WiFi passwords, vCards instantly. 100% private browser processing. AI cannot scan real QR codes - we do.</p></div>
+                <div class="tool-card" data-search="json typescript converter interface type zod schema generate code">
+                    <h3><a href="/tools/json-to-typescript/"><span class="tool-new-badge">New</span> JSON to TypeScript Converter</a></h3>
+                    <p>Generate TypeScript interfaces, types, and Zod schemas from any JSON. 100% private browser processing.</p>
                 </div>
             </div>
         </section>
@@ -237,8 +278,12 @@
                     <p>Convert speech to text in real-time. Free voice typing and transcription using your browser.</p>
                 </div>
                 <div class="tool-card" data-search="audio cutter trimmer cut trim mp3 wav m4a flac ogg waveform online free audio cutting">
-                    <h3><a href="/tools/audio-cutter/">Audio Cutter</a></h3>
+                    <h3><a href="/tools/audio-cutter/">Audio Cutter &amp; Trimmer</a></h3>
                     <p>Cut and trim audio files with precision waveform visualization. Free online audio trimmer.</p>
+                </div>
+                <div class="tool-card" data-search="audio converter mp3 wav flac ogg m4a aac opus aiff convert online free ffmpeg">
+                    <h3><a href="/tools/audio-converter/">Audio Converter</a></h3>
+                    <p>Convert between MP3, WAV, FLAC, OGG, M4A, AAC, OPUS, AIFF. Adjust bitrate, sample rate, channels. No upload, 100% private.</p>
                 </div>
                 <div class="tool-card" data-search="image format converter jpg png webp gif bmp tiff convert image converter free online">
                     <h3><a href="/tools/image-format-converter/">Image Format Converter</a></h3>
@@ -252,6 +297,11 @@
                     <h3><a href="/tools/screen-recorder/">Screen Recorder</a></h3>
                     <p>Record your screen, webcam and microphone instantly. No download, no watermark, 100% private.</p>
                 </div>
+                <div class="tool-card" data-search="meme generator meme maker funny image text top bottom create meme online template canvas download png free no watermark">
+                    <h3><a href="/tools/meme-generator/">Meme Generator</a></h3>
+                    <p>Create funny memes instantly. Upload images or use templates, add text, customize style. Free, no watermark, no signup.</p>
+                </div>
+                <div class="tool-card" data-search="subtitle editor srt vtt caption sub video captioning timing timestamp shift sync convert format split merge validate browser private free"><h3><a href="/tools/subtitle-editor/"><span class="tool-new-badge">New</span> Subtitle Editor</a></h3><p>Edit, fix, and convert SRT and VTT subtitle files in your browser. Batch shift timing, validate, split long cues. 100% private, no upload, no signup. AI cannot handle millisecond-precise timestamps - we do.</p></div>
             </div>
         </section>
 
@@ -278,6 +328,10 @@
                 <div class="tool-card" data-search="email verifier validator checker disposable smtp verify">
                     <h3><a href="/tools/email-verifier/">Email Verifier</a></h3>
                     <p>Verify email addresses. Check if emails are real and can receive messages.</p>
+                </div>
+                <div class="tool-card" data-search="proxy checker vpn ip detection security anonymizer check">
+                    <h3><a href="/tools/proxy-checker/">Proxy Checker</a></h3>
+                    <p>Detect if an IP is a proxy, VPN, or Tor exit node. Check geolocation and open proxy ports.</p>
                 </div>
             </div>
         </section>
@@ -310,6 +364,10 @@
                     <h3><a href="/tools/online-timer/">Online Timer</a></h3>
                     <p>Pomodoro timer, interval timer, countdown, and stopwatch. Free online timer.</p>
                 </div>
+                <div class="tool-card" data-search="html playground html css javascript code editor live preview sandbox">
+                    <h3><a href="/tools/html-playground/">HTML Playground</a></h3>
+                    <p>Live HTML/CSS/JS code editor with sandboxed iframe preview. Test web code in real time.</p>
+                </div>
             </div>
         </section>
 
@@ -329,13 +387,22 @@
                     <h3><a href="/tools/pdf-editor/">PDF Editor</a></h3>
                     <p>Rotate, delete, and extract PDF pages. Edit PDFs directly in your browser.</p>
                 </div>
+                <div class="tool-card" data-search="pdf to image convert jpg png webp converter dpi quality pages">
+                    <h3><a href="/tools/pdf-to-image/">PDF to Image</a></h3>
+                    <p>Convert PDF to JPG, PNG, or WebP with adjustable DPI and quality. 100% private.</p>
+                </div>
             </div>
         </section>
 
         <section class="tools-section" id="data-live">
             <h2>Data & Live</h2>
-            <p class="category-desc">Track live cryptocurrency prices and check real-time weather forecasts.</p>
+            <p class="category-desc"><em>Legacy section. Replaced by <a href="/tools/life/">Daily Life</a> and <a href="/tools/finance/">Money &amp; Markets</a>.</em></p>
             <div class="tools-grid">
+                <div class="tool-card" data-search="space keeper huggingface monitor uptime keep alive">
+                    <h3><a href="/tools/space-keeper/">Space Keeper</a></h3>
+                    <p>Keep HuggingFace Spaces awake. Monitor uptime and set custom visit intervals.</p>
+                </div>
+
                 <div class="tool-card" data-search="weather forecast temperature climate humidity">
                     <h3><a href="/tools/weather-forecast/">Weather Forecast</a></h3>
                     <p>Check current weather and 7-day forecast. Real-time data for any location.</p>
@@ -363,6 +430,7 @@
         </section>
 
                 <div class="tool-card" data-search="paraphrase rewrite humanize text rephrase ai detection bypass content"><h3><a href="/tools/paraphrasing-tool/">Paraphrasing Tool</a></h3><p>Rewrite text in 8 styles: humanize AI content, formal, academic, creative. Bypass AI detectors. Free no limits.</p></div>
+                <div class="tool-card" data-search="solitaire klondike card game patience classic free online"><h3><a href="/tools/solitaire/">Solitaire</a></h3><p>Free classic Klondike Solitaire card game. Undo, hint, draw 1 or 3, stats tracking. No ads, no signup.</p><span class="tool-tag">Popular</span></div>
         <section class="about-section">
             <h2>Why DevTools Hub?</h2>
                 <div class="tool-card" data-search="plagiarism check duplicate content originality copy detect similarity"><h3><a href="/tools/plagiarism-checker/">Plagiarism Checker</a></h3><p>Check text for plagiarism with real web search and AI analysis. Get similarity percentage, sources, and rewrite tips.</p></div>
@@ -412,7 +480,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 DevTools Hub | Free Developer Tools | <a href="/sitemap.xml">Sitemap</a></p>
+        <p>&copy; 2026 DevTools Hub | Free Developer Tools | <a href="/about/">About</a> | <a href="/privacy/">Privacy</a> | <a href="/contact/">Contact</a> | <a href="/subprocessors/">Subprocessors</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/llms.txt">llms.txt</a></p>
     </footer>
 
     <script>
@@ -499,6 +567,5 @@
         });
     });
     </script>
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script>
 </body>
 </html>

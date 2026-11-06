@@ -1,9 +1,23 @@
+import { isAdmin } from '../../libs/admin-auth.js';
+
 export async function onRequestGet(context) {
     const FEEDBACK_KEY = 'feedback_list';
-    
+    const { searchParams } = new URL(context.request.url);
+    // BUG-401: the public list published every submitter's email address to anyone who
+    // loaded /tools/feedback/ — 100/100 queued entries carried one. The published privacy
+    // policy promises the opposite: "used only to reply to you ... never sold, shared, or
+    // used for marketing" (/privacy/). The address stays in KV so the owner can still
+    // reply; it is only withheld from the unauthenticated response. An admin request
+    // (admin_secret) still gets it — that is how a reply is written.
+    const admin = isAdmin(context, searchParams);
+
     try {
         const feedbackList = await context.env.FEEDBACK_KV.get(FEEDBACK_KEY, 'json');
-        const feedback = feedbackList || [];
+        const feedback = (feedbackList || []).map(f => {
+            if (admin || !('email' in f)) return f;
+            const { email, ...rest } = f;
+            return rest;
+        });
         
         feedback.sort((a, b) => {
             if (a.resolved !== b.resolved) {
@@ -75,10 +89,7 @@ export async function onRequestPost(context) {
 export async function onRequestPatch(context) {
     const FEEDBACK_KEY = 'feedback_list';
     const { searchParams } = new URL(context.request.url);
-    const adminSecret = searchParams.get('admin_secret');
-    const expectedSecret = context.env.FEEDBACK_ADMIN_SECRET || 'devtools-hub-admin-2026';
-    
-    if (adminSecret !== expectedSecret) {
+    if (!isAdmin(context, searchParams)) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }
@@ -139,10 +150,7 @@ export async function onRequestPatch(context) {
 export async function onRequestDelete(context) {
     const FEEDBACK_KEY = 'feedback_list';
     const { searchParams } = new URL(context.request.url);
-    const adminSecret = searchParams.get('admin_secret');
-    const expectedSecret = context.env.FEEDBACK_ADMIN_SECRET || 'devtools-hub-admin-2026';
-    
-    if (adminSecret !== expectedSecret) {
+    if (!isAdmin(context, searchParams)) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }

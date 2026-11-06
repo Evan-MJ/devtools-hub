@@ -1,114 +1,63 @@
-const TOOL_CATEGORIES = {
-    'formatter': ['json-formatter', 'html-formatter', 'sql-formatter', 'yaml-validator', 'css-formatter'],
-    'calculator': ['calculator', 'bmi-calculator', 'loan-calculator', 'age-calculator', 'tip-calculator'],
-    'generator': ['qr-code-generator', 'barcode-generator', 'password-generator', 'uuid-generator', 'hash-generator', 'cron-generator', 'text-to-speech', 'wordle-helper'],
-    'converter': ['base64-encoder', 'url-encoder', 'binary-hex-converter', 'unit-converter', 'currency-converter', 'timestamp-converter', 'time-zone-converter', 'color-picker', 'color-palette-extractor'],
-    'media': ['image-compressor', 'image-resizer', 'image-to-text', 'background-remover', 'screenshot-tool', 'video-to-audio', 'video-compressor', 'audio-to-text', 'audio-cutter', 'image-format-converter', 'screen-recorder', 'whois-lookup'],
-    'network': ['speed-test', 'ip-address-lookup', 'dns-lookup', 'ssl-checker', 'email-verifier'],
-    'code-testing': ['regex-tester', 'jwt-decoder', 'grammar-checker', 'text-diff', 'math-solver', 'online-timer'],
-    'pdf': ['pdf-merger', 'pdf-splitter', 'pdf-editor'],
-    'data-live': ['weather-forecast', 'crypto-price-tracker'],
-    'ai-language': ['translator', 'word-counter', 'feedback', 'paraphrasing-tool', 'plagiarism-checker']
-};
+// Dynamic /api/tools - reads /manifest.txt, returns JSON
+// Single source of truth: manifest.txt
+//
+// BUG-287: added `desc` + `tags` to each tool. The homepage search (functions/index.js) lazily
+// fetches this endpoint to match queries against ALL tools, because the homepage only renders
+// PAGE_SIZE (50) cards per page — without desc/tags the global search had name-only recall.
+// Also useful for AI agents consuming the public JSON API.
 
-const CATEGORY_LABELS = {
-    'formatter': 'Formatters',
-    'calculator': 'Calculators',
-    'generator': 'Generators',
-    'converter': 'Converters',
-    'media': 'Media Tools',
-    'network': 'Network Tools',
-    'code-testing': 'Code Testing',
-    'pdf': 'PDF Tools',
-    'data-live': 'Data & Live',
-    'ai-language': 'AI Language'
-};
-
-const TOOL_DISPLAY_NAMES = {
-    'json-formatter': 'JSON Formatter',
-    'html-formatter': 'HTML Formatter',
-    'sql-formatter': 'SQL Formatter',
-    'yaml-validator': 'YAML Validator',
-    'css-formatter': 'CSS Formatter',
-    'qr-code-generator': 'QR Code Generator',
-    'barcode-generator': 'Barcode Generator',
-    'password-generator': 'Password Generator',
-    'uuid-generator': 'UUID Generator',
-    'hash-generator': 'Hash Generator',
-    'cron-generator': 'Cron Generator',
-    'text-to-speech': 'Text to Speech',
-    'wordle-helper': 'Wordle Helper',
-    'base64-encoder': 'Base64 Encoder',
-    'url-encoder': 'URL Encoder',
-    'binary-hex-converter': 'Binary Hex Converter',
-    'unit-converter': 'Unit Converter',
-    'currency-converter': 'Currency Converter',
-    'timestamp-converter': 'Timestamp Converter',
-    'time-zone-converter': 'Time Zone Converter',
-    'color-picker': 'Color Picker',
-    'color-palette-extractor': 'Color Palette Extractor',
-    'speed-test': 'Speed Test',
-    'ip-address-lookup': 'IP Address Lookup',
-    'dns-lookup': 'DNS Lookup',
-    'ssl-checker': 'SSL Checker',
-    'email-verifier': 'Email Verifier',
-    'regex-tester': 'Regex Tester',
-    'jwt-decoder': 'JWT Decoder',
-    'grammar-checker': 'Grammar Checker',
-    'text-diff': 'Text Diff Checker',
-    'math-solver': 'Math Solver',
-    'online-timer': 'Online Timer',
-    'calculator': 'Calculator',
-    'bmi-calculator': 'BMI Calculator',
-    'loan-calculator': 'Loan Calculator',
-    'age-calculator': 'Age Calculator',
-    'tip-calculator': 'Tip Calculator',
-    'image-compressor': 'Image Compressor',
-    'image-resizer': 'Image Resizer',
-    'image-to-text': 'Image to Text',
-    'background-remover': 'Background Remover',
-    'screenshot-tool': 'Screenshot Tool',
-    'video-to-audio': 'Video to Audio Converter',
-    'video-compressor': 'Video Compressor',
-    'audio-to-text': 'Audio to Text Converter',
-    'audio-cutter': 'Audio Cutter',
-    'image-format-converter': 'Image Format Converter',
-    'screen-recorder', 'whois-lookup': 'WHOIS Lookup',
-    'screen-recorder': 'Screen Recorder',
-    'pdf-merger': 'PDF Merger',
-    'pdf-editor': 'PDF Editor',
-    'pdf-splitter': 'PDF Splitter',
-    'weather-forecast': 'Weather Forecast',
-    'crypto-price-tracker': 'Crypto Price Tracker',
-    'translator': 'Translator',
-    'word-counter': 'Word Counter',
-    'paraphrasing-tool': 'Paraphrasing Tool',
-    'plagiarism-checker': 'Plagiarism Checker',
-    'feedback': 'Feedback'
-};
+  // BUG-336: 'formatters' read 'Formatters' here and on the homepage grid while the category
+  // page, /tools/, llms.txt and llms-full.txt all called it 'Code Formatters'. The category page
+  // is the canonical surface for the slug, so its name wins; see functions/index.js CAT_ORDER.
+  const CAT_LABELS = {
+    'formatters': 'Code Formatters', 'calculators': 'Calculators', 'generators': 'Generators',
+    'converters': 'Converters', 'media': 'Media Tools', 'network': 'Network Tools',
+    'code-testing': 'Code Testing', 'pdf-tools': 'PDF Tools',
+    'life': 'Daily Life', 'finance': 'Money & Markets',
+    'ai-language': 'AI Language',
+  };
 
 export async function onRequestGet(context) {
-    const tools = [];
-    
-    for (const [category, toolSlugs] of Object.entries(TOOL_CATEGORIES)) {
-        for (const slug of toolSlugs) {
-            tools.push({
-                slug,
-                name: TOOL_DISPLAY_NAMES[slug] || slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                category,
-                categoryLabel: CATEGORY_LABELS[category] || category,
-                url: `/tools/${slug}/`
-            });
-        }
+  const assets = context.env.ASSETS;
+  const baseUrl = new URL(context.request.url);
+  const tools = [];
+
+  try {
+    const mr = await assets.fetch(new URL('/manifest.txt?cb=' + Date.now(), baseUrl));
+    if (!mr.ok) throw new Error('Manifest ' + mr.status);
+    const manifest = await mr.text();
+    for (const line of manifest.split('\n')) {
+      const t = line.trim();
+      if (!t || t.startsWith('#')) continue;
+      const p = t.split('|');
+      if (p.length < 6) continue;
+      const [slug, category, featured, isnew, name, desc, tags] = p;
+      const cat = (category || '').trim();
+      tools.push({
+        slug: slug.trim(),
+        name: (name || '').trim(),
+        desc: (desc || '').trim(),
+        tags: (tags || '').split(',').map(s => s.trim()).filter(Boolean),
+        category: cat,
+        categoryLabel: CAT_LABELS[cat] || cat,
+        featured: (featured || '').trim() === 'yes',
+        isnew: (isnew || '').trim() === 'yes',
+        url: '/tools/' + slug.trim() + '/'
+      });
     }
-    
-    return new Response(JSON.stringify({
-        categories: CATEGORY_LABELS,
-        tools
-    }), {
-        headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'max-age=3600'
-        }
+  } catch (e) {
+    return new Response(JSON.stringify({ error: 'Tool index unavailable' }), {
+      status: 500, headers: { 'Content-Type': 'application/json' }
     });
+  }
+
+  return new Response(JSON.stringify({
+    categories: CAT_LABELS,
+    tools
+  }), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'public, max-age=300'
+    }
+  });
 }

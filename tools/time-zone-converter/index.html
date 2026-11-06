@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Time Zone Converter - World Clock | DevTools Hub</title>
     <meta name="description" content="Free time zone converter. Convert time between cities instantly. See current time in multiple locations. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/time-zone-converter/">
+    <meta property="og:title" content="Free Time Zone Converter - World Clock | DevTools Hub">
+    <meta property="og:description" content="Free time zone converter. Convert time between cities instantly. See current time in multiple locations. No signup required.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/time-zone-converter/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Free Time Zone Converter","description":"Free time zone converter - convert time between cities worldwide, see current time in multiple locations","url":"https://tools.scoreroute.com/tools/time-zone-converter/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"BAOMING"},"name":"Free Time Zone Converter - World Clock | DevTools Hub","description":"Free time zone converter. Convert time between cities instantly. See current time in multiple locations. No signup required.","url":"https://tools.scoreroute.com/tools/time-zone-converter/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -43,10 +48,10 @@
                     <div class="tz-row">
                         <div class="tz-input-group">
                             <label>Time</label>
-                            <input type="time" id="input-time" value="12:00">
+                            <input type="time" id="input-time" value="12:00" aria-label="Detecting...">
                         </div>
                         <div class="tz-input-group">
-                            <label>From City</label>
+                            <label for="from-city">From City</label>
                             <select id="from-city" class="tz-select">
                                 <option value="America/New_York">New York (EST/EDT)</option>
                                 <option value="America/Los_Angeles">Los Angeles (PST/PDT)</option>
@@ -68,7 +73,7 @@
                     <div class="tz-arrow">↓</div>
                     <div class="tz-row">
                         <div class="tz-input-group">
-                            <label>To City</label>
+                            <label for="to-city">To City</label>
                             <select id="to-city" class="tz-select">
                                 <option value="America/New_York">New York (EST/EDT)</option>
                                 <option value="America/Los_Angeles">Los Angeles (PST/PDT)</option>
@@ -284,5 +289,9 @@
             setInterval(updateLocalTime, 1000);
         });
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

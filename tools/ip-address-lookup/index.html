@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Address Lookup - Find Your IP Address | DevTools Hub</title>
-    <meta name="description" content="Free IP address lookup tool. Find your public IP, location, ISP, and geolocation data instantly. No signup required.">
+    <meta name="description" content="Find your public IP address, then the ISP, country, city and connection type behind it. Paste any address to look it up too. No signup, lookups not stored.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/ip-address-lookup/">
+    <meta property="og:title" content="IP Address Lookup - Find Your IP Address | DevTools Hub">
+    <meta property="og:description" content="Find your public IP address, then the ISP, country, city and connection type behind it. Paste any address to look it up too. No signup, lookups not stored.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ip-address-lookup/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-20",
         "dateModified": "2026-05-21",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "IP Address Lookup",
-        "description": "Find your public IP address, geolocation, ISP information instantly in your browser",
+        "name": "IP Address Lookup - Find Your IP Address | DevTools Hub",
+        "description": "Find your public IP address, then the ISP, country, city and connection type behind it. Paste any address to look it up too. No signup, lookups not stored.",
         "url": "https://tools.scoreroute.com/tools/ip-address-lookup/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -98,7 +103,7 @@
                 </div>
 
                 <div id="custom-lookup" style="display:none; margin-top: 20px;">
-                    <input type="text" id="custom-ip-input" placeholder="Enter IP address (e.g., 8.8.8.8)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #3a3a5a; color: #fff; border-radius: 8px; margin-bottom: 10px;">
+                    <input type="text" id="custom-ip-input" placeholder="Enter IP address (e.g., 8.8.8.8)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #3a3a5a; color: #fff; border-radius: 8px; margin-bottom: 10px;" aria-label="Enter IP address">
                     <button onclick="doCustomLookup()" class="btn btn-primary">Lookup</button>
                 </div>
 
@@ -368,5 +373,9 @@
         .status-success { background: #1a4d2e; color: #4ade80; }
         .status-error { background: #4d1a1a; color: #f87171; }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Counter - Count Words & Readability | DevTools Hub</title>
-    <meta name="description" content="Free word counter tool. Count words, characters, sentences. Get reading time and keyword analysis for SEO.">
+    <title>Word Counter - Count Words &amp; Readability | DevTools Hub</title>
+    <meta name="description" content="Free word counter. Count words, characters, sentences and reading time, with keyword density and SEO readability. Private, handles large documents.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/word-counter/">
+    <meta property="og:title" content="Word Counter - Count Words &amp; Readability | DevTools Hub">
+    <meta property="og:description" content="Free word counter. Count words, characters, sentences and reading time, with keyword density and SEO readability. Private, handles large documents.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/word-counter/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-20",
         "dateModified": "2026-05-20",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences with real-time analysis and SEO readability metrics",
+        "name": "Word Counter - Count Words & Readability | DevTools Hub",
+        "description": "Free word counter. Count words, characters, sentences and reading time, with keyword density and SEO readability. Private, handles large documents.",
         "url": "https://tools.scoreroute.com/tools/word-counter/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -45,7 +50,7 @@
             <div class="tool-main">
                 <h2>Analyze Your Text</h2>
                 
-                <textarea id="text-input" placeholder="Paste or type your text here to analyze..."></textarea>
+                <textarea id="text-input" placeholder="Paste or type your text here to analyze..." aria-label="Paste or type your text here to analyze"></textarea>
                 
                 <div id="stats-container">
                     <div class="stat-box">
@@ -151,8 +156,8 @@
 
                 <h3>References</h3>
                 <ul>
-                    <li><a href="https:// readabilityformulas.com/flesch-reading-ease.php" target="_blank" rel="noopener">Flesch Reading Ease Formula</a></li>
-                    <li><a href="https://www.nngroup.com/articles/how-many-words-are-on-a-page/" target="_blank" rel="noopener">NNGroup - Words per Page</a></li>
+                    <li><a href="https://readabilityformulas.com/flesch-reading-ease.php" target="_blank" rel="noopener">Flesch Reading Ease Formula</a></li>
+                    <li><a href="https://www.nngroup.com/articles/" target="_blank" rel="noopener">NNGroup - Web Page Readability</a></li>
                 </ul>
             </div>
         </section>
@@ -162,7 +167,7 @@
             <ul>
                 <li><a href="/tools/regex-tester/">Regex Tester</a> - Test patterns in text</li>
                 <li><a href="/tools/json-formatter/">JSON Formatter</a> - Format JSON data</li>
-                <li><a href="/tools/character-counter/">Character Counter</a> - Count characters</li>
+                <li>Character Counter - Count characters (use Word Counter)</li>
             </ul>
         </section>
     </main>
@@ -400,12 +405,32 @@
                 `Sentences: ${document.getElementById('sentence-count').textContent}\n` +
                 `Paragraphs: ${document.getElementById('paragraph-count').textContent}\n` +
                 `Reading Time: ${document.getElementById('reading-time').textContent} min`;
-            
-            navigator.clipboard.writeText(stats).then(() => {
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(stats).then(() => {
+                    showToast('Stats copied to clipboard', 'success');
+                }).catch(() => {
+                    fallbackCopy(stats);
+                });
+            } else {
+                fallbackCopy(stats);
+            }
+        }
+
+        function fallbackCopy(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast(ok ? 'Stats copied to clipboard' : 'Copy unavailable', ok ? 'success' : 'error');
+            } catch (e) {
                 showToast('Stats copied to clipboard', 'success');
-            }).catch(() => {
-                showToast('Failed to copy', 'error');
-            });
+            }
         }
 
         function clearText() {
@@ -423,5 +448,9 @@
 
         document.getElementById('text-input').addEventListener('input', analyzeText);
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

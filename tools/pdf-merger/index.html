@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Merger - Combine Multiple PDFs into One | DevTools Hub</title>
     <meta name="description" content="Free online PDF merger. Combine multiple PDF files into one with drag-drop reordering, visual preview, and compression. No upload limit. Works in browser.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/pdf-merger/">
+    <meta property="og:title" content="PDF Merger - Combine Multiple PDFs into One | DevTools Hub">
+    <meta property="og:description" content="Free online PDF merger. Combine multiple PDF files into one with drag-drop reordering, visual preview, and compression. No upload limit. Works in browser.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/pdf-merger/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script type="application/ld+json">
@@ -19,8 +24,8 @@
         "datePublished": "2026-05-23",
         "dateModified": "2026-05-23",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "PDF Merger",
-        "description": "Combine multiple PDF files into one with drag-drop reordering, visual preview, and compression options",
+        "name": "PDF Merger - Combine Multiple PDFs into One | DevTools Hub",
+        "description": "Free online PDF merger. Combine multiple PDF files into one with drag-drop reordering, visual preview, and compression. No upload limit. Works in browser.",
         "url": "https://tools.scoreroute.com/tools/pdf-merger/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -48,7 +53,7 @@
                 
                 <div class="file-upload-area" id="drop-zone">
                     <p>Drag & drop PDF files here or</p>
-                    <input type="file" id="file-input" accept=".pdf" multiple style="display: none;">
+                    <input type="file" id="file-input" accept=".pdf" multiple style="display: none;" aria-label="PDF Merger">
                     <button onclick="document.getElementById('file-input').click()" class="btn btn-primary">Select PDF Files</button>
                     <p class="file-hint">Maximum 50 files, 100MB total</p>
                 </div>
@@ -473,5 +478,9 @@
             margin-bottom: 16px;
         }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

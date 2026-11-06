@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover - Remove Image Background Free Online | DevTools Hub</title>
+    <title>Background Remover - Remove Image Background Free Online</title>
     <meta name="description" content="Free online background remover tool. Remove image backgrounds automatically. No signup. Works with JPG, PNG, WebP. Fast and private.">
     <meta name="keywords" content="background remover, remove background, image background removal, transparent background, bg remover, ai background removal">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/background-remover/">
-    <meta property="og:title" content="Background Remover - Remove Image Background Free">
-    <meta property="og:description" content="Remove image backgrounds automatically. Free online tool, no signup.">
+    <meta property="og:title" content="Background Remover - Remove Image Background Free Online">
+    <meta property="og:description" content="Free online background remover tool. Remove image backgrounds automatically. No signup. Works with JPG, PNG, WebP. Fast and private.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/background-remover/">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- BUG-323 (perf/font-delivery): media="print" + the onload swap keeps this third-party
+         font stylesheet out of the render-blocking path; both preconnects above stay. -->
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #e0e0e0; line-height: 1.6; }
@@ -56,7 +64,7 @@
         @media (max-width: 600px) { h1 { font-size: 2rem; } .preview-area { flex-direction: column; } }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Background Remover","url":"https://tools.scoreroute.com/tools/background-remover/","description":"Remove image background free online. Client-side background removal.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Background Remover - Remove Image Background Free Online","url":"https://tools.scoreroute.com/tools/background-remover/","description":"Free online background remover tool. Remove image backgrounds automatically. No signup. Works with JPG, PNG, WebP. Fast and private.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -66,6 +74,7 @@
             <p class="subtitle">Remove image backgrounds in one click. 100% free - no signup.</p>
         </header>
 
+        <main>
         <section class="hero-section">
             <h2>Tired of Expensive Background Removal Tools?</h2>
             <ul class="problem-list">
@@ -83,7 +92,7 @@
                 <div class="upload-text">Drop image here or <strong>click to browse</strong></div>
                 <div class="info">Supports JPG, PNG, WebP (max 20MB)</div>
             </div>
-            <input type="file" id="fileInput" accept="image/*" hidden>
+            <input type="file" id="fileInput" accept="image/*" hidden aria-label="File Input">
 
             <div class="action-row">
                 <button class="btn btn-primary" id="removeBtn" disabled>Remove Background</button>
@@ -98,11 +107,11 @@
             <div class="preview-area" id="previewArea" hidden>
                 <div class="preview-box">
                     <h3>Original</h3>
-                    <img id="originalPreview">
+                    <img id="originalPreview" alt="Original image preview">
                 </div>
                 <div class="preview-box">
                     <h3>Result (transparent bg)</h3>
-                    <img id="resultPreview">
+                    <img id="resultPreview" alt="Image with the background removed">
                     <div class="action-row">
                         <button class="btn btn-primary" id="downloadBtn">⬇ Download PNG</button>
                     </div>
@@ -129,8 +138,31 @@
             </div>
         </section>
 
+        <section class="info-section">
+            <h2>How Background Removal Works</h2>
+            <p>This tool uses an edge-color sampling algorithm that runs entirely in your browser using the Canvas API. When you load an image, the script first samples eight reference points along the borders (the four corners plus the midpoints of each side) and averages their RGB values to estimate the background color. It then walks every pixel in the image and computes the Euclidean distance in RGB space between that pixel and the sampled background. If the distance is below a threshold of 60 units (calibrated for typical JPEG compression noise), the pixel is treated as background and its alpha channel is set to zero.</p>
+            <p>The result is a transparent PNG with a checkerboard pattern visible wherever the background used to be. This approach works best for product photos on solid white, light gray, or pastel backgrounds where the subject has clearly different colors. It works less well for hair, fur, transparent objects, or images where the subject colors are close to the background. For those cases a neural-network-based model like remove.bg is usually required, but for the common case of simple product shots this tool produces clean results in under a second.</p>
+
+            <h2>Frequently Asked Questions</h2>
+            <details class="faq-item"><summary>What image formats are supported?</summary><p>Any browser-decodable format including JPEG, PNG, WebP, BMP, and GIF. Animated GIFs are processed as their first frame. Output is always a 32-bit PNG with an alpha channel so transparency is preserved when you drop the image into Photoshop, Figma, or any other design tool.</p></details>
+            <details class="faq-item"><summary>Is there a file size limit?</summary><p>The tool accepts images up to 20 megabytes. Larger images are rejected with an alert. Because processing is single-pass and synchronous, very large images (over 8 megapixels) may take a few seconds but will still complete in your browser without any upload.</p></details>
+            <details class="faq-item"><summary>Are my images uploaded to a server?</summary><p>No. The entire background-removal algorithm runs on-device using the Canvas API. Your images never touch our servers, never touch a third-party API, and never leave your computer. You can verify this by opening your browser DevTools Network tab and watching zero requests fire when you click Remove Background.</p></details>
+            <details class="faq-item"><summary>How does this differ from remove.bg or Photoshop?</summary><p>remove.bg uses a deep neural network trained on millions of labeled images and handles complex edges like hair and fur. Our algorithm is much simpler (edge-color sampling) and works best on solid backgrounds. The trade-off is that ours is 100% free, unlimited, watermark-free, and works fully offline. For product photography on white backgrounds, the quality is comparable.</p></details>
+            <details class="faq-item"><summary>Why is the result a PNG with transparency?</summary><p>PNG supports an alpha channel that lets pixels be partially or fully transparent. When you place the result on a colored background in any design tool, the original background color shows through. If you need a flat solid color background instead, open the result in any image editor and add the background layer you want.</p></details>
+            <details class="faq-item"><summary>Can I batch-process many images at once?</summary><p>Not in this tool. It processes one image at a time so you can verify each result. If you need batch processing, you can chain the tool with a local script using a headless browser, or use a dedicated desktop app.</p></details>
+
+            <h2>References and Authority Sources</h2>
+            <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Alpha_compositing" target="_blank" rel="noopener noreferrer">Wikipedia — Alpha compositing</a> (how transparent pixels are blended with backgrounds)</li>
+                <li><a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics" target="_blank" rel="noopener noreferrer">Wikipedia — Portable Network Graphics</a> (the PNG format and its alpha-channel support)</li>
+                <li><a href="https://en.wikipedia.org/wiki/Color_difference" target="_blank" rel="noopener noreferrer">Wikipedia — Color difference</a> (Euclidean distance in RGB space)</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank" rel="noopener noreferrer">MDN — Canvas API</a> (the browser API used for pixel-level image manipulation)</li>
+            </ul>
+        </section>
+        </main>
+
         <footer>
-            <p>Part of <a href="https://tools.scoreroute.com/">DevTools Hub</a> - Free Online Developer Tools</p>
+            <p>Part of <a href="/">DevTools Hub</a> - Free Online Developer Tools</p>
         </footer>
     </div>
 
@@ -251,5 +283,9 @@
             loading.classList.remove('show');
         });
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

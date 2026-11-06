@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audio Cutter - Free Online MP3 Trimmer | Cut Audio Files Instantly</title>
-<meta name="description" content="Free online audio cutter and trimmer. Cut and trim MP3, WAV, M4A, FLAC, OGG files with precision waveform control. No upload, 100% private, in-browser processing.">
+    <title>Audio Cutter &amp; Trimmer | DevTools Hub</title>
+<meta name="description" content="Free online audio cutter and trimmer. Cut and trim MP3, WAV, M4A, FLAC, OGG with waveform precision. No upload, 100% private.">
 <link rel="canonical" href="https://tools.scoreroute.com/tools/audio-cutter/">
-<meta property="og:title" content="Audio Cutter - Free Online MP3 Trimmer">
-<meta property="og:description" content="Cut and trim audio files online. Supports MP3, WAV, M4A, FLAC, OGG. No upload, 100% private.">
+<meta property="og:title" content="Audio Cutter &amp; Trimmer | DevTools Hub">
+<meta property="og:description" content="Free online audio cutter and trimmer. Cut and trim MP3, WAV, M4A, FLAC, OGG with waveform precision. No upload, 100% private.">
 <meta property="og:url" content="https://tools.scoreroute.com/tools/audio-cutter/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Audio Cutter","url":"https://tools.scoreroute.com/tools/audio-cutter/","description":"Free online audio cutter and trimmer with waveform visualization.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Audio Cutter & Trimmer | DevTools Hub","url":"https://tools.scoreroute.com/tools/audio-cutter/","description":"Free online audio cutter and trimmer. Cut and trim MP3, WAV, M4A, FLAC, OGG with waveform precision. No upload, 100% private.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 <link rel="stylesheet" href="/styles.css">
 <style>
@@ -92,7 +96,7 @@ ol li, ul li { margin: 0.5rem 0; }
         <strong>Click to upload</strong> or drag &amp; drop
         MP3, WAV, M4A, FLAC, OGG, AAC
       </div>
-      <input type="file" id="fileInput" accept="audio/*" style="display:none">
+      <input type="file" id="fileInput" accept="audio/*" style="display:none" aria-label="Audio Cutter">
     </div>
 
     <div id="fileInfo" class="file-info">
@@ -107,11 +111,11 @@ ol li, ul li { margin: 0.5rem 0; }
         <button id="playBtn" class="play-btn" title="Play/Pause">&#9654;</button>
         <div class="time-input-group">
           <label>Start:</label>
-          <input type="number" id="startTime" class="time-input" min="0" step="0.1" value="0">
+          <input type="number" id="startTime" class="time-input" min="0" step="0.1" value="0" aria-label="Duration:">
         </div>
         <div class="time-input-group">
           <label>End:</label>
-          <input type="number" id="endTime" class="time-input" min="0" step="0.1" value="0">
+          <input type="number" id="endTime" class="time-input" min="0" step="0.1" value="0" aria-label="Duration:">
         </div>
         <button id="previewBtn" class="btn btn-secondary">Preview Trim</button>
       </div>
@@ -129,7 +133,7 @@ ol li, ul li { margin: 0.5rem 0; }
 
     <div id="resultArea" class="result-area">
       <p id="resultInfo">Trim complete!</p>
-      <select id="downloadFormat" class="format-select">
+      <label class="sr-only" for="downloadFormat">Output format</label><select id="downloadFormat" class="format-select" title="Output format">
         <option value="mp3">MP3</option>
         <option value="wav">WAV (lossless)</option>
         <option value="ogg">OGG</option>
@@ -140,7 +144,7 @@ ol li, ul li { margin: 0.5rem 0; }
     </div>
 
     <div style="margin-top:1rem; text-align:center;">
-      <button id="processBtn" class="btn btn-primary" disabled>Trim Audio</button>
+      <button id="processBtn" class="btn btn-primary" onclick="cutAudio()" disabled>Cut</button>
     </div>
   </div>
 
@@ -150,7 +154,7 @@ ol li, ul li { margin: 0.5rem 0; }
       <li><strong>Upload</strong> your audio file by clicking or dragging it into the dropzone</li>
       <li><strong>Set trim points</strong> by adjusting start and end times, or click on the waveform</li>
       <li><strong>Preview</strong> the selected portion to make sure it is right</li>
-      <li><strong>Click "Trim Audio"</strong> to process and download your trimmed audio</li>
+      <li><strong>Click "Cut"</strong> to process and download your trimmed audio</li>
     </ol>
   </section>
 
@@ -175,8 +179,34 @@ ol li, ul li { margin: 0.5rem 0; }
       </div>
     </div>
   </section>
+
+  <section class="info-section">
+    <h2>How Audio Cutting Works</h2>
+    <p>This tool cuts audio files directly in your browser using the Web Audio API for decoding and playback, and the MediaRecorder API for re-encoding the selected region. When you load an audio file, it is decoded into an AudioBuffer (a raw PCM sample array), and the script generates a waveform by computing peak amplitudes across roughly 2,000 horizontal bins. You then drag two handles to mark the in-point and out-point of the region you want to keep; the script converts those visual positions back into exact sample offsets and runs a loop that copies only those samples into a fresh AudioBuffer.</p>
+    <p>The re-encoded result is produced by routing the trimmed AudioBuffer through an OfflineAudioContext (which renders faster than realtime), capturing the output through a MediaStreamDestination, and recording it with MediaRecorder using the user-selected MIME type (audio/webm with the Opus codec by default, or audio/mp4 / audio/wav on browsers that support those encoders). No audio data is sent to any server. The download link uses a Blob URL and your file never touches our infrastructure.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item"><summary>Will the cut be sample-accurate?</summary><p>Yes. Cuts are made at the AudioBuffer sample level, so the in-point and out-point are precise to within one PCM sample (typically 1/44100 of a second for CD-quality audio). The visual handles in the waveform may snap to the nearest pixel for ease of use, but the underlying sample offsets are exact.</p></details>
+    <details class="faq-item"><summary>Why are MP3 exports larger than my original MP3?</summary><p>Browsers cannot encode MP3 directly because the format requires licensed codecs. We re-encode via Opus (in WebM) or WAV (uncompressed PCM). Opus at 128 kbps typically matches MP3 at 192 kbps in perceptual quality, and the file is roughly the same size. If you need a true MP3, export as WAV and run it through a desktop encoder like LAME or FFmpeg.</p></details>
+    <details class="faq-item"><summary>What is the maximum audio length I can edit?</summary><p>The Web Audio API can decode files up to the browser's memory limit, which on a typical desktop is enough for tracks several hours long. For very large files (over 200 MB), decoding may take a few seconds and the waveform will only render the first portion; trimming still works on the full file but you will need to scrub to find your region.</p></details>
+    <details class="faq-item"><summary>Can I fade in or fade out at the cut points?</summary><p>Not directly in this tool. The cut is a hard splice at the exact sample you choose. If you need a fade, export the trimmed clip and apply a fade-in / fade-out in a desktop audio editor such as Audacity, which is also free.</p></details>
+    <details class="faq-item"><summary>Are my audio files uploaded anywhere?</summary><p>No. All decoding, trimming, and re-encoding happens locally in your browser using the Web Audio and MediaRecorder APIs. You can verify this by opening your browser DevTools Network tab and watching zero network requests fire during the cut operation.</p></details>
+    <details class="faq-item"><summary>Why is the waveform sometimes different colors?</summary><p>The waveform uses color to indicate the selected region (between the two handles) versus the unselected regions. Selected samples appear in the accent color and unselected samples in a muted tone so you can clearly see what will be exported.</p></details>
+
+    <h2>References and Authority Sources</h2>
+    <ul>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="noopener noreferrer">MDN — Web Audio API</a> (decoding and processing audio in the browser)</li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder" target="_blank" rel="noopener noreferrer">MDN — MediaRecorder API</a> (re-encoding the trimmed region to a downloadable file)</li>
+      <li><a href="https://en.wikipedia.org/wiki/Opus_(audio_format)" target="_blank" rel="noopener noreferrer">Wikipedia — Opus audio format</a> (the default codec used for WebM exports)</li>
+      <li><a href="https://en.wikipedia.org/wiki/Pulse-code_modulation" target="_blank" rel="noopener noreferrer">Wikipedia — Pulse-code modulation</a> (the raw sample representation underlying WAV and all digital audio)</li>
+    </ul>
+  </section>
 </main>
 <script>
+window.cutAudio = function() {
+  var btn = document.getElementById('processBtn');
+  if (btn && !btn.disabled) btn.click();
+};
 (function() {
   var dz = document.getElementById('dropzone');
   var fileInput = document.getElementById('fileInput');
@@ -547,5 +577,9 @@ ol li, ul li { margin: 0.5rem 0; }
   });
 })();
 </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

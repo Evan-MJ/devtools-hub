@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Screenshot Annotation Tool - Edit and Annotate Screenshots | DevTools Hub</title>
+    <title>Screenshot Tool - Annotate and Edit Screenshots</title>
     <meta name="description" content="Free online screenshot annotation tool. Upload images to annotate with arrows, text, rectangles, circles and blur. Download or copy with no watermarks.">
     <meta name="keywords" content="screenshot annotation, annotate screenshot, image annotation, annotate tool, screenshot editor, arrow tool, blur tool">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/screenshot-tool/">
-    <meta property="og:title" content="Free Screenshot Annotation Tool - Edit and Annotate Screenshots">
-    <meta property="og:description" content="Upload any image and annotate instantly with arrows, text, shapes and blur. Free, no watermarks.">
+    <meta property="og:title" content="Screenshot Tool - Annotate and Edit Screenshots">
+    <meta property="og:description" content="Free online screenshot annotation tool. Upload images to annotate with arrows, text, rectangles, circles and blur. Download or copy with no watermarks.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/screenshot-tool/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEVTOOLHUB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-DEVTOOLHUB');
-    </script>
     <style>
         :root {
             --primary: #2563eb;
@@ -209,7 +206,10 @@
         }
         .input-row textarea { min-height: 80px; resize: vertical; font-family: monospace; }
         .input-row input:focus, .input-row textarea:focus {
-            outline: none;
+            outline: 2px solid transparent;
+        /* BUG-308 (WCAG 2.4.7): this page does not link /styles.css, so the sitewide
+           *:focus-visible rule there cannot reach it. Same 3px/#7eb3ff token. */
+        *:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
             border-color: var(--primary);
         }
         .status {
@@ -261,7 +261,7 @@
         .tab:hover:not(.active) { background: var(--border); }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Screenshot Annotation Tool","url":"https://tools.scoreroute.com/tools/screenshot-tool/","description":"Free screenshot annotation tool. Edit and annotate screenshots online.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Screenshot Tool - Annotate and Edit Screenshots","url":"https://tools.scoreroute.com/tools/screenshot-tool/","description":"Free online screenshot annotation tool. Upload images to annotate with arrows, text, rectangles, circles and blur. Download or copy with no watermarks.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -304,7 +304,7 @@
                 
                 <div class="tool-group" id="uploadSection">
                     <label>Upload Image</label>
-                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                    <input type="file" id="fileInput" accept="image/*" style="display:none;" aria-label="Processing...">
                     <button class="btn btn-secondary" id="uploadBtn" style="flex:none;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                         Choose File
@@ -315,7 +315,7 @@
                 <div class="tool-group hidden" id="htmlSection">
                     <label>Paste HTML Code</label>
                     <div class="input-row">
-                        <textarea id="htmlInput" placeholder="<html>..."></textarea>
+                        <textarea id="htmlInput" placeholder="<html>..." aria-label="Html Input"></textarea>
                     </div>
                     <button class="btn btn-primary" id="renderHtmlBtn">Render HTML</button>
                 </div>
@@ -323,22 +323,22 @@
                 <div class="tool-group">
                     <label>Annotation Tools</label>
                     <div class="btn-row">
-                        <button class="btn tool-btn active" id="selectTool" title="Select/Move" data-tool="select">
+                        <button class="btn tool-btn active" id="selectTool" title="Select/Move" aria-label="Select/Move" data-tool="select">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
                         </button>
-                        <button class="btn tool-btn" id="arrowTool" title="Arrow" data-tool="arrow">
+                        <button class="btn tool-btn" id="arrowTool" title="Arrow" aria-label="Arrow" data-tool="arrow">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </button>
-                        <button class="btn tool-btn" id="rectTool" title="Rectangle" data-tool="rect">
+                        <button class="btn tool-btn" id="rectTool" title="Rectangle" aria-label="Rectangle" data-tool="rect">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                         </button>
-                        <button class="btn tool-btn" id="circleTool" title="Circle" data-tool="circle">
+                        <button class="btn tool-btn" id="circleTool" title="Circle" aria-label="Circle" data-tool="circle">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
                         </button>
-                        <button class="btn tool-btn" id="textTool" title="Text" data-tool="text">
+                        <button class="btn tool-btn" id="textTool" title="Text" aria-label="Text" data-tool="text">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
                         </button>
-                        <button class="btn tool-btn" id="blurTool" title="Blur" data-tool="blur">
+                        <button class="btn tool-btn" id="blurTool" title="Blur" aria-label="Blur" data-tool="blur">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                     </div>
@@ -346,16 +346,16 @@
                 <div class="tool-group">
                     <label>Color</label>
                     <div class="color-row">
-                        <button class="color-btn active" data-color="#ef4444" style="background:#ef4444"></button>
-                        <button class="color-btn" data-color="#f97316" style="background:#f97316"></button>
-                        <button class="color-btn" data-color="#eab308" style="background:#eab308"></button>
-                        <button class="color-btn" data-color="#22c55e" style="background:#22c55e"></button>
-                        <button class="color-btn" data-color="#06b6d4" style="background:#06b6d4"></button>
-                        <button class="color-btn" data-color="#3b82f6" style="background:#3b82f6"></button>
-                        <button class="color-btn" data-color="#8b5cf6" style="background:#8b5cf6"></button>
-                        <button class="color-btn" data-color="#ec4899" style="background:#ec4899"></button>
-                        <button class="color-btn" data-color="#ffffff" style="background:#ffffff"></button>
-                        <button class="color-btn" data-color="#000000" style="background:#000000"></button>
+                        <button class="color-btn active" data-color="#ef4444" style="background:#ef4444" aria-label="Color #ef4444"></button>
+                        <button class="color-btn" data-color="#f97316" style="background:#f97316" aria-label="Color #f97316"></button>
+                        <button class="color-btn" data-color="#eab308" style="background:#eab308" aria-label="Color #eab308"></button>
+                        <button class="color-btn" data-color="#22c55e" style="background:#22c55e" aria-label="Color #22c55e"></button>
+                        <button class="color-btn" data-color="#06b6d4" style="background:#06b6d4" aria-label="Color #06b6d4"></button>
+                        <button class="color-btn" data-color="#3b82f6" style="background:#3b82f6" aria-label="Color #3b82f6"></button>
+                        <button class="color-btn" data-color="#8b5cf6" style="background:#8b5cf6" aria-label="Color #8b5cf6"></button>
+                        <button class="color-btn" data-color="#ec4899" style="background:#ec4899" aria-label="Color #ec4899"></button>
+                        <button class="color-btn" data-color="#ffffff" style="background:#ffffff" aria-label="Color #ffffff"></button>
+                        <button class="color-btn" data-color="#000000" style="background:#000000" aria-label="Color #000000"></button>
                     </div>
                 </div>
                 <div class="tool-group">
@@ -370,7 +370,7 @@
                 <div class="tool-group">
                     <label>Text for Text Tool</label>
                     <div class="input-row">
-                        <input type="text" id="textInput" placeholder="Enter text...">
+                        <input type="text" id="textInput" placeholder="Enter text..." aria-label="Enter text">
                     </div>
                 </div>
                 <div class="tool-group">
@@ -732,5 +732,9 @@
         });
     })();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

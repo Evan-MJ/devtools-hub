@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Binary Hex Converter - Convert Binary to Decimal, HEX, ASCII | DevTools Hub</title>
-    <meta name="description" content="Free online binary hex converter. Convert between binary, decimal, hexadecimal, and ASCII text. Instant conversion, no upload needed. Developer tool for encoding and decoding.">
+    <title>Binary Hex Converter - Binary to Decimal, HEX, ASCII</title>
+    <meta name="description" content="Free online binary hex converter. Convert between binary, decimal, hex, and ASCII text. Instant conversion, no upload needed. Developer tool for encoding.">
     <meta name="keywords" content="binary to hex, hex to binary, decimal converter, binary converter, hex converter, ascii converter, binary decoder">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/binary-hex-converter/">
+    <meta property="og:title" content="Binary Hex Converter - Binary to Decimal, HEX, ASCII">
+    <meta property="og:description" content="Free online binary hex converter. Convert between binary, decimal, hex, and ASCII text. Instant conversion, no upload needed. Developer tool for encoding.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/binary-hex-converter/">
+    <meta property="og:type" content="website">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <link rel="stylesheet" href="/styles.css">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEVTOOLHUB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-DEVTOOLHUB');
-    </script>
     <style>
         .converter-grid {
             display: grid;
@@ -53,7 +51,7 @@
         }
         .converter-panel textarea:focus,
         .converter-panel input:focus {
-            outline: none;
+            outline: 2px solid transparent;
             border-color: #667eea;
         }
         .converter-panel input {
@@ -186,7 +184,7 @@
         }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Binary Hex Converter","url":"https://tools.scoreroute.com/tools/binary-hex-converter/","description":"Free binary hex converter. Convert binary to decimal, hexadecimal, ASCII.","applicationCategory":"Utility","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Binary Hex Converter - Binary to Decimal, HEX, ASCII","url":"https://tools.scoreroute.com/tools/binary-hex-converter/","description":"Free online binary hex converter. Convert between binary, decimal, hex, and ASCII text. Instant conversion, no upload needed. Developer tool for encoding.","applicationCategory":"Utility","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -213,8 +211,8 @@
 
                 <div class="converter-grid">
                     <div class="converter-panel" id="input-panel">
-                        <h3 id="input-label">Enter Text</h3>
-                        <textarea id="input-area" placeholder="Enter text to convert..."></textarea>
+                        <h2 id="input-label">Enter Text</h2>
+                        <textarea id="input-area" placeholder="Enter text to convert..." aria-label="Enter text to convert"></textarea>
                         <div class="btn-row">
                             <button class="btn btn-primary" onclick="convert()">Convert</button>
                             <button class="btn btn-secondary" onclick="swapValues()">Swap</button>
@@ -239,7 +237,7 @@
                 <div class="file-section">
                     <div class="file-drop" id="file-drop" onclick="document.getElementById('file-input').click()">
                         <p style="color:#888;">Drop a text or binary file here, or click to browse</p>
-                        <input type="file" id="file-input" accept=".txt,.bin,.hex">
+                        <input type="file" id="file-input" accept=".txt,.bin,.hex" aria-label="File Input">
                     </div>
                 </div>
             </div>
@@ -273,6 +271,27 @@
                     <li>Work with memory addresses in low-level programming</li>
                 </ul>
             </div>
+
+            <div class="info-section">
+                <h2>How Binary and Hex Conversion Works</h2>
+                <p>This tool converts between three representations of the same underlying bytes: human-readable text (UTF-8), binary (base-2 with digits 0 and 1), and hexadecimal (base-16 with digits 0-9 and a-f). Every character you type is first encoded as a sequence of UTF-8 bytes; each byte is then displayed as either 8 binary digits or 2 hex digits. The letter A (ASCII 65, UTF-8 also 65) becomes 01000001 in binary and 41 in hex. The emoji 😀 (Unicode U+1F600) is encoded in UTF-8 as the four bytes F0 9F 98 80, which becomes 11110000 10011111 10011000 10000000 in binary and F09F9880 in hex.</p>
+                <p>Decoding works in reverse: the script parses your input by splitting on whitespace, groups digits into 8-bit binary chunks or 2-digit hex chunks, converts each chunk back to a byte value (0-255), and joins the bytes into a Uint8Array that is then decoded as UTF-8 text. Invalid sequences are flagged with an error message rather than silently dropped, so you can spot typos in hex dumps immediately. All conversion happens locally in your browser using standard JavaScript TypedArrays; no data is uploaded.</p>
+
+                <h2>Frequently Asked Questions</h2>
+                <details class="faq-item"><summary>Is this the same as base64?</summary><p>No. Base-64 uses a 64-character alphabet (A-Z, a-z, 0-9, plus, slash) and encodes every 3 bytes as 4 characters, so it is roughly 33 percent larger than the original. Binary uses only two symbols (0 and 1) and is 8 times larger. Hexadecimal uses 16 symbols and is exactly 2 times larger, which is why hex dumps are the standard format for inspecting raw bytes.</p></details>
+                <details class="faq-item"><summary>Why does my emoji show as 4 bytes but a regular letter as 1 byte?</summary><p>UTF-8 is a variable-width encoding. ASCII characters (code points 0-127) fit in one byte. Characters in the Latin Extended range and most common accented letters fit in 2 bytes. CJK characters take 3 bytes. Emoji and other supplementary-plane characters take 4 bytes because their code points exceed the 16-bit Basic Multilingual Plane.</p></details>
+                <details class="faq-item"><summary>What is little-endian vs big-endian byte order?</summary><p>When a multi-byte value like the 32-bit integer 0x12345678 is stored in memory, the bytes can be ordered either as 12 34 56 78 (big-endian, most significant byte first, used by network protocols and Java) or as 78 56 34 12 (little-endian, least significant byte first, used by x86 CPUs and most desktop software). This tool displays bytes in the order they appear in your input; if you are debugging a binary file you may need to reverse the byte order manually.</p></details>
+                <details class="faq-item"><summary>Can I convert a hex color code like #FF8800 to binary?</summary><p>Yes. Type or paste the hex string (with or without the leading #) into the hex field and the binary field will display the same value as a binary string. FF8800 in hex becomes 11111111 10001000 00000000 in binary. This is useful when learning how RGB color values are stored in image files and CSS.</p></details>
+                <details class="faq-item"><summary>Are my conversions uploaded to a server?</summary><p>No. Conversion happens entirely in your browser using JavaScript TypedArrays and the built-in TextEncoder / TextDecoder APIs. You can verify this by opening DevTools Network tab while converting and watching zero requests fire.</p></details>
+
+                <h2>References and Authority Sources</h2>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Binary_number" target="_blank" rel="noopener noreferrer">Wikipedia — Binary number</a> (base-2 numeral system and bit-wise operations)</li>
+                    <li><a href="https://en.wikipedia.org/wiki/Hexadecimal" target="_blank" rel="noopener noreferrer">Wikipedia — Hexadecimal</a> (base-16 numeral system used in computing)</li>
+                    <li><a href="https://en.wikipedia.org/wiki/UTF-8" target="_blank" rel="noopener noreferrer">Wikipedia — UTF-8</a> (the variable-width character encoding used for the text side of these conversions)</li>
+                    <li><a href="https://en.wikipedia.org/wiki/Endianness" target="_blank" rel="noopener noreferrer">Wikipedia — Endianness</a> (byte ordering conventions for multi-byte values)</li>
+                </ul>
+            </div>
         </section>
     </main>
 
@@ -285,10 +304,10 @@
     <script>
         let currentMode = 'text';
 
-        function setMode(mode) {
+        function setMode(mode, el) {
             currentMode = mode;
             document.querySelectorAll('.format-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            (el || event.target).classList.add('active');
             
             const inputLabel = document.getElementById('input-label');
             const inputArea = document.getElementById('input-area');
@@ -501,5 +520,9 @@
             reader.readAsText(file);
         }
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

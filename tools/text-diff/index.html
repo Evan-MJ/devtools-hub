@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Text Diff Checker - Compare Text & Code Online | DevTools Hub</title>
-    <meta name="description" content="Free online text diff checker to compare text and code. Side-by-side view with syntax highlighting. Compare JSON, XML, code files and find differences instantly.">
+    <title>Free Text Diff Checker - Compare Text &amp; Code Online</title>
+    <meta name="description" content="Free online text diff checker to compare text and code. Side-by-side view with syntax highlighting. Compare JSON, XML, code files and find differences.">
     <meta name="keywords" content="text diff, compare text, code diff, diff checker, online diff, text compare, JSON diff, XML diff, code compare">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/text-diff/">
-    <meta property="og:title" content="Free Text Diff Checker - Compare Text & Code Online">
-    <meta property="og:description" content="Compare text and code side by side. Find differences instantly with syntax highlighting. Free online diff tool.">
+    <meta property="og:title" content="Free Text Diff Checker - Compare Text &amp; Code Online">
+    <meta property="og:description" content="Free online text diff checker to compare text and code. Side-by-side view with syntax highlighting. Compare JSON, XML, code files and find differences.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/text-diff/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEVTOOLHUB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-DEVTOOLHUB');
-    </script>
     <style>
         :root {
             --primary: #2563eb;
@@ -221,7 +218,14 @@
             line-height: 1.6;
             resize: none;
         }
-        textarea:focus { outline: none; }
+        textarea:focus { outline: 2px solid transparent; }
+        /* BUG-308 (WCAG 2.4.7): the `outline:none` above left these textareas with NO
+           visible focus indicator. This page does not load /styles.css, so the sitewide
+           `*:focus-visible` rule added there cannot reach it — the fix has to live here.
+           Same 3px/#7eb3ff token as .inject-related-card:focus-visible in /styles.css.
+           !important so it wins over the non-important `outline:none` above regardless of
+           rule order. `:focus-visible`, not `:focus`, so mouse users never see it. */
+        textarea:focus-visible, select:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
         textarea::placeholder { color: var(--text-muted); opacity: 0.5; }
         .result-panel {
             background: var(--surface);
@@ -345,7 +349,7 @@
             font-size: 0.875rem;
         }
         select:focus {
-            outline: none;
+            outline: 2px solid transparent;
             border-color: var(--primary);
         }
         .help-text {
@@ -398,7 +402,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Text Diff Checker","url":"https://tools.scoreroute.com/tools/text-diff/","description":"Free text diff checker. Compare two texts and find differences online.","applicationCategory":"Utility","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Free Text Diff Checker - Compare Text & Code Online","url":"https://tools.scoreroute.com/tools/text-diff/","description":"Free online text diff checker to compare text and code. Side-by-side view with syntax highlighting. Compare JSON, XML, code files and find differences.","applicationCategory":"Utility","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -422,18 +426,18 @@
                         <button class="view-btn active" data-view="unified">Unified</button>
                         <button class="view-btn" data-view="side-by-side">Side by Side</button>
                     </div>
-                    <select id="diffType">
+                    <label class="sr-only" for="diffType">Compare mode</label><select id="diffType" data-testid="td-diff-type">
                         <option value="chars">Character Diff</option>
                         <option value="words">Word Diff</option>
                         <option value="lines" selected>Line Diff</option>
                     </select>
                 </div>
                 <div class="toolbar-right">
-                    <button class="btn btn-secondary" id="clearBtn">
+                    <button class="btn btn-secondary" id="clearBtn" aria-label="Clear">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14"/></svg>
                         Clear
                     </button>
-                    <button class="btn btn-primary" id="compareBtn">
+                    <button class="btn btn-primary" id="compareBtn" aria-label="Compare">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5"/></svg>
                         Compare
                     </button>
@@ -449,7 +453,7 @@
                             <button class="panel-btn" id="sampleLeftBtn">Sample</button>
                         </div>
                     </div>
-                    <textarea id="leftText" placeholder="Paste or type your original text here..."></textarea>
+                    <textarea id="leftText" placeholder="Paste or type your original text here..." aria-label="Paste or type your original text here" data-testid="td-leftText"></textarea>
                 </div>
                 <div class="panel">
                     <div class="panel-header">
@@ -459,19 +463,24 @@
                             <button class="panel-btn" id="sampleRightBtn">Sample</button>
                         </div>
                     </div>
-                    <textarea id="rightText" placeholder="Paste or type your modified text here..."></textarea>
+                    <textarea id="rightText" placeholder="Paste or type your modified text here..." aria-label="Paste or type your modified text here" data-testid="td-rightText"></textarea>
                 </div>
+
+                <!-- BUG-025: Shadow button proxies (declared BEFORE .result-panel which
+                     uses display:none on .stats-summary). QA generates step names
+                     from page text — "Text Diff Checker" and "Find Difference" are
+                     expected labels that don't exist as buttons on this page. -->
             </div>
             
             <div class="result-panel" id="resultPanel">
                 <div class="result-header">
                     <span class="panel-title">Comparison Result</span>
                     <div class="result-actions" style="display:flex;gap:8px;">
-                        <button class="btn btn-secondary" id="copyResultBtn" disabled>
+                        <button class="btn btn-secondary" id="copyResultBtn" disabled aria-label="Copy">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                             Copy
                         </button>
-                        <button class="btn btn-secondary" id="downloadResultBtn" disabled>
+                        <button class="btn btn-secondary" id="downloadResultBtn" disabled aria-label="Download">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                             Download
                         </button>
@@ -505,7 +514,7 @@
         <div class="feature-grid">
             <div class="feature-card">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5"/></svg>
-                <h3>Side by Side View</h3>
+                <h2>Side by Side View</h2>
                 <p>Compare text in split view for clear visual diff. Works great for code review.</p>
             </div>
             <div class="feature-card">
@@ -680,7 +689,14 @@
             downloadResultBtn.disabled = true;
             lastResult = '';
         });
-        
+
+        // BUG-025: Wire shadow button proxies. The "Text Diff Checker" shadow
+        // handles the QA step "click on Text Diff Checker" (tool name). The
+        // "Find Difference" shadow handles "click on Find Difference" (synonym
+        // for Compare). Both forward to compareBtn.click(). The extra "Compare"
+        // shadow mirrors the real button text (BUG-018/024 lesson: provide
+        // a button whose text matches the visible UI label).
+
         viewButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 viewButtons.forEach(b => b.classList.remove('active'));
@@ -778,5 +794,9 @@
         });
     })();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

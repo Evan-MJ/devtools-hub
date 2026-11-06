@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Color Picker - HEX RGB HSL Converter | DevTools Hub</title>
-    <meta name="description" content="Pick colors and convert between HEX, RGB, and HSL formats with live preview and copy buttons.">
+    <meta name="description" content="Pick colors and convert between HEX, RGB, and HSL formats with live preview and copy buttons. Free, browser-based, 100% private.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/color-picker/">
+    <meta property="og:title" content="Color Picker - HEX RGB HSL Converter | DevTools Hub">
+    <meta property="og:description" content="Pick colors and convert between HEX, RGB, and HSL formats with live preview and copy buttons. Free, browser-based, 100% private.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/color-picker/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Color Picker","description":"Convert between HEX, RGB, and HSL color formats","url":"https://tools.scoreroute.com/tools/color-picker/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Color Picker - HEX RGB HSL Converter | DevTools Hub","description":"Pick colors and convert between HEX, RGB, and HSL formats with live preview and copy buttons. Free, browser-based, 100% private.","url":"https://tools.scoreroute.com/tools/color-picker/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -31,26 +36,26 @@
         <section class="tool-page">
             <div class="tool-main">
                 <h2>Pick a Color</h2>
-                <input type="color" id="color-input" value="#667eea" style="width: 100%; height: 60px; border: none; cursor: pointer; background: none; margin-bottom: 15px;">
+                <input type="color" id="color-input" value="#667eea" style="width: 100%; height: 60px; border: none; cursor: pointer; background: none; margin-bottom: 15px;" aria-label="Color Picker">
                 <div id="color-preview" style="width: 100%; height: 80px; border-radius: 8px; background: #667eea; margin-bottom: 15px;"></div>
                 <div style="margin-bottom: 10px;">
                     <label style="display: block; margin-bottom: 5px; color: #aaa;">HEX</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="hex-output" value="#667eea" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;">
+                        <input type="text" id="hex-output" value="#667eea" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;" aria-label="Color Picker">
                         <button onclick="copyToClipboard('hex-output')" class="btn btn-small">Copy</button>
                     </div>
                 </div>
                 <div style="margin-bottom: 10px;">
                     <label style="display: block; margin-bottom: 5px; color: #aaa;">RGB</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="rgb-output" value="rgb(102, 126, 234)" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;">
+                        <input type="text" id="rgb-output" value="rgb(102, 126, 234)" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;" aria-label="Rgb Output">
                         <button onclick="copyToClipboard('rgb-output')" class="btn btn-small">Copy</button>
                     </div>
                 </div>
                 <div>
                     <label style="display: block; margin-bottom: 5px; color: #aaa;">HSL</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="hsl-output" value="hsl(231, 75%, 67%)" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;">
+                        <input type="text" id="hsl-output" value="hsl(231, 75%, 67%)" readonly style="flex: 1; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace;" aria-label="Hsl Output">
                         <button onclick="copyToClipboard('hsl-output')" class="btn btn-small">Copy</button>
                     </div>
                 </div>
@@ -155,6 +160,9 @@
         document.getElementById('color-input').addEventListener('input', updateColor);
         function copyToClipboard(id) { const e = document.getElementById(id); if (e) navigator.clipboard.writeText(e.value || e.textContent); }
     </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script><!-- End Cloudflare Web Analytics -->
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

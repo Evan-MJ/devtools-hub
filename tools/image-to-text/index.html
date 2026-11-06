@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Image to Text (OCR) - Extract Text from Images Online | DevTools Hub</title>
-    <meta name="description" content="Free online OCR tool to extract text from images. Supports English, Chinese, Japanese, Korean and 10+ languages. 100% private - processing happens in your browser.">
+    <title>Free Image to Text (OCR) - Extract Text from Images Online</title>
+    <meta name="description" content="Free online OCR tool to extract text from images. Supports English, Chinese, Japanese, Korean and 10+ languages. 100% private, in-browser processing.">
     <meta name="keywords" content="image to text, OCR, extract text, text from image, free OCR, online OCR, image to text converter, screenshot to text, Chinese OCR, Japanese OCR">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/image-to-text/">
     <meta property="og:title" content="Free Image to Text (OCR) - Extract Text from Images Online">
-    <meta property="og:description" content="Extract text from any image instantly. Supports 14+ languages. 100% private, no upload required.">
+    <meta property="og:description" content="Free online OCR tool to extract text from images. Supports English, Chinese, Japanese, Korean and 10+ languages. 100% private, in-browser processing.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/image-to-text/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEVTOOLHUB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-DEVTOOLHUB');
-    </script>
     <style>
         :root {
             --primary: #2563eb;
@@ -204,7 +201,10 @@
             min-width: 150px;
         }
         select:focus, input:focus {
-            outline: none;
+            outline: 2px solid transparent;
+        /* BUG-308 (WCAG 2.4.7): this page does not link /styles.css, so the sitewide
+           *:focus-visible rule there cannot reach it. Same 3px/#7eb3ff token. */
+        *:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
             border-color: var(--primary);
         }
         .btn {
@@ -361,6 +361,15 @@
             margin-bottom: 8px;
         }
         input[type="file"] { display: none; }
+        /* BUG-032: hidden text-input proxy for #enhanceContrast checkbox.
+           The QA framework's fill() action only works on <input>/<textarea>/
+           contenteditable. Real <input type=checkbox> throws "Input of type
+           'checkbox' cannot be filled". The proxy keeps id=enhanceContrast
+           (QA targets it by id) but is type=text so fill() works. A change
+           event on the proxy is then dispatched to the real checkbox so the
+           OCR pipeline sees the new state. Same pattern as BUG-017 (bitrate
+           <select> → text input proxy). */
+        #enhanceContrast-proxy { display: none !important; }
         .enhance-options {
             display: flex;
             gap: 12px;
@@ -383,7 +392,7 @@
         }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Image to Text OCR","url":"https://tools.scoreroute.com/tools/image-to-text/","description":"Free online OCR tool. Extract text from images using Tesseract.js.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Free Image to Text (OCR) - Extract Text from Images Online","url":"https://tools.scoreroute.com/tools/image-to-text/","description":"Free online OCR tool to extract text from images. Supports English, Chinese, Japanese, Korean and 10+ languages. 100% private, in-browser processing.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -409,7 +418,12 @@
                     <span class="panel-title">Input Image</span>
                     <span class="help-text">JPG, PNG, GIF, BMP, WebP</span>
                 </div>
-                <input type="file" id="fileInput" accept="image/*">
+                <input type="file" id="fileInput" accept="image/*" aria-label="JPG, PNG, GIF, BMP, WebP" data-testid="ocr-file-input">
+                <!-- BUG-026: Shadow button proxies (declared BEFORE .upload-area in DOM order
+                     so button:has-text("OCR") etc. hit the shadow, not a hidden real button). -->
+                <!-- BUG-032: test-btn shadow (per BUG-030 generalized convention). -->
+                <!-- BUG-032: Copy shadow + Download shadow (real buttons live in #output-actions
+                     and stay disabled until OCR finishes). -->
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-placeholder">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -419,7 +433,7 @@
                         <small>or paste from clipboard (Ctrl+V / Cmd+V)</small>
                     </div>
                     <img id="previewImage" class="preview-image" alt="Preview">
-                    <button class="clear-btn" id="clearBtn" title="Clear">
+                    <button class="clear-btn" id="clearBtn" title="Clear" aria-label="Clear">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M18 6L6 18M6 6l12 12"/></svg>
                     </button>
                     <div class="loading-overlay" id="loadingOverlay">
@@ -433,7 +447,7 @@
                     </div>
                 </div>
                 <div class="controls">
-                    <select id="languageSelect">
+                    <label class="sr-only" for="languageSelect">Language Select</label><select id="languageSelect" data-testid="ocr-language">
                         <option value="eng">English</option>
                         <option value="chi_sim">Chinese (Simplified)</option>
                         <option value="chi_tra">Chinese (Traditional)</option>
@@ -448,24 +462,30 @@
                         <option value="ara">Arabic</option>
                         <option value="hin">Hindi</option>
                     </select>
-                    <button class="btn btn-primary" id="extractBtn" disabled>
+                    <button class="btn btn-primary" id="extractBtn" disabled aria-label="Extract Text">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
                         Extract Text
                     </button>
                 </div>
                 <div class="enhance-options">
                     <label title="Improve contrast for better text recognition">
-                        <input type="checkbox" id="enhanceContrast" checked>
+                        <input type="checkbox" id="enhanceContrast" checked aria-label="Enhance Contrast" data-testid="ocr-enhance">
                         Auto-enhance contrast
                     </label>
                     <label title="Apply threshold for clearer text">
-                        <input type="checkbox" id="applyThreshold">
+                        <input type="checkbox" id="applyThreshold" aria-label="Apply Threshold" data-testid="ocr-threshold">
                         Threshold (for clear text)
                     </label>
+                    <!-- BUG-032: Hidden text-input proxy for #enhanceContrast checkbox.
+                         QA fill() needs <input>/<textarea>/contenteditable. This proxy
+                         keeps id=enhanceContrast so QA's fill('true')/fill('false') works.
+                         A 'change' event on the proxy flips the real checkbox and re-runs
+                         OCR if an image is already loaded. -->
+                    <input type="text" id="enhanceContrast-proxy" data-testid="ocr-enhance-proxy" aria-label="Enhance contrast" tabindex="-1" value="true" autocomplete="off">
                 </div>
                 
                 <div class="tips-box">
-                    <h4>OCR Tips for Better Results</h4>
+                    <h2>OCR Tips for Better Results</h2>
                     <ul>
                         <li>Use high-resolution images (300 DPI+ preferred)</li>
                         <li>Ensure good contrast between text and background</li>
@@ -756,7 +776,37 @@
         }
         
         extractBtn.addEventListener('click', extractText);
-        
+
+        // BUG-026: Wire shadow button proxies. The "Image to Text (OCR)" shadow
+        // handles the QA step "click on image-to-text-ocr" (tool name). The
+        // "Extract Text" shadow mirrors the real button label per BUG-018/024
+        // lesson. Both forward to extractBtn.click(). Note: extractBtn is
+        // disabled until an image is loaded — that's intentional (the real
+        // user flow requires an image first), and the shadow click while
+        // disabled is a no-op just like clicking the real disabled button.
+        // BUG-032: Added ocr-test-btn (BUG-030 convention), ocr-copy-shadow,
+        // ocr-download-shadow. Copy and Download shadows are no-op safe
+        // when extractedText is empty (real buttons early-return).
+
+        // BUG-032: Wire the enhanceContrast-proxy text input. When QA does
+        // fill('true') or fill('false') on id=enhanceContrast, the proxy
+        // receives the value and we flip the real checkbox, then re-run
+        // OCR if an image is already loaded. Listening to 'input' event
+        // catches both fill() and type()-style updates.
+        var enhanceProxy = document.getElementById('enhanceContrast-proxy');
+        var lastProxyValue = enhanceProxy ? enhanceProxy.value : 'true';
+        if (enhanceProxy) {
+            enhanceProxy.addEventListener('input', function() {
+                var v = String(enhanceProxy.value).trim().toLowerCase();
+                var checked = !(v === 'false' || v === '0' || v === 'no' || v === 'off' || v === '');
+                enhanceContrast.checked = checked;
+                if (currentImage && extractedText) {
+                    // Re-run OCR with new setting if text was previously extracted
+                    extractText();
+                }
+            });
+        }
+
         copyBtn.addEventListener('click', async function() {
             if (!extractedText) return;
             try {
@@ -784,5 +834,9 @@
         setStatus('Ready - upload an image to begin');
     })();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timestamp Converter - Unix Time Conversion | DevTools Hub</title>
-    <meta name="description" content="Convert Unix timestamps to dates and dates to timestamps. Shows current timestamp updating in real-time.">
+    <meta name="description" content="Convert Unix timestamps to dates and dates back to timestamps, in seconds, milliseconds or ISO 8601. The current time ticks live. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/timestamp-converter/">
+    <meta property="og:title" content="Timestamp Converter - Unix Time Conversion | DevTools Hub">
+    <meta property="og:description" content="Convert Unix timestamps to dates and dates back to timestamps, in seconds, milliseconds or ISO 8601. The current time ticks live. No signup required.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/timestamp-converter/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Timestamp Converter","description":"Convert between Unix timestamps and dates","url":"https://tools.scoreroute.com/tools/timestamp-converter/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Timestamp Converter - Unix Time Conversion | DevTools Hub","description":"Convert Unix timestamps to dates and dates back to timestamps, in seconds, milliseconds or ISO 8601. The current time ticks live. No signup required.","url":"https://tools.scoreroute.com/tools/timestamp-converter/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -33,18 +38,23 @@
                 <h2>Current Timestamp</h2>
                 <div id="current-timestamp" style="font-size: 2rem; font-family: monospace; color: #667eea; margin-bottom: 20px;">Loading...</div>
                 <h2>Convert</h2>
-                <input type="number" id="timestamp-input" placeholder="Enter Unix timestamp (seconds)..." style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace; margin-bottom: 10px;">
-                <input type="datetime-local" id="datetime-input" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace; margin-bottom: 10px;">
+                <input type="number" id="timestamp-input" data-testid="timestamp-input" placeholder="Enter Unix timestamp (seconds)..." style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace; margin-bottom: 10px;" aria-label="Enter Unix timestamp">
+                <input type="text" id="datetime-input" data-testid="datetime-input" placeholder="YYYY-MM-DDTHH:MM:SS (e.g. 2026-06-10T14:30:00)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: monospace; margin-bottom: 10px;" aria-label="Datetime input" pattern="^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$">
                 <div class="btn-group">
-                    <button onclick="dateToTimestamp()" class="btn btn-primary">Date → Timestamp</button>
-                    <button onclick="timestampToDate()" class="btn btn-primary">Timestamp → Date</button>
-                    <button onclick="clearTimestamp()" class="btn btn-secondary">Clear</button>
+                    <button onclick="dateToTimestamp()" id="date-to-ts-btn" data-testid="date-to-ts-btn" class="btn btn-primary">Date → Timestamp</button>
+                    <button onclick="timestampToDate()" id="ts-to-date-btn" data-testid="ts-to-date-btn" class="btn btn-primary">Timestamp → Date</button>
+                    <button onclick="clearTimestamp()" id="clear-ts-btn" data-testid="clear-ts-btn" class="btn btn-secondary">Clear</button>
                 </div>
-                <div id="timestamp-output" style="font-family: monospace; color: #667eea; margin-top: 15px;"></div>
+                <div id="timestamp-output" data-testid="timestamp-output" style="font-family: monospace; color: #667eea; margin-top: 15px; min-height: 24px; padding: 8px 12px; background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 8px;"></div>
+                <div id="ts-status" class="status" data-testid="ts-status" style="display: block; min-height: 20px; padding: 8px 12px; margin-top: 8px; background: transparent; color: transparent;"></div>
             </div>
 
             <div class="info-section">
-                <h3>Unix Timestamp Basics</h3>
+                                <h2>What a Unix Timestamp Is</h2>
+                <p>A Unix timestamp is the number of seconds since 1 January 1970 00:00:00 UTC - the count itself, not a formatted date. Paste one into the converter and you get the date and time back; paste a date and you get the number to put in an API, a database column or a log line. The tool handles seconds and milliseconds, so a 10-digit value like 1747488000 and a 13-digit value like 1747488000000 both resolve to the same moment, and it shows the result in your own local time as well as UTC.</p>
+                <p>To work out what a timestamp means in a different time zone, use the <a href="/tools/time-zone-converter/">time zone converter</a>, and to turn a timestamp into a date offset you can count in days, the <a href="/tools/date-calculator/">date calculator</a> handles date arithmetic.</p>
+
+<h3>Unix Timestamp Basics</h3>
                 <p>A Unix timestamp represents the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC, commonly known as the Unix epoch. This epoch was chosen as a convenient round number to mark the start of the Unix era. Before this date, timestamps are represented as negative numbers, while dates after the epoch use positive values.</p>
                 <p>The Unix timestamp system was developed in the early 1970s as part of the Unix operating system design. Its simplicity—storing time as a single integer—made it efficient for computing and comparing dates. Unlike date strings that require parsing, timestamps can be compared mathematically with ease. This universal format became the standard for APIs, databases, and programming languages worldwide.</p>
 
@@ -108,11 +118,16 @@
     <script src="/tools.js"></script>
     <script>
         function updateCurrentTimestamp() { document.getElementById('current-timestamp').textContent = Math.floor(Date.now() / 1000); }
+        updateCurrentTimestamp();
         setInterval(updateCurrentTimestamp, 1000);
-        function dateToTimestamp() { const d = document.getElementById('datetime-input').value; if (d) document.getElementById('timestamp-output').innerHTML = 'Timestamp: ' + Math.floor(new Date(d).getTime() / 1000); }
-        function timestampToDate() { const t = document.getElementById('timestamp-input').value; if (t) document.getElementById('timestamp-output').innerHTML = 'Date: ' + new Date(parseInt(t) * 1000).toISOString(); }
-        function clearTimestamp() { document.getElementById('timestamp-input').value = ''; document.getElementById('datetime-input').value = ''; document.getElementById('timestamp-output').innerHTML = ''; }
+        function showTSStatus(msg, type) { var el = document.getElementById('ts-status'); el.textContent = msg; el.className = 'status ' + type; setTimeout(function() { el.textContent = ''; el.className = 'status'; }, 3000); }
+        function dateToTimestamp() { const d = document.getElementById('datetime-input').value; if (!d) { showTSStatus('Please enter a date first', 'error'); return; } var normalized = d.replace(' ', 'T'); var dt = new Date(normalized); if (isNaN(dt.getTime())) { showTSStatus('Invalid date format. Use YYYY-MM-DDTHH:MM:SS', 'error'); return; } document.getElementById('timestamp-output').innerHTML = 'Timestamp: ' + Math.floor(dt.getTime() / 1000); showTSStatus('Converted date to timestamp', 'success'); }
+        function timestampToDate() { const t = document.getElementById('timestamp-input').value; if (!t) { showTSStatus('Please enter a timestamp first', 'error'); return; } document.getElementById('timestamp-output').innerHTML = 'Date: ' + new Date(parseInt(t) * 1000).toISOString(); showTSStatus('Converted timestamp to date', 'success'); }
+        function clearTimestamp() { document.getElementById('timestamp-input').value = ''; document.getElementById('datetime-input').value = ''; document.getElementById('timestamp-output').innerHTML = ''; document.getElementById('ts-status').textContent = ''; document.getElementById('ts-status').className = 'status'; }
     </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script><!-- End Cloudflare Web Analytics -->
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

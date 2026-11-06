@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta property="og:title" content="DNS Lookup & WHOIS - Check Domain DNS Records & Registration | De">
+    <meta property="og:title" content="DNS &amp; WHOIS Lookup - Check Domain Records | DevTools Hub">
     <meta property="og:description" content="Free DNS lookup and WHOIS checker. Query DNS records (A, AAAA, MX, NS, SOA, TXT) and domain registration info instantly. No signup required.">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNS Lookup & WHOIS - Check Domain DNS Records & Registration | DevTools Hub</title>
+    <title>DNS &amp; WHOIS Lookup - Check Domain Records | DevTools Hub</title>
     <meta name="description" content="Free DNS lookup and WHOIS checker. Query DNS records (A, AAAA, MX, NS, SOA, TXT) and domain registration info instantly. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/dns-lookup/">
     <link rel="stylesheet" href="/styles.css">
@@ -20,8 +21,8 @@
         "datePublished": "2026-05-24",
         "dateModified": "2026-05-24",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "DNS Lookup & WHOIS",
-        "description": "Query DNS records and WHOIS registration data for any domain. Check A, AAAA, MX, NS, SOA records and domain ownership details.",
+        "name": "DNS & WHOIS Lookup - Check Domain Records | DevTools Hub",
+        "description": "Free DNS lookup and WHOIS checker. Query DNS records (A, AAAA, MX, NS, SOA, TXT) and domain registration info instantly. No signup required.",
         "url": "https://tools.scoreroute.com/tools/dns-lookup/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -29,9 +30,6 @@
         "featureList": ["DNS record lookup", "WHOIS domain info", "A/AAAA/MX/NS/SOA records", "Domain registration details", "DNSSEC check"]
     }
     </script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"DNS Lookup","url":"https://tools.scoreroute.com/tools/dns-lookup/","description":"Free DNS lookup tool. Check DNS records, WHOIS registration, domain information.","applicationCategory":"Network","operatingSystem":"All"}
-</script>
 </head>
 <body>
     <header>
@@ -51,7 +49,7 @@
                 <h2>Lookup Domain Information</h2>
 
                 <div class="lookup-input-area">
-                    <input type="text" id="domain-input" placeholder="Enter a domain (e.g., google.com)" autocomplete="off" spellcheck="false">
+                    <input type="text" id="domain-input" placeholder="Enter a domain (e.g., google.com)" autocomplete="off" spellcheck="false" aria-label="Enter a domain">
                     <button id="lookup-btn" class="btn btn-primary">Lookup</button>
                 </div>
 
@@ -339,7 +337,7 @@
             transition: border-color 0.2s;
         }
         .lookup-input-area input:focus {
-            outline: none;
+            outline: 2px solid transparent;
             border-color: #667eea;
         }
         .lookup-tabs {
@@ -443,5 +441,9 @@
             .info-value { text-align: left; }
         }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

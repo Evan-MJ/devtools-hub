@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Splitter - Split PDF Pages Online Free | DevTools Hub</title>
+    <title>Free PDF Splitter - Split PDF Pages Online Free</title>
     <meta name="description" content="Free online PDF splitter. Extract specific pages or split PDF into multiple files. No upload needed - privacy-first client-side processing.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/pdf-splitter/">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta property="og:title" content="PDF Splitter - Split PDF Pages Online Free | DevTools Hub">
+    <meta property="og:title" content="Free PDF Splitter - Split PDF Pages Online Free">
     <meta property="og:description" content="Free online PDF splitter. Extract specific pages or split PDF into multiple files. No upload needed - privacy-first client-side processing.">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-24","dateModified":"2026-05-24","author":{"@type":"Person","name":"BAOMING"},"name":"Free PDF Splitter","description":"Split PDF files into individual pages or extract specific page ranges. Privacy-first client-side processing.","url":"https://tools.scoreroute.com/tools/pdf-splitter/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-24","dateModified":"2026-05-24","author":{"@type":"Person","name":"BAOMING"},"name":"Free PDF Splitter - Split PDF Pages Online Free","description":"Free online PDF splitter. Extract specific pages or split PDF into multiple files. No upload needed - privacy-first client-side processing.","url":"https://tools.scoreroute.com/tools/pdf-splitter/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -41,8 +41,13 @@
                         <p>Drag and drop a PDF file here, or click to browse</p>
                         <p class="upload-hint">Supports PDF files up to 100 MB</p>
                     </div>
-                    <input type="file" id="file-input" accept=".pdf,application/pdf">
+                    <input type="file" id="file-input" accept=".pdf,application/pdf" aria-label="PDF file" data-testid="ps-file-input">
                 </div>
+
+                <!-- BUG-023: Shadow button proxies (declared BEFORE the toggle
+                     containers #split-options and #results, per BUG-018 DOM-order
+                     discipline so text/aria-label .first() selectors hit the shadow).
+                     BUG-032: added #ps-test-btn (BUG-030 convention). -->
 
                 <div id="pdf-info" style="display:none;">
                     <div class="pdf-info-bar">
@@ -50,7 +55,7 @@
                             <strong id="pdf-filename"></strong>
                             <span id="pdf-meta"></span>
                         </div>
-                        <button id="remove-btn" class="btn btn-secondary btn-sm">Remove</button>
+                        <button id="remove-btn" class="btn btn-secondary btn-sm" aria-label="Remove">Remove</button>
                     </div>
                 </div>
 
@@ -93,7 +98,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <button id="split-btn" class="btn btn-primary">Split PDF</button>
+                        <button id="split-btn" class="btn btn-primary" aria-label="Split PDF">Split PDF</button>
                     </div>
                 </div>
 
@@ -101,7 +106,7 @@
                     <h2 class="section-title">Split Results</h2>
                     <div id="results-list" class="results-list"></div>
                     <div class="btn-group">
-                        <button id="download-all-btn" class="btn btn-primary">Download All</button>
+                        <button id="download-all-btn" class="btn btn-primary" aria-label="Download All">Download All</button>
                     </div>
                 </div>
 
@@ -114,7 +119,11 @@
             </div>
 
             <div class="info-section">
-                <h3>Problem: Most PDF Splitters Upload Your Documents</h3>
+                                <h2>How to Split a PDF</h2>
+                <p>Drop a PDF into the upload area and the page lists what it found: the page count, then the split options. Choose a single range such as 1-3 or 7, or split the document into equal chunks of a given size, and each part is produced in your browser from the file you selected - the document itself is never sent to a server. That is the difference from the hosted splitters, where a tax return or a signed contract travels through someone else's infrastructure before the split happens.</p>
+                <p>If the split is not what you wanted, the other PDF tools here cover the rest of the job: the <a href="/tools/pdf-page-numbers/">PDF page numberer</a> stamps pages, the <a href="/tools/pdf-to-image/">PDF to image converter</a> turns pages into PNG or JPG files, the <a href="/tools/pdf-to-text/">PDF text extractor</a> pulls the words out, and the <a href="/tools/pdf-compressor/">PDF compressor</a> shrinks the file size for emailing.</p>
+
+<h2>Problem: Most PDF Splitters Upload Your Documents</h2>
                 <p>When you split a PDF online, your tax returns, contracts, and personal documents are typically uploaded to a remote server. Your private files pass through unknown infrastructure.</p>
 
                 <h3>How We Solve This</h3>
@@ -367,6 +376,13 @@
         splitFiles.forEach(function(file) { downloadFile(file); });
     });
 
+    // BUG-023: Wire shadow button proxies (per Reuse checklist).
+    // The real #split-btn and #download-all-btn live in toggle containers
+    // (#split-options and #results, both display:none until ready). Shadow
+    // buttons make them reachable for QA tests.
+    // BUG-032: added ps-test-btn shadow (BUG-030 convention) that forwards
+    // to the real split-btn click.
+
     function showLoading(show) {
         loading.style.display = show ? 'flex' : 'none';
         if (show) { resultsDiv.style.display = 'none'; errorMsg.style.display = 'none'; }
@@ -437,7 +453,7 @@
         width: 100%;
         margin: 8px 0;
     }
-    .text-input:focus { outline: none; border-color: var(--primary, #667eea); }
+    .text-input:focus { outline: 2px solid transparent; border-color: var(--primary, #667eea); }
     .text-input.narrow { width: 80px; display: inline-block; }
     .help-text { color: var(--text-secondary, #888); font-size: 0.85rem; margin: 4px 0; }
     .results-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
@@ -473,5 +489,9 @@
         .mode-option { flex-direction: column; gap: 6px; }
     }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

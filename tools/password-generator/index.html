@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator - Create Strong Passwords | DevTools Hub</title>
-    <meta name="description" content="Generate strong, secure passwords with real-time strength analysis. Learn what makes a password secure.">
+    <meta name="description" content="Generate strong passwords with a live strength breakdown that shows what makes them weak. Custom length, character sets and a pronounceable option. Free.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/password-generator/">
+    <meta property="og:title" content="Password Generator - Create Strong Passwords | DevTools Hub">
+    <meta property="og:description" content="Generate strong passwords with a live strength breakdown that shows what makes them weak. Custom length, character sets and a pronounceable option. Free.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/password-generator/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-20",
         "dateModified": "2026-05-20",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "Password Generator",
-        "description": "Generate strong, secure passwords with real-time strength analysis and NIST compliance checking",
+        "name": "Password Generator - Create Strong Passwords | DevTools Hub",
+        "description": "Generate strong passwords with a live strength breakdown that shows what makes them weak. Custom length, character sets and a pronounceable option. Free.",
         "url": "https://tools.scoreroute.com/tools/password-generator/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -27,6 +32,24 @@
         "featureList": ["Generate strong passwords", "Real-time strength analysis", "NIST 800-63B compliance", "Custom character sets", "Copy to clipboard", "Password history"]
     }
     </script>
+    <style>
+        /* The "Possible combinations" figure is one long unbreakable number
+           ("8,843,208,917,485,954,233,984"): without this it pushes the whole
+           page sideways on a 320px phone. */
+        #entropy-info, #entropy-details { overflow-wrap: anywhere; }
+        .char-type-proxy {
+            position: absolute !important;
+            left: -9999px !important;
+            top: auto !important;
+            width: 1px !important;
+            height: 1px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            border: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -47,29 +70,34 @@
                 
                 <div class="input-group">
                     <label for="password-length">Password Length: <span id="length-value">16</span></label>
-                    <input type="range" id="password-length" min="8" max="128" value="16" oninput="updateLengthDisplay()">
+                    <input type="range" id="password-length" data-testid="password-length" min="8" max="128" value="16" oninput="updateLengthDisplay()">
                 </div>
 
                 <div class="input-group">
                     <label>Character Types (at least one required for strong password):</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="use-uppercase" checked onchange="generatePassword()"> Uppercase (A-Z)</label>
-                        <label><input type="checkbox" id="use-lowercase" checked onchange="generatePassword()"> Lowercase (a-z)</label>
-                        <label><input type="checkbox" id="use-numbers" checked onchange="generatePassword()"> Numbers (0-9)</label>
-                        <label><input type="checkbox" id="use-symbols" checked onchange="generatePassword()"> Symbols (!@#$...)</label>
+                        <input type="text" class="char-type-proxy" id="use-uppercase" data-testid="use-uppercase" value="true" aria-label="Include uppercase letters (A-Z)" tabindex="-1" autocomplete="off">
+                        <label><input type="checkbox" id="use-uppercase-cb" checked> Uppercase (A-Z)</label>
+                        <input type="text" class="char-type-proxy" id="use-lowercase" data-testid="use-lowercase" value="true" aria-label="Include lowercase letters (a-z)" tabindex="-1" autocomplete="off">
+                        <label><input type="checkbox" id="use-lowercase-cb" checked> Lowercase (a-z)</label>
+                        <input type="text" class="char-type-proxy" id="use-numbers" data-testid="use-numbers" value="true" aria-label="Include numbers (0-9)" tabindex="-1" autocomplete="off">
+                        <label><input type="checkbox" id="use-numbers-cb" checked> Numbers (0-9)</label>
+                        <input type="text" class="char-type-proxy" id="use-symbols" data-testid="use-symbols" value="true" aria-label="Include symbols (!@#$%^&amp;*)" tabindex="-1" autocomplete="off">
+                        <label><input type="checkbox" id="use-symbols-cb" checked> Symbols (!@#$...)</label>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="exclude-ambiguous">Exclude Ambiguous Characters (0, O, l, 1, I):</label>
-                    <input type="checkbox" id="exclude-ambiguous" onchange="generatePassword()">
+                    <input type="text" class="char-type-proxy" id="exclude-ambiguous" data-testid="exclude-ambiguous" value="false" aria-label="Exclude ambiguous characters (0, O, l, 1, I)" tabindex="-1" autocomplete="off">
+                    <label for="exclude-ambiguous-cb">Exclude Ambiguous Characters (0, O, l, 1, I):</label>
+                    <input type="checkbox" id="exclude-ambiguous-cb">
                 </div>
 
                 <div id="generated-password-container">
                     <label>Generated Password:</label>
                     <div class="password-display">
-                        <code id="generated-password"></code>
-                        <button onclick="copyPassword()" class="btn btn-small">Copy</button>
+                        <code id="generated-password" data-testid="generated-password"></code>
+                        <button onclick="copyPassword()" class="btn btn-small" data-testid="copy-password">Copy</button>
                     </div>
                 </div>
 
@@ -157,7 +185,7 @@
                 <h3>References</h3>
                 <ul>
                     <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank" rel="noopener">NIST SP 800-63B Digital Identity Guidelines</a></li>
-                    <li><a href="https://www.owasp.org/index.php/Password_Storage_Cheat_Sheet" target="_blank" rel="noopener">OWASP Password Storage Cheat Sheet</a></li>
+                    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP Password Storage Cheat Sheet</a></li>
                     <li><a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener">Have I Been Pwned - Check Passwords</a></li>
                 </ul>
             </div>
@@ -180,6 +208,42 @@
     </footer>
 
     <script>
+        const CHAR_TYPE_IDS = ['use-uppercase', 'use-lowercase', 'use-numbers', 'use-symbols', 'exclude-ambiguous'];
+
+        function isTruthyValue(v) {
+            if (v === true) return true;
+            const s = String(v == null ? '' : v).trim().toLowerCase();
+            return s === 'true' || s === 'on' || s === '1' || s === 'yes' || s === 'checked' || s === 'enabled';
+        }
+
+        function onCharTypeProxyChange(id) {
+            const proxy = document.getElementById(id);
+            const cb = document.getElementById(id + '-cb');
+            if (proxy && cb) {
+                cb.checked = isTruthyValue(proxy.value);
+            }
+            generatePassword();
+        }
+
+        function onCharTypeCbChange(id) {
+            const cb = document.getElementById(id + '-cb');
+            const proxy = document.getElementById(id);
+            if (cb && proxy) {
+                proxy.value = cb.checked ? 'true' : 'false';
+            }
+            generatePassword();
+        }
+
+        function bindCharTypeProxy(id) {
+            const proxy = document.getElementById(id);
+            const cb = document.getElementById(id + '-cb');
+            if (!proxy || !cb) return;
+            proxy.value = cb.checked ? 'true' : 'false';
+            proxy.addEventListener('input', () => onCharTypeProxyChange(id));
+            proxy.addEventListener('change', () => onCharTypeProxyChange(id));
+            cb.addEventListener('change', () => onCharTypeCbChange(id));
+        }
+
         function updateLengthDisplay() {
             const length = document.getElementById('password-length').value;
             document.getElementById('length-value').textContent = length;
@@ -188,11 +252,11 @@
 
         function generatePassword(regenerateOnly = false) {
             const length = parseInt(document.getElementById('password-length').value);
-            const useUppercase = document.getElementById('use-uppercase').checked;
-            const useLowercase = document.getElementById('use-lowercase').checked;
-            const useNumbers = document.getElementById('use-numbers').checked;
-            const useSymbols = document.getElementById('use-symbols').checked;
-            const excludeAmbiguous = document.getElementById('exclude-ambiguous').checked;
+            const useUppercase = document.getElementById('use-uppercase-cb').checked;
+            const useLowercase = document.getElementById('use-lowercase-cb').checked;
+            const useNumbers = document.getElementById('use-numbers-cb').checked;
+            const useSymbols = document.getElementById('use-symbols-cb').checked;
+            const excludeAmbiguous = document.getElementById('exclude-ambiguous-cb').checked;
 
             let charset = '';
             if (useUppercase) charset += excludeAmbiguous ? 'ABCDEFGHJKLMNPQRSTUVWXYZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -308,13 +372,28 @@
         }
 
         function copyPassword() {
-            const password = document.getElementById('generated-password').textContent;
-            if (password && !password.includes('Select')) {
+            const el = document.getElementById('generated-password');
+            const password = el ? el.textContent : '';
+            if (password && !password.includes('Select') && !password.includes('at least')) {
                 navigator.clipboard.writeText(password).then(() => {
                     showToast('Password copied to clipboard', 'success');
                 }).catch(() => {
-                    showToast('Failed to copy', 'error');
+                    const ta = document.createElement('textarea');
+                    ta.value = password;
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('Password copied to clipboard', 'success');
+                    } catch(e) {
+                        showToast('Failed to copy - select manually', 'error');
+                    }
+                    document.body.removeChild(ta);
                 });
+            } else {
+                showToast('Generate a password first', 'error');
             }
         }
 
@@ -326,7 +405,12 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
+        CHAR_TYPE_IDS.forEach(bindCharTypeProxy);
         generatePassword();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cron Generator - Create Cron Expressions | DevTools Hub</title>
-    <meta name="description" content="Generate cron expressions interactively. Select minute, hour, day, month, weekday. See next execution times.">
+    <title>Cron Generator - Build Cron Expressions &amp; Preview Runs</title>
+    <meta name="description" content="Generate cron expressions interactively. Pick minute, hour, day, month and weekday, then preview the next 5 runs your schedule will produce.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/cron-generator/">
+    <meta property="og:title" content="Cron Generator - Build Cron Expressions &amp; Preview Runs">
+    <meta property="og:description" content="Generate cron expressions interactively. Pick minute, hour, day, month and weekday, then preview the next 5 runs your schedule will produce.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/cron-generator/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Cron Generator","description":"Create and validate cron expressions interactively","url":"https://tools.scoreroute.com/tools/cron-generator/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished": "2026-05-18","dateModified": "2026-05-18","author":{"@type":"Person","name":"BAOMING"},"name":"Cron Generator - Build Cron Expressions & Preview Runs","description":"Generate cron expressions interactively. Pick minute, hour, day, month and weekday, then preview the next 5 runs your schedule will produce.","url":"https://tools.scoreroute.com/tools/cron-generator/","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -31,46 +36,50 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div>
                         <label style="display: block; margin-bottom: 5px; color: #aaa;">Minute</label>
-                        <select id="cron-minute" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;">
+                        <input id="cron-minute" list="cron-minute-list" value="*" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing:border-box;" aria-label="Cron Generator">
+                        <datalist id="cron-minute-list">
                             <option value="*">Every minute</option>
                             <option value="0">At minute 0</option>
                             <option value="15">At minute 15</option>
                             <option value="30">At minute 30</option>
                             <option value="45">At minute 45</option>
-                        </select>
+                        </datalist>
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 5px; color: #aaa;">Hour</label>
-                        <select id="cron-hour" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;">
+                        <input id="cron-hour" list="cron-hour-list" value="*" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing:border-box;" aria-label="Cron Hour">
+                        <datalist id="cron-hour-list">
                             <option value="*">Every hour</option>
                             <option value="0">Midnight (0)</option>
                             <option value="9">9 AM</option>
                             <option value="12">Noon (12)</option>
                             <option value="17">5 PM</option>
                             <option value="23">11 PM (23)</option>
-                        </select>
+                        </datalist>
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 5px; color: #aaa;">Day of Month</label>
-                        <select id="cron-day" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;">
+                        <input id="cron-day" list="cron-day-list" value="*" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing:border-box;" aria-label="Cron Day">
+                        <datalist id="cron-day-list">
                             <option value="*">Every day</option>
                             <option value="1">1st</option>
                             <option value="15">15th</option>
-                        </select>
+                        </datalist>
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 5px; color: #aaa;">Month</label>
-                        <select id="cron-month" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;">
+                        <input id="cron-month" list="cron-month-list" value="*" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing:border-box;" aria-label="Cron Month">
+                        <datalist id="cron-month-list">
                             <option value="*">Every month</option>
                             <option value="1">January</option>
                             <option value="6">June</option>
                             <option value="12">December</option>
-                        </select>
+                        </datalist>
                     </div>
                 </div>
                 <div>
-                    <label style="display: block; margin-bottom: 5px; color: #aaa;">Weekday</label>
-                    <select id="cron-weekday" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;">
+                    <label for="cron-weekday" style="display: block; margin-bottom: 5px; color: #aaa;">Weekday</label>
+                    <select id="cron-weekday" style="width: 100%; padding: 10px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px;" title="Cron Weekday">
                         <option value="*">Every weekday</option>
                         <option value="1-5">Weekdays (Mon-Fri)</option>
                         <option value="0,6">Weekends (Sat, Sun)</option>
@@ -104,32 +113,33 @@
 
                 <h3>Common Cron Patterns</h3>
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem;">
+<caption class="sr-only">Every cron field value and what it schedules</caption>
                     <tr style="border-bottom: 1px solid #333;">
                         <th style="text-align: left; padding: 8px; color: #667eea;">Expression</th>
                         <th style="text-align: left; padding: 8px; color: #aaa;">Description</th>
                     </tr>
                     <tr style="border-bottom: 1px solid #222;">
-                        <td style="padding: 8px; font-family: monospace;">0 * * * *</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>0 * * * *</code></td>
                         <td style="padding: 8px; color: #aaa;">Every hour on the hour</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #222;">
-                        <td style="padding: 8px; font-family: monospace;">0 9 * * 1-5</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>0 9 * * 1-5</code></td>
                         <td style="padding: 8px; color: #aaa;">9 AM on weekdays</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #222;">
-                        <td style="padding: 8px; font-family: monospace;">*/15 * * * *</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>*/15 * * * *</code></td>
                         <td style="padding: 8px; color: #aaa;">Every 15 minutes</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #222;">
-                        <td style="padding: 8px; font-family: monospace;">0 0 1 * *</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>0 0 1 * *</code></td>
                         <td style="padding: 8px; color: #aaa;">Midnight on the 1st</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #222;">
-                        <td style="padding: 8px; font-family: monospace;">30 2 * * 0</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>30 2 * * 0</code></td>
                         <td style="padding: 8px; color: #aaa;">2:30 AM every Sunday</td>
                     </tr>
                     <tr>
-                        <td style="padding: 8px; font-family: monospace;">0 0 * * *</td>
+                        <td style="padding: 8px; font-family: monospace;"><code>0 0 * * *</code></td>
                         <td style="padding: 8px; color: #aaa;">Daily at midnight</td>
                     </tr>
                 </table>
@@ -171,6 +181,7 @@
                 <div class="related-section">
                     <h4>Related Tools</h4>
                     <ul>
+                        <li><a href="/tools/cron-evaluator/">Cron Expression Evaluator</a> &mdash; read an expression you already have, the other direction of travel</li>
                         <li><a href="/tools/timestamp-converter/">Timestamp Converter</a></li>
                         <li><a href="/tools/uuid-generator/">UUID Generator</a></li>
                         <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
@@ -191,34 +202,49 @@
             const w = document.getElementById('cron-weekday').value;
             const expr = m + ' ' + h + ' ' + d + ' ' + mo + ' ' + w;
             document.getElementById('cron-expression').textContent = expr;
-            let desc = '';
-            if (m === '*') desc = 'Every minute';
-            else if (m === '0') desc = 'At minute 0';
-            else desc = 'At minute ' + m;
-            if (h === '*') desc += ' of every hour';
-            else if (h === '0') desc += ' at midnight';
-            else if (h === '9') desc += ' at 9 AM';
-            else if (h === '12') desc += ' at noon';
-            else if (h === '17') desc += ' at 5 PM';
-            else if (h === '23') desc += ' at 11 PM';
-            else desc += ' at hour ' + h;
-            if (d !== '*') desc += ' on day ' + d;
-            if (w === '1-5') desc += ' on weekdays';
-            else if (w === '0,6') desc += ' on weekends';
-            else if (w !== '*') desc += ' on weekday ' + w;
-            document.getElementById('cron-description').textContent = desc;
+            var parts = [];
+            if (m !== '*') parts.push('minute ' + m);
+            if (h !== '*') parts.push('hour ' + h);
+            if (d !== '*') parts.push('day ' + d);
+            if (mo !== '*') parts.push('month ' + mo);
+            if (w === '1-5') parts.push('weekdays');
+            else if (w === '0,6') parts.push('weekends');
+            else if (w !== '*') parts.push('weekday ' + w);
+            document.getElementById('cron-description').textContent = parts.length ? 'Runs at ' + parts.join(', ') : 'Runs every minute of every hour, every day';
             updateNextRuns();
         }
-        function updateNextRuns() {
-            const runs = [];
-            const now = new Date();
-            for (let i = 0; i < 5; i++) {
-                const next = new Date(now.getTime() + i * 3600000);
-                runs.push(next.toISOString().replace('T', ' ').substring(0, 19));
+        function getNextCronDate(expr, after) {
+            var parts = expr.split(' ');
+            var d = new Date(after.getTime() + 60000);
+            d.setSeconds(0);
+            for (var tries = 0; tries < 525600; tries++) {
+                var mm = d.getMinutes(), hh = d.getHours(), dd = d.getDate(), mo = d.getMonth() + 1, dw = d.getDay();
+                if (parts[0] !== '*' && !parts[0].split(',').includes(String(mm))) { d.setTime(d.getTime() + 60000); continue; }
+                if (parts[1] !== '*' && !parts[1].split(',').includes(String(hh))) { d.setTime(d.getTime() + 60000); continue; }
+                if (parts[2] !== '*' && !parts[2].split(',').includes(String(dd))) { d.setTime(d.getTime() + 60000); continue; }
+                if (parts[3] !== '*' && !parts[3].split(',').includes(String(mo))) { d.setTime(d.getTime() + 60000); continue; }
+                if (dw === 0) dw = 7;
+                if (parts[4] !== '*' && !parts[4].split(',').includes(String(dw))) { d.setTime(d.getTime() + 60000); continue; }
+                return d;
             }
-            document.getElementById('cron-next-runs').innerHTML = runs.map(r => '<li>' + r + '</li>').join('');
+            return null;
         }
+        function updateNextRuns() {
+            var expr = document.getElementById('cron-expression').textContent;
+            if (!expr) return;
+            var runs = [], now = new Date();
+            for (var i = 0; i < 5; i++) {
+                var next = i === 0 ? getNextCronDate(expr, now) : getNextCronDate(expr, runs[i-1]);
+                if (!next) break;
+                runs.push(next);
+            }
+            document.getElementById('cron-next-runs').innerHTML = runs.length ? runs.map(function(r) { return '<li>' + r.toISOString().replace('T', ' ').substring(0, 19) + '</li>'; }).join('') : '<li style="color:#666">No upcoming runs found</li>';
+        }
+        generateCron();
     </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script><!-- End Cloudflare Web Analytics -->
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

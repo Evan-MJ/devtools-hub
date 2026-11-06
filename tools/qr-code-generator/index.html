@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator - Create QR Codes Free | DevTools Hub</title>
-    <meta name="description" content="Free QR Code Generator. Create QR codes for URLs, text, WiFi, email, SMS, vCards. Download as PNG.">
+    <meta name="description" content="Free QR code generator for URLs, text, WiFi logins, email, SMS and vCards. Download as PNG or SVG at any size. No signup, no watermark, no daily limit.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/qr-code-generator/">
+    <meta property="og:title" content="QR Code Generator - Create QR Codes Free | DevTools Hub">
+    <meta property="og:description" content="Free QR code generator for URLs, text, WiFi logins, email, SMS and vCards. Download as PNG or SVG at any size. No signup, no watermark, no daily limit.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/qr-code-generator/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
+    <style>.hidden-section{display:none}</style>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -18,8 +24,8 @@
         "datePublished": "2026-05-20",
         "dateModified": "2026-05-20",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "QR Code Generator",
-        "description": "Create QR codes instantly for URLs, text, WiFi, email, SMS, vCards and more",
+        "name": "QR Code Generator - Create QR Codes Free | DevTools Hub",
+        "description": "Free QR code generator for URLs, text, WiFi logins, email, SMS and vCards. Download as PNG or SVG at any size. No signup, no watermark, no daily limit.",
         "url": "https://tools.scoreroute.com/tools/qr-code-generator/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -63,7 +69,7 @@
                     <textarea id="qr-content" placeholder="Enter text or URL here..."></textarea>
                 </div>
 
-                <div id="wifi-input-section" style="display:none;">
+                <div id="wifi-input-section" class="hidden-section">
                     <label for="wifi-ssid">Network Name (SSID):</label>
                     <input type="text" id="wifi-ssid" placeholder="WiFi Network Name">
                     <label for="wifi-password">Password:</label>
@@ -76,34 +82,34 @@
                     </select>
                 </div>
 
-                <div id="email-input-section" style="display:none;">
+                <div id="email-input-section" class="hidden-section">
                     <label for="email-address">Email Address:</label>
-                    <input type="email" id="email-address" placeholder="email@example.com">
+                    <input type="email" id="email-address" placeholder="email@example.com" autocomplete="email">
                     <label for="email-subject">Subject (optional):</label>
                     <input type="text" id="email-subject" placeholder="Email Subject">
                 </div>
 
-                <div id="sms-input-section" style="display:none;">
+                <div id="sms-input-section" class="hidden-section">
                     <label for="sms-number">Phone Number:</label>
-                    <input type="text" id="sms-number" placeholder="+1234567890">
+                    <input type="text" id="sms-number" placeholder="+1234567890" autocomplete="tel">
                     <label for="sms-message">Message (optional):</label>
                     <textarea id="sms-message" placeholder="SMS Message"></textarea>
                 </div>
 
-                <div id="vcard-input-section" style="display:none;">
+                <div id="vcard-input-section" class="hidden-section">
                     <label for="vcard-name">Full Name:</label>
-                    <input type="text" id="vcard-name" placeholder="John Doe">
+                    <input type="text" id="vcard-name" placeholder="John Doe" autocomplete="name">
                     <label for="vcard-email">Email:</label>
-                    <input type="email" id="vcard-email" placeholder="john@example.com">
+                    <input type="email" id="vcard-email" placeholder="john@example.com" autocomplete="email">
                     <label for="vcard-phone">Phone:</label>
-                    <input type="text" id="vcard-phone" placeholder="+1234567890">
+                    <input type="text" id="vcard-phone" placeholder="+1234567890" autocomplete="tel">
                     <label for="vcard-org">Organization:</label>
                     <input type="text" id="vcard-org" placeholder="Company Name">
                 </div>
 
-                <div id="phone-input-section" style="display:none;">
+                <div id="phone-input-section" class="hidden-section">
                     <label for="phone-number">Phone Number:</label>
-                    <input type="text" id="phone-number" placeholder="+1234567890">
+                    <input type="text" id="phone-number" placeholder="+1234567890" autocomplete="tel">
                 </div>
 
                 <div class="input-group">
@@ -229,6 +235,7 @@
                         <li><a href="/tools/base64-encoder/">Base64 Encoder</a></li>
                         <li><a href="/tools/hash-generator/">Hash Generator</a></li>
                         <li><a href="/tools/uuid-generator/">UUID Generator</a></li>
+                        <li><a href="/tools/qr-code-reader/">QR Code Reader</a> — Decode and scan QR codes from images, camera, and screenshots.</li>
                     </ul>
                 </div>
             </div>
@@ -400,7 +407,12 @@
 
         function copyQRImage() {
             if (!currentQRData) {
-                showStatus('qr-status', 'Please generate a QR code first', 'error');
+                showStatus('qr-status', 'Please generate a QR code first', '');
+                return;
+            }
+            
+            if (!navigator.clipboard || !navigator.clipboard.write) {
+                showStatus('qr-status', 'Copy not supported in this browser. Use Download instead.', '');
                 return;
             }
             
@@ -412,7 +424,7 @@
                     showStatus('qr-status', 'QR Code copied to clipboard', 'success');
                 })
                 .catch(() => {
-                    showStatus('qr-status', 'Copy failed - try downloading instead', 'error');
+                    showStatus('qr-status', 'Copy failed - use Download button', '');
                 });
         }
 
@@ -422,6 +434,11 @@
             el.className = 'status ' + type;
             setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 3000);
         }
+        document.addEventListener('DOMContentLoaded', function() { updateInputFields(); });
     </script>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script></body>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
+</body>
 </html>

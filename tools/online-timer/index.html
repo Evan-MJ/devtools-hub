@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online Timer & Stopwatch & Interval Trainer | DevTools Hub</title>
+    <title>Free Online Timer &amp; Stopwatch &amp; Interval Trainer</title>
     <meta name="description" content="Free online timer, stopwatch, and interval trainer. Pomodoro for work, Tabata/HIIT for fitness. No signup required. Privacy-first browser-based timing.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/online-timer/">
+    <meta property="og:title" content="Free Online Timer &amp; Stopwatch &amp; Interval Trainer">
+    <meta property="og:description" content="Free online timer, stopwatch, and interval trainer. Pomodoro for work, Tabata/HIIT for fitness. No signup required. Privacy-first browser-based timing.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/online-timer/">
+    <meta property="og:type" content="website">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -16,7 +20,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Free Online Timer & Stopwatch & Interval Trainer",
-      "description": "Browser-based timer, stopwatch, and interval trainer. Pomodoro for work, Tabata/HIIT for fitness. No signup required.",
+      "description": "Free online timer, stopwatch, and interval trainer. Pomodoro for work, Tabata/HIIT for fitness. No signup required. Privacy-first browser-based timing.",
       "url": "https://tools.scoreroute.com/tools/online-timer/",
       "applicationCategory": "UtilityApplication",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
@@ -81,19 +85,19 @@
                 <div class="pomodoro-settings" id="pomodoro-settings">
                     <div class="setting-group">
                         <label>Work Duration (minutes)</label>
-                        <input type="number" id="work-duration" value="25" min="1" max="120" onchange="updatePomodoroSettings()">
+                        <input type="number" id="work-duration" value="25" min="1" max="120" onchange="updatePomodoroSettings()" aria-label="Work Duration">
                     </div>
                     <div class="setting-group">
                         <label>Break Duration (minutes)</label>
-                        <input type="number" id="break-duration" value="5" min="1" max="30" onchange="updatePomodoroSettings()">
+                        <input type="number" id="break-duration" value="5" min="1" max="30" onchange="updatePomodoroSettings()" aria-label="Break Duration">
                     </div>
                     <div class="setting-group">
                         <label>Long Break (minutes)</label>
-                        <input type="number" id="long-break-duration" value="15" min="1" max="60" onchange="updatePomodoroSettings()">
+                        <input type="number" id="long-break-duration" value="15" min="1" max="60" onchange="updatePomodoroSettings()" aria-label="Long Break Duration">
                     </div>
                     <div class="setting-group">
                         <label>Long Break After</label>
-                        <input type="number" id="sessions-before-long" value="4" min="1" max="10" onchange="updatePomodoroSettings()">
+                        <input type="number" id="sessions-before-long" value="4" min="1" max="10" onchange="updatePomodoroSettings()" aria-label="Sessions Before Long">
                     </div>
                 </div>
 
@@ -107,15 +111,15 @@
                     <div class="interval-config">
                         <div class="config-row">
                             <label>Active (seconds)</label>
-                            <input type="number" id="active-time" value="20" min="5" max="300">
+                            <input type="number" id="active-time" value="20" min="5" max="300" aria-label="Active Time">
                         </div>
                         <div class="config-row">
                             <label>Rest (seconds)</label>
-                            <input type="number" id="rest-time" value="10" min="5" max="300">
+                            <input type="number" id="rest-time" value="10" min="5" max="300" aria-label="Rest Time">
                         </div>
                         <div class="config-row">
                             <label>Rounds</label>
-                            <input type="number" id="total-rounds" value="8" min="1" max="50">
+                            <input type="number" id="total-rounds" value="8" min="1" max="50" aria-label="Total Rounds">
                         </div>
                         <button class="btn btn-primary" onclick="applyIntervalSettings()">Apply</button>
                     </div>
@@ -125,22 +129,22 @@
                     <div class="countdown-input">
                         <div class="countdown-field">
                             <label>Hours</label>
-                            <input type="number" id="countdown-hours" value="0" min="0" max="23">
+                            <input type="number" id="countdown-hours" value="0" min="0" max="23" aria-label="Countdown Hours">
                         </div>
                         <div class="countdown-field">
                             <label>Minutes</label>
-                            <input type="number" id="countdown-minutes" value="5" min="0" max="59">
+                            <input type="number" id="countdown-minutes" value="5" min="0" max="59" aria-label="Countdown Minutes">
                         </div>
                         <div class="countdown-field">
                             <label>Seconds</label>
-                            <input type="number" id="countdown-seconds" value="0" min="0" max="59">
+                            <input type="number" id="countdown-seconds" value="0" min="0" max="59" aria-label="Countdown Seconds">
                         </div>
                         <button class="btn btn-primary" onclick="applyCountdown()">Set Time</button>
                     </div>
                 </div>
 
                 <div class="lap-times" id="lap-times" style="display:none;">
-                    <h3>Lap Times</h3>
+                    <h2>Lap Times</h2>
                     <div id="lap-list"></div>
                 </div>
 
@@ -151,7 +155,7 @@
             </div>
 
             <div class="info-section">
-                <h3>Problem: Most Online Timers Are Just... Timers</h3>
+                <h2>Problem: Most Online Timers Are Just... Timers</h2>
                 <p>You search for "online timer" and get a basic countdown. But what do you actually need it for? Work? Exercise? Cooking? Generic timers don't understand your context.</p>
 
                 <h3>Our Solution: Purpose-Built Timers</h3>
@@ -175,13 +179,16 @@
                 </ul>
 
                 <h3>Use Cases</h3>
+                <div class="table-scroll">
                 <table class="info-table">
+<caption class="sr-only">Which timer mode to use for which kind of work</caption>
                     <tr><th>Mode</th><th>Best For</th><th>Key Features</th></tr>
                     <tr><td>Pomodoro</td><td>Work focus, studying</td><td>25/5 work/break, session tracking, long break reminders</td></tr>
                     <tr><td>Interval</td><td>HIIT, Tabata, circuit training</td><td>Custom active/rest, round counter, audio cues</td></tr>
                     <tr><td>Countdown</td><td>Cooking, presentations, meetings</td><td>Any duration, audio alert, visual countdown</td></tr>
                     <tr><td>Stopwatch</td><td>Measuring duration, athletics</td><td>Lap times, elapsed time, split/continue</td></tr>
                 </table>
+                </div>
 
                 <h3>Frequently Asked Questions</h3>
                 <div class="faq-section">
@@ -871,5 +878,9 @@
         .pomodoro-settings { grid-template-columns: repeat(2, 1fr); }
     }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JWT Decoder - Decode & Verify Tokens | DevTools Hub</title>
-    <meta name="description" content="Free JWT decoder. Decode tokens, inspect claims, verify signatures in your browser.">
+    <title>JWT Decoder - Decode &amp; Verify Tokens | DevTools Hub</title>
+    <meta name="description" content="Free JWT decoder. Inspect the header and claims of any token, check the expiry, and see which algorithm signed it. Nothing is transmitted.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/jwt-decoder/">
+    <meta property="og:title" content="JWT Decoder - Decode &amp; Verify Tokens | DevTools Hub">
+    <meta property="og:description" content="Free JWT decoder. Inspect the header and claims of any token, check the expiry, and see which algorithm signed it. Nothing is transmitted.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/jwt-decoder/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-19",
         "dateModified": "2026-05-19",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "JWT Decoder",
-        "description": "Decode and verify JSON Web Tokens instantly in your browser",
+        "name": "JWT Decoder - Decode & Verify Tokens | DevTools Hub",
+        "description": "Free JWT decoder. Inspect the header and claims of any token, check the expiry, and see which algorithm signed it. Nothing is transmitted.",
         "url": "https://tools.scoreroute.com/tools/jwt-decoder/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -44,7 +49,7 @@
         <section class="tool-page">
             <div class="tool-main">
                 <h2>Decode Your Token</h2>
-                <textarea id="jwt-input" placeholder="Paste your JWT token here (e.g., eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c)"></textarea>
+                <textarea id="jwt-input" placeholder="Paste your JWT token here (e.g., eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c)" aria-label="Paste your JWT token here"></textarea>
                 <div class="btn-group">
                     <button onclick="decodeJWT()" class="btn btn-primary">Decode</button>
                     <button onclick="clearJWT()" class="btn btn-secondary">Clear</button>
@@ -56,13 +61,13 @@
                     <div class="jwt-section">
                         <h4>Header</h4>
                         <pre id="jwt-header" class="jwt-code"></pre>
-                        <button onclick="copyToClipboard('jwt-header')" class="copy-btn">Copy Header</button>
+                        <button id="copy-header-btn" name="copy-header" data-testid="copy-header-btn" data-action="copy-header" type="button" aria-label="Copy Header" onclick="copyJWTHeader(event)" onpointerdown="copyJWTHeader(event)" class="copy-btn">Copy Header</button>
                     </div>
 
                     <div class="jwt-section">
                         <h4>Payload</h4>
                         <pre id="jwt-payload" class="jwt-code"></pre>
-                        <button onclick="copyToClipboard('jwt-payload')" class="copy-btn">Copy Payload</button>
+                        <button id="copy-payload-btn" name="copy-payload" data-testid="copy-payload-btn" data-action="copy-payload" type="button" aria-label="Copy Payload" onclick="copyJWTPayload(event)" onpointerdown="copyJWTPayload(event)" class="copy-btn">Copy Payload</button>
                     </div>
 
                     <div class="jwt-section">
@@ -183,9 +188,6 @@
         <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
     </footer>
 
-    <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script>
-    <!-- End Cloudflare Web Analytics -->
 
     <script src="/tools.js"></script>
     <script>
@@ -260,10 +262,52 @@
             setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 5000);
         }
 
-        function copyToClipboard(id) {
-            const el = document.getElementById(id);
-            if (el && el.textContent) navigator.clipboard.writeText(el.textContent);
+        function copyJWTSection(event, id) {
+            try {
+                if (event && typeof event.button === 'number' && event.button !== 0) return;
+                if (event && typeof event.preventDefault === 'function') event.preventDefault();
+                const el = document.getElementById(id);
+                if (!el || !el.textContent) {
+                    showStatus('jwt-status', 'Nothing to copy — decode first', 'error');
+                    return;
+                }
+                const text = el.textContent;
+                showStatus('jwt-status', 'Copying...', 'success');
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '0';
+                ta.style.left = '0';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, text.length);
+                let ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                if (ok) {
+                    showStatus('jwt-status', 'Copied to clipboard', 'success');
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text)['catch'](function() {});
+                    }
+                } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        showStatus('jwt-status', 'Copied to clipboard', 'success');
+                    })['catch'](function() {
+                        showStatus('jwt-status', 'Copy failed — select and copy manually', 'error');
+                    });
+                } else {
+                    showStatus('jwt-status', 'Copy failed — select and copy manually', 'error');
+                }
+            } catch (e) {
+                showStatus('jwt-status', 'Copy failed — select and copy manually', 'error');
+            }
         }
+
+        function copyJWTHeader(event) { copyJWTSection(event, 'jwt-header'); }
+        function copyJWTPayload(event) { copyJWTSection(event, 'jwt-payload'); }
     </script>
 
     <style>
@@ -273,5 +317,9 @@
         .copy-btn { background: #252545; border: 1px solid #3a3a5a; padding: 6px 12px; border-radius: 6px; color: #fff; cursor: pointer; font-size: 0.8rem; margin-top: 6px; }
         .copy-btn:hover { background: #2d2d55; }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

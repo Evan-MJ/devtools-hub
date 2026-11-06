@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSL Checker - Test Website Security | DevTools Hub</title>
+    <title>SSL Certificate Checker - Test Website Security</title>
     <meta name="description" content="Free SSL checker. Scan any website for TLS security and certificate validity. Get grade A+ to F. No signup. AI cannot test real SSL certificates.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/ssl-checker/">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta property="og:title" content="SSL Checker - Test Website Security">
-    <meta property="og:description" content="Free SSL checker. Scan any website for TLS security and certificate validity. Get grade A+ to F. No signup.">
+    <meta property="og:title" content="SSL Certificate Checker - Test Website Security">
+    <meta property="og:description" content="Free SSL checker. Scan any website for TLS security and certificate validity. Get grade A+ to F. No signup. AI cannot test real SSL certificates.">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Free SSL Certificate Checker",
-      "description": "Scan any website's SSL/TLS certificate for security vulnerabilities. Get A+ to F grade powered by Qualys SSL Labs. No signup required.",
+      "name": "SSL Certificate Checker - Test Website Security",
+      "description": "Free SSL checker. Scan any website for TLS security and certificate validity. Get grade A+ to F. No signup. AI cannot test real SSL certificates.",
       "url": "https://tools.scoreroute.com/tools/ssl-checker/",
       "applicationCategory": "UtilityApplication",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
@@ -27,7 +27,7 @@
     <style>
         .ssl-input-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .ssl-input-row input[type="text"] { flex: 1; min-width: 250px; padding: 12px 16px; background: #0f0f23; border: 1px solid #2a2a4a; color: #fff; border-radius: 8px; font-size: 1rem; }
-        .ssl-input-row input[type="text"]:focus { outline: none; border-color: #667eea; }
+        .ssl-input-row input[type="text"]:focus { outline: 2px solid transparent; border-color: #667eea; }
         .ssl-input-row input[type="text"]::placeholder { color: #555; }
         .grade-badge { display: inline-block; min-width: 56px; text-align: center; padding: 8px 16px; border-radius: 12px; font-size: 2rem; font-weight: 800; margin-right: 12px; }
         .grade-A-plus { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
@@ -90,7 +90,7 @@
         <section class="tool-page">
             <div class="tool-main">
                 <div class="ssl-input-row">
-                    <input type="text" id="ssl-host" placeholder="Enter a domain name (e.g., google.com)" autocomplete="url" spellcheck="false">
+                    <input type="text" id="ssl-host" placeholder="Enter a domain name (e.g., google.com)" autocomplete="url" spellcheck="false" aria-label="Enter a domain name">
                     <button class="btn btn-primary" onclick="checkSSL()" id="check-btn">Scan Website</button>
                 </div>
 
@@ -135,7 +135,7 @@
             </div>
 
             <div class="info-section">
-                <h3>Why Check Your SSL Certificate?</h3>
+                <h2>Why Check Your SSL Certificate?</h2>
                 <p>An SSL/TLS certificate is what makes the padlock icon appear in your browser. It encrypts data between your visitors and your server. Without it, passwords, credit cards, and personal data are sent in plain text that anyone can intercept.</p>
                 <p><strong>AI chatbots cannot check your real SSL certificate.</strong> They can only tell you general facts about SSL. This tool actually connects to your server and tests its real TLS configuration.</p>
 
@@ -395,6 +395,9 @@
     });
     </script>
 
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

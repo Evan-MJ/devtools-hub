@@ -17,6 +17,8 @@
  * Groq (60 req/min) → Gemini (10 RPM, 1500 RPD) → NVIDIA Key1 (30 req/min) → NVIDIA Key3 (30 req/min) → SiliconFlow (74免费模型)
  */
 
+import { discoverChatModels, discoverGeminiModels } from '../../libs/ai-provider.js';
+
 var languageNames = {
   'auto': 'the source language (auto-detect it)',
   'en': 'English', 'zh': 'Simplified Chinese', 'zh-TW': 'Traditional Chinese',
@@ -58,13 +60,28 @@ function selectBestModel(models) {
     'Qwen/Qwen3-14B',
     'Qwen/Qwen3-8B'
   ];
-  
+
   for (var i = 0; i < priorities.length; i++) {
     var found = models.find(m => m === priorities[i]);
     if (found) return found;
   }
-  
+
   return models.find(m => m.includes('Qwen') || m.includes('DeepSeek')) || models[0] || 'Qwen/Qwen2.5-7B-Instruct';
+}
+
+// Groq and NVIDIA are read live, never pinned: Groq decommissioned
+// `llama-3.3-70b-versatile` and NVIDIA answered 410 Gone for
+// `meta/llama-3.3-70b-instruct`, which left this endpoint returning 402 for every
+// visitor (BUG-328). A retired id can no longer reach the request.
+var _groqModels = null;
+async function groqModels(key) {
+  if (_groqModels === null) _groqModels = await discoverChatModels('https://api.groq.com/openai/v1', key);
+  return _groqModels;
+}
+var _nvidiaModels = null;
+async function nvidiaModels(key) {
+  if (_nvidiaModels === null) _nvidiaModels = await discoverChatModels('https://integrate.api.nvidia.com/v1', key);
+  return _nvidiaModels;
 }
 
 function parseGeminiResponse(data) {
@@ -123,10 +140,10 @@ export async function onRequest({ request, env }) {
         return await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + groqKey, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: model || 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
+          body: JSON.stringify({ model: model, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
         });
       },
-      getModels: async function() { return ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'qwen/qwen3-32b']; }
+      getModels: async function() { return await groqModels(groqKey); }
     });
   }
 
@@ -134,18 +151,20 @@ export async function onRequest({ request, env }) {
     providers.push({
       name: 'gemini',
       isGemini: true,
-      call: async function() {
+      call: async function(model) {
         var geminiBody = {
           contents: [{ parts: [{ text: text }] }],
           system_instruction: { parts: [{ text: systemPrompt }] },
           generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
         };
-        return await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + geminiKey, {
+        return await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
           body: JSON.stringify(geminiBody)
         });
-      }
+      },
+      // The id is read from Gemini's own catalogue, never written down here.
+      getModels: async function() { return await discoverGeminiModels(geminiKey); }
     });
   }
   
@@ -156,13 +175,13 @@ export async function onRequest({ request, env }) {
         return await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + nvidiaKey1, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: model || 'meta/llama-3.3-70b-instruct', messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
+          body: JSON.stringify({ model: model, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
         });
       },
-      getModels: async function() { return ['meta/llama-3.3-70b-instruct', 'meta/llama-3.1-70b-instruct', 'mistralai/mistral-large-2-instruct']; }
+      getModels: async function() { return await nvidiaModels(nvidiaKey1); }
     });
   }
-  
+
   if (nvidiaKey3) {
     providers.push({
       name: 'nvidia3',
@@ -170,10 +189,10 @@ export async function onRequest({ request, env }) {
         return await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + nvidiaKey3, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: model || 'meta/llama-3.3-70b-instruct', messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
+          body: JSON.stringify({ model: model, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], temperature: 0.3, max_tokens: 4096 })
         });
       },
-      getModels: async function() { return ['meta/llama-3.3-70b-instruct', 'meta/llama-3.1-70b-instruct', 'mistralai/mistral-large-2-instruct']; }
+      getModels: async function() { return await nvidiaModels(nvidiaKey3); }
     });
   }
   
@@ -202,7 +221,12 @@ export async function onRequest({ request, env }) {
       var response;
 
       if (provider.isGemini) {
-        response = await provider.call();
+        var geminiModels = await provider.getModels();
+        if (!geminiModels || geminiModels.length === 0) {
+          if (i < providers.length - 1) continue;
+          return new Response(JSON.stringify({ error: 'No AI provider is currently serving translation. Please try again shortly.' }), { status: 503, headers: responseHeaders });
+        }
+        response = await provider.call(geminiModels[0]);
         if (response.status === 429) {
           if (i < providers.length - 1) continue;
           return new Response(JSON.stringify({ error: 'Rate limit reached on all providers. Please wait a moment and try again.' }), { status: 429, headers: responseHeaders });
@@ -225,13 +249,18 @@ export async function onRequest({ request, env }) {
       }
 
       var availableModels = await provider.getModels();
-      if (availableModels.length === 0) availableModels = [null];
-
-      var modelToUse = null;
-      if (provider.name === 'siliconflow') {
-        modelToUse = selectBestModel(availableModels);
+      // No id means discovery failed (key rejected, list empty). There is no longer
+      // a hardcoded id to fall back to — that is the point (BUG-328) — so skip this
+      // provider instead of POSTing `model: null`.
+      if (!availableModels || availableModels.length === 0) {
+        if (i < providers.length - 1) continue;
+        return new Response(JSON.stringify({ error: 'No AI provider is currently serving translation. Please try again shortly.' }), { status: 503, headers: responseHeaders });
       }
-      
+
+      var modelToUse = provider.name === 'siliconflow'
+        ? selectBestModel(availableModels)
+        : availableModels[0];
+
       response = await provider.call(modelToUse);
 
       if (response.status === 429) {

@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptocurrency Price Tracker - Live Crypto Prices & Charts</title>
-    <meta name="description" content="Free crypto price tracker. Live prices for 17,000+ coins. AI cannot show real-time crypto prices.">
+    <title>Crypto Price Tracker - Live Prices and Charts | DevTools Hub</title>
+    <meta name="description" content="Free crypto price tracker. Live prices for 17,000+ coins via CoinGecko, market cap, 24h volume, and trending list. AI cannot show real-time crypto prices.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/crypto-price-tracker/">
-    <meta property="og:title" content="Cryptocurrency Price Tracker - Live Crypto Prices">
-    <meta property="og:description" content="Free crypto price tracker. Live prices, market rankings, trending coins. No signup.">
+    <meta property="og:title" content="Crypto Price Tracker - Live Prices and Charts | DevTools Hub">
+    <meta property="og:description" content="Free crypto price tracker. Live prices for 17,000+ coins via CoinGecko, market cap, 24h volume, and trending list. AI cannot show real-time crypto prices.">
     <meta property="og:image" content="/og-image.png">
     <link rel="stylesheet" href="/styles.css">
     <style>
@@ -48,7 +51,7 @@
         @media (max-width: 600px) { .global-stats { grid-template-columns: repeat(2, 1fr); } .detail-grid { grid-template-columns: 1fr; } }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Crypto Price Tracker","url":"https://tools.scoreroute.com/tools/crypto-price-tracker/","description":"Track cryptocurrency prices, Bitcoin price, Ethereum price in real-time.","applicationCategory":"Finance","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Crypto Price Tracker - Live Prices and Charts | DevTools Hub","url":"https://tools.scoreroute.com/tools/crypto-price-tracker/","description":"Free crypto price tracker. Live prices for 17,000+ coins via CoinGecko, market cap, 24h volume, and trending list. AI cannot show real-time crypto prices.","applicationCategory":"Finance","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -74,6 +77,7 @@
                 <div class="trending-coins" id="trending-coins"></div>
                 <div class="table-scroll">
                     <table class="coin-table">
+<caption class="sr-only">Live market data for each coin in the list</caption>
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -90,31 +94,51 @@
                     </table>
                 </div>
                 <div class="convert-box">
-                    <h3 style="color:#667eea;margin-bottom:12px;">Quick Convert</h3>
+                    <h2 style="color:#667eea;margin-bottom:12px;">Quick Convert</h2>
                     <div class="convert-row">
-                        <input type="number" id="conv-amt" value="1" min="0" style="width:80px;">
-                        <select id="conv-from">
+                        <input type="number" id="conv-amt" value="1" min="0" style="width:80px;" aria-label="Volume">
+                        <input type="text" id="conv-from" name="conv-from" data-testid="conv-from" list="conv-from-list" autocomplete="off" aria-label="Volume" value="bitcoin" placeholder="Coin">
+                        <datalist id="conv-from-list">
                             <option value="bitcoin">BTC</option>
                             <option value="ethereum">ETH</option>
                             <option value="solana">SOL</option>
                             <option value="ripple">XRP</option>
                             <option value="cardano">ADA</option>
-                        </select>
+                        </datalist>
                         <span>=</span>
-                        <input type="text" id="conv-result" readonly style="flex:1;min-width:120px;" placeholder="Result">
-                        <select id="conv-to">
+                        <input type="text" id="conv-result" readonly style="flex:1;min-width:120px;" placeholder="Result" aria-label="Result">
+                        <input type="text" id="conv-to" name="conv-to" data-testid="conv-to" list="conv-to-list" autocomplete="off" aria-label="Conv to" value="usd" placeholder="Currency">
+                        <datalist id="conv-to-list">
                             <option value="usd">USD</option>
                             <option value="eur">EUR</option>
                             <option value="gbp">GBP</option>
-                        </select>
+                        </datalist>
                     </div>
                 </div>
             </div>
         </section>
-        <div class="info-section" style="margin-top:24px;">
-            <h3>Why This Beats AI Chatbots</h3>
-            <p>AI chatbots cannot fetch live cryptocurrency prices. This tool shows real-time data updated every minute.</p>
-        </div>
+        <section class="info-section" style="margin-top:24px;">
+            <h2>How Live Prices Work</h2>
+            <p>This tracker pulls real-time market data from the CoinGecko public API, refreshing global statistics every 5 minutes, the coin table every 2 minutes, and the trending list on each page load. Prices are sourced from hundreds of exchanges and aggregated using CoinGecko's volume-weighted methodology, which gives a more representative market price than any single exchange. Market cap is calculated as circulating supply times current price (not total supply, to avoid double-counting locked or reserved tokens), and 24-hour volume sums trade volume across all reported exchanges.</p>
+            <p>The Quick Convert widget uses the same data feed to convert between any supported coin and a fiat currency in real time, including cross-crypto conversions like BTC to ETH or SOL to USD. The detail modal shows per-coin price action over 24 hours and 7 days, market cap rank, all-time high, and all-time low. Prices update without page reloads, so traders and analysts can leave the page open and watch the market move.</p>
+
+            <h2>Frequently Asked Questions</h2>
+            <details class="faq-item"><summary>How are prices calculated and how fresh is the data?</summary><p>Prices are aggregated from hundreds of exchanges using CoinGecko's volume-weighted methodology, which gives a single representative price per coin rather than the last-trade price on any single exchange. The global stats refresh every 5 minutes, the coin table refreshes every 2 minutes, and trending and individual coin details refresh on each page load or modal open.</p></details>
+            <details class="faq-item"><summary>What does the 24-hour percentage change mean?</summary><p>The 24-hour percentage is the change in price over the last 24 hours relative to the current price, expressed as a signed percentage. Green means the price went up, red means it went down. The calculation uses the price 24 hours ago as the baseline, not the open price of the most recent trading day, so the number matches what major exchanges show in their top-bar ticker.</p></details>
+            <details class="faq-item"><summary>What is market cap and why does it not equal price times total supply?</summary><p>Market cap is the total market value of a coin's circulating supply, calculated as current price times circulating supply. It excludes locked, reserved, vested, or burned tokens, so the number reflects what is actually tradeable on the open market. A coin with a low price but huge supply can have a high market cap, and a coin with a high price but tiny supply can have a low market cap. Circulating supply is sourced from CoinGecko and updated as tokens unlock.</p></details>
+            <details class="faq-item"><summary>What is BTC dominance and why does it matter?</summary><p>BTC dominance is the percentage of the total cryptocurrency market cap that is Bitcoin. It is calculated as Bitcoin's market cap divided by the total market cap of all cryptocurrencies times 100. Rising BTC dominance typically means money is flowing into Bitcoin and out of altcoins; falling dominance often indicates altcoin season as capital rotates into smaller projects. The metric is one of the most-cited indicators of risk appetite across the crypto market.</p></details>
+            <details class="faq-item"><summary>Are the prices accurate enough for trading decisions?</summary><p>For casual tracking, research, and portfolio monitoring, the prices shown are accurate to within a fraction of a percent of the actual market price across major exchanges. For active trading, slippage, exchange-specific liquidity, and order-book depth matter more than the aggregated price shown here. Always use the order book on your actual exchange before placing a trade, since aggregated prices can differ from executable prices by 0.1% to 1% on illiquid pairs.</p></details>
+            <details class="faq-item"><summary>Is any of my data stored or shared with anyone?</summary><p>No. The tracker calls the CoinGecko public API directly from your browser using read-only public endpoints. Nothing you do on this page is sent to DevTools Hub servers, no cookies are set, no analytics are collected on which coins you view, and no search history is saved. Closing the tab erases all in-memory state.</p></details>
+
+            <h2>References and Authority Sources</h2>
+            <ul>
+                <li><a href="https://www.coingecko.com/en/api" rel="noopener noreferrer" target="_blank">CoinGecko API</a> - The data source for all prices, market caps, volumes, and trending coins shown on this tracker. Free public endpoint, no key required.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Cryptocurrency" rel="noopener noreferrer" target="_blank">Wikipedia - Cryptocurrency</a> - Background on what cryptocurrencies are, how they work, and the history of Bitcoin and subsequent projects.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Bitcoin" rel="noopener noreferrer" target="_blank">Wikipedia - Bitcoin</a> - Detailed background on the first decentralized cryptocurrency and how its market dominance is computed.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Market_capitalization" rel="noopener noreferrer" target="_blank">Wikipedia - Market Capitalization</a> - Authoritative reference on how crypto market cap is calculated and how it differs from price and total supply.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Cryptocurrency_exchange" rel="noopener noreferrer" target="_blank">Wikipedia - Cryptocurrency Exchange</a> - Background on the trading venues whose aggregated prices feed this tracker and the difference between CEX and DEX liquidity.</li>
+            </ul>
+        </section>
     </main>
     <footer>
         <div class="container">
@@ -365,10 +389,26 @@
     document.getElementById('detail-modal').onclick = function(e) { if (e.target === this) closeModal(); };
     document.onkeydown = function(e) { if (e.key === 'Escape') closeModal(); };
 
+    function toCanonical(raw) {
+        var map = {
+            'bitcoin':'bitcoin','btc':'bitcoin',
+            'ethereum':'ethereum','eth':'ethereum',
+            'solana':'solana','sol':'solana',
+            'ripple':'ripple','xrp':'ripple',
+            'cardano':'cardano','ada':'cardano',
+            'usd':'usd','dollar':'usd',
+            'eur':'eur','euro':'eur',
+            'gbp':'gbp','pound':'gbp'
+        };
+        if (!raw) return '';
+        var k = String(raw).trim().toLowerCase();
+        return map[k] || raw;
+    }
+
     async function doConvert() {
         var amt = parseFloat(document.getElementById('conv-amt').value) || 0;
-        var from = document.getElementById('conv-from').value;
-        var to = document.getElementById('conv-to').value;
+        var from = toCanonical(document.getElementById('conv-from').value);
+        var to = toCanonical(document.getElementById('conv-to').value);
         try {
             var r = await fetch(API + '?action=convert&from=' + from + '&to=' + to + '&amount=' + amt);
             var d = await r.json();
@@ -377,10 +417,14 @@
     }
 
     document.getElementById('conv-amt').oninput = doConvert;
-    document.getElementById('conv-from').onchange = doConvert;
-    document.getElementById('conv-to').onchange = doConvert;
+    document.getElementById('conv-from').addEventListener('input', doConvert);
+    document.getElementById('conv-to').addEventListener('input', doConvert);
 
     initPage();
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

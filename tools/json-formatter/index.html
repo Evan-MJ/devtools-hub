@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Formatter - Format & Validate JSON | DevTools Hub</title>
-    <meta name="description" content="Free JSON formatter. Format, minify, beautify JSON and convert to YAML with syntax error detection.">
+    <title>JSON Formatter - Format &amp; Validate JSON | DevTools Hub</title>
+    <meta name="description" content="Free JSON formatter. Format, minify and beautify JSON, convert to and from YAML, and get the exact line of any syntax error. 100% browser, no upload.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/json-formatter/">
+    <meta property="og:title" content="JSON Formatter - Format &amp; Validate JSON | DevTools Hub">
+    <meta property="og:description" content="Free JSON formatter. Format, minify and beautify JSON, convert to and from YAML, and get the exact line of any syntax error. 100% browser, no upload.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/json-formatter/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-18",
         "dateModified": "2026-05-18",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "JSON Formatter",
-        "description": "Format, validate and beautify JSON data instantly with syntax highlighting and error detection",
+        "name": "JSON Formatter - Format & Validate JSON | DevTools Hub",
+        "description": "Free JSON formatter. Format, minify and beautify JSON, convert to and from YAML, and get the exact line of any syntax error. 100% browser, no upload.",
         "url": "https://tools.scoreroute.com/tools/json-formatter/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -44,7 +49,7 @@
         <section class="tool-page">
             <div class="tool-main">
                 <h2>Format & Validate JSON</h2>
-                <textarea id="json-input" placeholder='Paste your JSON here, e.g.: {"name": "test", "value": 123}'></textarea>
+                <textarea id="json-input" placeholder='Paste your JSON here, e.g.: {"name": "test", "value": 123}' aria-label="JSON Formatter"></textarea>
                 <div class="btn-group">
                     <button onclick="formatJSON()" class="btn btn-primary">Format</button>
                     <button onclick="minifyJSON()" class="btn">Minify</button>
@@ -52,7 +57,7 @@
                     <button onclick="jsonToYaml()" class="btn">To YAML</button>
                     <button onclick="clearJSON()" class="btn btn-secondary">Clear</button>
                 </div>
-                <textarea id="json-output" readonly placeholder="Output..."></textarea>
+                <textarea id="json-output" readonly placeholder="Output..." aria-label="Output"></textarea>
                 <div id="json-status" class="status"></div>
                 <button onclick="copyToClipboard('json-output')" class="copy-btn">Copy Output</button>
             </div>
@@ -207,6 +212,9 @@
             if (e && e.value) navigator.clipboard.writeText(e.value);
         }
     </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script><!-- End Cloudflare Web Analytics -->
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

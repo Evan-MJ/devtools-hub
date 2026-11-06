@@ -2,18 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Calculator - Calculate Exact Age in Years, Months, Days | DevTools Hub</title>
-    <meta name="description" content="Free age calculator tool. Calculate your exact age in years, months, days, hours, minutes. See next birthday countdown, days lived, and milestone dates. No signup required.">
+    <title>Age Calculator - Months, Days, Birthday &amp; Countdown</title>
+    <meta name="description" content="Free age calculator. Your exact age in years, months, days, hours and minutes, plus the next birthday countdown and milestone dates.">
     <meta name="keywords" content="age calculator, birthday calculator, how old am i, calculate age, age in days, next birthday">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/age-calculator/">
-    <meta property="og:title" content="Age Calculator - Calculate Exact Age Instantly">
-    <meta property="og:description" content="Calculate your exact age in years, months, days, hours, minutes. Free online tool with birthday countdown.">
+    <meta property="og:title" content="Age Calculator - Months, Days, Birthday &amp; Countdown">
+    <meta property="og:description" content="Free age calculator. Your exact age in years, months, days, hours and minutes, plus the next birthday countdown and milestone dates.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/age-calculator/">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- BUG-323 (perf/font-delivery): media="print" + the onload swap keeps this third-party
+         font stylesheet out of the render-blocking path; both preconnects above stay. -->
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <style>
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #e0e0e0; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
@@ -30,7 +38,10 @@
         .input-group { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
         label { font-weight: 500; color: #ccc; min-width: 120px; }
         input[type="date"] { flex: 1; min-width: 200px; padding: 14px 20px; border: 1px solid #2a2a4a; border-radius: 12px; background: #1a1a2e; color: #fff; font-size: 1rem; font-family: inherit; }
-        input[type="date"]:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+        input[type="date"]:focus { outline: 2px solid transparent; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+        /* BUG-308 (WCAG 2.4.7): this page does not link /styles.css, so the sitewide
+           *:focus-visible rule there cannot reach it. Same 3px/#7eb3ff token. */
+        *:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
         .btn { padding: 14px 30px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
@@ -74,7 +85,7 @@
         }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Age Calculator","url":"https://tools.scoreroute.com/tools/age-calculator/","description":"Calculate exact age in years, months, days. Free online age calculator.","applicationCategory":"Utility","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Age Calculator - Months, Days, Birthday & Countdown","url":"https://tools.scoreroute.com/tools/age-calculator/","description":"Free age calculator. Your exact age in years, months, days, hours and minutes, plus the next birthday countdown and milestone dates.","applicationCategory":"Utility","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -84,6 +95,7 @@
             <p class="subtitle">Calculate your exact age in years, months, days, hours, and minutes. See your next birthday countdown and milestone dates.</p>
         </header>
 
+        <main>
         <section class="hero-section">
             <h2>Why Do You Need This?</h2>
             <ul class="problem-list">
@@ -98,9 +110,11 @@
             <h2>Enter Your Birth Date</h2>
             <div class="input-group">
                 <label for="birthdate">Date of Birth:</label>
-                <input type="date" id="birthdate" max="">
-                <button onclick="calculateAge()" class="btn btn-primary">Calculate Age</button>
-                <button onclick="clearResult()" class="btn btn-secondary">Clear</button>
+                <input type="date" id="birthdate" max="" data-testid="ac-birthdate">
+                <!-- BUG-030: Shadow button proxies (declared BEFORE the input-group
+                     buttons in DOM order so QA "test-btn" click hits shadow first). -->
+                <button onclick="calculateAge()" class="btn btn-primary" data-testid="ac-calculate" aria-label="Calculate Age">Calculate Age</button>
+                <button onclick="clearResult()" class="btn btn-secondary" data-testid="ac-clear" aria-label="Clear">Clear</button>
             </div>
 
             <div id="loading" class="loading">
@@ -147,7 +161,7 @@
                 </div>
 
                 <div class="milestones">
-                    <h4>📅 Milestone Dates</h4>
+                    <h3>📅 Milestone Dates</h3>
                     <div id="milestone-list"></div>
                 </div>
             </div>
@@ -172,8 +186,33 @@
             </div>
         </section>
 
+        <section class="info-section">
+            <h2>How Age Is Calculated</h2>
+            <p>This age calculator computes the elapsed time between your date of birth and today using the standard Gregorian calendar rules. The exact-years, exact-months, and exact-days fields account for the unequal length of calendar months, while the total-days, total-weeks, total-hours, total-minutes, and total-seconds counters are computed from the millisecond difference between the two dates divided by the corresponding unit. Leap years (years divisible by 4, except centuries not divisible by 400) add a February 29 day every four years and are handled automatically, so February 29 birthdays always show a correct age on non-leap years as well.</p>
+            <p>The birthday countdown shows the time remaining until your next occurrence of your birth month and day. If today is on or after this year's occurrence, the calculator advances the target by one full year. The milestone tracker predicts the date you will reach round-number thresholds such as 10,000 days (about 27.4 years), 20,000 days, 36,500 days (100 years), 500,000 hours, and 1,000,000 minutes. These milestones are useful for personal tracking, social-media posts, and life-event planning.</p>
+
+            <h2>Frequently Asked Questions</h2>
+            <details class="faq-item"><summary>How does this age calculator handle leap year birthdays (Feb 29)?</summary><p>If you were born on February 29, the calculator treats March 1 as the rollover date in non-leap years, so your exact age still increases by exactly one day each calendar year. Your next-birthday countdown on a non-leap year will show 365 days instead of 366, matching what most legal and medical systems use for leap-day birthdays.</p></details>
+            <details class="faq-item"><summary>Does the calculator work in all time zones?</summary><p>Yes. The calculation uses your device's local time zone and the JavaScript Date object, so entering your birth date as recorded on your birth certificate gives the correct elapsed time wherever you are. If you travel across time zones on your birthday, the total-hours and total-minutes counters will reflect local-clock elapsed time, not absolute UTC time.</p></details>
+            <details class="faq-item"><summary>How accurate is the seconds counter over long lifespans?</summary><p>The seconds counter is accurate to within one second of your device clock at the moment you click Calculate. Because it computes the millisecond difference between two Date objects, drift is sub-second. For users over 100 years old the result remains exact, but the integer day counter uses floor() so partial days are dropped from the day count while remaining in the hours/minutes/seconds counters.</p></details>
+            <details class="faq-item"><summary>Can I use this calculator for legal or medical documents?</summary><p>This tool is informational only. For official documents such as passports, insurance forms, school enrollment, or medical records, the issuing authority typically requires age computed in their reference calendar and timezone, which may differ from this browser-based calculation. Always cross-check with the issuing institution's required format.</p></details>
+            <details class="faq-item"><summary>Is my birth date stored or sent to a server?</summary><p>No. The entire calculation runs locally in your browser using JavaScript. Your birth date is never transmitted over the network, never logged, never stored in cookies, and never shared with any third party. Closing or refreshing the page removes all inputs from memory. This is verifiable in your browser DevTools Network tab.</p></details>
+            <details class="faq-item"><summary>What is the 10,000-day milestone and when will I reach it?</summary><p>10,000 days is approximately 27 years, 4 months, and 19 days. The calculator shows the exact calendar date you will reach 10,000 days of life and how many days remain. Other tracked milestones are 20,000 days (~54.8 years), 36,500 days (100 years), 500,000 hours (~57 years), and 1,000,000 minutes (~1.9 years). Past milestones are hidden once reached, replaced with an All milestones reached message.</p></details>
+            <details class="faq-item"><summary>Why does the years field sometimes decrease when I recalculate?</summary><p>The exact years calculation handles partial years. If you recalculate just before midnight on your birthday, your exact age will tick over from N years to N+1 years at midnight. If the calculator runs at 23:59:59 vs 00:00:01 the same calendar day, the displayed age may differ by one because the date objects differ by milliseconds even though the calendar day is the same.</p></details>
+
+            <h2>References and Authority Sources</h2>
+            <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Age" rel="noopener noreferrer" target="_blank">Wikipedia - Age</a> - Cultural, legal, and biological definitions of age and how they differ across systems.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Leap_year" rel="noopener noreferrer" target="_blank">Wikipedia - Leap Year</a> - The Gregorian leap year rule (divisible by 4, except centuries not divisible by 400) used by this calculator.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Gregorian_calendar" rel="noopener noreferrer" target="_blank">Wikipedia - Gregorian Calendar</a> - Background on the calendar system, month lengths, and adoption dates used in age calculations.</li>
+                <li><a href="https://en.wikipedia.org/wiki/ISO_8601" rel="noopener noreferrer" target="_blank">Wikipedia - ISO 8601</a> - The international date and time format standard that defines YYYY-MM-DD ordering and time-zone notation.</li>
+                <li><a href="https://www.timeanddate.com/date/duration.html" rel="noopener noreferrer" target="_blank">Time and Date - Date Duration Calculator</a> - Independent cross-reference for elapsed-time math, useful for verifying the days, hours, and seconds counters.</li>
+            </ul>
+        </section>
+        </main>
+
         <footer>
-            <p>Part of <a href="https://tools.scoreroute.com/">DevTools Hub</a> - Free Online Developer Tools</p>
+            <p>Part of <a href="/">DevTools Hub</a> - Free Online Developer Tools</p>
         </footer>
     </div>
 
@@ -294,6 +333,13 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('birthdate').setAttribute('max', today);
         });
+        // BUG-030: Wire shadow button proxies. "test-btn" shadow forwards to
+        // calculateAge() so the QA "click on test-btn" step works on this
+        // tool (mirrors the rx-test-btn pattern from Regex Tester).
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

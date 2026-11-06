@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Compressor - Extract MP3 from Video Free | DevTools Hub</title>
-<meta name="description" content="Free online video to audio converter. Extract MP3 audio from MP4, WebM, MOV, AVI files. No upload, 100% private, in-browser processing.">
+<title>Video Compressor - Hit Any Size Target | DevTools Hub</title>
+<meta name="description" content="Free online video compressor. Hit an exact target size, 10 MB for Discord or 25 MB for email. No upload, no watermark. Runs fully in your browser.">
 <link rel="canonical" href="https://tools.scoreroute.com/tools/video-compressor/">
-<meta property="og:title" content="Video Compressor - Extract MP3 from Video Free">
-<meta property="og:description" content="Free online video to audio converter. Extract audio from video files in your browser. No upload, 100% private.">
+<meta property="og:title" content="Video Compressor - Hit Any Size Target | DevTools Hub">
+<meta property="og:description" content="Free online video compressor. Hit an exact target size, 10 MB for Discord or 25 MB for email. No upload, no watermark. Runs fully in your browser.">
 <meta property="og:url" content="https://tools.scoreroute.com/tools/video-compressor/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Video Compressor","url":"https://tools.scoreroute.com/tools/video-compressor/","description":"Free online video to audio converter using browser-based audio extraction.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Video Compressor - Hit Any Size Target | DevTools Hub","url":"https://tools.scoreroute.com/tools/video-compressor/","description":"Free online video compressor. Hit an exact target size, 10 MB for Discord or 25 MB for email. No upload, no watermark. Runs fully in your browser.","applicationCategory":"MultimediaApplication","operatingSystem":"All"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I compress a video to 10 MB for Discord?","acceptedAnswer":{"@type":"Answer","text":"Drop the file, click the 10 MB preset, press Compress, and download the MP4. Discord's free plan allows uploads up to 10 MB, so the tool aims just under that and shows you the finished size before you go back to the chat."}},{"@type":"Question","name":"What bitrate do I need for a 25 MB video of a certain length?","acceptedAnswer":{"@type":"Answer","text":"Take the target in megabytes, multiply by 8,192 (bits per byte times the megabyte), divide by the duration in seconds, and subtract roughly 100 kbps for the audio track. A 25 MB, 60-second clip lands near 3.2 Mbps of video. The tool does exactly this math and caps the encoder at the answer."}},{"@type":"Question","name":"Why does compressing take so long on big files?","acceptedAnswer":{"@type":"Answer","text":"Every frame is decoded and re-encoded on your own CPU inside the browser. A desktop program uses all cores; the WebAssembly build here uses one. So a five-minute 1080p clip may take several minutes of encoding. When the video is high resolution, selecting 720p or 480p cuts both the work and the output size."}},{"@type":"Question","name":"Will the quality loss be noticeable?","acceptedAnswer":{"@type":"Answer","text":"The encoder spends the whole bitrate budget, so quality is as good as arithmetic allows for that size. Small targets on long clips mean visible compression; short clips on generous targets usually keep text and faces clean. Compare a 10 MB and a 50 MB output of the same video and you will see it immediately."}},{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The file is read into the tab and encoded in WebAssembly on your device. You can confirm in DevTools: once the page and encoder are loaded, compression runs with the network idle."}},{"@type":"Question","name":"Can I choose a platform preset instead of typing a size?","acceptedAnswer":{"@type":"Answer","text":"Yes. One click selects 10 MB for Discord's free tier, 16 MB for WhatsApp, 25 MB for an email attachment, or you can type any size. Platform limits change over time, so the finished size, not the label, is what the tool guarantees."}},{"@type":"Question","name":"What happens if my file is too large or the target too strict?","acceptedAnswer":{"@type":"Answer","text":"Files approaching or passing about 500 MB risk the tab running out of memory during a re-encode; the page will say so rather than fail silently. If a target cannot be reached without wrecking the picture, the tool keeps the closest honest result and tells you the file still does not fit the target."}},{"@type":"Question","name":"Does it work on phones?","acceptedAnswer":{"@type":"Answer","text":"Yes in modern mobile browsers, with real limits: large files and long encodes are heavier on a phone CPU. A short clip up to a couple hundred megabytes works; a feature-length encode belongs on a laptop."}}]}
 </script>
 <link rel="stylesheet" href="/styles.css">
 <style>
@@ -42,10 +49,16 @@
 .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
 .btn-success { background: #28a745; color: #fff; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.format-select { padding: 0.5rem; border-radius: 4px; border: 1px solid #555; font-size: 0.9rem; margin: 0.5rem; background: #1a1a3e; color: #fff; }
-.format-select option { background: #0f0f23; color: #fff; }
-label { color: #ccc; font-weight: 500; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+.chip { padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid #555; background: #1a1a3e; color: #ccc; cursor: pointer; font-size: 0.95rem; min-height: 44px; }
+.chip[aria-pressed="true"] { border-color: #667eea; background: #2d2d6e; color: #fff; }
+.chip:hover { border-color: #667eea; }
+.opt-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+.opt-row label { color: #ccc; font-weight: 500; }
+input[type="number"], select { padding: 0.5rem; border-radius: 4px; border: 1px solid #555; font-size: 0.95rem; background: #1a1a3e; color: #fff; }
+select option { background: #0f0f23; color: #fff; }
 section h2 { color: #fff; margin-top: 2rem; }
+section h3 { color: #fff; margin-top: 1.5rem; }
 section p, section li { color: #ccc; }
 .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
 .feature-card { background: #1a1a3e; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #667eea; }
@@ -53,9 +66,15 @@ section p, section li { color: #ccc; }
 .feature-card p { color: #aaa; }
 .hero-text { color: #ccc; font-size: 1.1rem; }
 ol li, ul li { margin: 0.5rem 0; }
+.sizes-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.sizes-table th, .sizes-table td { border: 1px solid #333; padding: 0.5rem 0.75rem; text-align: left; color: #ccc; }
+.sizes-table th { background: #1a1a3e; color: #fff; }
+.status-line { margin: 0.75rem 0; color: #f8d477; }
+.status-line.ok { color: #2ecc71; }
+.status-line.over { color: #e67e22; }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
+<script src="/ffmpeg/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
 </head>
 <body>
 <header class="site-header">
@@ -68,443 +87,515 @@ ol li, ul li { margin: 0.5rem 0; }
   </div>
 </header>
 <main class="container">
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/">Home</a>
-    <span>/</span>
-    <span aria-current="page">Video Compressor</span>
-  </nav>
-  <h1>Video Compressor</h1>
-  <p class="hero-text">Extract audio from video files instantly. Upload MP4, WebM, MOV, or AVI — download as MP3 or WebM audio. No upload to servers, 100% private, all processing happens in your browser.</p>
-
-  <div class="converter-area">
-    <div id="dropzone" class="dropzone">
-      <div class="dropzone-icon">🎬</div>
-      <div class="dropzone-text">
-        <strong>Click to upload</strong> or drag &amp; drop<br>
-        MP4, WebM, MOV, AVI, MKV, FLV
+  <section class="tool-page">
+    <nav class="breadcrumb">
+      <a href="/">Home</a> &gt; <a href="/tools/media/">Media Tools</a> &gt; <span aria-current="page">Video Compressor</span>
+      <a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+    </nav>
+    <h1>Video Compressor</h1>
+    <p class="hero-text">Shrink a video to the exact size a platform demands, right here in your browser. Pick 10 MB for a Discord upload, 25 MB for an email, or type your own limit. The tool reads your file, works out the bitrate the target allows, re-encodes to H.264 MP4, and hands you the result &mdash; no upload, no watermark, no account.</p>
+    <div class="tool-main">
+      <h2>Compress a video to a target size</h2>
+      <div id="dropzone" class="dropzone" role="button" tabindex="0">
+        <div class="dropzone-icon">🎬</div>
+        <div class="dropzone-text">
+          <strong>Click to upload</strong> or drag &amp; drop<br>
+          MP4, WebM, MOV, AVI, MKV, FLV, WMV, 3GP
+        </div>
+        <input type="file" id="fileInput" accept="video/*,.mkv,.flv,.wmv,.3gp" style="display:none" aria-label="Choose a video file to compress">
       </div>
-      <input type="file" id="fileInput" accept="video/*" style="display:none">
+
+      <div id="fileInfo" class="file-info">
+        <div class="file-info-row"><span class="file-info-label">File</span><span id="infoName"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Original size</span><span id="infoSize"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Duration</span><span id="infoDuration"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Resolution</span><span id="infoRes"></span></div>
+      </div>
+
+      <div id="previewArea" class="preview-area">
+        <video id="previewVideo" controls preload="metadata"></video>
+      </div>
+
+      <div class="opt-row" role="group" aria-label="Compression mode">
+        <span id="modeLabel" style="color:#888">Mode:</span>
+        <div class="chip-group" aria-labelledby="modeLabel">
+          <button type="button" class="chip" id="modeTarget" aria-pressed="true">Target size</button>
+          <button type="button" class="chip" id="modeQuality" aria-pressed="false">Quality balance</button>
+        </div>
+      </div>
+
+      <div id="targetBlock" class="opt-row" role="group" aria-label="Compression target">
+        <span id="targetLabel" style="color:#888">Target size:</span>
+        <div class="chip-group" aria-labelledby="targetLabel">
+          <button type="button" class="chip preset-chip" data-mb="10">Discord &middot; 10&nbsp;MB</button>
+          <button type="button" class="chip preset-chip" data-mb="16">WhatsApp &middot; 16&nbsp;MB</button>
+          <button type="button" class="chip preset-chip" data-mb="25">Email &middot; 25&nbsp;MB</button>
+        </div>
+        <label for="targetMB">Custom (MB):</label>
+        <input type="number" id="targetMB" min="1" max="500" step="0.5" value="10" style="width:6.5rem">
+      </div>
+
+      <div id="qualityBlock" style="display:none" class="opt-row">
+        <label for="crfSelect">Quality:</label>
+        <select id="crfSelect">
+          <option value="20">Best quality</option>
+          <option value="23" selected>Balanced</option>
+          <option value="28">Smallest</option>
+        </select>
+      </div>
+
+      <div class="opt-row">
+        <label for="resSelect">Resolution:</label>
+        <select id="resSelect">
+          <option value="keep">Keep original</option>
+          <option value="1080">Up to 1080p</option>
+          <option value="720" selected>Up to 720p</option>
+          <option value="480">Up to 480p</option>
+        </select>
+        <label for="muteAudio"><input type="checkbox" id="muteAudio"> Mute audio</label>
+      </div>
+
+      <div class="btn-group">
+        <button id="compressBtn" class="btn btn-primary" disabled>Compress Video</button>
+        <button id="clearBtn" class="btn">Reset</button>
+      </div>
+
+      <div id="statusLine" class="status-line" role="status"></div>
+
+      <div id="progressArea" class="progress-area">
+        <div id="progText">Processing...</div>
+        <div class="progress-bar"><div id="progFill" class="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <div id="resultArea" class="result-area" aria-live="polite">
+        <p id="resultSummary"></p>
+        <p><button id="downloadBtn" class="btn btn-success">Download MP4</button></p>
+      </div>
     </div>
 
-    <div style="display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap">
-      <label>Output:</label>
-      <select class="format-select" id="formatSelect">
-        <option value="video/mp4;codecs=opus">WebM Opus (best quality)</option>
-        <option value="video/mp4">WebM Audio</option>
-        <option value="audio/ogg;codecs=opus">OGG Opus</option>
-      </select>
-      <label>Download as:</label>
-      <select class="format-select" id="downloadFormat">
-        <option value="mp3">.mp3</option>
-        <option value="webm">.webm</option>
-        <option value="ogg">.ogg</option>
-      </select>
+    <div class="info-section">
+      <h2>How it works</h2>
+      <p>Three steps and the file never leaves your device. Drop the video on the page, set the size you need, and press Compress. The page measures the video's duration, converts your target size into a bitrate, spreads that bitrate over the video and audio tracks, and encodes straight to an MP4 that plays everywhere. If the first pass lands over the target, the encoder drops the bitrate and runs again until the file fits. The result panel shows the original size, the finished size, and how much of the target it used.</p>
+
+      <h2>Why a target size beats a quality slider</h2>
+      <p>A size limit is a hard gate. Discord's free upload cap, a mail attachment row, a job portal, a visa form &mdash; each one rejects a file a megabyte over, and none of them care how good your footage looks. A quality slider answers a different question: it shrinks until the quality feels acceptable, whatever that costs in megabytes. Solving for size flips the problem around. The duration is known and the size is fixed, so the bitrate follows directly from arithmetic: target size times eight, divided by the duration, minus what the audio track is allowed. That number is not a suggestion &mdash; it is the budget the encoder has to live inside. This tool builds the whole pass around that budget, then checks the finished file against the target instead of trusting the encoder to be close.</p>
+
+      <h2>Private by design</h2>
+      <p>Nothing about your file travels anywhere. The video is opened with the File API, handed to a WebAssembly build of FFmpeg running in this tab, and written back to memory as an MP4 you download. You can watch the network tab while it runs: after the page and the encoder load, no data moves. That property is the whole reason the tool works for the files people are actually scared to upload &mdash; a work clip, a passport video, family footage. Uploader-based compressors put a copy on someone else's disk and delete it on trust; this one never has it.</p>
+
+      <h2>Where exact targets matter</h2>
+      <table class="sizes-table">
+        <caption class="sr-only">Common per-file upload size limits at time of publication</caption>
+        <thead><tr><th>Destination</th><th>Per-file limit</th></tr></thead>
+        <tbody>
+          <tr><td>Discord (free tier)</td><td>10 MB</td></tr>
+          <tr><td>WhatsApp video message</td><td>16 MB</td></tr>
+          <tr><td>Gmail attachment</td><td>25 MB</td></tr>
+          <tr><td>Outlook attachment</td><td>20 MB</td></tr>
+          <tr><td>Discord (Nitro)</td><td>500 MB</td></tr>
+          <tr><td>Telegram</td><td>2 GB</td></tr>
+        </tbody>
+      </table>
+      <p>Every one of these numbers moves over time, which is why the chips say what they are and the finished size &mdash; not the label &mdash; is what the tool guarantees.</p>
+
+      <h2>Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card"><h3>Exact targets</h3><p>Choose 10, 16 or 25 MB, or type any size; the encoder iterates until the file fits or reports honestly that it cannot.</p></div>
+        <div class="feature-card"><h3>Bitrate solved, not guessed</h3><p>Duration in, bitrate out: the pass is built around the arithmetic of your own file before encoding starts.</p></div>
+        <div class="feature-card"><h3>Quality balance mode</h3><p>When no size gate exists, three CRF levels trade picture quality against file size the ordinary way.</p></div>
+        <div class="feature-card"><h3>Resolution control</h3><p>Keep the original size or step down to 1080p, 720p or 480p &mdash; lower frames are also faster to encode.</p></div>
+        <div class="feature-card"><h3>MP4 that plays everywhere</h3><p>H.264 with AAC, progressive download enabled, no special codec needed on the other side.</p></div>
+        <div class="feature-card"><h3>Zero upload</h3><p>The FFmpeg WebAssembly engine runs in this tab; your video stays on your device end to end.</p></div>
+      </div>
+
+      <h2>Honest limits</h2>
+      <p>Re-encoding is really work, and it happens on your machine. A long clip takes minutes, not seconds, because the encoder is CPU-bound in WebAssembly. The output is always H.264 with AAC audio at the highest generic compatibility, so an HEVC or AV1 source gets re-encoded down and loses the codec benefit it had. Files much over about 500 MB may exceed what the tab can hold in memory; for anything bigger, use a desktop encoder like FFmpeg or HandBrake. DRM-protected downloads and streams cannot be opened. If the target is unrealistic &mdash; a two-hour video into 10 MB, say &mdash; the tool says so instead of shipping a slideshow.</p>
+
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>How do I compress a video to 10 MB for Discord?</summary><p>Drop the file, click the 10 MB preset, press Compress, and download the MP4. Discord's free plan allows uploads up to 10 MB, so the tool aims just under that and shows you the finished size before you go back to the chat.</p></details>
+      <details class="faq-item"><summary>What bitrate do I need for a 25 MB video of a certain length?</summary><p>Take the target in megabytes, multiply by 8,192 (bits per byte times the megabyte), divide by the duration in seconds, and subtract roughly 100 kbps for the audio track. A 25 MB, 60-second clip lands near 3.2 Mbps of video. The tool does exactly this math and caps the encoder at the answer.</p></details>
+      <details class="faq-item"><summary>Why does compressing take so long on big files?</summary><p>Every frame is decoded and re-encoded on your own CPU inside the browser. A desktop program uses all cores; the WebAssembly build here uses one. So a five-minute 1080p clip may take several minutes of encoding. When the video is high resolution, selecting 720p or 480p cuts both the work and the output size.</p></details>
+      <details class="faq-item"><summary>Will the quality loss be noticeable?</summary><p>The encoder spends the whole bitrate budget, so quality is as good as arithmetic allows for that size. Small targets on long clips mean visible compression; short clips on generous targets usually keep text and faces clean. Compare a 10 MB and a 50 MB output of the same video and you will see it immediately.</p></details>
+      <details class="faq-item"><summary>Is my video uploaded to a server?</summary><p>No. The file is read into the tab and encoded in WebAssembly on your device. You can confirm in DevTools: once the page and encoder are loaded, compression runs with the network idle.</p></details>
+      <details class="faq-item"><summary>Can I choose a platform preset instead of typing a size?</summary><p>Yes. One click selects 10 MB for Discord's free tier, 16 MB for WhatsApp, 25 MB for an email attachment, or you can type any size. Platform limits change over time, so the finished size, not the label, is what the tool guarantees.</p></details>
+      <details class="faq-item"><summary>What happens if my file is too large or the target too strict?</summary><p>Files approaching or passing about 500 MB risk the tab running out of memory during a re-encode; the page will say so rather than fail silently. If a target cannot be reached without wrecking the picture, the tool keeps the closest honest result and tells you the file still does not fit the target.</p></details>
+      <details class="faq-item"><summary>Does it work on phones?</summary><p>Yes in modern mobile browsers, with real limits: large files and long encodes are heavier on a phone CPU. A short clip up to a couple hundred megabytes works; a feature-length encode belongs on a laptop.</p></details>
     </div>
-
-    <div class="file-info" id="fileInfo">
-      <div class="file-info-row"><span class="file-info-label">File:</span><span style="color:#fff" id="fileName">-</span></div>
-      <div class="file-info-row"><span class="file-info-label">Size:</span><span style="color:#fff" id="fileSize">-</span></div>
-      <div class="file-info-row"><span class="file-info-label">Duration:</span><span style="color:#fff" id="fileDuration">-</span></div>
-    </div>
-
-    <div class="preview-area" id="previewArea">
-      <video id="videoPreview" controls preload="auto" muted playsinline></video>
-    </div>
-
-    <div style="text-align:center;margin:1rem 0">
-      <button class="btn btn-primary" id="compressBtn" disabled>Compress Video</button>
-
-    </div>
-
-    <div class="progress-area" id="progressArea">
-      <p id="progressText" style="color:#fff">Processing...</p>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    </div>
-
-    <div class="result-area" id="resultArea">
-      <p style="font-size:1.2rem;font-weight:500">Audio extracted successfully!</p>
-      <p style="color:#aaa" id="resultInfo"></p>
-      <button class="btn btn-success" id="downloadBtn">Download Video</button>
-      <button class="btn btn-primary" id="convertAnother" style="margin-left:0.5rem">Compress Another</button>
-    </div>
-  </div>
-
-  <section>
-    <h2>Why Use This Tool?</h2>
-    <div class="feature-grid">
-      <div class="feature-card"><h3>100% Private</h3><p>Video stays in your browser. No upload to any server.</p></div>
-      <div class="feature-card"><h3>Multiple Formats</h3><p>Supports MP4, WebM, MOV, AVI, MKV, FLV input. Output as WebM audio.</p></div>
-      <div class="feature-card"><h3>No Sign-Up</h3><p>Start extracting immediately. No account or email required.</p></div>
-      <div class="feature-card"><h3>Fast Processing</h3><p>Extracts audio in real-time using your browser's capabilities.</p></div>
-      <div class="feature-card"><h3>No File Size Limit</h3><p>Process videos up to 2GB. Limited only by browser memory.</p></div>
-      <div class="feature-card"><h3>Free Forever</h3><p>No hidden costs, no premium tiers. All features are completely free.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>How to Compress Video from Video</h2>
-    <ol>
-      <li><strong>Upload</strong> your video file (click or drag &amp; drop)</li>
-      <li><strong>Choose</strong> output format</li>
-      <li><strong>Click Compress Video</strong> — processing starts instantly</li>
-      <li><strong>Download</strong> your audio file when ready</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Common Use Cases</h2>
-    <ul>
-      <li><strong>Musicians:</strong> Extract audio tracks from performance videos</li>
-      <li><strong>Content Creators:</strong> Repurpose video content as podcasts</li>
-      <li><strong>Students:</strong> Save lecture audio for offline listening</li>
-      <li><strong>Editors:</strong> Get audio tracks for editing projects</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>FAQs</h2>
-    <details><summary>Is my video uploaded to a server?</summary><p>No. All processing happens in your browser. Your video never leaves your device.</p></details>
-    <details><summary>What video formats are supported?</summary><p>Any format your browser can play: MP4 (H.264), WebM (VP8/VP9), MOV, AVI, MKV.</p></details>
-    <details><summary>What is the output quality?</summary><p>Opus codec at 192 kbps — excellent quality comparable to MP3 320 kbps.</p></details>
-    <details><summary>Is there a file size limit?</summary><p>No hard limit. Very large files limited by browser memory.</p></details>
   </section>
 </main>
-
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; 2026 DevTools Hub. Free online developer tools.</p>
-  </div>
+<footer>
+  <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
 </footer>
+<script src="/tools.js"></script>
 <script>
-(function(){
+(function() {
+  var INPUT_LIMIT_MB = 500;
+  var AUDIO_KBPS = 96;
+  var PASSES = 3;
+  var OVERHEAD = 0.97;
+  var currentFile = null;
+  var ffmpeg = null;
+  var engineLoaded = false;
+  var outBlob = null;
+  var outName = 'compressed.mp4';
+  var busy = false;
+  var passResults = [];
+  var logLines = [];
+
   var dz = document.getElementById('dropzone');
   var fi = document.getElementById('fileInput');
   var finfo = document.getElementById('fileInfo');
-  var fname = document.getElementById('fileName');
-  var fsize = document.getElementById('fileSize');
-  var fdur = document.getElementById('fileDuration');
-  var preview = document.getElementById('previewArea');
-  var vid = document.getElementById('videoPreview');
-  var extBtn = document.getElementById('compressBtn');
+  var infoName = document.getElementById('infoName');
+  var infoSize = document.getElementById('infoSize');
+  var infoDuration = document.getElementById('infoDuration');
+  var infoRes = document.getElementById('infoRes');
+  var previewArea = document.getElementById('previewArea');
+  var vid = document.getElementById('previewVideo');
+  var compressBtn = document.getElementById('compressBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var statusLine = document.getElementById('statusLine');
   var prog = document.getElementById('progressArea');
-  var progText = document.getElementById('progressText');
-  var progFill = document.getElementById('progressFill');
-  var res = document.getElementById('resultArea');
-  var resInfo = document.getElementById('resultInfo');
-  var dlBtn = document.getElementById('downloadBtn');
-  var convBtn = document.getElementById('convertAnother');
-  var fmt = document.getElementById('formatSelect');
-  var dlFmt = document.getElementById('downloadFormat');
+  var progText = document.getElementById('progText');
+  var progFill = document.getElementById('progFill');
+  var resSel = document.getElementById('resSelect');
+  var muteChk = document.getElementById('muteAudio');
+  var crfSel = document.getElementById('crfSelect');
+  var targetMB = document.getElementById('targetMB');
+  var modeTarget = document.getElementById('modeTarget');
+  var modeQuality = document.getElementById('modeQuality');
+  var targetBlock = document.getElementById('targetBlock');
+  var qualityBlock = document.getElementById('qualityBlock');
+  var resultArea = document.getElementById('resultArea');
+  var resultSummary = document.getElementById('resultSummary');
+  var presetChips = document.querySelectorAll('.preset-chip');
 
-  var currentFile = null;
-  var audioUrl = null;
-  var audioBlob = null;
-  var recordingDuration = 0;
+  function fmtMB(bytes) {
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec < 0) return '';
+    sec = Math.round(sec);
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  function setStatus(msg, cls) {
+    statusLine.textContent = msg;
+    statusLine.className = 'status-line' + (cls ? ' ' + cls : '');
+  }
+  function mbOf(v) {
+    var n = parseFloat(v);
+    return (n > 0.2 && n <= INPUT_LIMIT_MB) ? n : null;
+  }
 
-  dz.addEventListener('click', function(e) { if(e.target.closest('input')) return; fi.click(); });
+  dz.addEventListener('click', function(e) {
+    if (e.target === fi) return;
+    fi.click();
+  });
+  dz.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fi.click(); }
+  });
   dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('dragover'); });
-  dz.addEventListener('dragleave', function() { dz.classList.remove('dragover'); });
-  dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('dragover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
-  fi.addEventListener('change', function() { if(this.files.length) handleFile(this.files[0]); });
-
-  function handleFile(file) {
-    vid.onerror = null;
-    vid.onloadstart = null;
-    if(!file) return;
-    var isVideo = file.type.startsWith('video/') || file.name.match(/\.(mp4|webm|mov|avi|mkv|flv|m4v|3gp)$/i);
-    if(!isVideo) { alert('Please select a video file.'); return; }
-    resetAll();
-    currentFile = file;
-    dz.classList.add('has-file');
-    dz.querySelector('.dropzone-text').innerHTML = '<strong style="color:#1a3e2a">' + file.name + '</strong><br>' + formatSize(file.size); dz.querySelector('.dropzone-text').style.color = '#1a3e2a';
-    fname.textContent = file.name;
-    fsize.textContent = formatSize(file.size);
-    fdur.textContent = 'Loading...';
-    fdur.style.color = '#888';
-    finfo.classList.add('visible');
-
-    var metadataLoaded = false;
-
-    vid.onloadedmetadata = function() {
-      metadataLoaded = true;
-      clearTimeout(loadTimer);
-      var min = Math.floor(vid.duration / 60);
-      var sec = Math.floor(vid.duration % 60);
-      fdur.textContent = min + 'm ' + sec + 's';
-      fdur.style.color = '#fff';
-      recordingDuration = vid.duration;
-      preview.classList.add('visible');
-      extBtn.disabled = false;
-      console.log('Video metadata loaded successfully');
-    };
-
-    vid.onerror = function() {
-      metadataLoaded = true;
-      clearTimeout(loadTimer);
-      fdur.style.color = '#dc3545';
-      extBtn.disabled = true;
-      fname.textContent = file.name;
-      fsize.textContent = formatSize(file.size);
-      fdur.textContent = 'Your browser cannot decode this video (codec ' + (vid.error ? 'code ' + vid.error.code : 'unknown') + '). Trying FFmpeg engine...';
-      fdur.style.color = '#ffc107';
-      prog.classList.add('visible');
-      progFill.style.width = '0%';
-      progText.textContent = 'Loading FFmpeg engine...';
-      console.log('Video error, readyState:', vid.readyState, 'networkState:', vid.networkState);
-      if(currentFile) {
-        if(window.FFmpegWASM) {
-          window.tryFFmpegExtract(currentFile);
-        } else {
-          var ffmpegCheck = setInterval(function() {
-            if(window.FFmpegWASM) {
-              clearInterval(ffmpegCheck);
-              window.tryFFmpegExtract(currentFile);
-            }
-          }, 200);
-          setTimeout(function() { clearInterval(ffmpegCheck); }, 30000);
-        }
-      }
-    };
-
-    vid.onloadstart = function() {
-      console.log('Video load started');
-    };
-
-    var loadTimer = setTimeout(function() {
-      if(metadataLoaded) return;
-      fdur.textContent = 'Still loading... large file? (' + (vid.error ? 'err ' + vid.error.code : 'waiting') + ')';
-      fdur.style.color = '#ffc107';
-    }, 15000);
-
-    vid.src = URL.createObjectURL(file);
-    vid.load();
-  }
-
-  function formatSize(bytes) {
-    if(bytes < 1024) return bytes + ' B';
-    if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-    return (bytes/1048576).toFixed(1) + ' MB';
-  }
-
-  extBtn.addEventListener('click', function() {
-    if(!currentFile) return;
-    extBtn.disabled = true;
-    prog.classList.add('visible');
-    progFill.style.width = '0%';
-    progText.textContent = 'Preparing...';
-
-    if(vid.readyState < 2) {
-      errorState('Video not loaded yet. Try again.');
-      return;
-    }
-    vid.pause();
-    vid.currentTime = 0;
-
-    var stream;
-    try { stream = vid.captureStream(); } catch(e) {
-      errorState('captureStream not supported. Try Chrome or Edge.');
-      return;
-    }
-    var audioTrack = stream.getAudioTracks()[0];
-    if(!audioTrack) {
-      if(window.FFmpegWASM && currentFile) {
-        console.log('captureStream failed, trying FFmpeg.wasm...');
-        progText.textContent = 'Loading FFmpeg (first time may be slow)...';
-        window.tryFFmpegExtract(currentFile);
-        return;
-      }
-      errorState('No audio track found in this video.');
-      return;
-    }
-    var audioStream = new MediaStream([audioTrack]);
-    var mimeType = fmt.value;
-    if(typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported(mimeType)) {
-      if(MediaRecorder && MediaRecorder.isTypeSupported('video/mp4')) mimeType = 'video/mp4';
-      else { errorState('MediaRecorder not supported. Try Chrome or Edge.'); return; }
-    }
-
-    var chunks = [];
-    var recorder = new MediaRecorder(audioStream, { mimeType: mimeType });
-    var totalDuration = vid.duration;
-
-    recorder.ondataavailable = function(e) {
-      if(e.data.size > 0) chunks.push(e.data);
-    };
-    recorder.onstop = function() {
-      audioBlob = new Blob(chunks, { type: mimeType });
-      audioUrl = URL.createObjectURL(audioBlob);
-      progFill.style.width = '100%';
-      progText.textContent = 'Complete!';
-      showResult(mimeType, audioBlob.size);
-      vid.pause();
-    };
-    recorder.onerror = function() { errorState('Recording failed.'); };
-    recorder.start(100);
-    progText.textContent = 'Extracting audio (' + Math.round(totalDuration) + 's)...';
-
-    vid.playbackRate = 2;
-    vid.play().then(function() {
-      var updateInterval = setInterval(function() {
-        var pct = Math.min((vid.currentTime / totalDuration) * 100, 99);
-        progFill.style.width = pct + '%';
-        if(vid.ended || vid.currentTime >= totalDuration) {
-          clearInterval(updateInterval);
-          try { recorder.stop(); } catch(e) {}
-        }
-      }, 200);
-    }).catch(function() { errorState('Could not play video.'); });
+  dz.addEventListener('dragleave', function(e) { e.preventDefault(); dz.classList.remove('dragover'); });
+  dz.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) pickFile(e.dataTransfer.files[0]);
+  });
+  fi.addEventListener('change', function() {
+    if (this.files && this.files[0]) pickFile(this.files[0]);
   });
 
-  function showResult(mimeType, size) {
-    res.classList.add('visible');
-    var fmtLabel = 'audio';
-    if(mimeType.includes('opus')) fmtLabel = 'Opus';
-    else if(mimeType.includes('webm')) fmtLabel = 'WebM';
-    resInfo.textContent = 'Format: ' + fmtLabel + ' | Size: ' + formatSize(size);
-    dlBtn.onclick = function() {
-      var ext = (dlFmt ? dlFmt.value : 'webm');
-      var a = document.createElement('a');
-      a.href = audioUrl;
-      a.download = (currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'audio') + '_audio.' + ext;
-      a.click();
+  function pickFile(file) {
+    if (!/^video\//.test(file.type) && !/\.(mkv|flv|wmv|3gp|m4v|mp4|webm|mov|avi)$/i.test(file.name)) {
+      setStatus('That does not look like a video file.', 'over');
+      return;
+    }
+    var bytes = file.size;
+    if (bytes > INPUT_LIMIT_MB * 1048576) {
+      setStatus('This file is ' + fmtMB(bytes) + '. The in-browser engine handles up to about ' + INPUT_LIMIT_MB + ' MB; use a desktop encoder for more.', 'over');
+      return;
+    }
+    currentFile = file;
+    setStatus('');
+    finfo.classList.add('visible');
+    infoName.textContent = file.name;
+    infoSize.textContent = fmtMB(file.size);
+    infoDuration.textContent = 'measuring...';
+    infoRes.textContent = 'measuring...';
+    dz.classList.add('has-file');
+    compressBtn.disabled = false;
+    readMeta(file);
+  }
+
+  function readMeta(file) {
+    var url = URL.createObjectURL(file);
+    vid.src = url;
+    vid.onloadedmetadata = function() {
+      URL.revokeObjectURL(url);
+      var d = vid.videoWidth > 0 ? vid.duration : null;
+      if (d && isFinite(d)) {
+        infoDuration.textContent = fmtTime(d);
+        infoRes.textContent = vid.videoWidth + ' x ' + vid.videoHeight;
+        vid.style.display = '';
+        previewArea.classList.add('visible');
+      } else {
+        probeWithFFmpeg();
+      }
+    };
+    vid.onerror = function() {
+      URL.revokeObjectURL(url);
+      probeWithFFmpeg();
     };
   }
 
-  function resetAll() {
-    res.classList.remove('visible');
-    prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
-    preview.classList.remove('visible');
-    finfo.classList.remove('visible');
-    if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
-    if(vid.src) { URL.revokeObjectURL(vid.src); }
-    vid.removeAttribute('src');
-    vid.load();
-    audioBlob = null;
-    extBtn.disabled = true;
+  function probeWithFFmpeg() {
+    infoDuration.textContent = 'read by the encoder during compression';
+    infoRes.textContent = 'shown after compression';
+    previewArea.classList.remove('visible');
   }
 
-  function errorState(msg) {
-    progText.textContent = 'Error: ' + msg;
-    progFill.style.width = '0%';
-    extBtn.disabled = false;
-    res.classList.remove('visible');
-  }
-
-  window.tryFFmpegExtract = async function(file) {
-    if(!window.FFmpegWASM || !window.FFmpegWASM.FFmpeg) {
-      fdur.textContent = 'Browser cannot decode this video. FFmpeg.wasm not available. Try desktop Chrome/Edge.';
-      fdur.style.color = '#dc3545';
-      errorState('FFmpeg.wasm not loaded. Refresh page and try again.');
-      return;
-    }
-    var ffmpeg = new window.FFmpegWASM.FFmpeg();
-    var ext = (dlFmt ? dlFmt.value : 'webm');
-
-    // Phase 1: Download FFmpeg core WASM with real progress
-    progFill.style.width = '2%';
-    progText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
-    try {
-      var downloadStart = Date.now();
-      var wasmResp = await fetch('https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm');
-      var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
-      var reader = wasmResp.body.getReader();
-      var received = 0;
-      var wasmChunks = [];
-      while(true) {
-        var readResult = await reader.read();
-        if(readResult.done) break;
-        wasmChunks.push(readResult.value);
-        received += readResult.value.length;
-        var pct = Math.min(2 + (received / contentLen) * 28, 30);
-        progFill.style.width = pct + '%';
-        var elapsed = (Date.now() - downloadStart) / 1000;
-        var speedMBs = received / elapsed / 1048576;
-        var remainingMB = (contentLen - received) / 1048576;
-        var eta = speedMBs > 0.1 ? Math.round(remainingMB / speedMBs) : '?';
-        progText.textContent = 'Downloading FFmpeg (' + (received/1048576).toFixed(1) + '/' + (contentLen/1048576).toFixed(1) + ' MB, ~' + eta + 's)';
-      }
-      var wasmTotal = new Uint8Array(received);
-      var wasmPos = 0;
-      for(var ci = 0; ci < wasmChunks.length; ci++) {
-        wasmTotal.set(wasmChunks[ci], wasmPos);
-        wasmPos += wasmChunks[ci].length;
-      }
-      var wasmBlob = new Blob([wasmTotal], { type: 'application/wasm' });
-      var wasmUrlObj = URL.createObjectURL(wasmBlob);
-      progFill.style.width = '32%';
-      progText.textContent = 'Initializing FFmpeg...';
-      await ffmpeg.load({ coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: wasmUrlObj });
-    } catch(e) {
-      fdur.textContent = 'FFmpeg download/init failed (' + (e.message || 'unknown').substring(0,40) + '). Try again on faster connection.';
-      fdur.style.color = '#dc3545';
-      errorState('FFmpeg download failed. Check internet or use desktop Chrome.');
-      return;
-    }
-    progFill.style.width = '35%';
-    progText.textContent = 'Reading video file...';
-
-    // Phase 2: Read file into memory
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    var buf;
-    try {
-      buf = await new Promise(function(resolve, reject) {
-        reader.onload = function() { resolve(new Uint8Array(reader.result)); };
-        reader.onerror = function() { reject(new Error('Read failed')); };
-      });
-    } catch(e) {
-      errorState('Failed to read video file.');
-      return;
-    }
-    progFill.style.width = '40%';
-
-    // Phase 3: Extract audio with progress
-    progText.textContent = 'Extracting audio track...';
-    ffmpeg.on('progress', function(ev) {
-      var p = ev.progress || 0;
-      progFill.style.width = Math.min(40 + p * 55, 95) + '%';
+  presetChips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      presetChips.forEach(function(c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+      targetMB.value = chip.getAttribute('data-mb');
     });
-    try {
-      ffmpeg.writeFile('input', buf);
-      await ffmpeg.exec(['-i', 'input', '-vn', '-acodec', 'libmp3lame', 'output.' + ext]);
-      progFill.style.width = '96%';
-      progText.textContent = 'Finalizing...';
-      var data = ffmpeg.readFile('output.' + ext);
-      audioBlob = new Blob([data.buffer], { type: 'audio/' + ext });
-      audioUrl = URL.createObjectURL(audioBlob);
-      progFill.style.width = '100%';
-      progText.textContent = 'Complete!';
-      showResult('audio/' + ext, audioBlob.size);
-      ffmpeg.deleteFile('input');
-      ffmpeg.deleteFile('output.' + ext);
-      ffmpeg.terminate();
-      URL.revokeObjectURL(wasmUrlObj);
-    } catch(e) {
-      var msg = (e.message || '');
-      if(msg.includes('Worker')) {
-        errorState('Your browser blocks FFmpeg. Try Chrome/Edge on desktop.');
-      } else {
-        errorState('FFmpeg error: ' + msg.substring(0,80));
+  });
+
+  function setMode(target) {
+    modeTarget.setAttribute('aria-pressed', target ? 'true' : 'false');
+    modeQuality.setAttribute('aria-pressed', target ? 'false' : 'true');
+    targetBlock.style.display = target ? '' : 'none';
+    qualityBlock.style.display = target ? 'none' : '';
+  }
+  modeTarget.addEventListener('click', function() { setMode(true); });
+  modeQuality.addEventListener('click', function() { setMode(false); });
+
+  clearBtn.addEventListener('click', function() {
+    if (busy) return;
+    currentFile = null;
+    outBlob = null;
+    passResults = [];
+    dz.classList.remove('has-file');
+    fi.value = '';
+    finfo.classList.remove('visible');
+    previewArea.classList.remove('visible');
+    vid.removeAttribute('src');
+    vid.load();
+    resultArea.classList.remove('visible');
+    prog.classList.remove('visible');
+    progFill.style.width = '0%';
+    setStatus('');
+    compressBtn.disabled = true;
+    downloadBtn.disabled = false;
+    URL.revokeObjectURL(downloadBtn.href || '');
+    downloadBtn.removeAttribute('href');
+    resultSummary.textContent = '';
+  });
+
+  compressBtn.addEventListener('click', run);
+
+  function ensureEngine() {
+    if (engineLoaded) return Promise.resolve();
+    progText.textContent = 'Loading the FFmpeg engine (~31 MB, first use only)...';
+    progText.style.color = '#f8d477';
+    return fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm')
+      .then(function(r) {
+        if (!r.ok) throw new Error('engine download failed (' + r.status + ')');
+        return r.arrayBuffer();
+      })
+      .then(function(buf) {
+        var blobUrl = URL.createObjectURL(new Blob([buf], { type: 'application/wasm' }));
+        ffmpeg = new FFmpegWASM.FFmpeg();
+        return ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: blobUrl });
+      })
+      .then(function() {
+        engineLoaded = true;
+      });
+  }
+
+  function progressHandler(passIdx, passes) {
+    var start = Date.now();
+    return function(ev) {
+      var p = ev.progress || 0;
+      if (p > 0 && p < 1.05) {
+        var elapsed = (Date.now() - start) / 1000;
+        var eta = p > 0.02 ? Math.max(0, elapsed / p - elapsed) : null;
+        progFill.style.width = Math.min(5 + (passIdx - 1) / passes * 90 + p * (90 / passes), 96) + '%';
+        progText.textContent = 'Encoding pass ' + passIdx + '/' + passes + '\u2026 ' + Math.round(p * 100) + '%' + (eta ? ' (ETA ' + fmtTime(eta) + ')' : '');
       }
+    };
+  }
+
+  function execArgs(kbps, crf, scaleArg, mute, ext) {
+    var args = ['-i', 'input.' + ext];
+    if (scaleArg) args.push('-vf', scaleArg);
+    args.push('-c:v', 'libx264', '-preset', 'veryfast', '-pix_fmt', 'yuv420p');
+    if (kbps) {
+      args.push('-b:v', kbps + 'k', '-maxrate', kbps + 'k', '-bufsize', (2 * kbps) + 'k');
+    } else {
+      args.push('-crf', crf);
+    }
+    if (mute) {
+      args.push('-an');
+    } else {
+      args.push('-c:a', 'aac', '-b:a', AUDIO_KBPS + 'k', '-ac', '2');
+    }
+    args.push('-movflags', '+faststart', '-y', 'out.mp4');
+    return args;
+  }
+
+  function readDurationFromLogs() {
+    var m;
+    for (var i = 0; i < logLines.length; i++) {
+      m = /Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/.exec(logLines[i]);
+      if (m) return parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseFloat(m[3]);
+    }
+    return null;
+  }
+  function readSizeFromLogs() {
+    var m;
+    for (var i = 0; i < logLines.length; i++) {
+      m = /Video:\s*h264[^,]*,\s*(\d+)x(\d+)/.exec(logLines[i]);
+      if (m) return { w: parseInt(m[1], 10), h: parseInt(m[2], 10) };
+    }
+    return null;
+  }
+
+  function scaleFor(resValue, sourceH) {
+    if (resValue === 'keep' || !sourceH) return '';
+    var res = parseInt(resValue, 10);
+    if (sourceH <= res) return '';
+    return 'scale=-2:' + res;
+  }
+
+  async function run() {
+    if (busy || !currentFile) return;
+    var isTarget = modeTarget.getAttribute('aria-pressed') === 'true';
+    var mb = isTarget ? mbOf(targetMB.value) : null;
+    if (isTarget && !mb) {
+      setStatus('Enter a target size between 0.5 and ' + INPUT_LIMIT_MB + ' MB.', 'over');
+      return;
+    }
+    busy = true;
+    compressBtn.disabled = true;
+    clearBtn.disabled = true;
+    resultArea.classList.remove('visible');
+    prog.classList.add('visible');
+    progFill.style.width = '2%';
+    passResults = [];
+    logLines = [];
+    var ext = (currentFile.name.match(/\.([a-z0-9]{2,4})$/i) || [, 'mp4'])[1].toLowerCase();
+    var duration = null;
+    var sourceW = 0, sourceH = 0;
+    var inputBuf = null;
+
+    try {
+      await ensureEngine();
+      ffmpeg.on('log', function(e) { logLines.push(e.message); });
+      progFill.style.width = '5%';
+      progText.textContent = 'Reading file...';
+      inputBuf = new Uint8Array(await currentFile.arrayBuffer());
+      await ffmpeg.writeFile('input.' + ext, inputBuf);
+      await ffmpeg.exec(['-i', 'input.' + ext]);
+      duration = readDurationFromLogs();
+      var dims = readSizeFromLogs();
+      if (dims) { sourceW = dims.w; sourceH = dims.h; }
+      if (!duration) {
+        duration = null;
+      }
+      if (isFinite(vid.duration) && vid.duration > 0) duration = vid.duration;
+      if (!duration) {
+        setStatus('Could not read the duration of this container. Try converting it in an app first.', 'over');
+        busy = false; compressBtn.disabled = false; clearBtn.disabled = false; prog.classList.remove('visible');
+        return;
+      }
+      if (sourceW === 0) {
+        infoDuration.textContent = fmtTime(duration);
+      } else {
+        infoDuration.textContent = fmtTime(duration);
+        infoRes.textContent = sourceW + ' x ' + sourceH;
+      }
+
+      var scaleArg = scaleFor(resSel.value, sourceH);
+      var mute = muteChk.checked;
+      var passes = isTarget ? PASSES : 1;
+      var kbps = 0, crf = parseInt(crfSel.value, 10);
+      var targetBytes = mb ? mb * 1048576 : 0;
+      if (passes > 1) {
+        var totalKb = mb * 8192;
+        var audioKb = mute ? 0 : AUDIO_KBPS * duration;
+        kbps = Math.max(8, Math.round((totalKb - audioKb) * OVERHEAD / duration));
+      }
+
+      var data = null, outBytes = 0;
+      for (var p = 1; p <= passes; p++) {
+        ffmpeg.on('progress', progressHandler(p, passes));
+        progText.textContent = 'Encoding pass ' + p + '/' + passes + '\u2026';
+        await ffmpeg.exec(execArgs(kbps || crf, crf, scaleArg, mute, ext));
+        data = await ffmpeg.readFile('out.mp4');
+        outBytes = data.length;
+        passResults.push(outBytes);
+        if (p === 1 && passes === 1) break;
+        if (outBytes <= targetBytes * 0.99) break;
+        if (p >= passes) break;
+        kbps = Math.max(8, Math.min(kbps - 1, Math.round(kbps * (targetBytes / outBytes) * 0.92)));
+        progText.textContent = 'Pass ' + p + ' finished at ' + fmtMB(outBytes) + '; retrying at ' + Math.round(kbps) + ' kbps...';
+      }
+
+      outBlob = new Blob([data.buffer], { type: 'video/mp4' });
+      URL.revokeObjectURL(vid.src);
+      vid.src = URL.createObjectURL(outBlob);
+      previewArea.classList.add('visible');
+      var base = currentFile.name.replace(/\.[^.]+$/, '');
+      outName = base + '-' + (mb ? Math.round(outBytes / 1048576 * 10) / 10 + 'MB' : 'crf' + crf) + '.mp4';
+      var summary = 'Original ' + fmtMB(currentFile.size) + ' \u2192 ' + fmtMB(outBytes);
+      if (currentFile.size > outBytes) {
+        summary += ' (' + Math.round((1 - outBytes / currentFile.size) * 100) + '% smaller)';
+      }
+      if (targetBytes) {
+        var pctUsed = Math.round(outBytes / targetBytes * 100);
+        if (outBytes <= targetBytes) {
+          setStatus('Done: ' + fmtMB(outBytes) + ' fits the ' + mb + ' MB target (' + pctUsed + '% used).' + (passResults.length > 1 ? ' Solved in ' + passResults.length + ' passes.' : ''), 'ok');
+        } else {
+          var firstOver = 'Solved with what the arithmetic allows: ' + fmtMB(outBytes) + ' against a ' + mb + ' MB target. A target that strict needs a shorter clip.';
+          setStatus(firstOver, 'over');
+        }
+      } else {
+        setStatus('Done: ' + fmtMB(outBytes) + ' at CRF ' + crf + '.', 'ok');
+      }
+      resultSummary.textContent = summary;
+      resultArea.classList.add('visible');
+      progFill.style.width = '100%';
+      progText.textContent = 'Finished.';
+      await ffmpeg.deleteFile('input.' + ext);
+      await ffmpeg.deleteFile('out.mp4');
+    } catch (e) {
+      var msg = e && e.message ? e.message : String(e);
+      if (/memory|OOM/i.test(msg)) {
+        setStatus('Ran out of memory. This file is too large for the in-browser engine; try a shorter clip.', 'over');
+      } else if (/worker|SharedArrayBuffer/i.test(msg)) {
+        setStatus('Your browser blocked the engine. Desktop Chrome or Edge works.', 'over');
+      } else {
+        setStatus('Compression failed: ' + msg.substring(0, 120), 'over');
+      }
+    } finally {
+      busy = false;
+      compressBtn.disabled = false;
+      clearBtn.disabled = false;
     }
   }
 
-    convBtn.addEventListener('click', function() {
-    currentFile = null;
-    if(audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
-    audioBlob = null;
-    dz.classList.remove('has-file');
-    dz.querySelector('.dropzone-text').innerHTML = '<strong>Click to upload</strong> or drag & drop<br>MP4, WebM, MOV, AVI, MKV, FLV'; dz.querySelector('.dropzone-text').style.color = '';
-    finfo.classList.remove('visible');
-    preview.classList.remove('visible');
-    vid.onloadedmetadata = null;
-    vid.onerror = null;
-    vid.onloadstart = null;
-    vid.removeAttribute('src');
-    vid.load();
-    res.classList.remove('visible');
-    prog.classList.remove('visible'); progText.textContent = 'Processing...'; progFill.style.width = '0%';
-    extBtn.disabled = true;
+  downloadBtn.addEventListener('click', function() {
+    if (!outBlob) return;
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(outBlob);
+    a.download = outName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 5000);
   });
 })();
 </script>

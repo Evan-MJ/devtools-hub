@@ -2,19 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Weather Forecast - Live 7-Day Weather & Interactive Charts</title>
+    <title>Weather Forecast - Live 7-Day Forecast and Charts</title>
     <meta name="description" content="Free weather forecast tool. See current weather, 7-day forecast, hourly details. AI cannot show real-time weather with visual charts.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/weather-forecast/">
-    <meta property="og:title" content="Free Weather Forecast - Live 7-Day Weather">
-    <meta property="og:description" content="Free weather forecast with beautiful charts. See hourly & weekly forecasts instantly. No signup.">
+    <meta property="og:title" content="Weather Forecast - Live 7-Day Forecast and Charts">
+    <meta property="og:description" content="Free weather forecast tool. See current weather, 7-day forecast, hourly details. AI cannot show real-time weather with visual charts.">
     <meta property="og:image" content="/og-image.png">
     <link rel="stylesheet" href="/styles.css">
     <style>
         .weather-header { text-align: center; margin-bottom: 30px; }
         .location-search { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
         .location-search input { padding: 10px 16px; background: #0f0f23; border: 1px solid #2a2a4a; color: #fff; border-radius: 8px; width: 200px; font-size: 0.95rem; }
-        .location-search input:focus { outline: none; border-color: #667eea; }
+        .location-search input:focus { outline: 2px solid transparent; border-color: #667eea; }
         .location-search input::placeholder { color: #555; }
         .current-weather { background: linear-gradient(135deg, #1a3a5c 0%, #0f2744 100%); border-radius: 16px; padding: 30px; margin-bottom: 24px; border: 1px solid #2a4a6a; text-align: center; }
         .current-temp { font-size: 5rem; font-weight: 700; color: #fff; line-height: 1; margin: 10px 0; }
@@ -53,7 +56,7 @@
         @media (max-width: 600px) { .current-temp { font-size: 3.5rem; } .current-details { gap: 16px; } .daily-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Weather Forecast","url":"https://tools.scoreroute.com/tools/weather-forecast/","description":"Free weather forecast. Check current weather and 7-day forecast for any location.","applicationCategory":"Utility","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Weather Forecast - Live 7-Day Forecast and Charts","url":"https://tools.scoreroute.com/tools/weather-forecast/","description":"Free weather forecast tool. See current weather, 7-day forecast, hourly details. AI cannot show real-time weather with visual charts.","applicationCategory":"Utility","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -72,7 +75,7 @@
             <div class="tool-main">
                 <div class="weather-header">
                     <div class="location-search">
-                        <input type="text" id="city-input" placeholder="City name (e.g. New York)">
+                        <input type="text" id="city-input" placeholder="City name (e.g. New York)" aria-label="City name">
                         <button class="btn btn-primary" onclick="searchCity()">Search</button>
                         <button class="btn" onclick="useMyLocation()">Use My Location</button>
                     </div>
@@ -86,11 +89,11 @@
             </div>
         </section>
         <section class="info-section">
-            <h3>Why This Tool Beats AI Chatbots for Weather</h3>
+            <h2>Why This Tool Beats AI Chatbots for Weather</h2>
             <p>Ask ChatGPT "What's the weather today?" and it gives you a generic answer based on old training data. This tool shows <strong>real-time weather</strong> with a beautiful visual interface — no signup, no AI hallucination, just accurate data from Open-Meteo.</p>
             <div class="features-grid">
                 <div class="feature-item">
-                    <h4>Real-Time Data</h4>
+                    <h3>Real-Time Data</h3>
                     <p>Live weather from Open-Meteo's global network</p>
                 </div>
                 <div class="feature-item">
@@ -282,5 +285,9 @@
         });
         geolocateByIP().then(function() { loadWeather(); });
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

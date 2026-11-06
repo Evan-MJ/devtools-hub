@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL Formatter - Format & Beautify SQL | DevTools Hub</title>
-    <meta name="description" content="Free SQL formatter. Format and beautify SQL queries with proper indentation. Supports MySQL, PostgreSQL, SQLite.">
+    <title>SQL Formatter - Format &amp; Beautify SQL | DevTools Hub</title>
+    <meta name="description" content="Free SQL formatter. Beautify queries with correct indentation for MySQL, PostgreSQL, SQLite and SQL Server, and catch unbalanced syntax. No signup.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/sql-formatter/">
+    <meta property="og:title" content="SQL Formatter - Format &amp; Beautify SQL | DevTools Hub">
+    <meta property="og:description" content="Free SQL formatter. Beautify queries with correct indentation for MySQL, PostgreSQL, SQLite and SQL Server, and catch unbalanced syntax. No signup.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/sql-formatter/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-19",
         "dateModified": "2026-05-19",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "SQL Formatter",
-        "description": "Format, beautify and prettify SQL queries with proper indentation and keyword highlighting",
+        "name": "SQL Formatter - Format & Beautify SQL | DevTools Hub",
+        "description": "Free SQL formatter. Beautify queries with correct indentation for MySQL, PostgreSQL, SQLite and SQL Server, and catch unbalanced syntax. No signup.",
         "url": "https://tools.scoreroute.com/tools/sql-formatter/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
@@ -44,7 +49,7 @@
         <section class="tool-page">
             <div class="tool-main">
                 <h2>Format & Beautify SQL</h2>
-                <textarea id="sql-input" placeholder="Paste your SQL here, e.g.: SELECT id,name,email FROM users WHERE active=1 ORDER BY created_at DESC LIMIT 10;"></textarea>
+                <textarea id="sql-input" placeholder="Paste your SQL here, e.g.: SELECT id,name,email FROM users WHERE active=1 ORDER BY created_at DESC LIMIT 10;" aria-label="Paste your SQL here, e.g"></textarea>
                 <div class="btn-group">
                     <button onclick="formatSQL()" class="btn btn-primary">Format</button>
                     <button onclick="minifySQL()" class="btn">Minify</button>
@@ -52,7 +57,7 @@
                     <button onclick="validateSQL()" class="btn">Validate</button>
                     <button onclick="clearSQL()" class="btn btn-secondary">Clear</button>
                 </div>
-                <textarea id="sql-output" readonly placeholder="Formatted SQL will appear here..."></textarea>
+                <textarea id="sql-output" readonly placeholder="Formatted SQL will appear here..." aria-label="Formatted SQL will appear here"></textarea>
                 <div id="sql-status" class="status"></div>
                 <button onclick="copyOutput()" class="copy-btn">Copy Output</button>
             </div>
@@ -437,5 +442,9 @@
             }
         }
     </script>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b2c256a7f5841daabd665b0bf7723bd"}'></script></body>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
+</body>
 </html>

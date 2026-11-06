@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verifier - Verify Email Addresses Instantly | DevTools Hub</title>
-    <meta name="description" content="Free email verifier tool. Check if email addresses are valid, real, and can receive messages. Detect disposable emails, role accounts, and SMTP issues. No signup required.">
+    <title>Email Verifier - Verify Email Addresses Instantly</title>
+    <meta name="description" content="Free email verifier. Check if email addresses are valid and can receive messages. Detect disposable emails and SMTP issues. No signup required.">
     <meta name="keywords" content="email verifier, email validator, verify email, email checker, disposable email detection, smtp checker">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/email-verifier/">
     <meta property="og:title" content="Email Verifier - Verify Email Addresses Instantly">
-    <meta property="og:description" content="Check if email addresses are valid, real, and can receive messages. Detect disposable emails and SMTP issues.">
+    <meta property="og:description" content="Free email verifier. Check if email addresses are valid and can receive messages. Detect disposable emails and SMTP issues. No signup required.">
     <meta property="og:url" content="https://tools.scoreroute.com/tools/email-verifier/">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- BUG-323 (perf/font-delivery): media="print" + the onload swap keeps this third-party
+         font stylesheet out of the render-blocking path; both preconnects above stay. -->
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #e0e0e0; line-height: 1.6; }
@@ -29,7 +36,10 @@
         .tool-section h2 { color: #667eea; font-size: 1.3rem; margin-bottom: 20px; }
         .input-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         input[type="email"], textarea { flex: 1; min-width: 200px; padding: 14px 20px; border: 1px solid #2a2a4a; border-radius: 12px; background: #1a1a2e; color: #fff; font-size: 1rem; transition: all 0.3s ease; }
-        input[type="email"]:focus, textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+        input[type="email"]:focus, textarea:focus { outline: 2px solid transparent; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+        /* BUG-308 (WCAG 2.4.7): this page does not link /styles.css, so the sitewide
+           *:focus-visible rule there cannot reach it. Same 3px/#7eb3ff token. */
+        *:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
         textarea { min-height: 100px; resize: vertical; font-family: inherit; }
         .btn { padding: 14px 30px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
@@ -94,7 +104,7 @@
         .step-text { color: #ccc; font-size: 0.95rem; }
     </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Email Verifier","url":"https://tools.scoreroute.com/tools/email-verifier/","description":"Free email verifier. Check if email addresses are valid and can receive messages.","applicationCategory":"Network","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Email Verifier - Verify Email Addresses Instantly","url":"https://tools.scoreroute.com/tools/email-verifier/","description":"Free email verifier. Check if email addresses are valid and can receive messages. Detect disposable emails and SMTP issues. No signup required.","applicationCategory":"Network","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -104,6 +114,7 @@
             <p class="subtitle">Verify email addresses instantly. Check if emails are real, detect disposable addresses, and solve email delivery problems.</p>
         </header>
 
+        <main>
         <section class="hero-section">
             <h2>Why Your Emails Bounce: Common Problems We Solve</h2>
             <ul class="problem-list">
@@ -124,14 +135,14 @@
 
             <div id="single-tab" class="tab-content">
                 <div class="input-group">
-                    <input type="email" id="email-input" placeholder="Enter email address (e.g., user@example.com)">
+                    <input type="email" id="email-input" placeholder="Enter email address (e.g., user@example.com)" aria-label="Enter email address" autocomplete="email">
                     <button class="btn btn-primary" id="verify-btn" onclick="verifySingle()">Verify Email</button>
                 </div>
             </div>
 
             <div id="bulk-tab" class="tab-content" style="display:none;">
                 <div class="input-group">
-                    <textarea id="bulk-input" placeholder="Enter multiple emails (one per line or comma-separated)"></textarea>
+                    <textarea id="bulk-input" placeholder="Enter multiple emails (one per line or comma-separated)" aria-label="Enter multiple emails"></textarea>
                 </div>
                 <button class="btn btn-primary" id="bulk-verify-btn" onclick="verifyBulk()">Verify All Emails</button>
             </div>
@@ -162,7 +173,7 @@
                 </div>
                 <div class="feature-card">
                     <h3>Role Account Detection</h3>
-                    <p>We detect role-based emails (support@, info@) that may not reach a specific person.</p>
+                    <p>We detect role-based emails (support&#64;, info&#64;) that may not reach a specific person.</p>
                 </div>
                 <div class="feature-card">
                     <h3>Spelling Suggestions</h3>
@@ -179,7 +190,7 @@
             <h3>How Email Verification Works</h3>
             <div class="step">
                 <span class="step-num">1</span>
-                <span class="step-text"><strong>Format Check</strong> - First we verify the email has valid syntax (user@domain.com format)</span>
+                <span class="step-text"><strong>Format Check</strong> - First we verify the email has valid syntax (user&#64;domain.com format)</span>
             </div>
             <div class="step">
                 <span class="step-num">2</span>
@@ -194,6 +205,7 @@
                 <span class="step-text"><strong>Risk Assessment</strong> - We check for disposable domains, role accounts, and other risk factors</span>
             </div>
         </section>
+        </main>
     </div>
 
     <footer>
@@ -407,5 +419,9 @@
             if (e.key === 'Enter') verifySingle();
         });
     </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

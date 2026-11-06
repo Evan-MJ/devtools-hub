@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta property="og:title" content="Free Translator - AI Multi-Language Translation | DevTools Hub">
+    <meta property="og:title" content="Free AI Translator - AI Multi-Language Translation">
     <meta property="og:description" content="Free AI translator supporting 50+ languages. Translate text instantly with context-aware translations. No signup required.">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Translator - AI Multi-Language Translation | DevTools Hub</title>
+    <title>Free AI Translator - AI Multi-Language Translation</title>
     <meta name="description" content="Free AI translator supporting 50+ languages. Translate text instantly with context-aware translations. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/translator/">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-24","dateModified":"2026-05-24","author":{"@type":"Person","name":"BAOMING"},"name":"Free Translator","description":"AI-powered translator supporting 50+ languages with context-aware translations","url":"https://tools.scoreroute.com/tools/translator/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-05-24","dateModified":"2026-05-24","author":{"@type":"Person","name":"BAOMING"},"name":"Free AI Translator - AI Multi-Language Translation","description":"Free AI translator supporting 50+ languages. Translate text instantly with context-aware translations. No signup required.","url":"https://tools.scoreroute.com/tools/translator/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     </script>
 </head>
 <body>
@@ -126,7 +127,7 @@
 
                     <div class="translation-panels">
                         <div class="translation-panel">
-                            <textarea id="source-text" rows="6" placeholder="Type or paste text to translate..."></textarea>
+                            <textarea id="source-text" rows="6" placeholder="Type or paste text to translate..." aria-label="Type or paste text to translate"></textarea>
                             <div class="panel-footer">
                                 <span id="char-count" class="char-count">0 / 5000</span>
                                 <button id="clear-btn" class="btn btn-secondary" title="Clear text">Clear</button>
@@ -420,7 +421,7 @@
     }
 
     .language-select-wrapper select:focus {
-        outline: none;
+        outline: 2px solid transparent;
         border-color: var(--primary, #667eea);
     }
 
@@ -469,7 +470,7 @@
     }
 
     .translation-panel textarea:focus {
-        outline: none;
+        outline: 2px solid transparent;
         border-color: var(--primary, #667eea);
     }
 
@@ -635,5 +636,9 @@
         }
     }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

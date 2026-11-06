@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audio to Text Converter - Free Online Speech to Text | DevTools Hub</title>
+    <title>Audio to Text Converter - Free Online Speech to Text</title>
 <meta name="description" content="Free online audio to text converter. Convert speech to text in real-time with browser-based voice recognition. No uploads, no sign-up, 100% private.">
 <link rel="canonical" href="https://tools.scoreroute.com/tools/audio-to-text/">
 <meta property="og:title" content="Audio to Text Converter - Free Online Speech to Text">
-<meta property="og:description" content="Free online audio to text converter. Convert speech to text in real-time. No uploads, no sign-up, 100% private.">
+<meta property="og:description" content="Free online audio to text converter. Convert speech to text in real-time with browser-based voice recognition. No uploads, no sign-up, 100% private.">
 <meta property="og:url" content="https://tools.scoreroute.com/tools/audio-to-text/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Audio to Text Converter",
+  "name": "Audio to Text Converter - Free Online Speech to Text",
   "url": "https://tools.scoreroute.com/tools/audio-to-text/",
-  "description": "Free online audio to text converter using browser-based speech recognition. Convert speech to text in real-time.",
+  "description": "Free online audio to text converter. Convert speech to text in real-time with browser-based voice recognition. No uploads, no sign-up, 100% private.",
   "applicationCategory": "Multimedia",
   "operatingSystem": "All",
   "browserRequirements": "Requires Chrome, Edge, or Safari"
@@ -70,7 +74,7 @@
       <span id="statusText">Click "Start Recording" and begin speaking</span>
     </div>
     <div class="btn-group">
-      <select class="language-select" id="languageSelect">
+      <label class="sr-only" for="languageSelect">Recognition language</label><select class="language-select" id="languageSelect" title="Recognition language">
         <option value="en-US">English (US)</option>
         <option value="en-GB">English (UK)</option>
         <option value="zh-CN">中文</option>
@@ -88,7 +92,7 @@
       <button class="btn btn-copy" id="copyBtn">Copy to Clipboard</button>
       <button class="btn btn-download" id="downloadBtn">Download as TXT</button>
     </div>
-    <textarea class="text-output" id="textOutput" placeholder="Your transcribed text will appear here..." readonly></textarea>
+    <textarea class="text-output" id="textOutput" placeholder="Your transcribed text will appear here..." readonly aria-label="Your transcribed text will appear here"></textarea>
     <p class="interim" id="interimText" style="color:#6c757d;min-height:1.5em;font-style:italic;margin-top:0.5rem"></p>
   </div>
   <section>
@@ -199,11 +203,12 @@ sp.addEventListener('click',function(){
 });
 cl.addEventListener('click',function(){finalT='';out.value='';interim.textContent='';st.textContent='Text cleared. Click Start to begin.';});
 cp.addEventListener('click',function(){
-  if(!out.value){st.textContent='Nothing to copy. Record first.';return;}
-  navigator.clipboard.writeText(out.value).then(function(){st.textContent='Copied to clipboard!';setTimeout(function(){st.textContent=listening?'Listening...':'Click Start to begin';},2000);}).catch(function(){st.textContent='Copy failed. Select text manually (Ctrl+C).';});
+  if(!out.value){st.textContent='No text to copy. Record audio first.';return;}
+  if(!navigator.clipboard){st.textContent='Clipboard not available. Select text manually.';return;}
+  navigator.clipboard.writeText(out.value).then(function(){st.textContent='Copied to clipboard!';setTimeout(function(){st.textContent=listening?'Listening...':'Click Start to begin';},2000);}).catch(function(){st.textContent='Copy failed. Select text manually.';});
 });
 dl.addEventListener('click',function(){
-  if(!out.value){st.textContent='Nothing to download. Record first.';return;}
+  if(!out.value){st.textContent='No text to download. Record audio first.';return;}
   var b=new Blob([out.value],{type:'text/plain;charset=utf-8'});var u=URL.createObjectURL(b);
   var a=document.createElement('a');a.href=u;a.download='transcription.txt';a.click();URL.revokeObjectURL(u);
   st.textContent='Downloaded as transcription.txt';
@@ -211,5 +216,9 @@ dl.addEventListener('click',function(){
 });
 })();
 </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

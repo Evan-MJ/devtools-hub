@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video to Audio Converter - Extract MP3 from Video Free | DevTools Hub</title>
+<title>Video to Audio Converter - Extract MP3 from Video Free</title>
 <meta name="description" content="Free online video to audio converter. Extract MP3 audio from MP4, WebM, MOV, AVI files. No upload, 100% private, in-browser processing.">
 <link rel="canonical" href="https://tools.scoreroute.com/tools/video-to-audio/">
 <meta property="og:title" content="Video to Audio Converter - Extract MP3 from Video Free">
-<meta property="og:description" content="Free online video to audio converter. Extract audio from video files in your browser. No upload, 100% private.">
+<meta property="og:description" content="Free online video to audio converter. Extract MP3 audio from MP4, WebM, MOV, AVI files. No upload, 100% private, in-browser processing.">
 <meta property="og:url" content="https://tools.scoreroute.com/tools/video-to-audio/">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Video to Audio Converter","url":"https://tools.scoreroute.com/tools/video-to-audio/","description":"Free online video to audio converter using browser-based audio extraction.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Video to Audio Converter - Extract MP3 from Video Free","url":"https://tools.scoreroute.com/tools/video-to-audio/","description":"Free online video to audio converter. Extract MP3 audio from MP4, WebM, MOV, AVI files. No upload, 100% private, in-browser processing.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 <link rel="stylesheet" href="/styles.css">
 <style>
@@ -55,7 +59,7 @@ section p, section li { color: #ccc; }
 ol li, ul li { margin: 0.5rem 0; }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
+<script src="/ffmpeg/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
 </head>
 <body>
 <header class="site-header">
@@ -83,17 +87,17 @@ ol li, ul li { margin: 0.5rem 0; }
         <strong>Click to upload</strong> or drag &amp; drop<br>
         MP4, WebM, MOV, AVI, MKV, FLV
       </div>
-      <input type="file" id="fileInput" accept="video/*" style="display:none">
+      <input type="file" id="fileInput" accept="video/*" style="display:none" aria-label="Video to Audio Converter">
     </div>
 
     <div style="display:flex;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap">
-      <label>Output:</label>
+      <label for="formatSelect">Output:</label>
       <select class="format-select" id="formatSelect">
         <option value="audio/webm;codecs=opus">WebM Opus (best quality)</option>
         <option value="audio/webm">WebM Audio</option>
         <option value="audio/ogg;codecs=opus">OGG Opus</option>
       </select>
-      <label>Download as:</label>
+      <label for="downloadFormat">Download as:</label>
       <select class="format-select" id="downloadFormat">
         <option value="mp3">.mp3</option>
         <option value="webm">.webm</option>
@@ -405,7 +409,7 @@ ol li, ul li { margin: 0.5rem 0; }
     progText.textContent = 'Downloading FFmpeg engine (first time ~30MB)...';
     try {
       var downloadStart = Date.now();
-      var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm');
+      var wasmResp = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm');
       var contentLen = parseInt(wasmResp.headers.get('Content-Length') || '31000000');
       var reader = wasmResp.body.getReader();
       var received = 0;
@@ -433,7 +437,7 @@ ol li, ul li { margin: 0.5rem 0; }
       var wasmUrlObj = URL.createObjectURL(wasmBlob);
       progFill.style.width = '32%';
       progText.textContent = 'Initializing FFmpeg...';
-      await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', wasmURL: wasmUrlObj });
+      await ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: wasmUrlObj });
     } catch(e) {
       fdur.textContent = 'FFmpeg download/init failed (' + (e.message || 'unknown').substring(0,40) + '). Try again on faster connection.';
       fdur.style.color = '#dc3545';
@@ -508,5 +512,9 @@ ol li, ul li { margin: 0.5rem 0; }
   });
 })();
 </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

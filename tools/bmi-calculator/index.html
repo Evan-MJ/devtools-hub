@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta property="og:image" content="/og-image.png">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free BMI Calculator - Body Mass Index Checker | DevTools Hub</title>
-    <meta name="description" content="Free BMI calculator to check your body mass index. Supports metric and imperial units. Instant results with health category classification. No signup required.">
+    <meta name="description" content="Free BMI calculator to check your body mass index. Metric and imperial units, instant results with health category. No signup required.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/bmi-calculator/">
+    <meta property="og:title" content="Free BMI Calculator - Body Mass Index Checker | DevTools Hub">
+    <meta property="og:description" content="Free BMI calculator to check your body mass index. Metric and imperial units, instant results with health category. No signup required.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/bmi-calculator/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
     <script type="application/ld+json">
     {
@@ -18,8 +23,8 @@
         "datePublished": "2026-05-23",
         "dateModified": "2026-05-23",
         "author": {"@type": "Person", "name": "BAOMING"},
-        "name": "Free BMI Calculator",
-        "description": "Calculate your Body Mass Index (BMI) instantly. Supports metric and imperial units with health category classification.",
+        "name": "Free BMI Calculator - Body Mass Index Checker | DevTools Hub",
+        "description": "Free BMI calculator to check your body mass index. Metric and imperial units, instant results with health category. No signup required.",
         "url": "https://tools.scoreroute.com/tools/bmi-calculator/",
         "applicationCategory": "HealthApplication",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -100,7 +105,9 @@
 
                 <div class="bmi-info">
                     <h2>BMI Categories</h2>
+                    <div class="table-scroll">
                     <table class="bmi-table">
+<caption class="sr-only">BMI bands, the range each one covers, and the health risk it carries</caption>
                         <tr>
                             <th>Category</th>
                             <th>BMI Range</th>
@@ -127,11 +134,16 @@
                             <td>High risk</td>
                         </tr>
                     </table>
+                    </div>
                 </div>
             </div>
 
             <div class="info-section">
-                <div class="bmi-features">
+                                <h2>How to Calculate Your BMI</h2>
+                <p>BMI is your weight in kilograms divided by your height in metres squared, and this calculator does it in both measurement systems: switch to imperial and enter your height in feet and inches and your weight in pounds, or stay in metric with centimetres and kilograms. The number lands in one of four ranges - under 18.5, 18.5 to 24.9, 25 to 29.9, and 30 or above - and the gauge shows where you sit on that scale. Everything is calculated in your browser, so your height and weight never leave your device.</p>
+                <p>BMI is a population-level screening number, not a diagnosis: it cannot tell muscle from fat, and it does not account for age, bone density or pregnancy. If you want a second opinion on the same numbers, the <a href="/tools/body-fat-calculator/">body fat calculator</a> estimates body composition, the <a href="/tools/calorie-calculator/">calorie calculator</a> turns your weight into a daily intake, and the <a href="/tools/baby-percentile-calculator/">baby percentile calculator</a> does the same job for infants.</p>
+
+<div class="bmi-features">
                     <h2>Why Use Our BMI Calculator?</h2>
                     <ul>
                         <li><strong>Metric & Imperial:</strong> Works with both measurement systems</li>
@@ -337,7 +349,7 @@
     }
 
     .bmi-group input:focus {
-        outline: none;
+        outline: 2px solid transparent;
         border-color: var(--primary);
     }
 
@@ -501,5 +513,9 @@
         }
     }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>

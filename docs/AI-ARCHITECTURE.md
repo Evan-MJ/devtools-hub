@@ -172,22 +172,16 @@ const AIConfig = {
     groq: {
       keys: ['${DEVTOOLS_GROQ_API_KEY}'],
       baseUrl: 'https://api.groq.com/openai/v1',
-      models: {
-        grammar: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'],
-        math: ['llama-3.3-70b-versatile', 'mixtral-8x7b-32768'],
-        general: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant']
-      },
+      // 模型 id 一律从 provider 的 /models 实时读取并缓存，绝不写死。
+      // 写死的 id 会随 provider 下线而变成 404/410（见 BUG-327/328）。
+      loadModels: () => discoverModels('https://api.groq.com/openai/v1', key),
       rateLimit: 60,
       circuitBreaker: { threshold: 3, timeout: 60000 }
     },
     nvidia: {
       keys: ['${DEVTOOLS_NVIDIA_KEY_1}', '${DEVTOOLS_NVIDIA_KEY_3}'],
       baseUrl: 'https://integrate.api.nvidia.com/v1',
-      models: {
-        grammar: ['meta/llama-3.1-70b-instruct', 'meta/llama-3.3-70b-instruct'],
-        math: ['meta/llama-3.1-70b-instruct', 'mistralai/mistral-large-2-instruct'],
-        general: ['meta/llama-3.1-70b-instruct']
-      },
+      loadModels: () => discoverModels('https://integrate.api.nvidia.com/v1', key),
       rateLimit: 30,
       circuitBreaker: { threshold: 3, timeout: 60000 }
     }

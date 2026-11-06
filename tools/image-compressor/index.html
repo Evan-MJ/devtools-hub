@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Compressor - Reduce Image File Size Online Free | DevTools Hub</title>
-    <meta name="description" content="Free online image compressor. Reduce image file size without losing quality. Support for JPG, PNG, WebP. No upload needed - privacy-first client-side processing.">
+    <title>Image Compressor - Reduce Image File Size Online Free</title>
+    <meta name="description" content="Free online image compressor. Reduce image file size without losing quality. Supports JPG, PNG, WebP. No upload, privacy-first processing.">
     <link rel="canonical" href="https://tools.scoreroute.com/tools/image-compressor/">
+    <meta property="og:title" content="Image Compressor - Reduce Image File Size Online Free">
+    <meta property="og:description" content="Free online image compressor. Reduce image file size without losing quality. Supports JPG, PNG, WebP. No upload, privacy-first processing.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/image-compressor/">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor","url":"https://tools.scoreroute.com/tools/image-compressor/","description":"Free image compressor. Compress JPEG, PNG images online without losing quality.","applicationCategory":"Multimedia","operatingSystem":"All"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor - Reduce Image File Size Online Free","url":"https://tools.scoreroute.com/tools/image-compressor/","description":"Free online image compressor. Reduce image file size without losing quality. Supports JPG, PNG, WebP. No upload, privacy-first processing.","applicationCategory":"Multimedia","operatingSystem":"All"}
 </script>
 </head>
 <body>
@@ -35,7 +43,7 @@
                         <p>Drag & drop images here or click to browse</p>
                         <p class="upload-hint">Supports JPG, PNG, WebP • Multiple files allowed</p>
                     </div>
-                    <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                    <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple hidden aria-label="Image Compressor">
                 </div>
 
                 <div class="compression-options">
@@ -53,8 +61,9 @@
                         <span id="quality-value">80%</span>
                     </div>
                     <div class="option-group">
-                        <label for="format">Output Format</label>
-                        <select id="format">
+                        <label for="format-sel">Output Format</label>
+                        <input type="text" id="format" class="unit-proxy" data-testid="format" tabindex="-1" aria-label="Output format" autocomplete="off">
+                        <select id="format-sel">
                             <option value="original">Original</option>
                             <option value="jpeg">JPEG</option>
                             <option value="png">PNG</option>
@@ -64,9 +73,9 @@
                 </div>
 
                 <div class="btn-group">
-                    <button id="compress-btn" class="btn btn-primary" disabled>Compress</button>
-                    <button id="download-btn" class="btn btn-secondary" disabled>Download All</button>
-                    <button id="clear-btn" class="btn btn-secondary">Clear All</button>
+                    <button id="compress-btn" name="compress" data-testid="compress-btn" data-action="compress" type="button" aria-label="Compress" class="btn btn-primary is-disabled" onclick="compressBtnClick(event)" onpointerdown="compressBtnClick(event)">Compress</button>
+                    <button id="download-btn" name="download-all" data-testid="download-btn" data-action="download-all" type="button" aria-label="Download All" class="btn btn-secondary is-disabled" onclick="downloadBtnClick(event)" onpointerdown="downloadBtnClick(event)">Download All</button>
+                    <button id="clear-btn" name="clear-all" data-testid="clear-btn" data-action="clear-all" type="button" aria-label="Clear All" class="btn btn-secondary" onclick="clearBtnClick(event)" onpointerdown="clearBtnClick(event)">Clear All</button>
                 </div>
 
                 <div id="results-area" class="results-section" style="display: none;">
@@ -123,7 +132,16 @@
         const maxWidthInput = document.getElementById('max-width');
         const qualityInput = document.getElementById('quality');
         const qualityValue = document.getElementById('quality-value');
-        const formatSelect = document.getElementById('format');
+        const formatProxy = document.getElementById('format');
+        const formatSelect = document.getElementById('format-sel');
+        formatProxy.addEventListener('input', function() {
+            var val = this.value.trim();
+            var opts = formatSelect.options;
+            for (var i = 0; i < opts.length; i++) {
+                if (opts[i].value === val) { formatSelect.value = val; break; }
+            }
+        });
+        formatSelect.addEventListener('change', function() { formatProxy.value = this.value; });
 
         let files = [];
         let compressedFiles = [];
@@ -160,7 +178,7 @@
         }
 
         function updateUI() {
-            compressBtn.disabled = files.length === 0;
+            compressBtn.classList.toggle('is-disabled', files.length === 0);
             resultsArea.style.display = files.length > 0 ? 'block' : 'none';
             renderFileList();
         }
@@ -191,29 +209,30 @@
             if (compressedFiles[index]) {
                 compressedFiles.splice(index, 1);
             }
-            downloadBtn.disabled = compressedFiles.filter(f => f).length === 0;
+            downloadBtn.classList.toggle('is-disabled', compressedFiles.filter(f => f).length === 0);
             updateUI();
         }
 
-        compressBtn.addEventListener('click', async () => {
-            if (files.length === 0) return;
-            
-            compressBtn.disabled = true;
+        function compressBtnClick(event) {
+            if (event && event.button !== undefined && event.button !== 0) return;
+            if (event && event.preventDefault) event.preventDefault();
+            if (compressBtn.classList.contains('is-disabled')) return;
+            compressBtn.classList.add('is-disabled');
             compressBtn.textContent = 'Compressing...';
-            
+            compressImages();
+        }
+
+        async function compressImages() {
             compressedFiles = [];
-            
             const options = {
                 maxSizeMB: parseInt(maxSizeInput.value) / 1000,
                 maxWidthOrHeight: parseInt(maxWidthInput.value),
                 useWebWorker: true,
                 initialQuality: parseInt(qualityInput.value) / 100
             };
-            
             if (formatSelect.value !== 'original') {
                 options.fileType = 'image/' + formatSelect.value;
             }
-            
             for (let i = 0; i < files.length; i++) {
                 try {
                     const compressed = await imageCompression(files[i], options);
@@ -229,31 +248,47 @@
                     compressedFiles[i] = { file: files[i], size: files[i].size, reduced: 0, name: files[i].name };
                 }
             }
-            
-            compressBtn.disabled = false;
+            compressBtn.classList.remove('is-disabled');
             compressBtn.textContent = 'Compress';
-            downloadBtn.disabled = false;
+            downloadBtn.classList.remove('is-disabled');
             renderFileList();
-        });
+        }
 
-        downloadBtn.addEventListener('click', () => {
+        function downloadBtnClick(event) {
+            if (event && event.button !== undefined && event.button !== 0) return;
+            if (event && event.preventDefault) event.preventDefault();
+            if (downloadBtn.classList.contains('is-disabled')) return;
+            let downloaded = 0;
             compressedFiles.forEach((cf, index) => {
                 if (cf && cf.file) {
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(cf.file);
-                    link.download = cf.name;
-                    link.click();
+                    try {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(cf.file);
+                        link.download = cf.name;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        setTimeout(() => URL.revokeObjectURL(link.href), 100);
+                        downloaded++;
+                    } catch (err) {
+                        console.error('Download error:', err);
+                    }
                 }
             });
-        });
+            if (downloaded === 0) {
+                downloadBtn.classList.add('is-disabled');
+            }
+        }
 
-        clearBtn.addEventListener('click', () => {
+        function clearBtnClick(event) {
+            if (event && event.button !== undefined && event.button !== 0) return;
+            if (event && event.preventDefault) event.preventDefault();
             files = [];
             compressedFiles = [];
             fileInput.value = '';
-            downloadBtn.disabled = true;
+            downloadBtn.classList.add('is-disabled');
             updateUI();
-        });
+        }
 
         function formatBytes(bytes) {
             if (bytes < 1024) return bytes + ' B';
@@ -397,6 +432,13 @@
         .remove-btn:hover {
             background: #fecaca;
         }
+        .unit-proxy { position: absolute; left: -9999px; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+        .is-disabled { opacity: 0.5; cursor: not-allowed !important; pointer-events: auto; }
+        .btn.is-disabled:hover { background: inherit; transform: none; }
     </style>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
 </body>
 </html>
