@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Evan-MJ/devtools-hub#readme",
   "dependencies": {
-    "@cfworker/json-schema": "^3.0.0",
+    "@cfworker/json-schema": "^4.1.6",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "imap": "^0.8.19",
