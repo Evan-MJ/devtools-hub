@@ -296,7 +296,7 @@
             if (wl < minLen || wl > maxLen) continue;
             if (wl > letters.length) continue;
             if (starts && w.indexOf(starts) !== 0) continue;
-            if (ends && w.lastIndexOf(ends) !== wl - ends.length) continue;
+            if (ends && w.slice(-ends.length) !== ends) continue;
             if (!canForm(w, counts, wildcards)) continue;
             matches.push(w);
         }
