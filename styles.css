@@ -63,6 +63,7 @@ main li a { text-decoration: underline; }
 .status { padding: 12px 16px; border-radius: 8px; margin-top: 12px; font-size: 0.9rem; display: none; }
 .status.success { background: rgba(16, 185, 129, 0.15); color: #10b981; display: block; }
 .status.error { background: rgba(239, 68, 68, 0.15); color: #ef4444; display: block; }
+.status.info { background: rgba(102, 126, 234, 0.15); color: #7eb3ff; display: block; }
 
 .info-section { background: #1a1a2e; border-radius: 16px; padding: 30px; border: 1px solid #2a2a4a; }
 .info-section h2 { color: #7eb3ff; margin: 28px 0 16px; font-size: 1.2rem; }

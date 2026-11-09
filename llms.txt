@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> Free collection of 371 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
+> Free collection of 373 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,14 +8,14 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 371 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 373 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
 ## Categories
 
-- [Code Formatters (9 tools)](https://tools.scoreroute.com/tools/formatters/.md): Format, validate and beautify JSON, HTML, SQL, CSS, YAML and XML with exact error positions. [HTML](https://tools.scoreroute.com/tools/formatters/)
-- [Calculators (38 tools)](https://tools.scoreroute.com/tools/calculators/.md): Free online calculators for arithmetic, percentages, BMI, age, dates, tips and tiling. [HTML](https://tools.scoreroute.com/tools/calculators/)
+- [Code Formatters (10 tools)](https://tools.scoreroute.com/tools/formatters/.md): Format, validate and beautify JSON, HTML, SQL, CSS, YAML and XML with exact error positions. [HTML](https://tools.scoreroute.com/tools/formatters/)
+- [Calculators (39 tools)](https://tools.scoreroute.com/tools/calculators/.md): Free online calculators for arithmetic, percentages, BMI, age, dates, tips and tiling. [HTML](https://tools.scoreroute.com/tools/calculators/)
 - [Generators (53 tools)](https://tools.scoreroute.com/tools/generators/.md): Generate passwords, QR codes, UUIDs, hashes, random numbers and citations in one click. [HTML](https://tools.scoreroute.com/tools/generators/)
 - [Converters (45 tools)](https://tools.scoreroute.com/tools/converters/.md): Convert units, currencies, time zones, file formats and text encodings in a single click. [HTML](https://tools.scoreroute.com/tools/converters/)
 - [Media Tools (69 tools)](https://tools.scoreroute.com/tools/media/.md): Compress, convert, crop, resize, transcribe and edit images, video and audio files in seconds. [HTML](https://tools.scoreroute.com/tools/media/)
@@ -36,6 +36,7 @@
 - [JS Formatter and Beautifier - JavaScript Code](https://tools.scoreroute.com/tools/js-formatter/.md) [HTML](https://tools.scoreroute.com/tools/js-formatter/)
 - [JSON Diff - Compare & Find Differences](https://tools.scoreroute.com/tools/json-diff/.md) [HTML](https://tools.scoreroute.com/tools/json-diff/)
 - [JSON Schema Validator - Validate JSON Against Schema Online](https://tools.scoreroute.com/tools/json-schema-validator/.md) [HTML](https://tools.scoreroute.com/tools/json-schema-validator/)
+- [CSS Specificity Calculator - Compute Selector Weight](https://tools.scoreroute.com/tools/css-specificity-calculator/.md) [HTML](https://tools.scoreroute.com/tools/css-specificity-calculator/)
 
 ## Calculators
 - [Age Calculator - Months, Days, Birthday & Countdown](https://tools.scoreroute.com/tools/age-calculator/.md) [HTML](https://tools.scoreroute.com/tools/age-calculator/)
@@ -76,6 +77,7 @@
 - [PTO Calculator - Accrual & Balance](https://tools.scoreroute.com/tools/pto-calculator/.md) [HTML](https://tools.scoreroute.com/tools/pto-calculator/)
 - [Blood Pressure Calculator - Average & Stage](https://tools.scoreroute.com/tools/blood-pressure-calculator/.md) [HTML](https://tools.scoreroute.com/tools/blood-pressure-calculator/)
 - [Solar Sizing Calculator](https://tools.scoreroute.com/tools/solar-calculator/.md) [HTML](https://tools.scoreroute.com/tools/solar-calculator/)
+- [Heart Rate Zone Calculator - 5 Zones by Age](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/.md) [HTML](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/)
 
 ## Generators
 - [Barcode Generator - QR, UPC, EAN and Code 128](https://tools.scoreroute.com/tools/barcode-generator/.md) [HTML](https://tools.scoreroute.com/tools/barcode-generator/)
@@ -431,4 +433,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-05
+- Last updated: 2026-11-09

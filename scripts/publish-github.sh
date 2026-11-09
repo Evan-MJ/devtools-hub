@@ -16,7 +16,7 @@
 set -euo pipefail
 
 REMOTE="${1:-mirror}"
-MSG="publish: snapshot of local main $(git rev-parse --short HEAD)"
+MSG="publish: snapshot of the deployed tree (local main $(git rev-parse --short HEAD))"
 
 if ! git remote get-url "$REMOTE" >/dev/null 2>&1; then
     echo "no remote named '$REMOTE'"; exit 1
@@ -27,10 +27,34 @@ export GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-opencode@local}"
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
+# The published tree must be the tree that goes LIVE, not the committed HEAD.
+#
+# The build machine deploys the working tree (wrangler uploads the directory as it is),
+# and the deploy gate rewrites files in place while it runs: tool-dates.json,
+# sitemap.xml, llms.txt, llms-full.txt and the head metadata of every tool page. So
+# "HEAD" and "what is deployed" are two different things, and publishing HEAD would
+# publish a tree that differs from production — which, with the auto-deploy workflow
+# (push to main -> deploy), rolls the live site back to the last commit.
+#
+# A temporary index gives the working tree's content without touching the real index
+# and without committing anything: .gitignore still decides what is left out (.env,
+# node_modules, the root harness scripts).
+publish_tree() {
+    local idx
+    idx="$(mktemp -t publish-index.XXXXXX)"
+    rm -f "$idx"                       # git wants the index file to not exist yet
+    GIT_INDEX_FILE="$idx" git read-tree HEAD
+    GIT_INDEX_FILE="$idx" git add -A
+    local tree
+    tree="$(GIT_INDEX_FILE="$idx" git write-tree)"
+    rm -f "$idx"
+    echo "$tree"
+}
+
 git fetch --quiet "$REMOTE" main || true
 PARENT=$(git rev-parse --verify --quiet "refs/remotes/$REMOTE/main" || echo "")
 
-TREE=$(git rev-parse HEAD^{tree})
+TREE=$(publish_tree)
 if [ -n "$PARENT" ]; then
     NEW=$(git commit-tree "$TREE" -p "$PARENT" -m "$MSG")
 else

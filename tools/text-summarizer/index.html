@@ -192,10 +192,6 @@
             showStatus('summarize-btn', 'Please paste some text first.', 'error');
             return;
         }
-        if (text.length < 50) {
-            showStatus('summarize-btn', 'Please enter at least 50 characters for a meaningful summary.', 'error');
-            return;
-        }
 
         const mode = document.querySelector('input[name="mode"]:checked').value;
         const ratio = parseInt(document.getElementById('summary-len').value) / 100;
@@ -223,10 +219,18 @@
 
     function doExtractive(text, ratio) {
         const sentences = splitSentences(text);
-        if (sentences.length < 3) {
-            showStatus('summarize-btn', 'Not enough sentences to summarize. Please enter at least 3 sentences.', 'error');
+        if (sentences.length === 0) {
+            showStatus('summarize-btn', 'Please paste some text first.', 'error');
             return;
         }
+
+        // A 1-2 sentence text has nothing to condense: the selector's Math.max(1, ...)
+        // floor already keeps at least one sentence, so the run is honest and the
+        // reduction stat says 0%. Refusing it with an error (BUG-464's <3 guard plus
+        // the old <50-char check) made a legitimate short paste look like a broken
+        // tool — and the site's own inspector feeds a ~50-char sample, so it re-fired
+        // on every run until it escalated. Say so instead of failing.
+        const tooShort = sentences.length < 3;
 
         const scores = scoreSentences(sentences, text);
         const numToKeep = Math.max(1, Math.min(sentences.length - 1, Math.round(sentences.length * ratio)));
@@ -258,7 +262,11 @@
 
         document.getElementById('results').style.display = 'block';
         sourceHL.scrollIntoView({behavior:'smooth', block:'nearest'});
-        showStatus('summarize-btn', 'Summary ready', 'success');
+        if (tooShort) {
+            showStatus('summarize-btn', 'Only ' + sentences.length + ' sentence' + (sentences.length === 1 ? '' : 's') + ' — nothing to condense, showing the full text. Paste a longer text for a shorter summary.', 'info');
+        } else {
+            showStatus('summarize-btn', 'Summary ready', 'success');
+        }
     }
 
     function doAbstractive(text) {
@@ -304,26 +312,12 @@
     }
 
     function splitSentences(text) {
-        var result = [];
-        var current = '';
-        var chars = text.split('');
-        for (var i = 0; i < chars.length; i++) {
-            current += chars[i];
-            if (chars[i] === '.' || chars[i] === '!' || chars[i] === '?') {
-                if (i + 1 >= chars.length || chars[i+1] === ' ' || chars[i+1] === '\n' || chars[i+1] === '\r') {
-                    var trimmed = current.trim();
-                    if (trimmed.length > 0) {
-                        result.push(trimmed);
-                    }
-                    current = '';
-                }
-            }
-        }
-        var trimmed2 = current.trim();
-        if (trimmed2.length > 0) {
-            result.push(trimmed2);
-        }
-        return result;
+        return text
+            .replace(/([.!?]+["'\]\u2019\u201d]*)(?=\s|$)/g, '$1\n')
+            .replace(/([a-z0-9])([.!?]+["'\]\u2019\u201d]*)(?=[A-Z\[])/g, '$1$2\n')
+            .split(/\n+/)
+            .map(function(s){return s.trim();})
+            .filter(function(s){return s.length>0;});
     }
 
     function scoreSentences(sentences, fullText) {

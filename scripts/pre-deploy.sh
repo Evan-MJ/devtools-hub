@@ -128,7 +128,16 @@ HARNESS=$(mktemp -d -t cf-harness-backup.XXXXXX)
 # preserving. It must stay in the project (its `../../libs/*.js` imports only resolve at that
 # depth) but must never deploy: it would add 187 KB of dead code AND create a public route at
 # /tools/__bug360-baseline. Same park-and-restore mechanism as the harness scripts.
-HARNESS_FILES=$(ls test-*.js *-playwright-test.js *-local-test.js *-prod-test.js tools-auto-test.js functions/tools/__bug360-baseline.js 2>/dev/null || true)
+# BUG-482 (2026-11-09): the park list only covered harness scripts in the repo ROOT, so the
+# tracked `test-scripts/` directory (7 files) and the root-level `*-gate.js` scripts still
+# shipped to production with HTTP 200 — e.g. https://tools.scoreroute.com/test-scripts/
+# site-health-audit.js. Same crawl-budget waste as BUG-309, one directory deeper.
+#
+# BUG-484 (2026-11-09): `functions/api/test-models.js` is gitignored (so it never reaches
+# the GitHub snapshot) but it was still uploaded by every LOCAL wrangler deploy, and it was
+# live at https://tools.scoreroute.com/api/test-models — an unauthenticated endpoint that
+# spends the site's own Groq/NVIDIA keys on request. Parked here like the rest.
+HARNESS_FILES=$(ls test-*.js *-playwright-test.js *-local-test.js *-prod-test.js *-gate.js tools-auto-test.js functions/api/test-*.js functions/tools/__bug360-baseline.js 2>/dev/null; find test-scripts -type f 2>/dev/null || true)
 if [ -n "$HARNESS_FILES" ]; then
   HARNESS_COUNT=$(echo "$HARNESS_FILES" | wc -l | tr -d ' ')
   # Preserve each file's relative path inside the park dir. `mv "$f" "$HARNESS/"` flattens a
