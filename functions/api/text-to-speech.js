@@ -163,13 +163,10 @@ export async function onRequest({ request, env }) {
   }
 
   var cfToken = env.CLOUDFLARE_API_TOKEN;
-  console.log('[TTS] env keys:', Object.keys(env || {}).join(','));
-  console.log('[TTS] cfToken present:', !!cfToken, 'length:', cfToken ? cfToken.length : 0);
 
   if (cfToken) {
     try {
       var cfResult = await callCloudflareTTS(text, cfToken);
-      console.log('[TTS] CF result:', JSON.stringify(cfResult).slice(0, 300));
       if (cfResult.ok) {
         return new Response(cfResult.audio, {
           headers: {
