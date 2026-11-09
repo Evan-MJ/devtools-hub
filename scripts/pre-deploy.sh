@@ -137,7 +137,11 @@ HARNESS=$(mktemp -d -t cf-harness-backup.XXXXXX)
 # the GitHub snapshot) but it was still uploaded by every LOCAL wrangler deploy, and it was
 # live at https://tools.scoreroute.com/api/test-models — an unauthenticated endpoint that
 # spends the site's own Groq/NVIDIA keys on request. Parked here like the rest.
-HARNESS_FILES=$(ls test-*.js *-playwright-test.js *-local-test.js *-prod-test.js *-gate.js tools-auto-test.js functions/api/test-*.js functions/tools/__bug360-baseline.js 2>/dev/null; find test-scripts -type f 2>/dev/null || true)
+# BUG-487 (2026-11-09): the park list only covered *.js harness files, so the remaining test
+# artifacts still shipped with HTTP 200: test-deploy.txt, test-csp-page.html (plus its
+# extensionless /test-csp-page alias), test-results/.last-run.json and the /api/test route
+# from functions/api/test.js — all crawlable junk. Park them too.
+HARNESS_FILES=$(ls test-*.js test-*.html test-*.txt *-playwright-test.js *-local-test.js *-prod-test.js *-gate.js tools-auto-test.js functions/api/test.js functions/api/test-*.js functions/tools/__bug360-baseline.js 2>/dev/null; find test-scripts test-results -type f 2>/dev/null || true)
 if [ -n "$HARNESS_FILES" ]; then
   HARNESS_COUNT=$(echo "$HARNESS_FILES" | wc -l | tr -d ' ')
   # Preserve each file's relative path inside the park dir. `mv "$f" "$HARNESS/"` flattens a

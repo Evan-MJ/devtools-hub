@@ -191,6 +191,30 @@ export async function onRequest(context) {
     });
   }
 
+  // BUG-487: the harness scripts came back as HTTP 200 with the real script body,
+  // intermittently (about half the requests, depending on the edge PoP) and for
+  // Googlebot too. The current deployment does NOT contain most of them — the deploy
+  // gate parks them — but Cloudflare's edge still holds asset copies from the
+  // deployments that shipped them before the gate did, and revalidating a copy
+  // returns 304, so the stale copy is served instead of the 404. Crawlers indexed
+  // those copies. The rest (test-deploy.txt, test-csp-page.html, test-results/,
+  // /api/test) still ship today, because the park list did not name them.
+  // Middleware runs before the asset lookup, so returning here ends it for both
+  // the stale copies and the ones that would ship next. Same house pattern as
+  // /scripts/ and /libs/ above.
+  const rootFile = url.pathname.slice(1);
+  const isRootHarness = !rootFile.includes('/') &&
+    (/^test-/.test(rootFile) || /-(test|gate)\.js$/.test(rootFile));
+  if (url.pathname === '/api/test' ||
+      url.pathname.startsWith('/test-scripts') ||
+      url.pathname.startsWith('/test-results') ||
+      isRootHarness) {
+    return new Response('Not Found\n', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', ...SECURITY_HEADERS },
+    });
+  }
+
   // BUG-422: /404 and /404.html ARE the 404 page, but Pages' asset resolution
   // served them with HTTP 200 — a soft 404 whose body says "not found" while the
   // status says "found". Google's soft-404 report was right. Only the STATUS is
