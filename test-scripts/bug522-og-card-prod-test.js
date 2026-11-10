@@ -51,7 +51,11 @@ function ok(cond, label, detail) {
     ok(!!img && img.includes(`/api/og/${slug}.svg`), 'the page points at its own OG card', 'og:image = ' + img);
     if (!img) continue;
 
-    const res = await fetch(img, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; SiteAudit/1.0)' } });
+    // Cache-bust the card URL: the CDN holds the edge copy for 7 days
+    // (Cache-Control: max-age=604800), so a plain fetch would keep returning the
+    // pre-fix card even after the function is fixed. The gate tests the function.
+    const busted = img.split('?')[0] + '?cb=og' + Date.now();
+    const res = await fetch(busted, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; SiteAudit/1.0)' } });
     ok(res.status === 200, 'the card answers 200', 'status ' + res.status);
     const svg = await res.text();
 
