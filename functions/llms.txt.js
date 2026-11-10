@@ -26,6 +26,7 @@
 // BUG-359: the category blurbs and the sentence-aware truncation are shared with
 // functions/tools/[[catchall]].js (libs/category-copy.js).
 import { CAT_DESCRIPTIONS, sentenceTruncate } from '../libs/category-copy.js';
+import { loadManifest } from '../libs/manifest.js';
 
 export async function onRequest(context) {
   if (context.request.method === 'HEAD') {
@@ -45,17 +46,10 @@ export async function onRequest(context) {
   const tools = [];
 
   try {
-    const mr = await assets.fetch(new URL('/manifest.txt?cb=' + Date.now(), baseUrl));
-    if (!mr.ok) throw new Error('Manifest ' + mr.status);
-    const manifest = await mr.text();
-    for (const line of manifest.split('\n')) {
-      const t = line.trim();
-      if (!t || t.startsWith('#')) continue;
-      const p = t.split('|');
-      if (p.length < 6) continue;
-      const [slug, category, , , name, desc] = p;
-      tools.push({ slug: slug.trim(), category: category.trim(), name: name.trim(), desc: desc.trim() });
-    }
+    // BUG-513: the row contract now lives in one place (libs/manifest.js). Nine readers
+    // used to parse manifest.txt on their own and the copies had drifted.
+    const all = await loadManifest(assets, baseUrl);
+    for (const t of all) tools.push({ slug: t.slug, category: t.category, name: t.name, desc: t.desc });
   } catch (e) {
     return new Response('llms.txt error: ' + e.message, { headers: { 'Content-Type': 'text/plain' } });
   }
