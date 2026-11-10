@@ -54,6 +54,19 @@ publish_tree() {
 git fetch --quiet "$REMOTE" main || true
 PARENT=$(git rev-parse --verify --quiet "refs/remotes/$REMOTE/main" || echo "")
 
+# Recompute tool-dates.json from the LOCAL full history before snapshotting.
+#
+# The deploy workflow checks out with fetch-depth 1, so scripts/gen-tool-dates.js there
+# has no history to diff and (by design) carries the dates from the committed map
+# instead of guessing. The committed map is therefore the only channel through which a
+# real body edit reaches the live <lastmod> — it has to be written here, from a checkout
+# that still has the history.
+if command -v node >/dev/null 2>&1; then
+  node scripts/gen-tool-dates.js
+else
+  echo "WARNING: node not found — tool-dates.json is published as committed" >&2
+fi
+
 TREE=$(publish_tree)
 if [ -n "$PARENT" ]; then
     NEW=$(git commit-tree "$TREE" -p "$PARENT" -m "$MSG")
