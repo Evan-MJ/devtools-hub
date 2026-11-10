@@ -287,10 +287,10 @@
             setTimeout(async () => {
                 try {
                     const newPdf = await PDFLib.PDFDocument.create();
+                    const sourcePdf = await PDFLib.PDFDocument.load(pdfBytes);
                     const sortedIndices = Array.from(selectedPages).sort((a, b) => a - b);
                     for (let i = 0; i < sortedIndices.length; i++) {
                         const originalIdx = sortedIndices[i];
-                        const sourcePdf = await PDFLib.PDFDocument.load(pdfBytes);
                         const [copiedPage] = await newPdf.copyPages(sourcePdf, [originalIdx]);
                         const rotation = pageRotations[originalIdx] || 0;
                         if (rotation !== 0) {
@@ -313,9 +313,9 @@
             showProgress('Creating PDF...');
             try {
                 const newPdf = await PDFLib.PDFDocument.create();
+                const sourcePdf = await PDFLib.PDFDocument.load(pdfBytes);
                 for (let i = 0; i < pages.length; i++) {
                     const pageInfo = pages[i];
-                    const sourcePdf = await PDFLib.PDFDocument.load(pdfBytes);
                     const [copiedPage] = await newPdf.copyPages(sourcePdf, [pageInfo.originalIndex]);
                     const rotation = pageRotations[pageInfo.originalIndex] || 0;
                     if (rotation !== 0) {

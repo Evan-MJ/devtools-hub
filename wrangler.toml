@@ -1,7 +1,11 @@
 name = "devtools-hub"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "."
+# The Cloudflare Pages Git build runs `npm ci --omit=dev && bash scripts/build.sh`
+# and uploads this directory. scripts/build.sh assembles it from the working tree
+# minus the Function source (Pages compiles functions/ separately, from the repo
+# root) and minus the test harness.
+pages_build_output_dir = "dist"
 
 [[kv_namespaces]]
 binding = "FEEDBACK_KV"

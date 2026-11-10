@@ -10,7 +10,7 @@
 - Host: Cloudflare Pages
 - Total tools: 373
 - Categories: 11
-- Last updated: 2026-11-08
+- Last updated: 2026-11-10
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (10 tools)
@@ -179,7 +179,7 @@ Free tip calculator for restaurants. Calculate tip amount, split bills, and see 
 - URL: https://tools.scoreroute.com/tools/area-calculator/
 - Markdown: https://tools.scoreroute.com/tools/area-calculator/.md
 - Category: Calculators
-- Tags: area, square, footage, room, wall, paint, carpet, metric, calculator
+- Tags: area, square, footage, room, wall, paint, carpet, metric, calculator, circle, circular, shapes, triangle, trapezoid, l-shape, formula
 
 Room, floor and wall areas in square feet and square meters, plus paint gallons, wallpaper rolls and carpet yards. Free, no signup.
 
