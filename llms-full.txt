@@ -10,7 +10,7 @@
 - Host: Cloudflare Pages
 - Total tools: 373
 - Categories: 11
-- Last updated: 2026-11-09
+- Last updated: 2026-11-08
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (10 tools)
