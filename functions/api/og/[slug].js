@@ -7,7 +7,10 @@
 // render SVG OG images, and platforms that don't (Twitter, Facebook) fall back to /og-image.png.
 import { parseManifest } from '../../../libs/manifest.js';
 
-function esc(s){return String(s||'').replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
+// XML-escape for the SVG text nodes. This used to be a no-op (each replace mapped a
+// character to itself), so any tool name or description containing &, < or > would
+// produce invalid XML and a broken social card.
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function wrapLines(s,maxLen,maxLines){
   const words=String(s||'').split(/\s+/);
   const lines=[];let cur='';
@@ -63,7 +66,10 @@ const CAT_LABEL={
 
 export async function onRequest(context){
   const url=new URL(context.request.url);
-  const slug=(context.params.slug||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,80);
+  // The route param keeps the ".svg" suffix (/api/og/<slug>.svg), so the manifest
+  // lookup missed every tool and every card fell back to the generic one — with the
+  // suffix still glued to the title ("Json Formattersvg"). Strip it first.
+  const slug=(context.params.slug||'').toLowerCase().replace(/\.svg$/,'').replace(/[^a-z0-9-]/g,'').slice(0,80);
   if(!slug)return new Response('Missing slug',{status:400});
 
   const cache=context.caches?.default;
