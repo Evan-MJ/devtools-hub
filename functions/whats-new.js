@@ -158,7 +158,7 @@ export async function onRequest(context) {
     '' +
     '</body></html>';
 
-  const response = new Response(html, {
+  const response = new Response(context.request.method === 'HEAD' ? null : html, {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'public, max-age=300',
@@ -169,6 +169,9 @@ export async function onRequest(context) {
       'Permissions-Policy': 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()'
     }
   });
-  await cache.put(cacheKey, response.clone());
+  // BUG-491: a HEAD request must not be written to the Cache API — Cache.put() throws
+  // on anything but GET, and that throw became a 500 for every HEAD on /whats-new/
+  // (GET was fine, so only crawlers that probe with HEAD saw the failure).
+  if (context.request.method !== 'HEAD') await cache.put(cacheKey, response.clone());
   return response;
 }
