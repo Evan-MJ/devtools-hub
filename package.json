@@ -29,11 +29,11 @@
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "imap": "^0.8.19",
-    "mailparser": "^3.9.9",
-    "nodemailer": "^8.0.10",
+    "mailparser": "^3.14.3",
+    "nodemailer": "^10.5.0",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.60.0",
-    "wrangler": "^4.127.0"
+    "wrangler": "^4.160.0"
   },
   "engines": {
     "node": ">=22"
