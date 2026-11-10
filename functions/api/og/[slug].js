@@ -5,6 +5,7 @@
 // ponytail: SVG, not PNG — the 5-15 KB response is cheap to cache and free of canvas
 // dependencies; modern social platforms (LinkedIn, Slack, Discord, Telegram, iMessage)
 // render SVG OG images, and platforms that don't (Twitter, Facebook) fall back to /og-image.png.
+import { parseManifest } from '../../../libs/manifest.js';
 
 function esc(s){return String(s||'').replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');}
 function wrapLines(s,maxLen,maxLines){
@@ -19,17 +20,15 @@ function wrapLines(s,maxLen,maxLines){
   if(lines.length<maxLines)lines.push(cur.trim());
   return lines;
 }
+// BUG-513: one manifest parser for every reader (libs/manifest.js). This file used
+// to carry its own copy of the row contract.
 async function loadManifest(assets,baseUrl){
   try{
     const mr=await assets.fetch(new URL('/manifest.txt?cb='+Date.now(),baseUrl));
     if(!mr.ok)return {};
-    const text=await mr.text();
     const tools={};
-    for(const line of text.split('\n')){
-      const t=line.trim();if(!t||t.startsWith('#'))continue;
-      const p=t.split('|');if(p.length<6)continue;
-      const [slug,cat,,,name,desc]=p;
-      if(slug)tools[slug.trim()]={category:cat.trim(),name:name.trim(),desc:desc.trim()};
+    for(const t of parseManifest(await mr.text())){
+      if(t.slug)tools[t.slug]={category:t.category,name:t.name,desc:t.desc};
     }
     return tools;
   }catch{return{};}

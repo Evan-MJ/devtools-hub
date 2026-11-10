@@ -6,6 +6,8 @@ import { serveNegotiatedMarkdown } from '../libs/page-md.js';
 // no-slash variant is a duplicate URL of the same page. This lib is the single source
 // of truth for the category list, so the middleware reads it from here.
 import { CAT_DESCRIPTIONS } from '../libs/category-copy.js';
+// BUG-513: one manifest parser for every reader (libs/manifest.js).
+import { parseManifest } from '../libs/manifest.js';
 
 // Security headers middleware for all Cloudflare Pages Functions.
 // Cloudflare Pages _headers file only applies to STATIC assets.
@@ -142,12 +144,11 @@ async function loadKnownSlugs(env, baseUrl) {
     const r = await env.ASSETS.fetch(new URL('/manifest.txt?cb=' + Date.now(), baseUrl));
     if (!r.ok) throw new Error('manifest ' + r.status);
     const text = await r.text();
+    // BUG-513: one manifest parser for every reader (libs/manifest.js). This file
+    // used to carry its own copy of the row contract.
     const slugs = new Set();
-    for (const line of text.split('\n')) {
-      const t = line.trim();
-      if (!t || t.startsWith('#')) continue;
-      const slug = t.split('|')[0].trim();
-      if (/^[a-z0-9-]+$/.test(slug)) slugs.add(slug);
+    for (const t of parseManifest(text)) {
+      if (/^[a-z0-9-]+$/.test(t.slug)) slugs.add(t.slug);
     }
     return slugs;
   })();
