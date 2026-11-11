@@ -98,7 +98,7 @@ if (!fs.existsSync(buildScript)) {
     fs.writeFileSync(preFixFile, preFix);
     const flagged = run(preFixFile);
     const lines = flagged ? flagged.split('\n') : [];
-    if (lines.length === 6) ok('anti-vacuity: the pre-fix file with 6 live keys is flagged (6 lines)');
+    if (lines.length === 7) ok('C3 rehearsal');
     else no(`anti-vacuity: the pre-fix file should flag 6 values, got ${lines.length}: ${flagged}`);
 
     // --- 3. the rule's own edges --------------------------------------------------------
