@@ -61,8 +61,17 @@ PARENT=$(git rev-parse --verify --quiet "refs/remotes/$REMOTE/main" || echo "")
 # instead of guessing. The committed map is therefore the only channel through which a
 # real body edit reaches the live <lastmod> — it has to be written here, from a checkout
 # that still has the history.
+#
+# BUG-469: sitemap.xml's tool <lastmod> comes from that same map (BUG-375), so the
+# sitemap has to be regenerated from it too. Recomputing only the map published a tree
+# whose two surfaces disagreed ("the sitemap says 2026-11-10, tool-dates.json says
+# 2026-11-11") — the lastmod honesty gate caught it on the published tree.
+# Only sitemap.xml is regenerated here: llms.txt / llms-full.txt carry a "Last updated:
+# <today>" stamp, and rewriting them on every publish would make the published tree
+# change every single day for no content change.
 if command -v node >/dev/null 2>&1; then
   node scripts/gen-tool-dates.js
+  node scripts/regen-static-fallbacks.js sitemap
 else
   echo "WARNING: node not found — tool-dates.json is published as committed" >&2
 fi
@@ -76,3 +85,8 @@ fi
 
 git push "$REMOTE" "$NEW:refs/heads/main"
 echo "published $NEW ($(git rev-parse --short HEAD) -> $REMOTE/main)"
+
+# The two files regenerated above are build artifacts: the published snapshot holds the
+# fresh bytes, but the working tree must go back to what the author had committed, or
+# the next publish's "clean tree" check trips over leftovers nobody edited.
+git checkout -- tool-dates.json sitemap.xml 2>/dev/null || true

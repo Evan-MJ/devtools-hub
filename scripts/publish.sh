@@ -41,6 +41,14 @@ ACCOUNT_ID_FALLBACK="dfd1444566cc6b76eda1c8a9fabbb6f9"
 # author left it, so the clean-tree check means "no uncommitted edits".
 GENERATED=(llms.txt llms-full.txt sitemap.xml tool-dates.json)
 
+# The publish path has to write a FRESH tool-dates.json and a sitemap.xml built from
+# it (BUG-469) — the GitHub build is a shallow clone and can only carry the dates that
+# are committed here. Those two files are therefore regenerated during the publish and
+# must be put back afterwards, or the publish leaves the working tree dirty and the
+# next run's "clean tree" check fails on leftovers nobody edited.
+restore_generated() { git checkout -- "${GENERATED[@]}" 2>/dev/null || true; }
+trap restore_generated EXIT
+
 say() { printf '%s\n' "$*"; }
 die() { printf 'publish: %s\n' "$*" >&2; exit 1; }
 
@@ -73,7 +81,15 @@ fi
 say "[publish] 4/7 compare with origin/main"
 # The publish tree is the working tree, which is what publish-github.sh pushes.
 # Recomputing tool-dates.json first makes this comparison exact.
+#
+# BUG-469: sitemap.xml's tool <lastmod> comes from that same map (BUG-375), so the
+# sitemap is regenerated from it too. Recomputing only the map published a tree whose
+# two surfaces disagreed ("the sitemap says 2026-11-10, tool-dates.json says
+# 2026-11-11"). Only sitemap.xml is regenerated: llms.txt / llms-full.txt carry a
+# "Last updated: <today>" stamp, and rewriting them here would make the published
+# tree change every single day for no content change.
 node scripts/gen-tool-dates.js >/dev/null
+node scripts/regen-static-fallbacks.js sitemap >/dev/null
 
 publish_tree() {
   local idx
