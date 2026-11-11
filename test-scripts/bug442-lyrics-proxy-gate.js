@@ -10,6 +10,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Resolve the site repo from this file, not from the cwd: the gate is run from
+// test-scripts/, and `process.cwd() + '/devtools-hub'` pointed at
+// test-scripts/devtools-hub — a directory that does not exist, so the gate died
+// with ENOENT before it could assert anything.
+// scripts/sync-gates.py rewrites this one line when it copies the gate into the
+// site repo (the site tree is one level up there, not two plus a sibling).
 const rootDir = process.argv[2] || path.join(import.meta.dirname, '..');
 const toolsDir = path.join(rootDir, 'tools');
 const FAIL = [];
