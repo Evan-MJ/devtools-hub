@@ -11,8 +11,14 @@
 //   - SSRF 名单：补 169.254./::1/ULA/.internal/.local，以及非 http(s) 协议。
 //
 // 部署：npx wrangler deploy --config wrangler.worker.toml
-// 注意：**这份加固在写下来的时候还没有上线**（部署需要 Workers 写权限，
-// 当时的 token 只有 Pages 和 zone 读权限）。线上跑的还是 v1。
+// 状态：**2026-11-11 已上线**（Version bb5af7d5-3557-4086-817d-19fefa10ff5a）。
+// 部署用的 Workers 写权限 token 在 /home/ubuntu/.secrets/cf-workers-token.txt
+// （仓库外，0600）。命令：
+//   CLOUDFLARE_API_TOKEN=$(cat /home/ubuntu/.secrets/cf-workers-token.txt) \
+//   CLOUDFLARE_ACCOUNT_ID=dfd1444566cc6b76eda1c8a9fabbb6f9 \
+//   npx wrangler deploy --config wrangler.worker.toml
+// 注意：限流 binding 的计数是近似值、按机房独立、后台更新 → 串行慢速打
+// 测不出触发，必须并发突发（实测并发 250 次 → 27 个 429）。
 // 自检：node test-scripts/proxy-worker-selftest.js
 
 // 本站来源。Cloudflare Pages 的域名（含预览）也放行。
