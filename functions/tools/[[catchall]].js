@@ -11,6 +11,7 @@ import { htmlToMarkdownBody, stripHtml, BLANK_SUBTREES } from '../../libs/html-m
 // imported here and by functions/llms.txt.js. Two Functions each carried their own copy
 // of the same published strings and had already drifted.
 import { CAT_DESCRIPTIONS, CAT_NOUNS, CAT_LABELS, sentenceTruncate } from '../../libs/category-copy.js';
+import { parseManifest } from '../../libs/manifest.js';
 
   const CAT_NAMES = CAT_LABELS;
 
@@ -1924,18 +1925,10 @@ async function loadManifest(assets, baseUrl) {
     const mr = await assets.fetch(new URL('/manifest.txt?cb=' + Date.now(), baseUrl));
     if (!mr.ok) throw new Error('Manifest ' + mr.status);
     const text = await mr.text();
+    // BUG-513: one manifest parser for every reader (libs/manifest.js).
     const tools = {};
-    for (const line of text.split('\n')) {
-      const t = line.trim();
-      if (!t || t.startsWith('#')) continue;
-      const p = t.split('|');
-      if (p.length < 6) continue;
-      const [slug, cat, , , name, desc] = p;
-      tools[slug.trim()] = {
-        category: cat.trim(),
-        name: name.trim(),
-        desc: desc.trim(),
-      };
+    for (const t of parseManifest(text)) {
+      tools[t.slug] = { category: t.category, name: t.name, desc: t.desc };
     }
     return tools;
   })();
@@ -2483,14 +2476,8 @@ export async function onRequest(context) {
       try {
         const _mr = await assets.fetch(new URL('/manifest.txt?cb=' + Date.now(), url));
         if (_mr.ok) {
-          const _manifest = await _mr.text();
-          for (const _line of _manifest.split('\n')) {
-            const _trimmed = _line.trim();
-            if (!_trimmed || _trimmed.startsWith('#')) continue;
-            const _parts = _trimmed.split('|');
-            if (_parts.length < 6) continue;
-            _tools.push({slug:_parts[0].trim(),category:(_parts[1]||'other').trim(),featured:_parts[2]==='yes',isnew:_parts[3]==='yes',name:_parts[4].trim(),desc:_parts[5].trim(),tags:_parts[6]||''});
-          }
+          // BUG-513: one manifest parser for every reader (libs/manifest.js).
+          _tools = parseManifest(await _mr.text());
         }
       } catch(_e) {}
       const _totalCount = _tools.length;

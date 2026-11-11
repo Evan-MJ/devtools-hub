@@ -10,6 +10,8 @@
 const PAGE_SIZE = 50;
 const nl = '\n';
 
+import { parseManifest } from '../libs/manifest.js';
+
 function mdEscape(s) {
   return String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ').trim();
 }
@@ -212,29 +214,14 @@ export async function onRequest(context) {
 
   const assets = context.env.ASSETS;
   const baseUrl = new URL(context.request.url);
-  const tools = [];
+  let tools = [];
 
   try {
     const mr = await assets.fetch(new URL('/manifest.txt?cb=' + Date.now(), baseUrl));
     if (!mr.ok) throw new Error('Manifest ' + mr.status);
     const manifest = await mr.text();
-    const lines = manifest.split('\n');
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const parts = trimmed.split('|');
-      if (parts.length < 6) continue;
-      const [slug, category, featured, isnew, name, desc, tags] = parts;
-      tools.push({
-        slug: slug.trim(),
-        category: (category || 'other').trim(),
-        featured: (featured || '').trim() === 'yes',
-        isnew: (isnew || '').trim() === 'yes',
-        name: (name || '').trim(),
-        desc: (desc || '').trim(),
-        tags: (tags || '').split(',').map(s => s.trim()).filter(Boolean)
-      });
-    }
+    // BUG-513: one manifest parser for every reader (libs/manifest.js).
+    tools = parseManifest(manifest);
   } catch (e) {
     return new Response('Manifest error: ' + e.message, { headers: { 'Content-Type': 'text/plain' } });
   }
