@@ -7,3 +7,7 @@ test-*.js
 !.env.example
 
 dist/
+
+# Python bytecode from the gate sync helper
+__pycache__/
+*.pyc

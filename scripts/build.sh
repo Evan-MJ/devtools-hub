@@ -101,6 +101,17 @@ if [ -n "$STALE_COUNT" ]; then
 fi
 echo "[build] no hardcoded tool count in static HTML"
 
+# The gate list in scripts/gates.json is the SAME list the GitHub Actions job
+# (.github/workflows/gates.yml) runs. One list, two runners: CI cannot be green
+# about a gate that the build would fail on, and the build cannot fail on a gate
+# nobody checks. scripts/verify-gates.js also refuses to run the list if a gate
+# file was edited without re-stamping the manifest.
+#
+# A non-zero exit here stops the build, and a stopped build means Cloudflare
+# keeps the previous deployment live.
+echo "[build] Running the gate list from scripts/gates.json..."
+node scripts/verify-gates.js
+
 # ---------------------------------------------------------------- asset set ----
 # dist/ is the upload set of the Git path: the working tree minus the things
 # that must never be published:

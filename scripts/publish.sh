@@ -47,14 +47,19 @@ GENERATED=(llms.txt llms-full.txt sitemap.xml tool-dates.json)
 # must be put back afterwards, or the publish leaves the working tree dirty and the
 # next run's "clean tree" check fails on leftovers nobody edited.
 restore_generated() { git checkout -- "${GENERATED[@]}" 2>/dev/null || true; }
-trap restore_generated EXIT
+BUILD_LOG=$(mktemp -t publish-build.XXXXXX)
+trap 'restore_generated; rm -f "$BUILD_LOG"' EXIT
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'publish: %s\n' "$*" >&2; exit 1; }
 
 # ---------------------------------------------------------------- 1. build ----
 say "[publish] 1/7 build (a non-zero build publishes nothing)"
-bash scripts/build.sh
+# tee keeps the build output on screen as it happens, and keeps a copy so the
+# conclusion can quote what the gate list actually said.
+bash scripts/build.sh 2>&1 | tee "$BUILD_LOG"
+GATE_SUMMARY=$(grep -E '^\[gates\] [0-9]+ 项' "$BUILD_LOG" | tail -1 || true)
+[ -n "$GATE_SUMMARY" ] || GATE_SUMMARY="[gates] (no summary line — the gate list did not run)"
 
 # -------------------------------------------------------------- 2. restore ----
 say "[publish] 2/7 restore the generated files"
@@ -107,10 +112,30 @@ git fetch --quiet "$REMOTE" main || true
 TREE=$(publish_tree)
 REMOTE_TREE=$(git rev-parse --verify --quiet "refs/remotes/$REMOTE/main^{tree}" || echo "")
 
+# What this publish adds, measured against what is live right now.
+# "new tools" = the entries of manifest.txt (the tool source of truth),
+# "new sitemap URLs" = the <loc> count of sitemap.xml.
+count_tools() { grep -cE '^[a-z0-9-]+\|' "$1" 2>/dev/null || true; }
+count_locs() { grep -c '<loc>' "$1" 2>/dev/null || true; }
+TOOLS_NOW=$(count_tools manifest.txt)
+SITEMAP_NOW=$(count_locs sitemap.xml)
+if [ -n "$REMOTE_TREE" ]; then
+  TOOLS_BEFORE=$(git show "refs/remotes/$REMOTE/main:manifest.txt" 2>/dev/null | count_tools /dev/stdin || true)
+  SITEMAP_BEFORE=$(git show "refs/remotes/$REMOTE/main:sitemap.xml" 2>/dev/null | count_locs /dev/stdin || true)
+else
+  TOOLS_BEFORE=0
+  SITEMAP_BEFORE=0
+fi
+NEW_TOOLS=$((TOOLS_NOW - TOOLS_BEFORE))
+NEW_URLS=$((SITEMAP_NOW - SITEMAP_BEFORE))
+
 if [ -n "$REMOTE_TREE" ] && [ "$TREE" = "$REMOTE_TREE" ]; then
   say "[publish] 5/7 tree unchanged ($TREE) -> not pushing, no deployment triggered"
   say ""
   say "  tree == origin/main = $TREE   (identical, nothing to publish)"
+  say "  gates            = $GATE_SUMMARY"
+  say "  new tools        = +$NEW_TOOLS ($TOOLS_BEFORE -> $TOOLS_NOW)"
+  say "  new sitemap URLs = +$NEW_URLS ($SITEMAP_BEFORE -> $SITEMAP_NOW)"
   say "  no push, no deployment, production untouched"
   exit 0
 fi
@@ -186,6 +211,9 @@ say ""
 say "  deployment       = $DEPLOY_ID (success)"
 say "  health           = $HEALTH"
 say "  live             = https://tools.scoreroute.com/"
+say "  gates            = $GATE_SUMMARY"
+say "  new tools        = +$NEW_TOOLS ($TOOLS_BEFORE -> $TOOLS_NOW)"
+say "  new sitemap URLs = +$NEW_URLS ($SITEMAP_BEFORE -> $SITEMAP_NOW)"
 say "  snapshot commit  = $SNAPSHOT   <- what is live now"
 say "  published tree   = $TREE   <- the tree that was published"
 say "  local HEAD       = $(git rev-parse HEAD)   <- differs from the snapshot on purpose"
