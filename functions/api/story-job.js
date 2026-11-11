@@ -188,7 +188,9 @@ async function cfTts(text, env) {
   const safeText = String(text || '').slice(0, 800);
   if (!safeText.trim()) return null; // empty narration → no audio
   const accountId = env.CF_ACCOUNT_ID;
-  const apiToken = env.CLOUDFLARE_API_TOKEN;
+  // Prefer the least-privilege Workers AI token; the broad deployment token is
+  // only a fallback for older deployments that do not have it set yet.
+  const apiToken = env.CLOUDFLARE_AI_TOKEN || env.CLOUDFLARE_API_TOKEN;
   if (!accountId || !apiToken) throw new Error('CF Workers AI not configured');
   let r;
   try {

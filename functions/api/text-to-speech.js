@@ -162,7 +162,9 @@ export async function onRequest({ request, env }) {
     format = 'mp3';
   }
 
-  var cfToken = env.CLOUDFLARE_API_TOKEN;
+  // Prefer the least-privilege Workers AI token; the broad deployment token is
+  // only a fallback for older deployments that do not have it set yet.
+  var cfToken = env.CLOUDFLARE_AI_TOKEN || env.CLOUDFLARE_API_TOKEN;
 
   if (cfToken) {
     try {
