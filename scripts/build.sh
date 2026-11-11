@@ -153,7 +153,7 @@ rm -rf dist/tools/_autonomous-resources
 # config, README.md is the repository readme. None of them is site content — they
 # shipped only because the upload set is the working tree.
 rm -rf dist/src
-rm -f dist/squirrel.toml dist/README.md
+rm -f dist/squirrel.toml dist/README.md dist/wrangler.worker.toml
 
 # ------------------------------------------------------------- assertions ----
 # The build succeeded but the site is broken is the failure mode that hurts, so
