@@ -63,7 +63,10 @@ fi
 # BUG-487: the remaining test artifacts (test-deploy.txt, test-csp-page.html,
 # test-results/) shipped with HTTP 200 too. Park them as well.
 HARNESS=$(mktemp -d -t cf-harness-backup.XXXXXX)
-HARNESS_FILES=$(ls test-*.js test-*.html test-*.txt *-playwright-test.js *-local-test.js *-prod-test.js *-gate.js tools-auto-test.js functions/api/test.js functions/api/test-*.js functions/tools/__bug360-baseline.js 2>/dev/null; find test-scripts test-results -type f 2>/dev/null || true)
+# tools/_autonomous-resources is operator tooling (mailbox + signup automation), not a
+# tool: it carries the mailbox address and reads the local credential store. It stays in
+# the repo; it must not be published.
+HARNESS_FILES=$(ls test-*.js test-*.html test-*.txt *-playwright-test.js *-local-test.js *-prod-test.js *-gate.js tools-auto-test.js functions/api/test.js functions/api/test-*.js functions/tools/__bug360-baseline.js 2>/dev/null; find test-scripts test-results tools/_autonomous-resources -type f 2>/dev/null || true)
 if [ -n "$HARNESS_FILES" ]; then
   HARNESS_COUNT=$(echo "$HARNESS_FILES" | wc -l | tr -d ' ')
   # Preserve each file's relative path inside the park dir (`mv` alone would

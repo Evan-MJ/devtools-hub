@@ -127,6 +127,19 @@ rm -f dist/test-*.js dist/test-*.html dist/test-*.txt \
       dist/*-playwright-test.js dist/*-local-test.js dist/*-prod-test.js \
       dist/*-gate.js dist/tools-auto-test.js
 
+# The autonomous-signup helpers are operator tooling (mailbox IMAP/SMTP, Playwright
+# signup). They live under tools/ but are not tools: they are not in manifest.txt,
+# they carry the mailbox address, and they read the local credential store. They
+# stayed in the repo because the operator still uses them; they must not ship.
+rm -rf dist/tools/_autonomous-resources
+
+# src/ is the source of a SEPARATE Worker (devtools-hub-api-proxy) that is deployed
+# on its own; it is not a page of this site. squirrel.toml is the crawler's local
+# config, README.md is the repository readme. None of them is site content — they
+# shipped only because the upload set is the working tree.
+rm -rf dist/src
+rm -f dist/squirrel.toml dist/README.md
+
 # ------------------------------------------------------------- assertions ----
 # The build succeeded but the site is broken is the failure mode that hurts, so
 # the shapes that matter are asserted here instead of being noticed by a visitor.

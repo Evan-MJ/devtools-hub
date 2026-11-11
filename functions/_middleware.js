@@ -198,11 +198,13 @@ export async function onRequest(context) {
   // gate parks them — but Cloudflare's edge still holds asset copies from the
   // deployments that shipped them before the gate did, and revalidating a copy
   // returns 304, so the stale copy is served instead of the 404. Crawlers indexed
-  // those copies. The rest (test-deploy.txt, test-csp-page.html, test-results/,
-  // /api/test) still ship today, because the park list did not name them.
-  // Middleware runs before the asset lookup, so returning here ends it for both
-  // the stale copies and the ones that would ship next. Same house pattern as
-  // /scripts/ and /libs/ above.
+  // those copies. Middleware runs before the asset lookup, so returning here ends it
+  // for both the stale copies and the ones that would ship next. Same house pattern
+  // as /scripts/ and /libs/ above.
+  //
+  // /api/test is in this list even though the Function that served it is gone: the
+  // edge may still hold the old Function route, and an unauthenticated echo endpoint
+  // that spends nothing is still one more public route to keep shut.
   const rootFile = url.pathname.slice(1);
   const isRootHarness = !rootFile.includes('/') &&
     (/^test-/.test(rootFile) || /-(test|gate)\.js$/.test(rootFile));
