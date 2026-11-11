@@ -27,6 +27,20 @@ export GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-opencode@local}"
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
+# Where the snapshot goes.
+#
+# Default: a branch, not main. The snapshot is then opened as a pull request
+# (scripts/publish-pr.sh) and merged once the gate list is green, so main is
+# never written without the gates having run on that exact tree. That is also
+# what makes branch protection possible: "main may only change through a PR
+# whose gates check passed" is a rule GitHub can enforce.
+#
+# PUBLISH_DIRECT=1 pushes straight to main. That is the emergency channel: it
+# skips the PR, so it also skips the review, and it only works while main has
+# no protection rule.
+BRANCH="${PUBLISH_BRANCH:-publish/snapshot}"
+DIRECT="${PUBLISH_DIRECT:-0}"
+
 # The published tree must be the tree that goes LIVE, not the committed HEAD.
 #
 # The build machine deploys the working tree (wrangler uploads the directory as it is),
@@ -83,8 +97,14 @@ else
     NEW=$(git commit-tree "$TREE" -m "$MSG")
 fi
 
-git push "$REMOTE" "$NEW:refs/heads/main"
-echo "published $NEW ($(git rev-parse --short HEAD) -> $REMOTE/main)"
+if [ "$DIRECT" = "1" ]; then
+  git push "$REMOTE" "$NEW:refs/heads/main"
+  echo "published $NEW ($(git rev-parse --short HEAD) -> $REMOTE/main)"
+else
+  # Force: this branch is ours and only ever holds the latest snapshot.
+  git push --force "$REMOTE" "$NEW:refs/heads/$BRANCH"
+  echo "published $NEW ($(git rev-parse --short HEAD) -> $REMOTE/$BRANCH)"
+fi
 
 # The two files regenerated above are build artifacts: the published snapshot holds the
 # fresh bytes, but the working tree must go back to what the author had committed, or

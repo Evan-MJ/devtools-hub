@@ -141,11 +141,26 @@ if [ -n "$REMOTE_TREE" ] && [ "$TREE" = "$REMOTE_TREE" ]; then
 fi
 
 # ------------------------------------------------------------- 5. publish ----
-say "[publish] 5/7 publish the tree to $REMOTE/main"
-PUBLISH_OUT=$(bash scripts/publish-github.sh "$REMOTE")
-printf '%s\n' "$PUBLISH_OUT"
-SNAPSHOT=$(printf '%s\n' "$PUBLISH_OUT" | grep -oE '[0-9a-f]{40}' | tail -1)
-[ -n "$SNAPSHOT" ] || die "could not read the snapshot commit out of the publish output"
+if [ "${PUBLISH_DIRECT:-0}" = "1" ]; then
+  say "[publish] 5/7 publish the tree to $REMOTE/main (DIRECT — no pull request)"
+  PUBLISH_OUT=$(bash scripts/publish-github.sh "$REMOTE")
+  printf '%s\n' "$PUBLISH_OUT"
+  SNAPSHOT=$(printf '%s\n' "$PUBLISH_OUT" | grep -oE '[0-9a-f]{40}' | tail -1)
+  [ -n "$SNAPSHOT" ] || die "could not read the snapshot commit out of the publish output"
+  LIVE_COMMIT="$SNAPSHOT"
+else
+  say "[publish] 5/7 publish the tree to a branch, then merge it as a pull request"
+  PUBLISH_OUT=$(bash scripts/publish-github.sh "$REMOTE")
+  printf '%s\n' "$PUBLISH_OUT"
+  SNAPSHOT=$(printf '%s\n' "$PUBLISH_OUT" | grep -oE '[0-9a-f]{40}' | tail -1)
+  [ -n "$SNAPSHOT" ] || die "could not read the snapshot commit out of the publish output"
+
+  PR_OUT=$(bash scripts/publish-pr.sh "${PUBLISH_BRANCH:-publish/snapshot}" "$SNAPSHOT")
+  printf '%s\n' "$PR_OUT"
+  LIVE_COMMIT=$(printf '%s\n' "$PR_OUT" | grep -oE '^MERGED [0-9a-f]{40}' | awk '{print $2}' | tail -1)
+  [ -n "$LIVE_COMMIT" ] || die "the pull request was not merged"
+  say "  pull request merged -> $LIVE_COMMIT is now origin/main"
+fi
 
 # ---------------------------------------------------------------- 6. wait ----
 say "[publish] 6/7 wait for the deployment (up to ${WAIT_SECONDS}s)"
@@ -181,7 +196,7 @@ for x in d:
     if sha.startswith(sys.argv[1]):
         print(x.get("id", ""), (x.get("latest_stage") or {}).get("status", ""))
         break
-' "$SNAPSHOT")"
+' "$LIVE_COMMIT")"
   if [ "$DEPLOY_STATUS" = "success" ]; then break; fi
   if [ "$DEPLOY_STATUS" = "failure" ] || [ "$DEPLOY_STATUS" = "error" ]; then break; fi
   sleep 20
@@ -214,7 +229,8 @@ say "  live             = https://tools.scoreroute.com/"
 say "  gates            = $GATE_SUMMARY"
 say "  new tools        = +$NEW_TOOLS ($TOOLS_BEFORE -> $TOOLS_NOW)"
 say "  new sitemap URLs = +$NEW_URLS ($SITEMAP_BEFORE -> $SITEMAP_NOW)"
-say "  snapshot commit  = $SNAPSHOT   <- what is live now"
+say "  snapshot commit  = $SNAPSHOT   <- the snapshot that was published"
+say "  live commit      = $LIVE_COMMIT   <- what origin/main points at now"
 say "  published tree   = $TREE   <- the tree that was published"
 say "  local HEAD       = $(git rev-parse HEAD)   <- differs from the snapshot on purpose"
 
