@@ -22,7 +22,9 @@
 #                        snapshot commit on origin/main; Cloudflare Pages builds
 #                        it automatically.
 #   6. wait           -> poll the deployment until it succeeds or fails.
-#   7. conclude       -> print what is live, in three lines.
+#   7. health         -> scripts/health-check.sh, read-only, on the production
+#                        domain. A green build with a broken page is not done.
+#   8. conclude       -> print what is live, in a few lines.
 #
 # Nothing here is reversible except the deployment itself: to undo, roll back to
 # the previous deployment and revert main. This script never rolls back on its
@@ -151,11 +153,33 @@ if [ "$DEPLOY_STATUS" != "success" ]; then
   exit 1
 fi
 
-# ------------------------------------------------------------- 7. conclude ----
-say "[publish] 7/7 done"
+# ------------------------------------------------------------- 7. health ----
+# The deployment succeeded; now check that the live site actually answers. A
+# green build with a broken page is the failure mode that hurts, so the button
+# refuses to call it done without this.
+say "[publish] 7/8 health check (read-only)"
+if bash scripts/health-check.sh; then
+  HEALTH=green
+else
+  HEALTH=red
+fi
+
+# ----------------------------------------------------------- 8. conclude ----
+say "[publish] 8/8 done"
 say ""
 say "  deployment       = $DEPLOY_ID (success)"
+say "  health           = $HEALTH"
 say "  live             = https://tools.scoreroute.com/"
 say "  snapshot commit  = $SNAPSHOT   <- what is live now"
 say "  published tree   = $TREE   <- the tree that was published"
 say "  local HEAD       = $(git rev-parse HEAD)   <- differs from the snapshot on purpose"
+
+# A red health check after a successful deploy is the one case the button must
+# not report as success. It does NOT roll back here: rollback needs a target
+# deployment id and a revert of main, and it is A4's job to own that decision.
+if [ "$HEALTH" = "red" ]; then
+  say ""
+  say "  The build was green but the live site is not. Roll back with:"
+  say "    bash scripts/rollback.sh   (picks the last good deployment by itself)"
+  exit 1
+fi
