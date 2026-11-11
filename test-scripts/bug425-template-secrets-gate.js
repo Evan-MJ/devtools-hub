@@ -151,3 +151,5 @@ if (!AWK_PROG) {
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
+
+// D4 rehearsal: a failing assertion
