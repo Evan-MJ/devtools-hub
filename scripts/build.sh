@@ -65,7 +65,11 @@ TEMPLATE_LEAK=$(find . -path ./node_modules -prune -o -path ./.git -prune -o -pa
       {
         line = $0
         sub(/^[[:space:]]*(export[[:space:]]+)?/, "", line)
-        if (line !~ /^[A-Z][A-Z0-9_]{2,}[[:space:]]*=/) next
+        # No {n,} interval here: mawk (the awk on the Cloudflare build image)
+        # does not implement interval expressions, so the name check silently
+        # never matched there and the whole template-secret rule was vacuous.
+        # [A-Z][A-Z0-9_][A-Z0-9_]+ is the same shape (a name of 3+ chars).
+        if (line !~ /^[A-Z][A-Z0-9_][A-Z0-9_]+[[:space:]]*=/) next
         sub(/^[^=]*=[[:space:]]*/, "", line)
         gsub(/[[:space:]"'"'"']+$/, "", line)
         if (line == "") next
@@ -110,12 +114,7 @@ echo "[build] no hardcoded tool count in static HTML"
 # A non-zero exit here stops the build, and a stopped build means Cloudflare
 # keeps the previous deployment live.
 echo "[build] Running the gate list from scripts/gates.json..."
-GATE_LOG=$(mktemp -t gates.XXXXXX)
-set +e
-node scripts/verify-gates.js 2>&1 | tee "$GATE_LOG"
-GATE_RC=${PIPESTATUS[0]}
-set -e
-echo "[build] gate list exit=$GATE_RC"
+node scripts/verify-gates.js
 
 # ---------------------------------------------------------------- asset set ----
 # dist/ is the upload set of the Git path: the working tree minus the things
@@ -155,10 +154,6 @@ rm -rf dist/tools/_autonomous-resources
 # shipped only because the upload set is the working tree.
 rm -rf dist/src
 rm -f dist/squirrel.toml dist/README.md
-
-# DIAGNOSTIC (temporary): the gate log lands in the upload set so a preview
-# deployment can be asked what actually happened.
-cp "$GATE_LOG" dist/gates-build.log 2>/dev/null || true
 
 # ------------------------------------------------------------- assertions ----
 # The build succeeded but the site is broken is the failure mode that hurts, so
