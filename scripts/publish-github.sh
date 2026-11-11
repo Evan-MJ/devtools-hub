@@ -35,9 +35,10 @@ export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 # what makes branch protection possible: "main may only change through a PR
 # whose gates check passed" is a rule GitHub can enforce.
 #
-# PUBLISH_DIRECT=1 pushes straight to main. That is the emergency channel: it
-# skips the PR, so it also skips the review, and it only works while main has
-# no protection rule.
+# PUBLISH_DIRECT=1 pushes straight to main. main is protected, so this only
+# works if the protection's admin exemption is momentarily off. For a real
+# emergency use scripts/publish-urgent.sh, which turns that exemption on, pushes
+# and turns it back off.
 BRANCH="${PUBLISH_BRANCH:-publish/snapshot}"
 DIRECT="${PUBLISH_DIRECT:-0}"
 
