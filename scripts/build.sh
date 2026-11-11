@@ -110,7 +110,12 @@ echo "[build] no hardcoded tool count in static HTML"
 # A non-zero exit here stops the build, and a stopped build means Cloudflare
 # keeps the previous deployment live.
 echo "[build] Running the gate list from scripts/gates.json..."
-node scripts/verify-gates.js
+GATE_LOG=$(mktemp -t gates.XXXXXX)
+set +e
+node scripts/verify-gates.js 2>&1 | tee "$GATE_LOG"
+GATE_RC=${PIPESTATUS[0]}
+set -e
+echo "[build] gate list exit=$GATE_RC"
 
 # ---------------------------------------------------------------- asset set ----
 # dist/ is the upload set of the Git path: the working tree minus the things
@@ -150,6 +155,10 @@ rm -rf dist/tools/_autonomous-resources
 # shipped only because the upload set is the working tree.
 rm -rf dist/src
 rm -f dist/squirrel.toml dist/README.md
+
+# DIAGNOSTIC (temporary): the gate log lands in the upload set so a preview
+# deployment can be asked what actually happened.
+cp "$GATE_LOG" dist/gates-build.log 2>/dev/null || true
 
 # ------------------------------------------------------------- assertions ----
 # The build succeeded but the site is broken is the failure mode that hurts, so
