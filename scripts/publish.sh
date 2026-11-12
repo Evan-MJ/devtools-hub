@@ -54,7 +54,7 @@ say() { printf '%s\n' "$*"; }
 die() { printf 'publish: %s\n' "$*" >&2; exit 1; }
 
 # ---------------------------------------------------------------- 1. build ----
-say "[publish] 1/7 build (a non-zero build publishes nothing)"
+say "[publish] 1/9 build (a non-zero build publishes nothing)"
 # tee keeps the build output on screen as it happens, and keeps a copy so the
 # conclusion can quote what the gate list actually said.
 bash scripts/build.sh 2>&1 | tee "$BUILD_LOG"
@@ -62,11 +62,11 @@ GATE_SUMMARY=$(grep -E '^\[gates\] [0-9]+ 项' "$BUILD_LOG" | tail -1 || true)
 [ -n "$GATE_SUMMARY" ] || GATE_SUMMARY="[gates] (no summary line — the gate list did not run)"
 
 # -------------------------------------------------------------- 2. restore ----
-say "[publish] 2/7 restore the generated files"
+say "[publish] 2/9 restore the generated files"
 git checkout -- "${GENERATED[@]}" 2>/dev/null || true
 
 # ------------------------------------------------------------ 3. self-check ----
-say "[publish] 3/7 self-check"
+say "[publish] 3/9 self-check"
 BRANCH=$(git symbolic-ref --quiet --short HEAD || echo "(detached)")
 [ "$BRANCH" = "main" ] || die "branch is '$BRANCH', not main. Publishing a side branch publishes its tree to production."
 
@@ -83,7 +83,7 @@ if [ -n "$DIRTY" ]; then
 fi
 
 # -------------------------------------------------------------- 4. compare ----
-say "[publish] 4/7 compare with origin/main"
+say "[publish] 4/9 compare with origin/main"
 # The publish tree is the working tree, which is what publish-github.sh pushes.
 # Recomputing tool-dates.json first makes this comparison exact.
 #
@@ -129,8 +129,20 @@ fi
 NEW_TOOLS=$((TOOLS_NOW - TOOLS_BEFORE))
 NEW_URLS=$((SITEMAP_NOW - SITEMAP_BEFORE))
 
+# WHICH tools are new, not just how many. The old flow left this to whoever
+# published: they had to work out the new slug by hand and then go looking for
+# it. A publish that adds a tool says so, and verifies the tool it just added.
+slugs_of() { grep -oE '^[a-z0-9-]+\|' "$1" 2>/dev/null | tr -d '|' | sort; }
+SLUGS_NOW=$(slugs_of manifest.txt)
+if [ -n "$REMOTE_TREE" ]; then
+  SLUGS_BEFORE=$(git show "refs/remotes/$REMOTE/main:manifest.txt" 2>/dev/null | slugs_of /dev/stdin || true)
+else
+  SLUGS_BEFORE=""
+fi
+NEW_SLUGS=$(comm -13 <(printf '%s\n' "$SLUGS_BEFORE") <(printf '%s\n' "$SLUGS_NOW"))
+
 if [ -n "$REMOTE_TREE" ] && [ "$TREE" = "$REMOTE_TREE" ]; then
-  say "[publish] 5/7 tree unchanged ($TREE) -> not pushing, no deployment triggered"
+  say "[publish] 5/9 tree unchanged ($TREE) -> not pushing, no deployment triggered"
   say ""
   say "  tree == origin/main = $TREE   (identical, nothing to publish)"
   say "  gates            = $GATE_SUMMARY"
@@ -142,14 +154,14 @@ fi
 
 # ------------------------------------------------------------- 5. publish ----
 if [ "${PUBLISH_DIRECT:-0}" = "1" ]; then
-  say "[publish] 5/7 publish the tree to $REMOTE/main (DIRECT — no pull request)"
+  say "[publish] 5/9 publish the tree to $REMOTE/main (DIRECT — no pull request)"
   PUBLISH_OUT=$(bash scripts/publish-github.sh "$REMOTE")
   printf '%s\n' "$PUBLISH_OUT"
   SNAPSHOT=$(printf '%s\n' "$PUBLISH_OUT" | grep -oE '[0-9a-f]{40}' | tail -1)
   [ -n "$SNAPSHOT" ] || die "could not read the snapshot commit out of the publish output"
   LIVE_COMMIT="$SNAPSHOT"
 else
-  say "[publish] 5/7 publish the tree to a branch, then merge it as a pull request"
+  say "[publish] 5/9 publish the tree to a branch, then merge it as a pull request"
   PUBLISH_OUT=$(bash scripts/publish-github.sh "$REMOTE")
   printf '%s\n' "$PUBLISH_OUT"
   SNAPSHOT=$(printf '%s\n' "$PUBLISH_OUT" | grep -oE '[0-9a-f]{40}' | tail -1)
@@ -163,7 +175,7 @@ else
 fi
 
 # ---------------------------------------------------------------- 6. wait ----
-say "[publish] 6/7 wait for the deployment (up to ${WAIT_SECONDS}s)"
+say "[publish] 6/9 wait for the deployment (up to ${WAIT_SECONDS}s)"
 
 TOKEN="${CLOUDFLARE_API_TOKEN:-}"
 if [ -z "$TOKEN" ] && [ -f .env ]; then
@@ -213,7 +225,7 @@ fi
 # The deployment succeeded; now check that the live site actually answers. A
 # green build with a broken page is the failure mode that hurts, so the button
 # refuses to call it done without this.
-say "[publish] 7/8 health check (read-only)"
+say "[publish] 7/9 health check (read-only)"
 if bash scripts/health-check.sh; then
   HEALTH=green
 else
@@ -221,10 +233,28 @@ else
 fi
 
 # ----------------------------------------------------------- 8. conclude ----
-say "[publish] 8/8 done"
+say "[publish] 8/9 verify the new tool(s)"
+NEW_TOOL_HEALTH=skipped
+if [ -n "$NEW_SLUGS" ]; then
+  say "  new tools in this publish:"
+  for s in $NEW_SLUGS; do say "    https://tools.scoreroute.com/tools/$s/"; done
+  # The site is already live at this point, so this cannot block the deployment —
+  # it reports whether the tool that just went out actually works. A red here
+  # means "fix it and publish again", not "the deploy failed".
+  if node scripts/verify-new-tool.js $NEW_SLUGS; then
+    NEW_TOOL_HEALTH=green
+  else
+    NEW_TOOL_HEALTH=red
+  fi
+else
+  say "  (this publish added no new tool — nothing to verify)"
+fi
+
+say "[publish] 9/9 done"
 say ""
 say "  deployment       = $DEPLOY_ID (success)"
 say "  health           = $HEALTH"
+say "  new tool check   = $NEW_TOOL_HEALTH"
 say "  live             = https://tools.scoreroute.com/"
 say "  gates            = $GATE_SUMMARY"
 say "  new tools        = +$NEW_TOOLS ($TOOLS_BEFORE -> $TOOLS_NOW)"
