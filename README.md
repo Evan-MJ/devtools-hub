@@ -52,7 +52,29 @@ request time, so adding a tool is one manifest line plus `tools/<slug>/index.htm
 
 ## Deploy
 
-`scripts/pre-deploy.sh` is the gate: it regenerates `tool-dates.json`, `sitemap.xml`,
-`llms.txt` and `llms-full.txt`, redacts secrets and parks the test harness before
-`wrangler pages deploy`. `scripts/publish-github.sh` publishes the deployed tree to
-GitHub as a single snapshot commit.
+**One command. Do not push to `main` by hand and do not open a PR by hand.**
+
+```bash
+git add -A && git commit -m "what changed"
+bash scripts/publish.sh
+```
+
+It builds the site (52 local gates - a red build publishes nothing), pushes a
+tree snapshot to `publish/snapshot`, opens a pull request, waits for the `gates`
+check to go green, squash-merges it, waits for the Cloudflare Pages build to
+succeed, runs a 406-check health pass against the live domain, verifies the
+tool(s) this publish added, and prints the verdict. "Published" means the last
+lines say `deployment ... success`, `health = green`, `new tool check = green`
+and `gates ... PASS 52`.
+
+Run it again with nothing changed and it stops at "tree unchanged -> not
+pushing" without touching production.
+
+Adding a tool is a manifest line plus `tools/<slug>/index.html`, then
+`bash scripts/build.sh` before committing (the build regenerates the page's
+head metadata and `.well-known/`), then commit and publish. Check one tool on
+its own with `node scripts/verify-new-tool.js <slug>`.
+
+`scripts/pre-deploy.sh` (direct `wrangler pages deploy`) and
+`scripts/publish-github.sh` (snapshot only) are building blocks of that flow,
+not entry points.
