@@ -75,6 +75,12 @@ Adding a tool is a manifest line plus `tools/<slug>/index.html`, then
 head metadata and `.well-known/`), then commit and publish. Check one tool on
 its own with `node scripts/verify-new-tool.js <slug>`.
 
+One thing to expect when you add a tool: the gate `bug406` measures how long a
+"New" badge may live against the newest tool's date, so a brand-new tool pushes
+that window forward and older badges fall out of it. The build then fails with
+`no stale "New" badge on an old tool` and names the tools to fix - set their
+`isnew` field in `manifest.txt` to `no` and build again. Do not edit the gate.
+
 `scripts/pre-deploy.sh` (direct `wrangler pages deploy`) and
 `scripts/publish-github.sh` (snapshot only) are building blocks of that flow,
 not entry points.
