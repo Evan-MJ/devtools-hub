@@ -43,8 +43,10 @@
 .ss-field { flex: 1; min-width: 140px; }
 .ss-btn { padding: 10px 16px; border-radius: 8px; border: 1px solid #2a2a4e; background: #131826; color: #e8e8f0; font-size: 0.86rem; cursor: pointer; font-family: inherit; font-weight: 500; transition: border-color 0.15s, color 0.15s; }
 .ss-btn:hover { border-color: #667eea; color: #fff; }
-.ss-btn.primary { background: #667eea; border-color: #667eea; color: #fff; font-weight: 700; }
-.ss-btn.primary:hover { background: #5568d3; }
+/* #667eea with white text is 3.66:1 — WCAG AA wants 4.5:1 for text this size.
+   #5248c9 is the same hue one step down: 6.71:1. */
+.ss-btn.primary { background: #5248c9; border-color: #5248c9; color: #fff; font-weight: 700; }
+.ss-btn.primary:hover { background: #4338ca; }
 .ss-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .ss-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
 .ss-status { display: none; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5; }
@@ -56,7 +58,7 @@
 .ss-excl-x:hover { color: #f87171; }
 .ss-count { color: #667eea; font-weight: 700; }
 .ss-views { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-.ss-views .ss-btn.active { background: #667eea; border-color: #667eea; color: #fff; font-weight: 700; }
+.ss-views .ss-btn.active { background: #5248c9; border-color: #5248c9; color: #fff; font-weight: 700; }
 .ss-party { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
 .ss-person { background: #131826; border: 1px solid #2a2a4e; border-radius: 8px; padding: 10px 12px; cursor: pointer; font-family: inherit; color: #e8e8f0; font-size: 0.88rem; text-align: left; transition: border-color 0.15s; }
 .ss-person:hover { border-color: #667eea; }
