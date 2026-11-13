@@ -49,7 +49,11 @@ api() {
 }
 
 # --- 1. find an open PR for this branch, or open one -------------------------
-PR=$(api GET "/pulls?state=open&head=$REPO:$BRANCH" | python3 -c '
+# The head filter is `owner:branch`, NOT `owner/repo:branch`. With the repo in it
+# GitHub answers 200 with an empty list, so this always looked like "no open PR",
+# the script POSTed a new one and died on "A pull request already exists" — which
+# broke the documented "re-running publish.sh reuses the same PR" path.
+PR=$(api GET "/pulls?state=open&head=${REPO%%/*}:$BRANCH" | python3 -c '
 import json, sys
 d = json.load(sys.stdin)
 print(d[0]["number"] if isinstance(d, list) and d else "")
