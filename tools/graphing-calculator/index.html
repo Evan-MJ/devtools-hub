@@ -27,7 +27,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "datePublished": "2026-10-02",
-        "dateModified": "2026-10-02",
+        "dateModified": "2026-11-13",
         "author": {"@id": "https://tools.scoreroute.com/#author", "@type": "Person", "name": "BAOMING", "url": "https://github.com/Evan-MJ", "sameAs": ["https://github.com/Evan-MJ", "https://github.com/Evan-MJ/devtools-hub"]},
         "publisher": {"@id": "https://tools.scoreroute.com/#organization", "@type": "Organization", "name": "DevTools Hub", "url": "https://tools.scoreroute.com/"},
         "name": "Graphing Calculator - Roots, Area & Fit | DevTools Hub",
@@ -874,9 +874,16 @@
 
             if (c.type === 'imp') {
                 var cols = Math.max(120, Math.min(900, Math.round(cv.width / 2)));
+                // Each column can hold several roots (the two halves of a circle).
+                // They are separate branches, so collect them per branch and stroke
+                // one polyline per branch. Drawing them into a single path joins the
+                // upper and the lower half with a vertical chord, which fills the
+                // curve in solid instead of outlining it.
+                var imPolys = [], imCur = [], imJump = 40 * DPR;
                 for (i = 0; i <= cols; i++) {
                     var xi = v.xmin + (v.xmax - v.xmin) * i / cols;
                     var Ylo = v.ymin, Yhi = v.ymax, stepsY = 420, dy = (Yhi - Ylo) / stepsY, hits = 0, py0 = null;
+                    var imRoots = [];
                     for (k = 0; k <= stepsY; k++) {
                         var yi = Ylo + dy * k;
                         var val = evalNode(c.ast, { x: xi, y: yi });
@@ -890,14 +897,33 @@
                             }
                             var yr = (lo + hi) / 2;
                             if (px(xi) >= -10 && px(xi) <= cv.width + 10 && py(yr) >= -10 && py(yr) <= cv.height + 10) {
-                                if (hits === 0) ctx.moveTo(px(xi), py(yr)); else ctx.lineTo(px(xi), py(yr));
+                                imRoots.push([px(xi), py(yr)]);
                                 hits++;
                             }
                             if (hits > 8) break;
                         }
                         py0 = ok ? val : null;
                     }
-                    if (hits > 1) ctx.stroke();
+                    for (var imB = 0; imB < imRoots.length; imB++) {
+                        var imBr = imCur[imB] || (imCur[imB] = []);
+                        var imLast = imBr.length ? imBr[imBr.length - 1] : null;
+                        // the branch jumped: the column roots belong to different
+                        // branches now, so start a new polyline instead of joining them
+                        if (imLast && Math.abs(imRoots[imB][1] - imLast[1]) > imJump) { imPolys.push(imBr); imBr = imCur[imB] = []; }
+                        imBr.push(imRoots[imB]);
+                    }
+                    for (var imB2 = imRoots.length; imB2 < imCur.length; imB2++) {
+                        if (imCur[imB2].length) { imPolys.push(imCur[imB2]); imCur[imB2] = []; }
+                    }
+                }
+                for (var imC = 0; imC < imCur.length; imC++) if (imCur[imC].length > 1) imPolys.push(imCur[imC]);
+                for (var imP = 0; imP < imPolys.length; imP++) {
+                    var imPoly = imPolys[imP];
+                    if (imPoly.length < 2) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(imPoly[0][0], imPoly[0][1]);
+                    for (var imQ = 1; imQ < imPoly.length; imQ++) ctx.lineTo(imPoly[imQ][0], imPoly[imQ][1]);
+                    ctx.stroke();
                 }
             }
         }
