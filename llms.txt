@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> Free collection of 373 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
+> Free collection of 374 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 373 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 374 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -22,7 +22,7 @@
 - [Network Tools (25 tools)](https://tools.scoreroute.com/tools/network/.md): Diagnose DNS, WHOIS, SSL, IP, email, proxies and internet speed from your browser. [HTML](https://tools.scoreroute.com/tools/network/)
 - [Code Testing (17 tools)](https://tools.scoreroute.com/tools/code-testing/.md): Test regex patterns, JWT tokens, grammar, text diffs, math and typing speed. [HTML](https://tools.scoreroute.com/tools/code-testing/)
 - [PDF Tools (25 tools)](https://tools.scoreroute.com/tools/pdf-tools/.md): Merge, split, compress, sign, redact and convert PDF files without ever uploading them. [HTML](https://tools.scoreroute.com/tools/pdf-tools/)
-- [Daily Life (36 tools)](https://tools.scoreroute.com/tools/life/.md): Everyday utilities for weather, world clock, stopwatch, timer, holidays and astronomy. [HTML](https://tools.scoreroute.com/tools/life/)
+- [Daily Life (37 tools)](https://tools.scoreroute.com/tools/life/.md): Everyday utilities for weather, world clock, stopwatch, timer, holidays and astronomy. [HTML](https://tools.scoreroute.com/tools/life/)
 - [Money & Markets (22 tools)](https://tools.scoreroute.com/tools/finance/.md): Live stock, crypto, gold and currency prices plus loan and mortgage calculators. [HTML](https://tools.scoreroute.com/tools/finance/)
 - [AI Language (32 tools)](https://tools.scoreroute.com/tools/ai-language/.md): Translate, paraphrase, detect AI-written text, cite sources and build resumes with AI. [HTML](https://tools.scoreroute.com/tools/ai-language/)
 
@@ -362,6 +362,7 @@
 - [Prayer Times Calculator - Salah Countdown & Qibla](https://tools.scoreroute.com/tools/prayer-times/.md) [HTML](https://tools.scoreroute.com/tools/prayer-times/)
 - [Snow Day Calculator - School Closure Chance](https://tools.scoreroute.com/tools/snow-day-calculator/.md) [HTML](https://tools.scoreroute.com/tools/snow-day-calculator/)
 - [Air Quality Index Checker - Live AQI Today](https://tools.scoreroute.com/tools/air-quality-index/.md) [HTML](https://tools.scoreroute.com/tools/air-quality-index/)
+- [Secret Santa Generator - Draw Names Free, No Email](https://tools.scoreroute.com/tools/secret-santa-generator/.md) [HTML](https://tools.scoreroute.com/tools/secret-santa-generator/)
 
 ## Money & Markets
 - [Crypto Price Tracker - Live Prices and Charts](https://tools.scoreroute.com/tools/crypto-price-tracker/.md) [HTML](https://tools.scoreroute.com/tools/crypto-price-tracker/)
@@ -433,4 +434,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-10
+- Last updated: 2026-11-13

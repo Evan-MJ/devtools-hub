@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 373 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 374 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 373
+- Total tools: 374
 - Categories: 11
-- Last updated: 2026-11-10
+- Last updated: 2026-11-13
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (10 tools)
@@ -2592,7 +2592,7 @@ Convert PPTX slides to PDF right in your browser. Text stays selectable and sear
 
 Free PDF to text extractor. Extract plain text from any PDF in your browser. No upload, no signup, 100% private. Copy or download results.
 
-## Daily Life (36 tools)
+## Daily Life (37 tools)
 
 Browse all: [Daily Life](https://tools.scoreroute.com/tools/life/.md)
 
@@ -2919,6 +2919,15 @@ Free snow day calculator. Turns live hourly weather data into a school closure p
 - Tags: air quality index, aqi, air quality index today, aqi checker, air quality near me, pm2.5, air pollution, air quality checker, us aqi, wildfire smoke, asthma, open windows
 
 Free air quality index checker. Live AQI for any city or your location, a pollutant breakdown, and the cleanest hour to go outside. No signup.
+
+### Secret Santa Generator - Draw Names Free, No Email
+
+- URL: https://tools.scoreroute.com/tools/secret-santa-generator/
+- Markdown: https://tools.scoreroute.com/tools/secret-santa-generator/.md
+- Category: Daily Life
+- Tags: secret, santa, generator, draw, names, exchange, gift, christmas, exclusions, no, email, whatsapp, print
+
+Draw names for your Secret Santa gift exchange right in the browser. Exclusion pairs keep couples apart, no email or signup, and nothing is stored online.
 
 ## Money & Markets (22 tools)
 
@@ -3416,7 +3425,7 @@ Free AI code reviewer. Paste code, get instant review for bugs, performance, sec
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 373 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 374 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
