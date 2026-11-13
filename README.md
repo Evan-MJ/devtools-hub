@@ -81,6 +81,17 @@ that window forward and older badges fall out of it. The build then fails with
 `no stale "New" badge on an old tool` and names the tools to fix - set their
 `isnew` field in `manifest.txt` to `no` and build again. Do not edit the gate.
 
+After a successful publish, open the new tool: the publish step prints its live
+URL, and `node scripts/verify-new-tool.js <slug>` re-checks it (link, browser
+errors, mobile overflow, and the site's own bug queue).
+
+If `new tool check = red`, read which group failed. LINK/BROWSER failures are in
+the code you just shipped - fix it, commit, publish again. A REPORT failure
+("no unresolved bug filed against this tool") is in the site's feedback queue,
+not in the code: fixing the code will not clear it. Only mark such an entry
+resolved when the finding is really fixed, then re-run the verifier - no
+republish is needed for that one.
+
 `scripts/pre-deploy.sh` (direct `wrangler pages deploy`) and
 `scripts/publish-github.sh` (snapshot only) are building blocks of that flow,
 not entry points.
