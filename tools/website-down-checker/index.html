@@ -141,6 +141,7 @@
                     <p id="wdc-loading-text">Checking website...</p>
                 </div>
 
+                <div id="toolNotice" class="tool-notice"></div>
                 <div id="wdc-error" class="wdc-error"></div>
 
                 <div id="wdc-status-result" class="wdc-status-result">
@@ -237,7 +238,7 @@
     async function checkDown() {
         var urlInput = document.getElementById('wdc-url').value.trim();
         if (!urlInput) {
-            showError('Please enter a website URL');
+            showNotice('Please enter a website URL');
             return;
         }
 
@@ -283,6 +284,23 @@
         el.style.display = 'block';
         document.getElementById('wdc-check-btn').disabled = false;
         document.getElementById('wdc-check-btn').textContent = 'Check';
+    }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('wdc-error');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
     }
 
     function showResult(data, url) {

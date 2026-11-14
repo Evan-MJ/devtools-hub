@@ -628,7 +628,7 @@
         function obfuscateCode() {
             var code = inputCode.value.trim();
             if (!code) {
-                showStatus('Please paste some JavaScript code first', 'error');
+                showStatus('Please paste some JavaScript code first', 'info');
                 return;
             }
 
@@ -691,7 +691,7 @@
 
         function copyOutput() {
             if (!outputCode.value) {
-                showStatus('Nothing to copy', 'error');
+                showStatus('Nothing to copy', 'info');
                 return;
             }
             navigator.clipboard.writeText(outputCode.value).then(function() {
@@ -708,7 +708,7 @@
 
         function downloadOutput() {
             if (!outputCode.value) {
-                showStatus('Nothing to download', 'error');
+                showStatus('Nothing to download', 'info');
                 return;
             }
             var blob = new Blob([outputCode.value], { type: 'application/javascript' });

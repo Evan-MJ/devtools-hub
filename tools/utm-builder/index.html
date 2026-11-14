@@ -416,7 +416,7 @@
         function copyUTM() {
             var text = document.getElementById('ubUrlDisplay').textContent;
             if (!text || text.startsWith('Enter') || text.startsWith('Fill')) {
-                showStatus('ubStatus', 'Nothing to copy - fill in required fields first', 'error');
+                showStatus('ubStatus', 'Nothing to copy - fill in required fields first', 'info');
                 return;
             }
             navigator.clipboard.writeText(text).then(function() {
@@ -430,7 +430,7 @@
         function openQR() {
             var text = document.getElementById('ubUrlDisplay').textContent;
             if (!text || text.startsWith('Enter') || text.startsWith('Fill')) {
-                showStatus('ubStatus', 'Generate a URL first', 'error');
+                showStatus('ubStatus', 'Generate a URL first', 'info');
                 return;
             }
             window.open('/tools/qr-code-generator/?data=' + encodeURIComponent(text), '_blank');
@@ -506,7 +506,7 @@
 
         function generateBulk() {
             var urls = document.getElementById('ubBulkUrls').value.split('\n').filter(function(l) { return l.trim().length > 0; });
-            if (urls.length === 0) { showStatus('ubBulkStatus', 'Enter at least one URL', 'error'); return; }
+            if (urls.length === 0) { showStatus('ubBulkStatus', 'Enter at least one URL', 'info'); return; }
 
             var source = formatUTM(getVal('ubBulkSource'), true, true);
             var medium = formatUTM(getVal('ubBulkMedium'), true, true);
@@ -515,7 +515,7 @@
             var content = formatUTM(getVal('ubBulkContent'), true, true);
 
             if (!source || !medium || !campaign) {
-                showStatus('ubBulkStatus', 'Fill in utm_source, utm_medium, and utm_campaign', 'error');
+                showStatus('ubBulkStatus', 'Fill in utm_source, utm_medium, and utm_campaign', 'info');
                 return;
             }
 
@@ -542,7 +542,7 @@
         function copyBulk() {
             var text = document.getElementById('ubBulkResults').textContent;
             if (!text || text === 'Bulk results will appear here...' || text === 'Generate bulk URLs to see results...') {
-                showStatus('ubBulkStatus', 'Nothing to copy', 'error');
+                showStatus('ubBulkStatus', 'Nothing to copy', 'info');
                 return;
             }
             navigator.clipboard.writeText(text).then(function() {

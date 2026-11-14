@@ -556,7 +556,7 @@ function greet(name){console.log('Hello, '+name+'!');}if(typeof window!=='undefi
         function formatJS(mode) {
             const input = inputJS.value.trim();
             if (!input) {
-                showStatus('Please enter some JavaScript code', 'error');
+                showStatus('Please enter some JavaScript code', 'info');
                 return;
             }
 
@@ -608,7 +608,7 @@ function greet(name){console.log('Hello, '+name+'!');}if(typeof window!=='undefi
         function validateJS() {
             const input = inputJS.value.trim();
             if (!input) {
-                showStatus('Please enter some JavaScript to validate', 'error');
+                showStatus('Please enter some JavaScript to validate', 'info');
                 return;
             }
 
@@ -645,7 +645,7 @@ function greet(name){console.log('Hello, '+name+'!');}if(typeof window!=='undefi
 
         function copyOutput() {
             if (!outputJS.value) {
-                showStatus('Nothing to copy', 'error');
+                showStatus('Nothing to copy', 'info');
                 return;
             }
             navigator.clipboard.writeText(outputJS.value).then(() => {

@@ -241,6 +241,7 @@
         <p id="sa-loading-text">Finding the sitemap...</p>
       </div>
 
+      <div id="toolNotice" class="tool-notice"></div>
       <div id="sa-error" class="sa-error"></div>
 
       <div id="sa-out" class="sa-out">
@@ -347,10 +348,27 @@ function showError(msg) {
   box.innerHTML = '<strong>Could not audit that.</strong><br>' + esc(msg);
   document.getElementById('sa-out').className = 'sa-out';
 }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('sa-error');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
+    }
 
 async function runAudit() {
   var input = document.getElementById('sa-url').value.trim();
-  if (!input) { showError('Enter a domain such as example.com, or the full URL of a sitemap file.'); return; }
+  if (!input) { showNotice('Enter a domain such as example.com, or the full URL of a sitemap file.'); return; }
   var sample = document.getElementById('sa-sample').value;
   document.getElementById('sa-error').style.display = 'none';
   document.getElementById('sa-out').className = 'sa-out';

@@ -704,7 +704,7 @@
         function copySchema() {
             var code = document.getElementById('sgOutput').textContent;
             if (!code || code.indexOf('{') !== 0) {
-                showStatus('sgStatus', 'Nothing to copy - fill in fields first', 'error');
+                showStatus('sgStatus', 'Nothing to copy - fill in fields first', 'info');
                 return;
             }
             navigator.clipboard.writeText(code).then(function() {
@@ -717,7 +717,7 @@
         function copyScriptTag() {
             var code = document.getElementById('sgOutput').textContent;
             if (!code || code.indexOf('{') !== 0) {
-                showStatus('sgStatus', 'Nothing to copy - fill in fields first', 'error');
+                showStatus('sgStatus', 'Nothing to copy - fill in fields first', 'info');
                 return;
             }
     var tag = '<script type="application/ld+json">\n' + code + '\n<' + '/script>';

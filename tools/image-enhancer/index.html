@@ -260,6 +260,7 @@
                         <h2>Result</h2>
                         <div class="ie-result-actions">
                             <button id="downloadBtn" class="btn btn-primary" aria-label="Download">Download</button>
+                            <div id="copy-status" class="status"></div>
                             <button id="copyBtn" class="btn" aria-label="Copy to Clipboard">Copy to Clipboard</button>
                         </div>
                     </div>
@@ -844,12 +845,12 @@
                 const blob = await res.blob();
                 if (navigator.clipboard && window.ClipboardItem) {
                     await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-                    showStatus('copyBtn', 'Copied to clipboard!', 'success');
+                    showStatus('copy-status', 'Copied to clipboard!', 'success');
                 } else {
-                    showStatus('copyBtn', 'Clipboard not supported. Please use Download.', 'error');
+                    showStatus('copy-status', 'Clipboard not supported. Please use Download.', 'error');
                 }
             } catch (e) {
-                showStatus('copyBtn', 'Copy failed: ' + e.message, 'error');
+                showStatus('copy-status', 'Copy failed: ' + e.message, 'error');
             }
         });
 

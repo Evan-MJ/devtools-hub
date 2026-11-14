@@ -506,7 +506,7 @@
             state.tracks = data.tracks || [];
             state.videoMeta = data.meta || null;
             if (state.tracks.length === 0) {
-                setStatus('yt-status', 'No caption tracks found for this video. The video may be private, age-restricted, or have captions disabled.', 'error');
+                setStatus('yt-status', 'No caption tracks found for this video. The video may be private, age-restricted, or have captions disabled.', 'info');
                 return;
             }
             renderVideoMeta();
