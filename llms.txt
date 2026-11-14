@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> Free collection of 374 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
+> Free collection of 375 browser-based developer tools across 11 categories. No signup, no tracking, all processing happens in your browser.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 374 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 375 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -24,7 +24,7 @@
 - [PDF Tools (25 tools)](https://tools.scoreroute.com/tools/pdf-tools/.md): Merge, split, compress, sign, redact and convert PDF files without ever uploading them. [HTML](https://tools.scoreroute.com/tools/pdf-tools/)
 - [Daily Life (37 tools)](https://tools.scoreroute.com/tools/life/.md): Everyday utilities for weather, world clock, stopwatch, timer, holidays and astronomy. [HTML](https://tools.scoreroute.com/tools/life/)
 - [Money & Markets (22 tools)](https://tools.scoreroute.com/tools/finance/.md): Live stock, crypto, gold and currency prices plus loan and mortgage calculators. [HTML](https://tools.scoreroute.com/tools/finance/)
-- [AI Language (32 tools)](https://tools.scoreroute.com/tools/ai-language/.md): Translate, paraphrase, detect AI-written text, cite sources and build resumes with AI. [HTML](https://tools.scoreroute.com/tools/ai-language/)
+- [AI Language (33 tools)](https://tools.scoreroute.com/tools/ai-language/.md): Translate, paraphrase, detect AI-written text, cite sources and build resumes with AI. [HTML](https://tools.scoreroute.com/tools/ai-language/)
 
 ## Code Formatters
 - [CSS Formatter and Validator - Beautify or Minify CSS](https://tools.scoreroute.com/tools/css-formatter/.md) [HTML](https://tools.scoreroute.com/tools/css-formatter/)
@@ -421,6 +421,7 @@
 - [AI Writing Coach - Essay & Content Feedback](https://tools.scoreroute.com/tools/ai-writing-coach/.md) [HTML](https://tools.scoreroute.com/tools/ai-writing-coach/)
 - [AI Video Script Generator - Shorts & Social Videos](https://tools.scoreroute.com/tools/ai-video-script-generator/.md) [HTML](https://tools.scoreroute.com/tools/ai-video-script-generator/)
 - [AI Code Reviewer - Free Online Code Review](https://tools.scoreroute.com/tools/ai-code-reviewer/.md) [HTML](https://tools.scoreroute.com/tools/ai-code-reviewer/)
+- [AI Content Brief Generator - Free SEO Content Brief](https://tools.scoreroute.com/tools/ai-content-brief/.md) [HTML](https://tools.scoreroute.com/tools/ai-content-brief/)
 
 ## About
 - [About DevTools Hub](https://tools.scoreroute.com/about/.md): Mission, technology, and team [HTML](https://tools.scoreroute.com/about/)
@@ -434,4 +435,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-13
+- Last updated: 2026-11-14

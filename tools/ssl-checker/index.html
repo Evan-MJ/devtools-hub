@@ -192,6 +192,7 @@
 
     <script>
     var pollTimer = null;
+    var scanPolling = false;
 
     function getGradeClass(grade) {
         if (!grade) return 'grade-unknown';
@@ -244,6 +245,7 @@
             }
 
             if (data.status === 'DNS' || data.status === 'IN_PROGRESS') {
+                scanPolling = true;
                 showProgress(data);
                 pollTimer = setInterval(function() { pollSSL(host); }, 10000);
                 return;
@@ -258,8 +260,10 @@
         } catch (err) {
             showError('Network error: ' + err.message);
         } finally {
-            document.getElementById('check-btn').disabled = false;
-            document.getElementById('check-btn').textContent = 'Scan Website';
+            if (!scanPolling) {
+                document.getElementById('check-btn').disabled = false;
+                document.getElementById('check-btn').textContent = 'Scan Website';
+            }
         }
     }
 
@@ -275,6 +279,7 @@
 
             if (data.status === 'READY') {
                 if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+                scanPolling = false;
                 showResults(data);
                 document.getElementById('check-btn').disabled = false;
                 document.getElementById('check-btn').textContent = 'Scan Website';
@@ -283,12 +288,14 @@
 
             if (data.error) {
                 if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+                scanPolling = false;
                 showOutcome(data, host);
                 document.getElementById('check-btn').disabled = false;
                 document.getElementById('check-btn').textContent = 'Scan Website';
             }
         } catch (err) {
             if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+            scanPolling = false;
             showError('Network error: ' + err.message);
             document.getElementById('check-btn').disabled = false;
             document.getElementById('check-btn').textContent = 'Scan Website';

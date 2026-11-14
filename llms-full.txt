@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 374 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 375 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 374
+- Total tools: 375
 - Categories: 11
-- Last updated: 2026-11-13
+- Last updated: 2026-11-14
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (10 tools)
@@ -3131,7 +3131,7 @@ Free income tax calculator 2026 with US federal, India new/old regime, and UK br
 
 Free rent vs buy calculator. Break-even year, year-by-year net worth comparison, PMI, and selling costs, with a sensitivity table. No signup.
 
-## AI Language (32 tools)
+## AI Language (33 tools)
 
 Browse all: [AI Language](https://tools.scoreroute.com/tools/ai-language/.md)
 
@@ -3423,9 +3423,18 @@ Free AI video script generator. Write YouTube Shorts, TikTok and Reels scripts w
 
 Free AI code reviewer. Paste code, get instant review for bugs, performance, security, and best practices. No login, private.
 
+### AI Content Brief Generator - Free SEO Content Brief
+
+- URL: https://tools.scoreroute.com/tools/ai-content-brief/
+- Markdown: https://tools.scoreroute.com/tools/ai-content-brief/.md
+- Category: AI Language
+- Tags: content, brief, generator, seo, keyword, outline, intent
+
+Free AI content brief generator. One keyword plus audience context generates a complete SEO content brief with intent, outline, FAQs and GEO fields.
+
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 374 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 375 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
