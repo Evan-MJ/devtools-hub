@@ -270,6 +270,8 @@
             border-color: var(--primary);
         }
         .unit-proxy { position: absolute; left: -9999px; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    /* BUG-532: benign precondition notice — neutral tone, same geometry as the base class. */
+    .status.info { background: rgba(102,126,234,0.15); color: #7eb3ff; border-color: #667eea; }
     </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Barcode Generator - QR, UPC, EAN and Code 128 | DevTools Hub","url":"https://tools.scoreroute.com/tools/barcode-generator/","description":"Free online barcode generator. Create QR codes, UPC, EAN, Code 128, Code 39 and more. Download as PNG/SVG. No signup required, 100% free.","applicationCategory":"Utility","operatingSystem":"All","featureList":["QR Code Generation","QR Code Scanning","UPC Generation","EAN Generation","Code 128","Code 39","PNG and SVG Export","Client-side Processing"]}
@@ -548,7 +550,7 @@
             const width = parseInt(barcodeWidth.value) || 2;
             
             if (!data) {
-                setStatus('Please enter barcode data', 'error');
+                setStatus('Please enter barcode data', 'info');
                 return;
             }
             

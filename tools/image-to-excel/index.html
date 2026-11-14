@@ -172,6 +172,7 @@
                     <input type="file" id="fileInput" accept="image/*,.heic,.heif,.tiff,.tif,.bmp" multiple hidden aria-label="Image file input">
                 </div>
 
+                <div id="toolNotice" class="tool-notice"></div>
                 <div id="errorBox" class="ie-error"></div>
 
                 <div id="thumbStrip" class="ie-thumb-strip"></div>
@@ -422,6 +423,23 @@
             errorBox.textContent = msg;
             errorBox.classList.add('visible');
         }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('errorBox');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
+    }
         function clearError() {
             errorBox.textContent = '';
             errorBox.classList.remove('visible');
@@ -972,7 +990,7 @@
         async function regenerateFromEditedTable() {
             var data = readTableFromUI();
             if (data.grid.length === 0) {
-                showError('No data to regenerate.');
+                showNotice('No data to regenerate.');
                 return;
             }
             clearError();

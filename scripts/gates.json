@@ -4,7 +4,7 @@
   "source_repo": "devtools-hub-docs (parent repo: evan-ip-ddns-com)",
   "source_commit": "b788ed2a359100a2cb21d889e73d207543c23de4",
   "source_note": "53 gates are byte-identical to that commit after path migration. bug480-permissions-policy-gate.js and text-summarizer-splitter-test.js were copied from the docs working tree (not yet committed there).",
-  "fingerprint": "c21b2c488b7fbf2ee1841e53d416a8cfd3a9c71ef3fc7a4fc8d6f5be7300bb80",
+  "fingerprint": "d9dc94c4e175fe7f899aa6e8e33b9ac3b9000158f1d73ab1859be8e388fc9cd9",
   "excluded": [
     {
       "gate": "bug452-plaintext-credentials-gate.js",
@@ -63,6 +63,7 @@
     "bug447-ctr-metadata-gate.js",
     "bug451-lastmod-honesty-gate.js",
     "bug480-permissions-policy-gate.js",
+    "bug532-benign-guard-gate.js",
     "compliance-claims-gate.js",
     "cron-evaluator-selftest.js",
     "excel-formula-translator-gate.js",

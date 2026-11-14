@@ -164,6 +164,7 @@
                     <div class="hs-zodiac-grid" id="zodiac-quick-grid"></div>
                 </div>
 
+                <div id="toolNotice" class="tool-notice"></div>
                 <div id="hs-error" class="hs-error"></div>
                 <div id="hs-loading" class="hs-loading">Computing planetary positions...</div>
 
@@ -492,7 +493,7 @@ function computeHoroscope() {
     hideError();
     var dateVal = document.getElementById('birth-date').value;
     var timeVal = document.getElementById('birth-time').value;
-    if (!dateVal) { showError(t('enterBirth')); return; }
+    if (!dateVal) { showNotice(t('enterBirth')); return; }
     var parts = dateVal.match(/^(\d{4})-(\d{2})-(\d{2})$/);
     if (!parts) { showError('Invalid date.'); return; }
     var year = parseInt(parts[1], 10), month = parseInt(parts[2], 10), day = parseInt(parts[3], 10);
@@ -758,6 +759,23 @@ function setLang(lang) {
 }
 
 function showError(m) { var e = document.getElementById('hs-error'); e.textContent = m; e.style.display = 'block'; }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('hs-error');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
+    }
 function hideError() { document.getElementById('hs-error').style.display = 'none'; }
 
 function escapeHtml(s) {

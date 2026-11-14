@@ -154,6 +154,7 @@
                     <input type="file" id="fileInput" accept="image/*,.heic,.heif,.tiff,.tif,.bmp" multiple hidden aria-label="Image file input">
                 </div>
 
+                <div id="toolNotice" class="tool-notice"></div>
                 <div id="errorBox" class="iw-error"></div>
 
                 <div id="thumbStrip" class="iw-thumb-strip"></div>
@@ -494,6 +495,23 @@
                 errorBox.classList.remove('visible');
             }, 8000);
         }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('errorBox');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
+    }
 
         function clearError() {
             errorBox.classList.remove('visible');
@@ -1045,7 +1063,7 @@
 
         function copyText() {
             if (!textEditor.value) {
-                showError('No text to copy.');
+                showNotice('No text to copy.');
                 return;
             }
             var text = textEditor.value;
@@ -1072,7 +1090,7 @@
 
         async function regenerateFromEditedText() {
             if (!textEditor.value) {
-                showError('No text to regenerate.');
+                showNotice('No text to regenerate.');
                 return;
             }
             clearError();

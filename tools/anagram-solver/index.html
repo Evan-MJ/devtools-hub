@@ -273,7 +273,7 @@
         var letters = norm(document.getElementById('letters').value);
         var statusEl = document.getElementById('status');
         if (!letters) {
-            if (statusEl) showStatus('status', 'Enter some letters first', 'error');
+            if (statusEl) showStatus('status', 'Enter some letters first', 'info');
             return;
         }
         var counts = new Array(26).fill(0);

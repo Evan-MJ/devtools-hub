@@ -178,6 +178,7 @@ ol li, ul li { margin: 0.5rem 0; }
 </div>
 
 <div id="bsStatus" class="bs-status"><span class="spinner"></span><span id="bsStatusText">Searching...</span></div>
+<div id="toolNotice" class="tool-notice"></div>
 <div id="bsError" class="bs-error"></div>
 
 <div id="bsResultsInfo" class="bs-results-info" style="display:none;">
@@ -404,6 +405,23 @@ ol li, ul li { margin: 0.5rem 0; }
     errorEl.innerHTML = '<strong>Error:</strong> ' + escapeHtml(msg);
     errorEl.classList.add('visible');
   }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('bsError');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
+    }
 
   function clearError() {
     errorEl.classList.remove('visible');
@@ -624,7 +642,7 @@ ol li, ul li { margin: 0.5rem 0; }
     clearError();
     var raw = queryInput.value.trim();
     if (!raw) {
-      showError('Please enter a search term');
+      showNotice('Please enter a search term');
       return;
     }
     if (currentMode === 'isbn') {

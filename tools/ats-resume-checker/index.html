@@ -197,6 +197,7 @@
                     <div class="ats-loading-text" id="ats-loading-text">Analyzing your resume...</div>
                 </div>
 
+                <div id="toolNotice" class="tool-notice"></div>
                 <div class="ats-error" id="ats-error"></div>
 
                 <div class="ats-score-card" id="ats-result">
@@ -495,11 +496,11 @@
 
         hideError();
         if (!resume || resume.length < 50) {
-            showError('Please paste your resume (at least 50 characters).');
+            showNotice('Please paste your resume (at least 50 characters).');
             return;
         }
         if (!jd || jd.length < 50) {
-            showError('Please paste the job description (at least 50 characters).');
+            showNotice('Please paste the job description (at least 50 characters).');
             return;
         }
 
@@ -738,7 +739,7 @@
         const resume = $('ats-resume').value.trim();
         const jd = $('ats-jd').value.trim();
         if (!resume || !jd) {
-            showError('Please run the ATS check first, then click AI suggestions.');
+            showNotice('Please run the ATS check first, then click AI suggestions.');
             return;
         }
 
@@ -825,6 +826,23 @@
         const e = $('ats-error');
         e.textContent = msg;
         e.classList.add('show');
+    }
+    // BUG-532: a benign precondition ("you have not filled this in yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        var e = document.getElementById('ats-error');
+        if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
+    }
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
     }
     function hideError() {
         $('ats-error').classList.remove('show');

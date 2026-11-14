@@ -339,7 +339,7 @@
             const content = getQRContent();
             
             if (!content.trim()) {
-                showStatus('qr-status', 'Please enter content to generate QR code', 'error');
+                showStatus('qr-status', 'Please enter content to generate QR code', 'info');
                 return;
             }
 
@@ -404,7 +404,7 @@
 
         function downloadQR() {
             if (!currentQRData) {
-                showStatus('qr-status', 'Please generate a QR code first', 'error');
+                showStatus('qr-status', 'Please generate a QR code first', 'info');
                 return;
             }
             

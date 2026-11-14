@@ -656,7 +656,7 @@
     }
 
     function copyResults() {
-        if (!lastResult) { showStatus('status', 'Calculate equity first', 'error'); return; }
+        if (!lastResult) { showStatus('status', 'Calculate equity first', 'info'); return; }
         var lines = ['Poker Odds Calculator - Exact Equity', '===================================='];
         var names = ['Hero', 'Opponent', 'Player 3'];
         for (var i = 0; i < lastResult.players.length; i++) {
@@ -676,7 +676,7 @@
         var call = parseFloat(document.getElementById('to-call').value);
         var eq = parseFloat(document.getElementById('eq-ref').value);
         if (isNaN(pot) || isNaN(call) || isNaN(eq) || call <= 0 || pot < 0) {
-            showStatus('status', 'Enter valid pot, call and equity values', 'error');
+            showStatus('status', 'Enter valid pot, call and equity values', 'info');
             return;
         }
         var required = call / (pot + call) * 100;
@@ -698,7 +698,7 @@
     function calcOuts() {
         var outs = parseInt(document.getElementById('outs').value, 10);
         var street = document.getElementById('street').value;
-        if (!outs || outs < 1) { showStatus('status', 'Enter a valid number of outs', 'error'); return; }
+        if (!outs || outs < 1) { showStatus('status', 'Enter a valid number of outs', 'info'); return; }
         var pct;
         if (street === 'flop') {
             var a = 47 - outs, b = 46 - outs;
