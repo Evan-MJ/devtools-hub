@@ -291,7 +291,7 @@
                 return;
             }
             if (title.length < 2) {
-                setStatus('Song title is too short.', 'error');
+                setStatus('Song title is too short.', 'info');
                 return;
             }
             updateUrl(artist, title);
@@ -366,7 +366,13 @@
             }
             document.getElementById('fallback-links').innerHTML = html;
             document.getElementById('fallback-section').style.display = 'block';
-            setStatus('Lyrics not found in our database. Try the links below.', 'error');
+            /* BUG-546: "no lyrics in our database" is this tool's ANSWER, not a failure — the
+               search ran and found nothing. The quality inspector matches `[class*="error"]`
+               and records any non-empty innerText as a `tool_error`, so the tool's own
+               result published "Tool error: Lyrics not found…" (BUG-543 shape). The real
+               upstream failure ("Lyrics service is not configured right now") keeps the
+               error voice. */
+            setStatus('Lyrics not found in our database. Try the links below.', 'info');
             addToHistory(artist, title);
         }
 

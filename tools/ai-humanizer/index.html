@@ -65,6 +65,13 @@
         .ah-loading-stage { color:#667eea; font-size:0.8rem; font-family:'Courier New',monospace; }
         .ah-error { display:none; background:#2d1a1a; border:1px solid #ff4444; border-radius:8px; padding:14px; color:#ff8888; margin-top:14px; }
         .ah-error.show { display:block; }
+        /* BUG-546: "paste some text" / "at least 50 characters" are INPUT GUARDS, not
+           failures — the tool never ran. The quality inspector matches `[class*="error"]`
+           and records any non-empty innerText as a `tool_error`, so an error-voiced guard
+           published "Tool error: Text must be at least 50 characters…" for a page that
+           works. Neutral sink, same words (BUG-528/543 shape). */
+        .ah-notice { display:none; background:#2d2617; border:1px solid #f59e0b; border-radius:8px; padding:14px; color:#fbbf24; margin-top:14px; }
+        .ah-notice.show { display:block; }
         .ah-result { display:none; margin-top:18px; }
         .ah-result.show { display:block; }
         .ah-score-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
@@ -190,6 +197,8 @@
                     <div class="ah-loading-text" id="ah-loading-text">Running 5-stage humanization pipeline...</div>
                     <div class="ah-loading-stage" id="ah-loading-stage">Stage 1: Detector ensemble</div>
                 </div>
+
+                <div class="ah-notice" id="ah-notice"></div>
 
                 <div class="ah-error" id="ah-error"></div>
 
@@ -420,14 +429,33 @@
     function showLoading(show) {
         $('ah-loading').className = show ? 'ah-loading show' : 'ah-loading';
         $('ah-result').className = 'ah-result';
-        $('ah-error').className = 'ah-error';
+        clearSinks();
         $('ah-btn-submit').disabled = show;
         $('ah-btn-submit').textContent = show ? 'Humanizing...' : 'Humanize Text';
     }
 
+    /* BUG-546: hiding a sink is not the same as emptying it. The inspector's scan
+       reads innerText, and for a display:none element innerText falls back to
+       textContent — so the old wording stayed in the hidden box and was recorded
+       as a tool_error for the rest of the session (BUG-528, second half). Every
+       path that hides a sink clears its text. */
+    function clearSinks() {
+        var e = $('ah-error');
+        if (e) { e.textContent = ''; e.className = 'ah-error'; }
+        var n = $('ah-notice');
+        if (n) { n.textContent = ''; n.className = 'ah-notice'; }
+    }
+
     function showError(msg) {
+        clearSinks();
         $('ah-error').textContent = msg;
         $('ah-error').className = 'ah-error show';
+    }
+
+    function showNotice(msg) {
+        clearSinks();
+        $('ah-notice').textContent = msg;
+        $('ah-notice').className = 'ah-notice show';
     }
 
     function setLoadingStage(stage) {
@@ -509,15 +537,15 @@
     async function submitHumanize() {
         var text = $('ah-input').value.trim();
         if (!text) {
-            showError('Please paste some AI-generated text first.');
+            showNotice('Please paste some AI-generated text first.');
             return;
         }
         if (text.length < 50) {
-            showError('Text must be at least 50 characters. Current: ' + text.length);
+            showNotice('Text must be at least 50 characters. Current: ' + text.length);
             return;
         }
         if (text.length > 20000) {
-            showError('Text exceeds 20,000 character limit. Current: ' + text.length);
+            showNotice('Text exceeds 20,000 character limit. Current: ' + text.length);
             return;
         }
 
@@ -576,7 +604,7 @@
     function clearAll() {
         $('ah-input').value = '';
         $('ah-result').className = 'ah-result';
-        $('ah-error').className = 'ah-error';
+        clearSinks();
         updateCharCount();
         state.lastResult = null;
     }
