@@ -269,6 +269,11 @@
         }
         .status-item.success { color: var(--success); }
         .status-item.warning { color: var(--warning); }
+        /* BUG-543: the low-confidence badge is spelled "low", not "error". It holds the
+           OCR confidence score — a RESULT, not a failure of the tool — and the quality
+           inspector publishes any non-empty `[class*="error"]` element as "Tool error: …".
+           The real error status below keeps the "error" tone on purpose. */
+        .status-item.low { color: var(--danger); }
         .status-item.error { color: var(--danger); }
         .loading-overlay {
             position: absolute;
@@ -755,7 +760,7 @@
                 const confidence = Math.round(result.data.confidence);
                 if (confidence > 0) {
                     confidenceBadge.style.display = 'inline-flex';
-                    confidenceBadge.className = 'status-item ' + (confidence > 70 ? 'success' : confidence > 40 ? 'warning' : 'error');
+                    confidenceBadge.className = 'status-item ' + (confidence > 70 ? 'success' : confidence > 40 ? 'warning' : 'low');
                     confidenceBadge.textContent = `Confidence: ${confidence}%`;
                 }
                 
