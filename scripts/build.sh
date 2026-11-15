@@ -43,7 +43,10 @@ bash scripts/regen-agent-skills.sh
 
 # Live Cloudflare token in the upload set. BUG-301: .gitignore does not stop
 # the upload, only redaction before the upload does.
-LEAKED=$(grep -rlE 'cfat_[A-Za-z0-9_-]{20,}|CLOUDFLARE_API_TOKEN="[A-Za-z0-9_-]{20,}"' . \
+# BUG-545: the pattern only matched the `cfat_` (scoped) prefix. The token in
+# use since 2026-11-15 is a `cfut_` (user) token, so a leaked one sailed
+# straight through this gate. Match both prefixes.
+LEAKED=$(grep -rlE '(cfat|cfut)_[A-Za-z0-9_-]{20,}|CLOUDFLARE_API_TOKEN="[A-Za-z0-9_-]{20,}"' . \
   --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.wrangler \
   --exclude-dir=test-results --exclude-dir=test-scripts --exclude-dir=dist 2>/dev/null | grep -v '^\./\.env$' || true)
 if [ -n "$LEAKED" ]; then
