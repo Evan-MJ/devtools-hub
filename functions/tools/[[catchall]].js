@@ -40,7 +40,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['sql-formatter', 'SQL Formatter'],
       ' for a dump that arrived on one line, and the ',
       ['json-diff', 'JSON Diff'],
-      ' when you need to know what actually changed between two payloads rather than just how they are spaced.'
+      ' when you need to know what actually changed between two payloads rather than just how they are spaced, and when the artifact you actually need is a compressed or converted file rather than formatted text, the Media Tools category answers it — for example an image compressor for oversized assets, or the audio joiner for recordings that arrived in pieces.'
     ],
     'calculators': [
       'The calculators people come back to: dates, percentages, health metrics, and the estimating arithmetic behind a quote. The ',
