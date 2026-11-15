@@ -51,7 +51,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['tile-calculator', 'Tile Calculator'],
       ' and ',
       ['paint-calculator', 'Paint Calculator'],
-      ' turn a room measurement into an order of materials instead of a guess.'
+      ' turn a room measurement into an order of materials instead of a guess, and when the job is not arithmetic at all — a payload that needs reformatting rather than a number, or an image that needs to weigh less rather than be measured — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ],
     'generators': [
       'Most of these exist because you need a value that is random, unique or correctly formatted, and you need it now. The ',
@@ -102,7 +102,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['jwt-decoder', 'JWT Decoder'],
       ' shows header and payload separately so a signing fault is distinguishable from a bad claim, and the ',
       ['online-code-runner', 'Online Code Runner'],
-      ' executes Python, JavaScript and HTML so you can check a snippet before it reaches your codebase.'
+      ' executes Python, JavaScript and HTML so you can check a snippet before it reaches your codebase, and when the thing you pasted turns out to be a payload that needs reformatting rather than testing, the sibling Code Formatters category\'s JSON Formatter is where that work happens.'
     ],
     'pdf-tools': [
       'PDF is a container format rather than a document format, which is why so many editors mangle it. These tools work on the page structure instead: the ',
@@ -148,7 +148,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['citation-generator', 'Citation Generator'],
       ' formats APA, MLA and Chicago from details you supply rather than inventing a source, and the ',
       ['ats-resume-checker', 'ATS Resume Checker'],
-      ' scores a resume against the parsing rules employers actually use.'
+      ' scores a resume against the parsing rules employers actually use, and when the job is structured text or a lighter file rather than drafted prose — an API payload that needs reformatting, or an image that needs to weigh less — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ]
   };
 
