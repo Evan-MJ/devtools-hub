@@ -107,6 +107,12 @@
         .gt-string.in-tune { border-color: var(--gt-green); background: #1d3b25; }
         .gt-status { min-height: 1.4em; color: var(--gt-muted); font-size: 0.85rem; margin-top: 10px; text-align: center; }
         .gt-status.error { color: var(--gt-red); }
+        /* BUG-546: a missing/denied microphone is an ENVIRONMENT fact, not a failure of
+           this tool — the reference tones still tune the instrument by ear. The quality
+           inspector matches `[class*="error"]` and records any non-empty innerText as a
+           `tool_error`, so an error-voiced guard published "Tool error: No microphone
+           found…" for a page that works. Neutral sink, same words (BUG-528/543 shape). */
+        .gt-status.notice { color: var(--gt-yellow); }
         .gt-ref-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
         .gt-prompt { margin-top: 10px; padding: 12px 14px; background: #1d2138; border: 1px solid var(--gt-border); border-left: 3px solid var(--gt-yellow); border-radius: 8px; font-size: 0.86rem; color: var(--gt-muted); }
         .hidden { display: none; }
@@ -335,7 +341,7 @@
 
     function setStatus(msg, type) {
         el.status.textContent = msg || '';
-        el.status.className = 'gt-status' + (type === 'error' ? ' error' : '');
+        el.status.className = 'gt-status' + (type ? ' ' + type : '');
     }
 
     function resetReading() {
@@ -499,7 +505,7 @@
     function toggleTuner() {
         if (state.running) { stopTuner(); return; }
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            setStatus('Your browser does not support microphone access. Use a modern browser on HTTPS.', 'error');
+            setStatus('Your browser does not support microphone access. Use a modern browser on HTTPS.', 'notice');
             return;
         }
         navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false } }).then(function (stream) {
@@ -525,7 +531,7 @@
             } else if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
                 msg = 'Microphone permission denied. Allow microphone access in your browser settings, then try again. You can also use the reference tones.';
             }
-            setStatus(msg, 'error');
+            setStatus(msg, 'notice');
         });
     }
 
