@@ -1,4 +1,5 @@
 import { resolveModelId } from '../../libs/ai-provider.js';
+import { fetchWithTimeout, extractJson, getLanguageName } from '../../libs/http.js';
 /**
  * AI Content Brief API
  * Single AI call generates a complete SEO content brief from a target keyword + audience context
@@ -25,16 +26,6 @@ const PROVIDERS = [
   { name: 'groq', url: 'https://api.groq.com/openai/v1/chat/completions', base: 'https://api.groq.com/openai/v1', envKey: 'DEVTOOLS_GROQ_API_KEY' },
   { name: 'nvidia', url: 'https://integrate.api.nvidia.com/v1/chat/completions', base: 'https://integrate.api.nvidia.com/v1', envKey: 'DEVTOOLS_NVIDIA_KEY_1' }
 ];
-
-async function fetchWithTimeout(url, opts = {}, ms = 60000) {
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort('timeout'), ms);
-  try {
-    return await fetch(url, { ...opts, signal: ctl.signal });
-  } finally {
-    clearTimeout(timer);
-  }
-}
 
 async function callAI(env, messages, maxTokens) {
   const errors = [];
@@ -136,15 +127,6 @@ async function maybeHumanizeResult(env, result) {
   }
 }
 
-function getLanguageName(code) {
-  const map = {
-    en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French', de: 'German',
-    it: 'Italian', ja: 'Japanese', ko: 'Korean', zh: 'Chinese (Simplified)',
-    hi: 'Hindi', ar: 'Arabic', ru: 'Russian'
-  };
-  return map[code] || 'English';
-}
-
 function buildSystemPrompt(language, includeFaq, includeGeo) {
   const langName = getLanguageName(language);
   return 'You are a senior SEO content strategist and brief writer who understands search intent, topical authority, and how AI search engines (Google AI Overviews, ChatGPT, Claude, Gemini, Perplexity) surface content.\n\nYou will produce a COMPLETE SEO content brief for one target keyword in a single response.\n\nSEMANTIC + INTENT ANALYSIS (key: "semantic" → object):\n- intent: one of "informational" | "commercial" | "navigational" | "transactional" | "local" | "entertaining" | "question". Choose the dominant intent and explain in one sentence.\n- topic_cluster: array of 2-6 closely related subtopics that should be covered.\n\nTARGET KEYWORDS (key: "target_keywords" → array of 3-6 strings): Long-tail keyword phrases most likely to convert intent into a page. Lowercase, no duplicates.\n\nSERP STRUCTURE (key: "serp_structure" → array of objects {heading, rationale}): The H2/H3 outline of the pages currently ranking for the keyword (infer typical structure). Each with rationale tied to intent.\n\nOUTLINE (key: "outline" → array of objects {heading, level, points[] }): Writing outline. Level 1 = H2, level 2 = H3. points[] = what must be covered in each section. Must be actionable for a writer.\n\nQUESTIONS (key: "questions" → array of {question, answer}): answerable questions (People Also Ask style) with concise factual answers.\n\nFAQ SUGGESTIONS (key: "faqs" → array of exactly 5 {question, answer}): Content reader concerns. Answers 1-3 sentences, factual, helpful.\n\nWORD COUNT (key: "word_count" → object {min, max}): Reasonable range for intent depth.\n\nMETA DESCRIPTION (key: "meta_description" → string): HARD LIMIT 155 characters, primary keyword natural, call-to-action, no fluff.\n\nGEO FIELDS (key: "geo" → object):\n- ai_overviews_angle: how the content should be structured so AI Overviews / AI assistants can cite it (direct answer near top, clear structure, quotable facts).\n- ai_sub_questions: array of 3-5 sub-questions AI search engines are likely to decompose the topic into.\n- citation_signals: array of factual statements/entities that should be explicit and sourced.\n\n' + (includeFaq ? 'FAQPage JSON-LD SCHEMA (key: "faq_schema" → string): Valid Schema.org FAQPage JSON-LD, parseable JSON, all 5 FAQs in mainEntity with Question/Answer types.\n\n' : 'Skip FAQs and FAQPage schema.\n\n') + 'OUTPUT LANGUAGE: All text fields in ' + langName + '.\n\nCRITICAL OUTPUT FORMAT:\nReturn ONLY a valid JSON object (no markdown fences, no preamble, no explanations). Use these top-level keys exactly: "semantic", "target_keywords", "serp_structure", "outline", "questions", "faqs", "word_count", "meta_description", "geo", ' + (includeFaq ? '"faq_schema"' : '""') + '. Hard limits MUST be respected strictly.';
@@ -170,20 +152,6 @@ function buildUserPrompt(input) {
   lines.push('');
   lines.push('Generate the complete content brief. Prioritize helpful, accurate, non-speculative content. Return only the JSON.');
   return lines.join('\n');
-}
-
-function extractJson(text) {
-  let cleaned = (text || '').trim();
-  if (cleaned.startsWith('```')) {
-    const m = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-    if (m) cleaned = m[1];
-  }
-  const first = cleaned.indexOf('{');
-  const last = cleaned.lastIndexOf('}');
-  if (first !== -1 && last !== -1 && last > first) {
-    cleaned = cleaned.substring(first, last + 1);
-  }
-  return JSON.parse(cleaned);
 }
 
 function truncate(text, max) {
