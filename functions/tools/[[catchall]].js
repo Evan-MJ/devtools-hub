@@ -71,7 +71,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['timestamp-converter', 'Timestamp Converter'],
       ' reads Unix time in both directions including milliseconds, and the ',
       ['json-csv-converter', 'JSON to CSV Converter'],
-      ' and its siblings run both ways, so you can paste a fragment back the other direction.'
+      ' and its siblings run both ways, so you can paste a fragment back the other direction, and when the data or the file is not here to be converted at all — a payload that needs reformatting rather than reshaping, or an image that needs to weigh less rather than change type — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ],
     'media': [
       'Images, audio and video: the work that usually wants a desktop app. The ',
@@ -80,7 +80,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['audio-joiner', 'Audio Joiner'],
       ' merges several recordings into a single file, and the ',
       ['subtitle-editor', 'Subtitle Editor'],
-      ' reads and writes SRT and VTT. Tools that need a GPU — upscaling, background removal, restoration — say so on their own page, and those are the exception rather than the rule here.'
+      ' reads and writes SRT and VTT. Tools that need a GPU — upscaling, background removal, restoration — say so on their own page, and those are the exception rather than the rule here, and when the file leaving this category is media but the job is structured text instead — a config dump or an API payload that arrived formatted badly — the Code Formatters category\'s JSON Formatter is where that work happens.'
     ],
     'network': [
       'Diagnostics for problems sitting on infrastructure you do not control. The ',
