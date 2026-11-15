@@ -62,7 +62,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['cron-generator', 'Cron Generator'],
       ' explains what each of the five fields does, and the ',
       ['css-grid-generator', 'CSS Grid Generator'],
-      ' writes the rule as you move the controls.'
+      ' writes the rule as you move the controls, and when the need is actually a formatted or compressed artifact rather than a generated value, the Code Formatters and Media Tools categories answer it — for example the JSON Formatter for API payloads and config files, or an image compressor for oversized assets.'
     ],
     'converters': [
       'Conversion is only trustworthy when the arithmetic is visible, so each of these shows how it got the answer instead of hiding it behind a server. The ',
