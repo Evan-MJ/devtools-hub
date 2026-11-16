@@ -158,7 +158,12 @@
 .sc-finding { padding: 12px 0; border-bottom: 1px solid #1f1f3a; }
 .sc-finding:last-child { border-bottom: none; }
 .sc-f-level { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 3px; }
-.sc-f-level.error { color: #f87171; }
+/* BUG-547: the severity token is "crit", not "error". The quality inspector scans
+   `[class*="error"]` and records any non-empty text as a tool_error, so a finding
+   badge that carried the token "error" was published as "Tool error: ❌ ERROR" on a
+   page that had audited the page perfectly. The badge text still reads "error" —
+   only the class token changed. */
+.sc-f-level.crit { color: #f87171; }
 .sc-f-level.warn { color: #fbbf24; }
 .sc-f-level.info { color: #93c5fd; }
 .sc-f-level.pass { color: #4ade80; }
@@ -329,6 +334,11 @@ var SECTIONS = [
   { id: 'crawlers', label: 'robots.txt and AI crawlers' }
 ];
 var LEVEL_ICON = { error: '\u274C', warn: '\u26A0\uFE0F', info: '\u2139\uFE0F', pass: '\u2713' };
+/* BUG-547: the severity token that reaches the class attribute. "error" is a
+   severity of the thing being audited, not a failure of this tool, and the
+   quality inspector matches `[class*="error"]` — so the token is spelled "crit"
+   and the badge text still says "error". */
+var LEVEL_CLASS = { error: 'crit' };
 var snipSeq = 0;
 
 function esc(str) {
@@ -375,7 +385,12 @@ function showError(msg) {
 async function runAudit() {
   var input = document.getElementById('sc-url').value.trim();
   if (!input) { showNotice('Enter the address of the page you want checked, for example example.com/pricing.'); return; }
-  document.getElementById('sc-error').style.display = 'none';
+  /* BUG-547: hiding the error box is not enough — the quality inspector's scan
+     reads innerText with no visibility check, so a message left in a display:none
+     box is still reported as a tool_error for the rest of the session. Clear it. */
+  var errBox = document.getElementById('sc-error');
+  errBox.style.display = 'none';
+  errBox.textContent = '';
   document.getElementById('sc-out').className = 'sc-out';
   setLoading(true, 'Fetching the page and robots.txt...');
 
@@ -409,7 +424,7 @@ function toggleCard(head) {
 }
 
 function findingHtml(f) {
-  var h = '<div class="sc-f-level ' + esc(f.level) + '">' + LEVEL_ICON[f.level] + ' ' + esc(f.level) + '</div>';
+  var h = '<div class="sc-f-level ' + (LEVEL_CLASS[f.level] || esc(f.level)) + '">' + LEVEL_ICON[f.level] + ' ' + esc(f.level) + '</div>';
   h += '<div class="sc-f-title">' + esc(f.title) + '</div>';
   if (f.detail) h += '<div class="sc-f-msg">' + esc(f.detail) + '</div>';
   if (f.fix) h += '<div class="sc-f-fix">Fix: ' + esc(f.fix) + '</div>';
@@ -527,7 +542,11 @@ function copyReport() {
 
 function resetTool() {
   document.getElementById('sc-out').className = 'sc-out';
-  document.getElementById('sc-error').style.display = 'none';
+  /* BUG-547: same as above — a reset hides the error box, so its text has to go
+     with it or the inspector keeps reporting the message from the last run. */
+  var errBox = document.getElementById('sc-error');
+  errBox.style.display = 'none';
+  errBox.textContent = '';
   document.getElementById('sc-score').innerHTML = '';
   document.getElementById('sc-url').value = '';
   document.getElementById('sc-url').focus();

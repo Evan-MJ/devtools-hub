@@ -88,7 +88,11 @@
     .mc-banner.info { background: rgba(126,179,255,0.10); border: 1px solid var(--mc-accent); color: #a3c8ff; }
     .mc-banner.success { background: rgba(16,185,129,0.12); border: 1px solid var(--mc-success); color: #6ee7b7; }
     .mc-banner.warn { background: rgba(245,158,11,0.12); border: 1px solid var(--mc-warn); color: #fcd34d; }
-    .mc-banner.error { background: rgba(239,68,68,0.12); border: 1px solid var(--mc-error); color: #fca5a5; }
+    /* BUG-547: the tone token is "neg", not "error" — same reason as BUG-543's
+   .mc-result-card.neg: a price below the variable cost is a RESULT the tool
+   computed ("∞ units, cannot break even"), not a failure of the tool, and the
+   quality inspector matches `[class*="error"]". */
+.mc-banner.neg { background: rgba(239,68,68,0.12); border: 1px solid var(--mc-error); color: #fca5a5; }
     .mc-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
     .mc-preset-btn { background: var(--mc-surface2); border: 1px solid var(--mc-border); color: var(--mc-muted); padding: 6px 10px; border-radius: 5px; font-size: 0.78rem; cursor: pointer; font-family: inherit; transition: all 0.15s; }
     .mc-preset-btn:hover { border-color: var(--mc-accent); color: var(--mc-text); background: rgba(126,179,255,0.05); }
@@ -839,7 +843,7 @@
 
             if (price <= variable) {
                 warnBox.style.display = 'block';
-                warnBox.className = 'mc-banner error';
+                warnBox.className = 'mc-banner neg';
                 warnBox.textContent = '⚠ Selling price (' + fmtMoney(price) + ') must be greater than variable cost (' + fmtMoney(variable) + ') or contribution margin is negative - you cannot break even.';
                 document.getElementById('mc-be-units').textContent = '∞';
                 document.getElementById('mc-be-title').textContent = 'Cannot Break Even';
