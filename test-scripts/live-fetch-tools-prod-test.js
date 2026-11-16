@@ -53,8 +53,11 @@ const step = (name, ok, detail) => {
     await page.waitForTimeout(1200);
     await page.fill('#space-url', 'https://enzostvs-deepsite.hf.space');
     await page.click('#add-btn');
+    // Wait for the visit to finish. The card starts as "○ Pending"; note that
+    // body text also contains the inline script source, so the wait must key
+    // on the status badge, not on the word "Method".
     await page.waitForFunction(
-      () => /Method:/.test(document.body.textContent || ''),
+      () => { const el = document.querySelector('.space-status'); return el && /(Online|Offline)/.test(el.textContent); },
       null, { timeout: 30000 }
     ).catch(() => {});
     const card = await page.evaluate(() => {
