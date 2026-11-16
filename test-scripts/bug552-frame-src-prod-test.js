@@ -48,12 +48,13 @@ async function checkTool(browser, slug, opts) {
   });
 
   await page.goto(`${BASE}/tools/${slug}/?cb=${Date.now()}`, { waitUntil: 'load', timeout: 60000 });
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1500);
   step(`${slug}: the page loads with no CSP violation`, csp.length === 0, csp[0]);
 
-  if (opts.fill) await page.fill(opts.fill.sel, opts.fill.value).catch(() => {});
+  if (opts.beforeFill) await opts.beforeFill(page);
+  if (opts.fill) await opts.fill(page);
   await page.click(opts.runButton, { timeout: 8000 }).catch(() => {});
-  await page.waitForTimeout(1800);
+  await page.waitForTimeout(2200);
 
   const frames = page.frames();
   const preview = frames.find((f) => f !== page.mainFrame());
@@ -85,9 +86,19 @@ async function checkTool(browser, slug, opts) {
 
   // ---- [B] + [C] the playground preview really renders -------------------------
   await checkTool(browser, 'html-playground', {
-    fill: { sel: '#hp-html', value: '<h1 id="t">preview works</h1>' },
+    fill: async (page) => { await page.fill('#hp-html', '<h1 id="t">preview works</h1>'); },
     runButton: 'button:has-text("Run")',
     expect: 'preview works'
+  });
+
+  // The same data:-URL preview pattern: the HTML tab renders into the preview frame.
+  await checkTool(browser, 'online-code-runner', {
+    beforeFill: async (page) => { await page.click('#ocr-lang-tabs button[data-lang="html"]'); await page.waitForTimeout(500); },
+    fill: async (page) => {
+      await page.evaluate(() => { document.querySelector('.CodeMirror').CodeMirror.setValue('<h1>runner works</h1>'); });
+    },
+    runButton: '#ocr-run-btn',
+    expect: 'runner works'
   });
 
   await browser.close();

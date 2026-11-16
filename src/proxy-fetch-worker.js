@@ -154,14 +154,20 @@ export default {
             break;
           }
         }
-        var fullBuffer = new Uint8Array(total);
+        // Size the buffer from the chunks we actually kept. `total` misses the
+        // truncation marker pushed above, so a >500KB body used to overflow the
+        // buffer and lose the whole body to the catch below.
+        var bodyLength = 0;
+        for (var c = 0; c < chunks.length; c++) bodyLength += chunks[c].length;
+        var fullBuffer = new Uint8Array(bodyLength);
         var offset = 0;
         for (var i = 0; i < chunks.length; i++) {
           fullBuffer.set(chunks[i], offset);
           offset += chunks[i].length;
         }
-        responseBody = decoder.decode(fullBuffer, { stream: true });
-        responseBody = decoder.decode();
+        // One decode. A second decoder.decode() returns only the trailing flush
+        // ("" for a complete buffer) and used to overwrite the body with nothing.
+        responseBody = decoder.decode(fullBuffer);
         contentLength = offset;
       } catch (e) {
         responseBody = '[Error reading response body: ' + e.message + ']';
