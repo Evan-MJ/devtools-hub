@@ -122,7 +122,7 @@ export function buildHomepageMarkdown(tools, HOMEPAGE_FAQS) {
   md += 'Markdown: ' + base + '/.md' + nl + nl;
   md += '## Developer tools that work.' + nl + nl;
   md += totalCount + ' free utilities for code formatting, file conversion, online calculators, AI assistance, and more. No signup, no upload, no tracking.' + nl + nl;
-  md += 'Popular: JSON formatter · Password generator · QR code · AI chat · Image compressor · Speed test' + nl + nl;
+  md += 'Popular: ' + popular.map(t => '[' + mdEscape(t.name) + '](/tools/' + t.slug + '/.md)').join(' · ') + nl + nl;
   md += '## Popular Tools' + nl + nl;
   for (const t of popular) {
     md += '- [' + mdEscape(t.name) + '](/tools/' + t.slug + '/.md): ' + mdEscape(t.desc) + (t.isnew ? ' _(New)_' : '') + nl;
@@ -478,7 +478,7 @@ export async function onRequest(context) {
     '<h2>Developer tools that work.</h2>' + nl +
     '<p>' + totalCount + ' free utilities for code formatting, file conversion, online calculators, AI assistance, and more. No signup, no upload, no tracking.</p>' + nl +
     '<div class="hero-search"><input type="search" id="tool-search" aria-label="Search all ' + totalCount + ' developer tools" placeholder="Search ' + totalCount + ' tools..." autocomplete="off" autofocus><div id="tool-search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div></div>' + nl +
-    '<p class="hero-meta">Popular: JSON formatter &middot; Password generator &middot; QR code &middot; AI chat &middot; Image compressor &middot; Speed test</p>' + nl +
+    '<p class="hero-meta">Popular: ' + popular.map(t => '<a href="/tools/' + t.slug + '/">' + esc(t.name) + '</a>').join(' &middot; ') + '</p>' + nl +
     '</section>' + nl +
     (popular.length > 0 ? '<section class="section-block" id="popular"><div class="section-header"><h2>Popular Tools</h2><span class="section-count">' + popular.length + ' most-used</span></div><div class="tools-grid">' + popHtml + '</div></section>' + nl : '') +
     recentHtml +
