@@ -200,12 +200,6 @@
         var e = document.getElementById('citation-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
     async function generateCitation() {
         const text = document.getElementById('citation-source').value.trim();

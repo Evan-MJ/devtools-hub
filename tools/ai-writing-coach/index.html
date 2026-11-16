@@ -258,7 +258,7 @@
         var AW_CLEAR_ID = 'aw-btn-clear';
         var AW_DIMS_ID = 'aw-dims';
         var AW_META_WORDS_ID = 'aw-meta-words';
-        var AW_META_SENT_ID = 'aw-meta-sent';
+        var AW_META_SENT_ID = 'aw-meta-sentences';
         var AW_META_AVG_ID = 'aw-meta-avg';
         var AW_OVERALL_SCORE_ID = 'aw-overall-score';
         var AW_OVERALL_TEXT_ID = 'aw-overall-text';
@@ -291,7 +291,7 @@
             if (el) { el.textContent = 'Words: ' + words; }
             var el2 = awEl(AW_META_SENT_ID);
             if (el2) { el2.textContent = 'Sentences: ' + sentences; }
-            var el3 = awEl(AW_META_AVG);
+            var el3 = awEl(AW_META_AVG_ID);
             if (el3) { el3.textContent = 'Avg sentence length: ' + avg; }
             var elc = awEl(AW_CHARS_ID);
             if (elc) { elc.textContent = totalChars + ' characters'; }
@@ -449,7 +449,7 @@
                     var m = awLocalMetrics();
                     if (awEl(AW_META_WORDS_ID)) { awEl(AW_META_WORDS_ID).textContent = 'Words: ' + m.words; }
                     if (awEl(AW_META_SENT_ID)) { awEl(AW_META_SENT_ID).textContent = 'Sentences: ' + m.sentences; }
-                    if (awEl(AW_META_AVG)) { awEl(AW_META_AVG).textContent = 'Avg sentence length: ' + m.avg.toFixed(1); }
+                    if (awEl(AW_META_AVG_ID)) { awEl(AW_META_AVG_ID).textContent = 'Avg sentence length: ' + m.avg.toFixed(1); }
                 })
                 .catch(function(e) {
                     if (loading) { loading.style.display = 'none'; }

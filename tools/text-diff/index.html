@@ -645,38 +645,6 @@
             downloadResultBtn.disabled = false;
         }
         
-        function loadSample() {
-            leftText.value = `{
-  "name": "DevTools Hub",
-  "version": "1.0.0",
-  "description": "Free online developer tools",
-  "features": [
-    "JSON Formatter",
-    "Base64 Encoder",
-    "Regex Tester"
-  ],
-  "config": {
-    "theme": "dark",
-    "language": "en"
-  }
-}`;
-            rightText.value = `{
-  "name": "DevTools Hub",
-  "version": "2.0.0",
-  "description": "Free online developer tools for everyone",
-  "features": [
-    "JSON Formatter",
-    "Base64 Encoder",
-    "Regex Tester",
-    "OCR Tool"
-  ],
-  "config": {
-    "theme": "light",
-    "language": "en",
-    "apiKey": "secret"
-  }
-}`;
-        }
         
         compareBtn.addEventListener('click', computeDiff);
         

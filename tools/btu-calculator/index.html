@@ -407,7 +407,6 @@ function num(id){
   return isFinite(v) && v > 0 ? v : 0;
 }
 
-function ceilInt(v){ return Math.ceil(v); }
 
 function round1(v){ return Math.round(v*10)/10; }
 
@@ -420,11 +419,6 @@ function getSelectedMultiplier(sel, attr){
   return isFinite(v) ? v : 1.0;
 }
 
-function getSelectedBonus(sel){
-  var el = $(sel);
-  var opt = el.options[el.selectedIndex];
-  return parseFloat(opt.getAttribute('data-bonus')) || 0;
-}
 
 function bcSetUnit(u){
   state.unit = u;

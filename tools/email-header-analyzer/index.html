@@ -469,9 +469,6 @@ function domainsAligned(a, b, strict) {
 
 var NON_LATIN = /[\u0400-\u04FF\u0370-\u03FF\u0500-\u052F]/;
 
-function unicodeName(cp) {
-  try { return String.fromCodePoint(cp); } catch (e) { return '?'; }
-}
 
 /* A token is a run of letters, optionally split by the separators that appear
    inside domains and display names. */

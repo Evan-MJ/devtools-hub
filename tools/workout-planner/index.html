@@ -415,7 +415,6 @@ function $(id) { return document.getElementById(id); }
 function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
 function todayISO() { return new Date().toISOString().slice(0,10); }
-function unitFactor() { return $('wp-unit').value === 'lb' ? 2.2046 : 1; }
 function roundPlate(weight) {
   if ($('wp-unit').value === 'lb') return Math.round(weight / 5) * 5;
   return Math.round(weight / 2.5) * 2.5;
@@ -503,21 +502,6 @@ function startingWeight(level, exercise) {
   }
 }
 
-function filterExercises(muscleGroups, equipment, count) {
-  var pool = EXERCISE_DB.filter(function(e) {
-    var eqMatch = false;
-    if (equipment === 'bodyweight') eqMatch = e.equipment.indexOf('bodyweight') !== -1;
-    else if (equipment === 'dumbbells') eqMatch = e.equipment.indexOf('bodyweight') !== -1 || e.equipment.indexOf('dumbbell') !== -1 || e.equipment.indexOf('band') !== -1;
-    else if (equipment === 'homegym') eqMatch = e.equipment.indexOf('barbell') !== -1 || e.equipment.indexOf('dumbbell') !== -1 || e.equipment.indexOf('bodyweight') !== -1;
-    else eqMatch = true;
-    if (!eqMatch) return false;
-    for (var i = 0; i < muscleGroups.length; i++) {
-      if (e.primary.indexOf(muscleGroups[i]) !== -1) return true;
-    }
-    return false;
-  });
-  return pool.slice(0, count);
-}
 
 function pickExerciseForMuscle(muscle, equipment, used) {
   var pool = EXERCISE_DB.filter(function(e) {

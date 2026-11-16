@@ -384,7 +384,6 @@
 
         function $(id) { return document.getElementById(id); }
 
-        function textLen(s) { return s.length; }
 
         function cleanWord(raw) {
             return raw.toUpperCase().replace(/[^A-Z]/g, '');
@@ -405,15 +404,6 @@
             return words;
         }
 
-        function shuffle(a) {
-            var arr = a.slice();
-            for (var i = arr.length - 1; i > 0; i--) {
-                var r = new Uint32Array(1); crypto.getRandomValues(r);
-                var j = r[0] % (i + 1);
-                var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
-            }
-            return arr;
-        }
 
         function randInt(n) { var r = new Uint32Array(1); crypto.getRandomValues(r); return r[0] % n; }
 

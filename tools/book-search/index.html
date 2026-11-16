@@ -416,12 +416,6 @@ ol li, ul li { margin: 0.5rem 0; }
         var e = document.getElementById('bsError');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
   function clearError() {
     errorEl.classList.remove('visible');

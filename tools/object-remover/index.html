@@ -374,12 +374,6 @@
         var e = document.getElementById('orError');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
         function hideError() { errorBox.classList.remove('visible'); }
         function showProgress(text) {
             progressText.textContent = text;
@@ -394,21 +388,6 @@
                 img.onload = function() { resolve(img); };
                 img.onerror = function() { reject(new Error('Failed to load image')); };
                 img.src = url;
-            });
-        }
-        function dataURLToBlob(dataURL) {
-            var parts = dataURL.split(',');
-            var mime = parts[0].match(/:(.*?);/)[1];
-            var bin = atob(parts[1]);
-            var arr = new Uint8Array(bin.length);
-            for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-            return new Blob([arr], { type: mime });
-        }
-        function blobToDataURL(blob) {
-            return new Promise(function(resolve) {
-                var fr = new FileReader();
-                fr.onload = function() { resolve(fr.result); };
-                fr.readAsDataURL(blob);
             });
         }
 

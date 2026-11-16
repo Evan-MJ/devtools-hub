@@ -425,14 +425,6 @@
     }
   }
 
-  function readFileAsArrayBuffer(file) {
-    return new Promise(function(resolve, reject) {
-      var r = new FileReader();
-      r.onload = function() { resolve(r.result); };
-      r.onerror = function() { reject(new Error('Failed to read ' + file.name)); };
-      r.readAsArrayBuffer(file);
-    });
-  }
 
   async function convertSingle(item, index, quality) {
     try {

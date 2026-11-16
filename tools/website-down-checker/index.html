@@ -305,12 +305,6 @@
         var e = document.getElementById('wdc-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
     function showResult(data, url) {
         var resultEl = document.getElementById('wdc-status-result');

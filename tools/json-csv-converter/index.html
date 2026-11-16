@@ -567,26 +567,6 @@
             }
         }
 
-        function fallbackCopy(text) {
-            try {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.setAttribute('readonly', '');
-                ta.style.position = 'fixed';
-                ta.style.top = '-1000px';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
-                ta.setSelectionRange(0, text.length);
-                var ok = document.execCommand('copy');
-                document.body.removeChild(ta);
-                showStatus('jcc-status', ok ? 'Copied to clipboard' : 'Copy failed — select and copy manually', ok ? 'success' : 'error');
-                return ok;
-            } catch (e) {
-                showStatus('jcc-status', 'Copy failed — select and copy manually', 'error');
-                return false;
-            }
-        }
 
         function downloadOutput() {
             var el = document.getElementById('jcc-output');

@@ -364,7 +364,6 @@
         }
 
         function fmtMB(b) { return (b / 1048576).toFixed(2) + ' MB'; }
-        function escapeHtml(s) { return s.replace(/[&<>"']/g, function(c){return ({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'})[c];}); }
 
         function showInfo(file, pages) {
             document.getElementById('pocr-info-name').textContent = file.name;

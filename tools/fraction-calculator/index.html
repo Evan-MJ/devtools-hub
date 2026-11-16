@@ -326,7 +326,6 @@
         while (b) { [a, b] = [b, a % b]; }
         return a;
     }
-    function fcLcm(a, b) { return Math.abs(a * b) / fcGcd(a, b); }
     function fcSimplify(num, den) {
         if (den === 0) return null;
         if (num === 0) return { num: 0, den: 1 };

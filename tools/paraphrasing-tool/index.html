@@ -180,12 +180,6 @@
         var e = document.getElementById('paraphrase-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
     async function paraphrase() {
         const input = document.getElementById('paraphrase-input').value.trim();

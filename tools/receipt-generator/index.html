@@ -488,12 +488,6 @@ New York, NY 10001</div>
         function uid() {
             return 'id-' + Math.random().toString(36).slice(2, 10) + '-' + Date.now().toString(36);
         }
-        function showStatus(msg, type) {
-            var el = document.getElementById('rcp-status');
-            el.className = 'rcp-status ' + (type || 'info');
-            el.textContent = msg;
-            setTimeout(function() { if (el.textContent === msg) el.className = 'rcp-status hidden'; }, 5000);
-        }
         function toast(msg, type) {
             var t = document.getElementById('rcp-toast');
             t.textContent = msg;
@@ -692,10 +686,6 @@ New York, NY 10001</div>
             try { localStorage.setItem(DRAFT_KEY, JSON.stringify(getState())); } catch (e) {}
         }
         var saveTimer = null;
-        function debouncedSave() {
-            if (saveTimer) clearTimeout(saveTimer);
-            saveTimer = setTimeout(saveDraft, 800);
-        }
 
         document.addEventListener('input', function(e) {
             var t = e.target;

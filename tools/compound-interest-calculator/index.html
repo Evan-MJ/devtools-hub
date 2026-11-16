@@ -379,12 +379,6 @@
             };
         }
 
-        function getEffectiveRate(r, n, isEffective) {
-            if (isEffective) {
-                return r;
-            }
-            return r;
-        }
 
         function calculateCompoundInterest() {
             var v = getVals();
@@ -662,9 +656,6 @@
             return '$' + v.toFixed(2);
         }
 
-        function formatCurrencyFull(v) {
-            return '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
 
         function copyToClipboardRaw(text) {
             var ta = document.createElement('textarea');

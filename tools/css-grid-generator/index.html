@@ -268,24 +268,6 @@
             document.getElementById('cggSpanRows').value = cell.dataset.rowspan || 1;
         }
 
-        function cggUpdateSpan() {
-            if (!cggSelectedCell) return;
-            var colSpan = parseInt(document.getElementById('cggSpanCols').value) || 1;
-            var rowSpan = parseInt(document.getElementById('cggSpanRows').value) || 1;
-            cggSelectedCell.dataset.colspan = colSpan;
-            cggSelectedCell.dataset.rowspan = rowSpan;
-            cggSelectedCell.style.gridColumn = 'span ' + colSpan;
-            cggSelectedCell.style.gridRow = 'span ' + rowSpan;
-            var badge = cggSelectedCell.querySelector('.cgg-span-badge');
-            if (!badge) {
-                badge = document.createElement('span');
-                badge.className = 'cgg-span-badge';
-                cggSelectedCell.appendChild(badge);
-            }
-            badge.textContent = colSpan + 'x' + rowSpan;
-            if (colSpan === 1 && rowSpan === 1) { badge.style.display = 'none'; } else { badge.style.display = 'block'; }
-            cggUpdateCSS();
-        }
 
         function cggUpdateGrid() {
             cggBuildGrid();

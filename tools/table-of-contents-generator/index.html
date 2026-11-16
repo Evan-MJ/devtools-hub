@@ -460,13 +460,6 @@
             return headings;
         }
 
-        function parseDocxHeadings(arrayBuffer, minL, maxL) {
-            try {
-                var bytes = new Uint8Array(arrayBuffer);
-                if (bytes[0] !== 0x50 || bytes[1] !== 0x4B) return [];
-            } catch (e) { return []; }
-            return [];
-        }
 
         function extractHeadings(text, inputMode) {
             var mode = inputMode;

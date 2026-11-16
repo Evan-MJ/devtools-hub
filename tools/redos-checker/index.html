@@ -662,12 +662,6 @@ function seqLeadCS(seq) {
 }
 
 /* Every repetition node anywhere below n. */
-function collectReps(n, out) {
-  walkTree(n, function (x) {
-    if (x !== n && x.t === 'rep') out.push(x);
-  });
-  return out;
-}
 
 /* A generic descent. Every whole-tree query goes through this: a walk that
    forgets the root node sees nothing at all and reports a clean bill of

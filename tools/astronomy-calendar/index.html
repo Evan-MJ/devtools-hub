@@ -280,9 +280,6 @@
         return PHASES[0];
     }
 
-    function moonIlluminationPercent(date) {
-        return Math.round(50 * (1 - Math.cos(2 * Math.PI * moonAgeDays(date) / SYNODIC_MONTH)));
-    }
 
     function nextPhaseName(date) {
         const age = moonAgeDays(date);

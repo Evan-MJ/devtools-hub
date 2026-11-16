@@ -212,9 +212,6 @@
             return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
         }
 
-        function rgbToHex(r, g, b) {
-            return '#' + [r, g, b].map(function(x) { return Math.round(x).toString(16).padStart(2, '0'); }).join('');
-        }
 
         function relativeLuminance(r, g, b) {
             var rs = r / 255, gs = g / 255, bs = b / 255;

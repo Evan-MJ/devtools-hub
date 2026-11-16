@@ -526,20 +526,7 @@ if (rounded === Math.floor(rounded)) return String(Math.floor(rounded));
 return rounded + '';
 }
 
-function rcBakingRound(v, unit) {
-if (unit === 'g' || unit === 'grams') return Math.round(v) + ' g';
-if (unit === 'tsp' || unit === 'teaspoon') {
-var f = rcFractional(v);
-return f + ' tsp';
-}
-return rcFractional(v) + ' ' + unit;
-}
 
-function rcNormalRound(v, unit) {
-var f = rcFractional(v);
-if (f) return f + ' ' + unit;
-return Math.round(v * 10) / 10 + ' ' + unit;
-}
 
 function rcToast(msg, type) {
 var t = document.getElementById('rc-toast');

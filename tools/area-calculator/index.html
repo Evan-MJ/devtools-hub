@@ -759,13 +759,6 @@ function getWallArea(floorArea) {
   return Math.max(0, wallArea);
 }
 
-function getAllOpenings() {
-  if (state.mode === 'rect') return (num('ac-rect-doors') * DOOR_SQFT) + (num('ac-rect-windows') * WINDOW_SQFT);
-  if (state.mode === 'multi') {
-    return state.multi.reduce(function(s, r) { return s + r.doors * DOOR_SQFT + r.windows * WINDOW_SQFT; }, 0);
-  }
-  return 0;
-}
 
 function recalc() {
   var floor = getFloorArea();

@@ -224,12 +224,6 @@
         var e = document.getElementById('tracker-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
     function copyTracking() {
         const num = document.getElementById('display-number').textContent;

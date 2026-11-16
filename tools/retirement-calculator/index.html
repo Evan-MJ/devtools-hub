@@ -456,11 +456,6 @@ function fmtMonth(n){
   return sym + Math.round(n).toLocaleString('en-US') + '/mo';
 }
 
-function rmdDivisor(age){
-  if(age < 73) return 0;
-  var idx = Math.min(age - 73, RMD_DIVISORS.length - 1);
-  return RMD_DIVISORS[idx] || 4.0;
-}
 
 function rcSetCurrency(c){
   state.currency = c;

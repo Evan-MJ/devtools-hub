@@ -277,7 +277,6 @@ var PANEL_FOOTPRINT_FT2 = 5.5;
 var state = { monthly:950, region:'us-southwest', panelW:400, roof:0, autonomy:1, dod:50, eff:95, customSun:4.0, loaded:false };
 
 function el(id) { return document.getElementById(id); }
-function num(id) { return parseFloat(el(id).value) || 0; }
 function fmt(n, d) { d = (d == null) ? 2 : d; if (!isFinite(n) || isNaN(n)) return '0'; if (n === 0) return '0'; if (Math.abs(n) < 0.01) return n.toFixed(d); return Number(n.toFixed(d)).toString(); }
 function showToast(msg, isErr) { var t = el('sol-toast'); t.textContent = msg; t.className = 'sol-toast show' + (isErr ? ' error' : ''); setTimeout(function(){ t.className = 'sol-toast'; }, 2200); }
 function sunHours() { var r = state.region; if (r === 'custom') { var c = state.customSun; return isFinite(c) ? c : 4.0; } return SUN_HOURS[r] || 4.0; }

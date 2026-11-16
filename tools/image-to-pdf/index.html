@@ -463,14 +463,6 @@
             return /image\/png/i.test(file.type) || /\.(png)$/i.test(file.name || '');
         }
 
-        function readFileAsDataURL(file) {
-            return new Promise(function(resolve, reject) {
-                var r = new FileReader();
-                r.onload = function() { resolve(r.result); };
-                r.onerror = function() { reject(new Error('Failed to read ' + file.name)); };
-                r.readAsDataURL(file);
-            });
-        }
 
         function readFileAsArrayBuffer(file) {
             return new Promise(function(resolve, reject) {
