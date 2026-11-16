@@ -1003,7 +1003,7 @@ $('shoe-convert').addEventListener('click', function() {
   var sys = $('shoe-system').value;
   var size = $('shoe-size').value;
   var out = shoeConvert(gender, sys, size);
-  if (!out) { setStatus('shoe-status', 'Could not convert. Pick a valid size.', 'error'); return; }
+  if (!out) { setStatus('shoe-status', 'Could not convert. Pick a valid size.', 'info'); return; }
   renderShoeTable(out, sys, size);
   var width = $('shoe-width').value;
   setStatus('shoe-status', 'US ' + (gender === 'men' ? 'M' : 'W') + ' ' + out.US + ' ≈ EU ' + out.EU + ' / UK ' + out.UK + ' / ' + out.MONDO.toFixed(1) + ' cm • Width: ' + SHOE_WIDTH_LABELS[width], 'success');

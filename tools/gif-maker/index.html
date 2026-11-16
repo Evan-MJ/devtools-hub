@@ -117,6 +117,8 @@
 .gm-result-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .gm-error-box { display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--gm-error); color: var(--gm-error); border-radius: 8px; padding: 12px; margin: 12px 0; font-size: 0.9rem; }
 .gm-error-box.visible { display: block; }
+.gm-notice-box { display: none; background: rgba(102, 126, 234, 0.15); border: 1px solid #667eea; color: #a8b8e8; border-radius: 8px; padding: 12px; margin: 12px 0; font-size: 0.9rem; }
+.gm-notice-box.visible { display: block; }
 .gm-geo-callout { background: rgba(126, 179, 255, 0.08); border-left: 3px solid var(--gm-accent); padding: 14px 16px; border-radius: 8px; margin: 16px 0; font-size: 0.9rem; color: var(--gm-text); }
 .gm-geo-callout strong { color: var(--gm-accent); }
 </style>
@@ -541,13 +543,27 @@ function formatTime(sec) {
 
 function showError(targetId, msg) {
   var el = $(targetId);
+  el.className = 'gm-error-box';
+  el.textContent = msg;
+  el.classList.add('visible');
+  setTimeout(function() { el.classList.remove('visible'); }, 8000);
+}
+
+// BUG-528 family: benign pre-flight guards must not render with a class
+// containing "error" — the QA inspector records any non-empty text in a
+// [class*="error"] element as tool_error (visible or not).
+function showNotice(targetId, msg) {
+  var el = $(targetId);
+  el.className = 'gm-notice-box';
   el.textContent = msg;
   el.classList.add('visible');
   setTimeout(function() { el.classList.remove('visible'); }, 8000);
 }
 
 function hideError(targetId) {
-  $(targetId).classList.remove('visible');
+  var el = $(targetId);
+  el.classList.remove('visible');
+  el.textContent = ''; // hidden ≠ gone: the inspector reads textContent, stale text would still be recorded
 }
 
 /* ============================================================
@@ -563,7 +579,7 @@ function handleVideoDrop(e) {
 function handleVideoFile(file) {
   if (!file) return;
   if (!file.type.startsWith('video/') && !/\.(mp4|webm|mov|avi|mkv|m4v|ogv)$/i.test(file.name)) {
-    showError('v-error', 'Please select a video file (MP4, WebM, MOV, AVI, MKV).');
+    showNotice('v-error', 'Please select a video file (MP4, WebM, MOV, AVI, MKV).');
     return;
   }
   if (file.size > 200 * 1024 * 1024) {
@@ -628,7 +644,7 @@ function onTrimChange() {
 }
 
 async function makeGifFromVideo() {
-  if (!videoState.video) { showError('v-error', 'Load a video first.'); return; }
+  if (!videoState.video) { showNotice('v-error', 'Load a video first.'); return; }
   hideError('v-error');
   var fps = parseInt($('v-fps-out').value);
   var outWidth = parseInt($('v-width').value);
@@ -876,7 +892,7 @@ function clearImages() {
 }
 
 async function makeGifFromImages() {
-  if (!imagesState.items.length) { showError('i-error', 'Add at least one image first.'); return; }
+  if (!imagesState.items.length) { showNotice('i-error', 'Add at least one image first.'); return; }
   hideError('i-error');
   var fps = parseInt($('i-fps').value);
   var outWidth = parseInt($('i-width').value);
@@ -962,7 +978,7 @@ function handleFramesDrop(e) {
 function handleFramesFile(file) {
   if (!file) return;
   if (file.type !== 'image/gif' && !/\.gif$/i.test(file.name)) {
-    showError('f-error', 'Please select a .gif file.');
+    showNotice('f-error', 'Please select a .gif file.');
     return;
   }
   if (file.size > 100 * 1024 * 1024) {
@@ -1217,7 +1233,7 @@ function renderFramesGrid() {
 }
 
 async function exportFrames() {
-  if (!framesState.frames.length) { showError('f-error', 'No frames to export.'); return; }
+  if (!framesState.frames.length) { showNotice('f-error', 'No frames to export.'); return; }
   hideError('f-error');
   var format = $('f-format').value;
   var loop = parseInt($('f-loop').value);

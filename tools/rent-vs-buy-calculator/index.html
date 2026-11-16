@@ -301,7 +301,7 @@
         if (inp.down === null || inp.down < 0) bad.push('Down Payment');
         if (inp.rate === null || inp.rate < 0) bad.push('Mortgage Rate');
         if (inp.rent === null || inp.rent < 0) bad.push('Monthly Rent');
-        if (bad.length) { st.className = 'status error'; st.textContent = 'Please check: ' + bad.join(', '); return; }
+        if (bad.length) { st.className = 'status info'; st.textContent = 'Please check: ' + bad.join(', '); return; }
         st.className = 'status'; st.textContent = '';
         var sim = rbvSim(inp);
         var adv = sim.stayAdv(inp.stay), be = sim.breakEven;

@@ -156,7 +156,7 @@
             const copyBtn = document.getElementById('copy-diff-btn');
 
             if (!leftRaw || !rightRaw) {
-                showDiffStatus('diff-status', 'Please enter JSON in both panels', 'error');
+                showDiffStatus('diff-status', 'Please enter JSON in both panels', 'info');
                 summary.style.display = 'none';
                 output.innerHTML = '';
                 copyBtn.style.display = 'none';

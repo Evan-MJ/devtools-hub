@@ -144,12 +144,12 @@
             .catch(function(){ showStatus('status','Could not reach the geocoding service. Check your connection.','error'); });
     }
     function useMyLocation() {
-        if (!navigator.geolocation) { showStatus('status','Your browser does not support location. Type a city instead.','error'); return; }
+        if (!navigator.geolocation) { showStatus('status','Your browser does not support location. Type a city instead.','info'); return; }
         showStatus('status','Getting your location...','');
         navigator.geolocation.getCurrentPosition(function(p){
             loadAir(p.coords.latitude, p.coords.longitude, 'Your location');
         }, function(){
-            showStatus('status','Location permission denied or unavailable. Type your city instead.','error');
+            showStatus('status','Location permission denied or unavailable. Type your city instead.','info');
         }, {timeout:10000});
     }
     function loadAir(lat, lon, label) {

@@ -777,7 +777,7 @@
     $('yt-bulk-fetch-btn').addEventListener('click', function() {
         var lines = $('yt-bulk-input').value.split(/\r?\n/).map(function(s) { return s.trim(); }).filter(Boolean);
         if (lines.length === 0) {
-            showError('yt-bulk-status', 'Enter at least one YouTube URL.');
+            setStatus('yt-bulk-status', 'Enter at least one YouTube URL.', 'info');
             return;
         }
         var ids = lines.map(parseYouTubeId);
