@@ -464,12 +464,6 @@
         var e = document.getElementById('ntw-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
         function copyWords() {
             var text = document.getElementById('ntw-output').textContent;

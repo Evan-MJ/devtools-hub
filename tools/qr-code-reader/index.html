@@ -330,23 +330,6 @@
         reader.readAsDataURL(file);
     }
 
-    function processClipboard() {
-        navigator.clipboard.read().then(function(items) {
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                if (item.types.indexOf('image/png') !== -1 || item.types.indexOf('image/jpeg') !== -1 || item.types.indexOf('image/webp') !== -1) {
-                    item.getType(item.types[0]).then(function(blob) {
-                        var file = new File([blob], 'pasted.png', { type: blob.type });
-                        processFile(file);
-                    });
-                    return;
-                }
-            }
-            showStatus('No image found in clipboard', 'info');
-        }).catch(function() {
-            showStatus('Clipboard access denied or not supported', 'error');
-        });
-    }
 
     function addToHistory(text, type) {
         var entry = { text: text, type: type, time: new Date().toISOString() };

@@ -837,10 +837,6 @@ function calcMedicare(annualGross, status){
   return base + addl;
 }
 
-function getW4Steps(annualTaxable){
-  var standardWithholding = calcFederalTax(annualTaxable, 'S') - calcFederalTax(annualTaxable * 0.85, 'S');
-  return standardWithholding;
-}
 
 function computeAnnual(){
   var gross = getInputAnnual();

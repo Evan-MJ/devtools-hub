@@ -335,11 +335,6 @@ function daysBetween(a, b) {
   const ms = new Date(b).getTime() - new Date(a).getTime();
   return Math.max(1, Math.ceil(ms / 86400000));
 }
-function parseLocalDate(s) {
-  if (!s) return null;
-  const parts = s.split('-');
-  return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-}
 
 function renderSubjectList() {
   const list = $('sp-subject-list');

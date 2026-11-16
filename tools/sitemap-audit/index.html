@@ -369,12 +369,6 @@ function showError(msg) {
         var e = document.getElementById('sa-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
 async function runAudit() {
   var input = document.getElementById('sa-url').value.trim();
@@ -463,11 +457,6 @@ function toggleCard(head) {
   head.nextElementSibling.classList.toggle('open');
 }
 
-function statTiles(pairs) {
-  return '<div class="sa-stats">' + pairs.map(function (p) {
-    return '<div class="sa-stat"><b>' + esc(p[1]) + '</b>' + esc(p[0]) + '</div>';
-  }).join('') + '</div>';
-}
 
 function render(r) {
   var errors = (r.issues || []).filter(function (i) { return i.level === 'error'; }).length;

@@ -369,13 +369,6 @@ section p, section li { color: #ccc; }
     return Object.keys(obj).length > 0 ? obj : null;
   }
 
-  function jsValue(v) {
-    if (typeof v === 'number') return v;
-    var trimmed = v.trim();
-    if (/^-?\d+$/.test(trimmed)) return parseInt(trimmed, 10);
-    if (/^-?\d+\.\d+$/.test(trimmed)) return parseFloat(trimmed);
-    return JSON.stringify(v);
-  }
 
   function svgToJsx(svgStr, name, opts) {
     var parser = new DOMParser();

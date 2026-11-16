@@ -1305,23 +1305,8 @@ $('cl-gender').addEventListener('change', function() { drawClDiagram(this.value)
 // ======================================================================
 
 // US band: round(underbust inches) to even. EU band = round(underbust cm). UK/AU/FR same as EU.
-function usBandFromUnderbustCm(cm) {
-  var inches = cm / 2.54;
-  var rounded = Math.round(inches + 1);
-  if (rounded % 2 !== 0) rounded += 1;
-  return rounded;
-}
 
 // ponytail: US cup letters map to alphabetical volume; cup index = (bust_in - underbust_in - 1)
-function usCupFromCupDiff(diffIn) {
-  // diff in inches → US cup letter
-  var d = Math.round(diffIn);
-  return ['AA','A','B','C','D','DD','DDD','DDDD','5','6','7'][Math.max(0, Math.min(10, d - 1))];
-}
-function alphabeticalCup(diffIn) {
-  var d = Math.round(diffIn);
-  return BRA_CUP_VOLUME_ORDER[Math.max(0, Math.min(BRA_CUP_VOLUME_ORDER.length - 1, d - 1))];
-}
 
 function populateBraBand() {
   var sys = $('bra-system').value;

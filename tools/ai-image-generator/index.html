@@ -393,12 +393,6 @@
         var e = document.getElementById('error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
         // A dead model id is a recurring event, not a one-off — providers retire them (BUG-321) and
         // `Model not found` is all Puter answers. Name the model that failed and the way out; for a

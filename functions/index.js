@@ -326,9 +326,11 @@ export async function onRequest(context) {
       const start_p = Math.max(1, safePage - 3);
       const end_p = Math.min(totalPages, safePage + 3);
       display = [];
-      if (start_p > 1) { display.push(1); if (start_p > 2) display.push('…'); }
-      for (let i = start_p; i <= end_p; i++) display.push(i);
-      if (end_p < totalPages) { if (end_p < totalPages - 1) display.push('…'); display.push(totalPages); }
+      display.push(1); // Always include page 1
+      if (start_p > 2) display.push('…'); // Ellipsis only if gap between 1 and start_p
+      for (let i = Math.max(2, start_p); i <= end_p; i++) display.push(i); // Start loop at 2 to avoid duplicating 1
+      if (end_p < totalPages - 1) display.push('…');
+      display.push(totalPages);
     }
     for (const p of display) {
       if (p === '…') {
@@ -482,8 +484,8 @@ export async function onRequest(context) {
     '</section>' + nl +
     (popular.length > 0 ? '<section class="section-block" id="popular"><div class="section-header"><h2>Popular Tools</h2><span class="section-count">' + popular.length + ' most-used</span></div><div class="tools-grid">' + popHtml + '</div></section>' + nl : '') +
     recentHtml +
-    '<section class="section-block" id="categories"><div class="section-header"><h2>Browse by Category</h2><span class="section-count">' + CAT_ORDER.length + ' categories</span></div><div class="category-grid">' + catHtml + '</div></section>' + nl +
-    '<section class="all-tools-section"><details' + (safePage > 1 ? ' open' : '') + '><summary>View all ' + totalCount + ' tools (alphabetical)</summary><div class="tools-grid">' + allHtml + '</div>' + paginationHtml + '</details></section>' + nl +
+    '<section class="section-block" id="categories"><div class="section-header"><h2>Browse by Category</h2><span class="section-count">' + CAT_ORDER.length + ' categories</span> Discover tools organized by type</div><div class="category-grid">' + catHtml + '</div></section>' + nl +
+    '<section class="all-tools-section"><details' + (safePage > 1 ? ' open' : '') + '><summary>View all ' + totalCount + ' tools (alphabetical, page ' + safePage + ' of ' + totalPages + ')</summary><div class="tools-grid">' + allHtml + '</div>' + paginationHtml + '</details></section>' + nl +
     faqHtml +
     '</div></main>' + nl +
     '<footer class="footer-min"><div class="container"><div>&copy; 2026 DevTools Hub &middot; ' + totalCount + ' free tools &middot; no signup</div><div><a href="/about/">About</a> <a href="/privacy/">Privacy</a> <a href="/contact/">Contact</a> <a href="/tools/feedback/">Feedback</a> <a href="/sitemap.xml">Sitemap</a> <a href="/llms.txt">llms.txt</a> <a href="/llms-full.txt">llms-full.txt</a> <a href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN</a> <a href="https://llmstxt.org/" target="_blank" rel="noopener">llms.txt spec</a></div></div></footer>' + nl +

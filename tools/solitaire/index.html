@@ -364,28 +364,6 @@ function moveWasteToFoundation(foundationIdx) {
     return true;
 }
 
-function autoComplete() {
-    let moved = true;
-    let count = 0;
-    while (moved && count < 200) {
-        moved = false; count++;
-        for (let i = 0; i < 4; i++) {
-            const pile = state.foundations[i];
-            const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
-            for (let col = 0; col < 7; col++) {
-                const t = state.tableau[col];
-                if (t.length > 0) {
-                    const card = t[t.length - 1];
-                    if (card.faceUp && card.suit === suits[i] && (pile.length === 0 ? card.rank === 1 : card.rank === pile[pile.length - 1].rank + 1)) {
-                        moveToFoundation(card, col, t.length - 1);
-                        moved = true; break;
-                    }
-                }
-            }
-            if (moved) break;
-        }
-    }
-}
 
 function checkWin() {
     let total = 0;

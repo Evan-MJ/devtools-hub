@@ -703,10 +703,6 @@
         specRaf = requestAnimationFrame(specLoop);
     }
 
-    function stopSpec() {
-        specOn = false;
-        if (specRaf) { cancelAnimationFrame(specRaf); specRaf = null; }
-    }
 
     function drawSpec() {
         if (!analyserNode || !specData) return;

@@ -852,10 +852,6 @@
             return m + ':' + String(s).padStart(2, '0');
         }
 
-        function formatSpeed(secPerUnit) {
-            if (!isFinite(secPerUnit) || secPerUnit <= 0) return '--';
-            return (3600 / secPerUnit).toFixed(1);
-        }
 
         function calculatePace() {
             var activeMode = document.querySelector('.rpc-mode-btn.active').getAttribute('data-calc-mode');

@@ -1,7 +1,18 @@
 import { isAdmin } from '../../libs/admin-auth.js';
 
+// BUG-551: the public list is capped at 100 entries (product decision, unchanged), but
+// the old code threw the overflow away with `feedbackList.length = 100` - a real
+// user's feedback (with their email, so the reply address) was silently destroyed on
+// the next submission. The queue reached 100/100 on 2026-11-16, so every new
+// submission was eating the oldest one. The evicted entries now move to a second KV
+// key (feedback_archive) instead of vanishing; admins see the archive merged into the
+// same array, the public response still shows the most recent 100.
+const FEEDBACK_KEY = 'feedback_list';
+const FEEDBACK_ARCHIVE_KEY = 'feedback_archive';
+const FEEDBACK_MAX = 100;
+const FEEDBACK_ARCHIVE_MAX = 500;
+
 export async function onRequestGet(context) {
-    const FEEDBACK_KEY = 'feedback_list';
     const { searchParams } = new URL(context.request.url);
     // BUG-401: the public list published every submitter's email address to anyone who
     // loaded /tools/feedback/ — 100/100 queued entries carried one. The published privacy
@@ -13,7 +24,9 @@ export async function onRequestGet(context) {
 
     try {
         const feedbackList = await context.env.FEEDBACK_KV.get(FEEDBACK_KEY, 'json');
-        const feedback = (feedbackList || []).map(f => {
+        const archive = admin ? (await context.env.FEEDBACK_KV.get(FEEDBACK_ARCHIVE_KEY, 'json')) || [] : [];
+        const all = archive.concat(feedbackList || []);
+        const feedback = all.map(f => {
             if (admin || !('email' in f)) return f;
             const { email, ...rest } = f;
             return rest;
@@ -40,8 +53,6 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
-    const FEEDBACK_KEY = 'feedback_list';
-    
     try {
         const body = await context.request.json();
         const { category, type, description, email, tool } = body;
@@ -67,9 +78,15 @@ export async function onRequestPost(context) {
         };
         
         feedbackList.unshift(newFeedback);
-        
-        if (feedbackList.length > 100) {
-            feedbackList.length = 100;
+
+        if (feedbackList.length > FEEDBACK_MAX) {
+            // BUG-551: the entries that fall off the end are the oldest real
+            // submissions - keep them in the archive instead of dropping them.
+            const evicted = feedbackList.splice(FEEDBACK_MAX);
+            const archive = (await context.env.FEEDBACK_KV.get(FEEDBACK_ARCHIVE_KEY, 'json')) || [];
+            archive.unshift(...evicted);
+            if (archive.length > FEEDBACK_ARCHIVE_MAX) archive.length = FEEDBACK_ARCHIVE_MAX;
+            await context.env.FEEDBACK_KV.put(FEEDBACK_ARCHIVE_KEY, JSON.stringify(archive));
         }
         
         await context.env.FEEDBACK_KV.put(FEEDBACK_KEY, JSON.stringify(feedbackList));
@@ -87,7 +104,6 @@ export async function onRequestPost(context) {
 }
 
 export async function onRequestPatch(context) {
-    const FEEDBACK_KEY = 'feedback_list';
     const { searchParams } = new URL(context.request.url);
     if (!isAdmin(context, searchParams)) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -148,7 +164,6 @@ export async function onRequestPatch(context) {
 }
 
 export async function onRequestDelete(context) {
-    const FEEDBACK_KEY = 'feedback_list';
     const { searchParams } = new URL(context.request.url);
     if (!isAdmin(context, searchParams)) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {

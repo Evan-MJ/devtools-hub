@@ -405,9 +405,6 @@
         return { ...rates, period: 'full', rate: rates };
     }
 
-    function rateToCents(rateObj, category) {
-        return rateObj[category];
-    }
 
     function formatMoney(d) { return '$' + (Math.round(d * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
     function formatMiles(m) { return (Math.round(m * 10) / 10).toFixed(1); }

@@ -536,7 +536,6 @@ sum: { input: '2h 35m + 3h 45m + 1h 15m' }
 };
 
 function pad2(n) { n = Math.floor(n); return (n < 10 ? '0' : '') + n; }
-function padTime(n) { return pad2(n); }
 
 function fmtTime12(h24, m) {
 var ap = h24 >= 12 ? 'PM' : 'AM';
@@ -544,7 +543,6 @@ var h12 = h24 % 12; if (h12 === 0) h12 = 12;
 return h12 + ':' + pad2(m) + ' ' + ap;
 }
 
-function fmtTime24(h, m) { return pad2(h) + ':' + pad2(m); }
 
 function toSeconds12(h, m, ap) {
 var h24 = h % 12;

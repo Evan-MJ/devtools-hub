@@ -425,12 +425,6 @@
         var e = document.getElementById('ieError');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
         function hideError()    { errorBox.classList.remove('visible'); errorBox.textContent = ''; }
         function setProgress(pct, text) {
             progress.classList.add('visible');

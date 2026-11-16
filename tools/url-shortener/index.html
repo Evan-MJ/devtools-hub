@@ -354,12 +354,6 @@
         var e = document.getElementById('shorten-error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
     document.getElementById('url-input').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') shorten();

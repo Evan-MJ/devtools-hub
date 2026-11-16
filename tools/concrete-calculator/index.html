@@ -452,7 +452,6 @@ var DENSITY_METRIC = { cement: 1506, sand: 1602, aggregate: 1522 };
 
 function el(id) { return document.getElementById(id); }
 function fmt(n, d) { d = d == null ? 2 : d; if (!isFinite(n)) return '0'; return Number(n).toFixed(d).replace(/\.?0+$/, ''); }
-function toRad(d) { return d * Math.PI / 180; }
 
 function ccSetShape(shape) {
   state.shape = shape;

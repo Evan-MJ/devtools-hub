@@ -328,12 +328,6 @@ function showError(msg) {
         var e = document.getElementById('error');
         if (e) { e.textContent = ''; var kids = e.querySelectorAll('*'); for (var k = 0; k < kids.length; k++) { kids[k].textContent = ''; } }
     }
-    function hideNotice() {
-        var n = document.getElementById('toolNotice');
-        if (!n) return;
-        n.textContent = '';
-        n.classList.remove('show');
-    }
 
 document.getElementById('domainInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') checkDomainAge();

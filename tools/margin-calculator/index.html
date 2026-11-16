@@ -623,9 +623,6 @@
             var d = decimals !== undefined ? decimals : 2;
             return n.toFixed(d) + '%';
         }
-        function getDecimals() {
-            return ZERO_DECIMAL[state.currency] !== undefined ? 0 : state.decimals;
-        }
         function round2(n) { return Math.round(n * 100) / 100; }
         function toast(msg, isError) {
             var t = document.getElementById('mc-toast');

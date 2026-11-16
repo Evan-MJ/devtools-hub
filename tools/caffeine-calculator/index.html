@@ -546,11 +546,6 @@ const h = Math.floor(min/60);
 const m = min % 60;
 return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
 }
-function formatHourDecimal(h){
-const hh = Math.floor(h);
-const mm = Math.round((h-hh)*60);
-return hh + 'h ' + String(mm).padStart(2,'0') + 'm';
-}
 function relativeTime(nowMin, drinkMin){
 let diff = drinkMin - nowMin;
 if (diff < -720) diff += 1440;

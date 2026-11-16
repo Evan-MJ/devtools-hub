@@ -222,7 +222,6 @@ function readAsDataURL(file) {
   });
 }
 function bufToU8(buf) { return new Uint8Array(buf); }
-function safeSlice(u8, start, end) { return u8.subarray(start, Math.min(end, u8.length)); }
 function u8StartsWith(u8, sig) {
   if (u8.length < sig.length) return false;
   for (var i = 0; i < sig.length; i++) {
