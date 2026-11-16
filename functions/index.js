@@ -136,6 +136,9 @@ export function buildHomepageMarkdown(tools, HOMEPAGE_FAQS) {
     md += nl;
   }
   md += '## Browse by Category' + nl + nl;
+  // The page's category header carries this tagline; the mirror has to carry it too
+  // (markdown-content-parity gate: every visible block of the page appears here).
+  md += 'Discover tools organized by type' + nl + nl;
   for (const c of CAT_ORDER) {
     const count = (byCategory[c[0]] || []).length;
     md += '- [' + mdEscape(c[1]) + ' (' + count + ' tools)](/tools/' + c[0] + '/.md)' + nl;
@@ -485,7 +488,12 @@ export async function onRequest(context) {
     (popular.length > 0 ? '<section class="section-block" id="popular"><div class="section-header"><h2>Popular Tools</h2><span class="section-count">' + popular.length + ' most-used</span></div><div class="tools-grid">' + popHtml + '</div></section>' + nl : '') +
     recentHtml +
     '<section class="section-block" id="categories"><div class="section-header"><h2>Browse by Category</h2><span class="section-count">' + CAT_ORDER.length + ' categories</span> Discover tools organized by type</div><div class="category-grid">' + catHtml + '</div></section>' + nl +
-    '<section class="all-tools-section"><details' + (safePage > 1 ? ' open' : '') + '><summary>View all ' + totalCount + ' tools (alphabetical, page ' + safePage + ' of ' + totalPages + ')</summary><div class="tools-grid">' + allHtml + '</div>' + paginationHtml + '</details></section>' + nl +
+    // The summary text must stay identical to the homepage mirror's heading
+    // ("## View all N tools (alphabetical)"): the mirror lists the whole index,
+    // so it cannot honestly claim a page number (BUG-353 removed that lie), and the
+    // markdown-content-parity gate requires the page's visible summary to appear in
+    // the mirror verbatim. The page number is shown by the pagination bar below.
+    '<section class="all-tools-section"><details' + (safePage > 1 ? ' open' : '') + '><summary>View all ' + totalCount + ' tools (alphabetical)</summary><div class="tools-grid">' + allHtml + '</div>' + paginationHtml + '</details></section>' + nl +
     faqHtml +
     '</div></main>' + nl +
     '<footer class="footer-min"><div class="container"><div>&copy; 2026 DevTools Hub &middot; ' + totalCount + ' free tools &middot; no signup</div><div><a href="/about/">About</a> <a href="/privacy/">Privacy</a> <a href="/contact/">Contact</a> <a href="/tools/feedback/">Feedback</a> <a href="/sitemap.xml">Sitemap</a> <a href="/llms.txt">llms.txt</a> <a href="/llms-full.txt">llms-full.txt</a> <a href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN</a> <a href="https://llmstxt.org/" target="_blank" rel="noopener">llms.txt spec</a></div></div></footer>' + nl +
