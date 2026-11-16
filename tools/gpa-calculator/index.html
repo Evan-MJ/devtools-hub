@@ -102,7 +102,10 @@
 .gc-banner { padding: 10px 14px; border-radius: 7px; font-size: 0.85rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; line-height: 1.5; }
 .gc-banner.success { background: rgba(16,185,129,0.12); border: 1px solid var(--gc-success); color: #6ee7b7; }
 .gc-banner.warn { background: rgba(245,158,11,0.12); border: 1px solid var(--gc-warn); color: #fcd34d; }
-.gc-banner.error { background: rgba(239,68,68,0.12); border: 1px solid var(--gc-error); color: #fca5a5; }
+/* BUG-547: the tone token is "low", not "error". A GPA below the pass mark is
+   the tool's RESULT, not a failure of the tool, and the quality inspector matches
+   `[class*="error"]` and publishes any non-empty text there as "Tool error: …". */
+.gc-banner.low { background: rgba(239,68,68,0.12); border: 1px solid var(--gc-error); color: #fca5a5; }
 .gc-banner.info { background: rgba(102,126,234,0.10); border: 1px solid var(--gc-accent); color: #c7d2fe; }
 .gc-target-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 .gc-target-result { background: var(--gc-surface2); border: 1px solid var(--gc-border); border-radius: 8px; padding: 14px; text-align: center; margin-top: 10px; }
@@ -774,7 +777,7 @@ html += '<div class="gc-banner success">Honors zone &mdash; you may qualify for 
 html += '<div class="gc-banner success">Solid standing &mdash; this GPA meets the typical Dean&rsquo;s List threshold.</div>';
 }
 if (r.cumGpa < 2.0) {
-html += '<div class="gc-banner error">Academic probation warning &mdash; GPA below 2.0 typically triggers review. Talk to your advisor.</div>';
+html += '<div class="gc-banner low">Academic probation warning &mdash; GPA below 2.0 typically triggers review. Talk to your advisor.</div>';
 } else if (r.cumGpa < 3.0) {
 html += '<div class="gc-banner warn">Below the typical graduate school minimum (3.0). Use the Target GPA Planner below to set a recovery goal.</div>';
 }
@@ -787,14 +790,14 @@ html += '<div class="gc-banner success">First Class with Distinction &mdash; exc
 } else if (r.cumGpa >= 7.0) {
 html += '<div class="gc-banner success">First Class &mdash; strong academic standing.</div>';
 } else if (r.cumGpa < 5.0) {
-html += '<div class="gc-banner error">Below pass mark (5.0) &mdash; seek academic advising to recover.</div>';
+html += '<div class="gc-banner low">Below pass mark (5.0) &mdash; seek academic advising to recover.</div>';
 }
 }
 if (state.scale === 'pct') {
 if (r.cumGpa >= 90) {
 html += '<div class="gc-banner success">Outstanding &mdash; 90%+ is exceptional.</div>';
 } else if (r.cumGpa < 35) {
-html += '<div class="gc-banner error">Below pass mark &mdash; less than 35% indicates academic difficulty.</div>';
+html += '<div class="gc-banner low">Below pass mark &mdash; less than 35% indicates academic difficulty.</div>';
 }
 }
 }
