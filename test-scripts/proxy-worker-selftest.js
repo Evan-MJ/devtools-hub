@@ -2,14 +2,16 @@
 //
 // The Worker is a separate Cloudflare service, so nothing on the site exercises
 // its guards. This runs the real handler in Node (Request/Response/fetch are
-// all standard now) and asserts the three things that matter:
+// all standard now) and asserts the four things that matter:
 //
 //   1. the SSRF guard refuses private / link-local / internal hosts
 //   2. the CORS answer only allows this site's own origins
 //   3. Cloudflare's rate limiting binding turns into a 429
+//   4. the response body comes back intact (it used to be decoded twice, and
+//      the second decode blanked it — the tool showed "(empty response)")
 //
 // Run: node test-scripts/proxy-worker-selftest.js
-// (needs no network: every case is answered before the outbound fetch)
+// (case 3 reaches the network; case 4 stubs the outbound fetch)
 
 import worker from '../src/proxy-fetch-worker.js';
 
@@ -65,6 +67,26 @@ const allowed = await post('https://example.com/', { 'cf-connecting-ip': '1.2.3.
   RATE_LIMITER: { limit: async () => ({ success: true }) }
 });
 check(allowed.status === 200, 'under the limit -> the request goes through', 'status ' + allowed.status);
+
+console.log('\n[4] the response body survives the round trip');
+// Stubbed outbound fetch: deterministic, and it is the only way to test the
+// >500KB truncation path without downloading half a megabyte.
+const realFetch = globalThis.fetch;
+const stub = (payload) => {
+  globalThis.fetch = async () => new Response(payload, {
+    status: 200, headers: { 'Content-Type': 'text/plain' }
+  });
+};
+stub('hello world');
+const small = await (await post('https://example.com/')).json();
+check(small.body === 'hello world', 'a small body comes back verbatim', JSON.stringify(small.body));
+check(small.responseSize === 11, 'responseSize matches the body', String(small.responseSize));
+
+stub('x'.repeat(600000));
+const big = await (await post('https://example.com/')).json();
+check(big.body && big.body.indexOf('... [Response body truncated at 500KB]') > 0,
+  'a body over 500KB is truncated, not dropped', 'len ' + (big.body || '').length);
+globalThis.fetch = realFetch;
 
 console.log(`\n${pass} passed, ${fail.length} failed`);
 if (fail.length) {

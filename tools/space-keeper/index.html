@@ -30,7 +30,7 @@
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-        "featureList": ["Multi-method access (HTTP/iframe/API)", "Keep HF Spaces awake", "Custom visit interval 1-48 hours", "Visit history tracking", "Status monitoring", "Keyword search", "No login required"]
+        "featureList": ["Multi-method access (server GET/API)", "Keep HF Spaces awake", "Custom visit interval 1-48 hours", "Visit history tracking", "Status monitoring", "Keyword search", "No login required"]
     }
     </script>
 </head>
@@ -104,10 +104,9 @@
                 <h3>How Space Keeper Solves This</h3>
                 <p>Our service automatically visits your HuggingFace Spaces using multiple methods:</p>
                 <ul>
-                    <li><strong>HTTP Request:</strong> Primary method - makes HTTP HEAD/GET request</li>
-                    <li><strong>Iframe Preload:</strong> Fallback - creates hidden iframe to wake the Space</li>
-                    <li><strong>API Endpoint:</strong> For spaces with /api endpoints</li>
-                    <li><strong>Smart Fallback:</strong> Tries multiple methods if one fails</li>
+                    <li><strong>Server-side GET:</strong> Primary method - the request is sent from the server, so the site's own security policy cannot block it</li>
+                    <li><strong>Health endpoint:</strong> Fallback - asks the Space for /api/health</li>
+                    <li><strong>Smart Fallback:</strong> Tries the next method if one fails</li>
                 </ul>
 
                 <h3>Access Methods Supported</h3>
@@ -115,10 +114,8 @@
                     <table class="methods-table">
 <caption class="sr-only">Ways to keep a sleeping space awake, and how often each one works</caption>
                         <tr><th>Method</th><th>Description</th><th>Success Rate</th></tr>
-                        <tr><td>HTTP HEAD</td><td>Lightweight request, no body</td><td>~70%</td></tr>
-                        <tr><td>HTTP GET</td><td>Full page request</td><td>~80%</td></tr>
-                        <tr><td>Iframe Preload</td><td>Browser loads in background</td><td>~90%</td></tr>
-                        <tr><td>/api/health</td><td>Health check endpoint</td><td>~95%</td></tr>
+                        <tr><td>Server GET</td><td>Full page request, sent from the server</td><td>~90%</td></tr>
+                        <tr><td>Health endpoint</td><td>Asks the Space for /api/health</td><td>~95%</td></tr>
                     </table>
                 </div>
 
@@ -140,11 +137,11 @@
                     <li>Maintain scheduled background tasks</li>
                     <li>Track visit history over time</li>
                     <li>Prevent actual idle timeout on remote servers</li>
-                    <li>Handle iframe-based access to Spaces</li>
+                    <li>Make a server-side request that keeps a remote container awake</li>
                 </ul>
 
                 <h3>Technical Details</h3>
-                <p>Space Keeper uses multiple access strategies. If HTTP requests are blocked by CORS, we fall back to iframe-based loading which is more reliable for waking up Spaces. Each method logs success/failure for monitoring.</p>
+                <p>Space Keeper sends the visit from the server rather than from your browser. A direct browser request to a Space is refused by this site's own Content-Security-Policy, so the server makes the call instead. Each method logs success/failure for monitoring.</p>
 
                 <h3>What a keep-alive actually does</h3>
                 <p>Free-tier HuggingFace Spaces are put to sleep after inactivity, and the first request afterwards pays for a cold start of seconds to minutes.</p>
@@ -159,7 +156,7 @@
                 <h3>Frequently Asked Questions</h3>
                 <details class="faq-item">
                     <summary>What access methods are used?</summary>
-                    <p>We use a multi-method approach: HTTP HEAD/GET requests first, then iframe preload as fallback, and API endpoints when available. This gives the highest chance of successfully waking your Space.</p>
+                    <p>Two: a full page request to the Space, and a fallback that asks the Space for /api/health. Both are sent from the server, because a direct request from your browser to a Space is blocked by this site's security policy.</p>
                 </details>
                 <details class="faq-item">
                     <summary>Is this really free?</summary>
@@ -265,63 +262,42 @@
             const methods = [];
             let success = false;
             let lastError = null;
-            
-            // Method 1: HTTP HEAD request
-            try {
-                const response = await fetch(space.url, { 
-                    method: 'HEAD',
-                    mode: 'no-cors',
-                    cache: 'no-cache'
-                });
-                methods.push({ method: 'HTTP HEAD', success: true });
-                success = true;
-            } catch (e) {
-                methods.push({ method: 'HTTP HEAD', success: false, error: e.message });
-                lastError = e.message;
-            }
-            
-            // Method 2: HTTP GET request (if HEAD failed)
-            if (!success) {
+
+            // The browser cannot reach a Space directly: this site's
+            // Content-Security-Policy only allows same-origin connects, so a
+            // fetch() to *.hf.space was refused before it left the page
+            // ("Failed to fetch"), and a hidden iframe was blocked by
+            // frame-src / X-Frame-Options while still counting as a success.
+            // The request therefore goes out server-side through the site's
+            // own relay endpoint (/api/website-down-checker), which is
+            // same-origin and therefore allowed.
+            const targets = [
+                { label: 'Server GET', url: space.url },
+                { label: 'Server GET /api/health', url: space.url.replace(/\/$/, '') + '/api/health' }
+            ];
+
+            for (const target of targets) {
                 try {
-                    const response = await fetch(space.url + '/', { 
-                        method: 'GET',
-                        mode: 'no-cors',
-                        cache: 'reload'
+                    const response = await fetch('/api/website-down-checker?url=' + encodeURIComponent(target.url), {
+                        cache: 'no-store'
                     });
-                    methods.push({ method: 'HTTP GET', success: true });
+                    const data = await response.json();
+                    // error === null means the relay got an HTTP answer back at
+                    // all. A 2xx/3xx means the Space itself is up; a 4xx/5xx is
+                    // the Space's own answer and belongs in the status column.
+                    if (data.error) throw new Error(data.error);
+                    if (!(data.statusCode >= 200 && data.statusCode < 400)) {
+                        throw new Error('HTTP ' + data.statusCode);
+                    }
+                    methods.push({ method: target.label, success: true });
                     success = true;
+                    break;
                 } catch (e) {
-                    methods.push({ method: 'HTTP GET', success: false, error: e.message });
+                    methods.push({ method: target.label, success: false, error: e.message });
+                    if (!lastError) lastError = e.message;
                 }
             }
-            
-            // Method 3: Iframe preload (most reliable for waking up)
-            if (!success) {
-                try {
-                    await iframePreload(space.url);
-                    methods.push({ method: 'Iframe Preload', success: true });
-                    success = true;
-                } catch (e) {
-                    methods.push({ method: 'Iframe Preload', success: false, error: e.message });
-                }
-            }
-            
-            // Method 4: Try /api/health endpoint
-            if (!success) {
-                try {
-                    const healthUrl = space.url.replace(/\/$/, '') + '/api/health';
-                    const response = await fetch(healthUrl, { 
-                        method: 'GET',
-                        mode: 'no-cors',
-                        cache: 'no-cache'
-                    });
-                    methods.push({ method: 'API Health', success: true });
-                    success = true;
-                } catch (e) {
-                    methods.push({ method: 'API Health', success: false, error: e.message });
-                }
-            }
-            
+
             space.lastVisit = Date.now();
             space.visitCount++;
             space.lastMethod = methods.find(m => m.success)?.method || 'None';
@@ -330,38 +306,6 @@
             
             saveSpaces();
             renderSpaces();
-        }
-
-        function iframePreload(url) {
-            return new Promise((resolve, reject) => {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.width = '1';
-                iframe.height = '1';
-                iframe.src = url;
-                
-                const timeout = setTimeout(() => {
-                    cleanup();
-                    reject(new Error('Iframe preload timeout'));
-                }, 10000);
-                
-                function cleanup() {
-                    clearTimeout(timeout);
-                    iframe.remove();
-                }
-                
-                iframe.onload = () => {
-                    cleanup();
-                    resolve();
-                };
-                
-                iframe.onerror = () => {
-                    cleanup();
-                    reject(new Error('Iframe preload failed'));
-                };
-                
-                document.body.appendChild(iframe);
-            });
         }
 
         function filterSpaces() {
