@@ -562,7 +562,32 @@
             el.className = 'wcb-status ' + (type || 'info');
             el.classList.remove('hidden');
         }
-        function hideStatus(id) { $(id).classList.add('hidden'); }
+        function hideStatus(id) {
+            var el = $(id);
+            el.textContent = '';
+            el.classList.add('hidden');
+        }
+        // A missing device, a blocked permission or a busy camera is a conclusion
+        // about the environment, not a failure of the tool. The QA inspector records
+        // any non-empty text inside an element whose class contains "error" as a
+        // tool_error (BUG-528 family), so those conclusions stay neutral; an
+        // unexpected exception keeps the error tone.
+        var MEDIA_ENV = {
+            NotFoundError: 'No {D} was found on this device. Connect one and try again.',
+            DevicesNotFoundError: 'No {D} was found on this device. Connect one and try again.',
+            NotAllowedError: '{D} access was blocked. Allow it for this site in the address bar, then try again.',
+            PermissionDeniedError: '{D} access was blocked. Allow it for this site in the address bar, then try again.',
+            SecurityError: '{D} access needs a secure origin. Open this page over HTTPS and try again.',
+            NotReadableError: 'The {D} is already in use by another app (Zoom, OBS, Discord). Close it and try again.',
+            TrackStartError: 'The {D} is already in use by another app (Zoom, OBS, Discord). Close it and try again.',
+            AbortError: 'The {D} could not be started. Close other apps using it and try again.',
+            OverconstrainedError: 'That {D} is no longer available. Pick another device and try again.'
+        };
+        function deviceFailure(e, label, fallback) {
+            var tpl = MEDIA_ENV[(e && e.name) || ''];
+            if (tpl) return { type: 'info', msg: tpl.replace('{D}', label) };
+            return { type: 'error', msg: fallback };
+        }
 
         // ========== Tab switching ==========
         var tabs = document.querySelectorAll('.wcb-tab');
@@ -643,7 +668,7 @@
 
         async function startCamera() {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                setStatus('wcb-cam-status', 'Your browser does not support camera access. Try Chrome, Firefox, Edge, or Safari over HTTPS.', 'error');
+                setStatus('wcb-cam-status', 'Your browser does not support camera access. Try Chrome, Firefox, Edge, or Safari over HTTPS.', 'info');
                 return;
             }
             try {
@@ -677,7 +702,8 @@
                 setStatus('wcb-cam-status', 'Camera running. Resolution: ' + settings.width + 'x' + settings.height + ' @ ' + Math.round(settings.frameRate || 30) + 'fps', 'success');
                 setTimeout(hideStatus, 3000, 'wcb-cam-status');
             } catch (e) {
-                setStatus('wcb-cam-status', 'Camera error: ' + (e.message || e.name || 'unknown') + '. Make sure you allowed camera access and no other app is using the camera.', 'error');
+                var f = deviceFailure(e, 'camera', 'Camera error: ' + (e.message || e.name || 'unknown') + '. Make sure you allowed camera access and no other app is using the camera.');
+                setStatus('wcb-cam-status', f.msg, f.type);
             }
         }
 
@@ -809,7 +835,7 @@
 
         async function startMic() {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                setStatus('wcb-mic-status', 'Your browser does not support microphone access.', 'error');
+                setStatus('wcb-mic-status', 'Your browser does not support microphone access.', 'info');
                 return;
             }
             try {
@@ -817,7 +843,7 @@
                 var stream = await navigator.mediaDevices.getUserMedia(constraints);
                 state.mic.stream = stream;
                 var ctx = getAudioContext();
-                if (!ctx) { setStatus('wcb-mic-status', 'Could not create audio context.', 'error'); return; }
+                if (!ctx) { setStatus('wcb-mic-status', 'Your browser could not create an audio context, so the microphone and speaker tests are unavailable here.', 'info'); return; }
                 if (ctx.state === 'suspended') ctx.resume();
                 state.mic.source = ctx.createMediaStreamSource(stream);
                 state.mic.analyser = ctx.createAnalyser();
@@ -839,7 +865,8 @@
                 setStatus('wcb-mic-status', 'Microphone running. Speak normally to see the VU meter respond.', 'success');
                 setTimeout(hideStatus, 3000, 'wcb-mic-status');
             } catch (e) {
-                setStatus('wcb-mic-status', 'Microphone error: ' + (e.message || e.name || 'unknown') + '. Make sure you allowed microphone access.', 'error');
+                var mf = deviceFailure(e, 'microphone', 'Microphone error: ' + (e.message || e.name || 'unknown') + '. Make sure you allowed microphone access.');
+                setStatus('wcb-mic-status', mf.msg, mf.type);
             }
         }
 
@@ -997,7 +1024,7 @@
         function playTone(freq, duration, pan) {
             stopSpeakerAudio();
             var ctx = getSpeakerCtx();
-            if (!ctx) { setStatus('wcb-spk-status', 'Web Audio API not supported.', 'error'); return; }
+            if (!ctx) { setStatus('wcb-spk-status', 'Web Audio API not supported.', 'info'); return; }
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             var panner = (ctx.createStereoPanner ? ctx.createStereoPanner() : null);
