@@ -168,12 +168,6 @@
             } catch (e) { fallback(); }
         }
 
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            setTimeout(function() { el.textContent = ''; el.className = 'status'; }, 3000);
-        }
-    </script>
+        </script>
 </body>
 </html>

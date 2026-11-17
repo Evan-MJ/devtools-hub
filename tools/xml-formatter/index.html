@@ -345,13 +345,7 @@
             document.getElementById('xml-status').className = 'status';
         }
 
-        function showStatus(id, msg, type) {
-            var el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            setTimeout(function() { el.textContent = ''; el.className = 'status'; }, 3000);
-        }
-
+        
         function copyToClipboard(id) {
             var e = document.getElementById(id);
             if (e && e.value) navigator.clipboard.writeText(e.value);

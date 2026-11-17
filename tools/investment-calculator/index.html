@@ -368,14 +368,6 @@
             const v = num * settings.fxRate;
             return (v >= 0 ? '+' : '-') + sym + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status' + (type ? ' ' + type : '');
-            if (type === 'success' || type === 'error') {
-                setTimeout(function() { el.textContent = ''; el.className = 'status'; }, 3500);
-            }
-        }
         function uid() {
             return 'h_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
         }

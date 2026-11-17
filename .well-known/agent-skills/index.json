@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 376,
+  "tool_count": 377,
   "categories": [
     "ai-language",
     "calculators",
@@ -2652,6 +2652,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-course-generator/.md",
       "description": "Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no sign..."
+    },
+    {
+      "name": "Video Converter - Change Video Format Online",
+      "url": "https://tools.scoreroute.com/tools/video-converter/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/video-converter/.md",
+      "description": "Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no water..."
     }
   ],
   "skills": [
@@ -5286,6 +5293,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-course-generator/.md",
       "description": "Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no sign..."
+    },
+    {
+      "name": "Video Converter - Change Video Format Online",
+      "url": "https://tools.scoreroute.com/tools/video-converter/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/video-converter/.md",
+      "description": "Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no water..."
     }
   ]
 }

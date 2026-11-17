@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 375 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 377 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 375
+- Total tools: 377
 - Categories: 11
 - Last updated: 2026-11-17
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -1352,7 +1352,7 @@ Translate an Excel formula between 17 spreadsheet languages and find the #NAME? 
 
 Free online MD to PDF converter. Convert markdown to PDF instantly in browser. Preserve formatting, headings, code blocks, tables. No signup, 100% private.
 
-## Media Tools (69 tools)
+## Media Tools (70 tools)
 
 Browse all: [Media Tools](https://tools.scoreroute.com/tools/media/.md)
 
@@ -1976,6 +1976,15 @@ Free AI YouTube video summarizer. Paste a YouTube video URL and get an AI-genera
 - Tags: image to video, ai video generator, photo to video, animate image, ai image to video, video from photo, no signup, no watermark
 
 Free AI image to video generator. Animate photos into AI videos with Agnes AI. No signup, no watermark, no daily limit. Image to video in minutes.
+
+### Video Converter - Change Video Format Online
+
+- URL: https://tools.scoreroute.com/tools/video-converter/
+- Markdown: https://tools.scoreroute.com/tools/video-converter/.md
+- Category: Media Tools
+- Tags: video, converter, format, mp4, webm, mov, mkv, media, convert
+
+Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no watermark, no cost.
 
 ## Network Tools (25 tools)
 
@@ -3131,7 +3140,7 @@ Free income tax calculator 2026 with US federal, India new/old regime, and UK br
 
 Free rent vs buy calculator. Break-even year, year-by-year net worth comparison, PMI, and selling costs, with a sensitivity table. No signup.
 
-## AI Language (33 tools)
+## AI Language (34 tools)
 
 Browse all: [AI Language](https://tools.scoreroute.com/tools/ai-language/.md)
 
@@ -3432,9 +3441,18 @@ Free AI code reviewer. Paste code, get instant review for bugs, performance, sec
 
 Free AI content brief generator. One keyword plus audience context generates a complete SEO content brief with intent, outline, FAQs and GEO fields.
 
+### AI Course Generator - Free Online Course Creator
+
+- URL: https://tools.scoreroute.com/tools/ai-course-generator/
+- Markdown: https://tools.scoreroute.com/tools/ai-course-generator/.md
+- Category: AI Language
+- Tags: course, generator, ai, curriculum, learning, education, online course, ai course
+
+Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.
+
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 375 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 377 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

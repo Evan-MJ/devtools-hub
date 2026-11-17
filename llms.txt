@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 375 free developer tools across 11 categories. No signup, no tracking.
+> 377 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 375 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 377 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -251,6 +251,7 @@
 - [YouTube Transcript Extractor - Video to Text and SRT](https://tools.scoreroute.com/tools/youtube-transcript-extractor/.md) [HTML](https://tools.scoreroute.com/tools/youtube-transcript-extractor/)
 - [YouTube Video Summarizer - AI Video Summary Tool](https://tools.scoreroute.com/tools/youtube-video-summarizer/.md) [HTML](https://tools.scoreroute.com/tools/youtube-video-summarizer/)
 - [AI Image to Video Generator - Animate Photos](https://tools.scoreroute.com/tools/image-to-video/.md) [HTML](https://tools.scoreroute.com/tools/image-to-video/)
+- [Video Converter - Change Video Format Online](https://tools.scoreroute.com/tools/video-converter/.md) [HTML](https://tools.scoreroute.com/tools/video-converter/)
 
 ## Network Tools
 - [DNS & WHOIS Lookup - Check Domain Records](https://tools.scoreroute.com/tools/dns-lookup/.md) [HTML](https://tools.scoreroute.com/tools/dns-lookup/)
@@ -422,6 +423,7 @@
 - [AI Video Script Generator - Shorts & Social Videos](https://tools.scoreroute.com/tools/ai-video-script-generator/.md) [HTML](https://tools.scoreroute.com/tools/ai-video-script-generator/)
 - [AI Code Reviewer - Free Online Code Review](https://tools.scoreroute.com/tools/ai-code-reviewer/.md) [HTML](https://tools.scoreroute.com/tools/ai-code-reviewer/)
 - [AI Content Brief Generator - Free SEO Content Brief](https://tools.scoreroute.com/tools/ai-content-brief/.md) [HTML](https://tools.scoreroute.com/tools/ai-content-brief/)
+- [AI Course Generator - Free Online Course Creator](https://tools.scoreroute.com/tools/ai-course-generator/.md) [HTML](https://tools.scoreroute.com/tools/ai-course-generator/)
 
 ## About
 - [About DevTools Hub](https://tools.scoreroute.com/about/.md): Mission, technology, and team [HTML](https://tools.scoreroute.com/about/)
