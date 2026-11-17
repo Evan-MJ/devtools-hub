@@ -1885,7 +1885,11 @@ const CAT_PRIMARY_TOOL = {
 
 function categoryToMarkdown(displayName, total, catDescription, pagedTools, category, faqs, siteCount) {
   const base = 'https://tools.scoreroute.com';
-  let md = '# ' + displayName + ' \u2014 ' + total + ' Free Online Tools\n\n';
+  // BUG-550: the heading separator is the hyphen, the same one the <title> uses (and the same
+  // one the homepage h1 uses: "DevTools Hub - 375 Free Online Developer Tools"). It used to be an
+  // em dash here while the <title> used a hyphen, so one heading was published two ways — the
+  // 2026-11-16 review bot's [CONTENT QUALITY SCORES] named it on 3 of the 11 hubs.
+  let md = '# ' + displayName + ' - ' + total + ' Free Online Tools\n\n';
   md += '> ' + catDescription + '\n\n';
   md += 'Browse all ' + total + ' free online ' + (CAT_NOUNS[category] || displayName.toLowerCase()) + ' on DevTools Hub.\n\n';
   const introMd = catIntro(CAT_INTRO[category], 'md');
@@ -2100,7 +2104,16 @@ function repairFaqPage(html) {
 // Years, Months, Days & Birthday") that reads badly in a trail of links. Same split
 // getToolFAQs() already uses.
 function injectBreadcrumb(html, tool, slug) {
-  if (/class="[^"]*\bbreadcrumb\b/i.test(html)) return html;
+  const bcMatch = html.match(/<nav\b[^>]*class="[^"]*\bbreadcrumb\b[^"]*"[^>]*>([\s\S]*?)<\/nav>/i);
+  if (bcMatch) {
+    if (!/\/tools\/feedback\//.test(bcMatch[0])) {
+      const feedbackLink = '<a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>';
+      const beforeNav = html.slice(0, bcMatch.index + bcMatch[0].length - 6);
+      const afterNav = html.slice(bcMatch.index + bcMatch[0].length - 6);
+      return beforeNav + feedbackLink + afterNav;
+    }
+    return html;
+  }
   let at = -1;
   const subtitle = html.match(/<p\b[^>]*class="[^"]*\bsubtitle\b[^"]*"[^>]*>[\s\S]*?<\/p>/i);
   if (subtitle && subtitle.index !== undefined) {
@@ -2112,14 +2125,10 @@ function injectBreadcrumb(html, tool, slug) {
   }
   const full = (tool && tool.name) ? tool.name : (slug || 'Tool');
   const short = full.split(/\s+-\s+/)[0] || full;
-  // The category link matches the trail the 355 hand-authored pages already ship
-  // (Home > Calculators > Area Calculator); only the 17 pages that had no trail at all
-  // get one from here, and they get the same shape so the visible trail and the
-  // BreadcrumbList JSON-LD below describe the same path.
   const cat = (tool && tool.category && CAT_LABELS[tool.category]) ? tool.category : '';
   const catLabel = cat ? CAT_LABELS[cat] : 'Tools';
   const catHref = cat ? '/tools/' + cat + '/' : '/tools/';
-  const sep = ' &gt; ';
+  const sep = ' > ';
   const nav =
     '\n    <nav class="breadcrumb">' +
     '<a href="/">Home</a>' + sep + '<a href="' + catHref + '">' + esc(catLabel) + '</a>' + sep + '<span>' + esc(short) + '</span>' +
@@ -2456,6 +2465,7 @@ export async function onRequest(context) {
     const _pathname = url.pathname;
     if (_pathname === '/tools/' || _pathname === '/tools' ||
         _pathname === '/tools/.md' || _pathname === '/tools/index.md') {
+      const nl = '\n';
       const _accept = context.request.headers.get('Accept') || '';
       const _isMd = _pathname.endsWith('.md') || (_accept.includes('text/markdown') && !_accept.includes('text/html')) || url.searchParams.get('_md') === '1';
       // BUG-182: HEAD early-return (same class as BUG-168). SquirrelScan llms-txt-links-resolve
@@ -2581,7 +2591,38 @@ export async function onRequest(context) {
             { '@type': 'ListItem', 'position': 2, 'name': 'All Tools' }
           ]
         }) + '</script>';
-        let _html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<link rel="icon" type="image/x-icon" href="/favicon.ico">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">\n<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n<meta property="og:image" content="/og-image.png">\n<link rel="canonical" href="' + _base + '/tools/">\n<link rel="stylesheet" href="/home.css">\n<link rel="stylesheet" href="/styles.css">\n<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">\n<title>All ' + _totalCount + ' Online Developer Tools by Category | DevTools Hub</title>\n<meta name="description" content="Browse all ' + _totalCount + ' free online developer tools in ' + _CAT_ORDER.length + ' categories. JSON formatter, image compressor, calculator, password generator and more. No signup.">\n<meta property="og:title" content="All ' + _totalCount + ' Online Developer Tools by Category | DevTools Hub">\n<meta property="og:description" content="Browse all ' + _totalCount + ' free online developer tools in ' + _CAT_ORDER.length + ' categories. JSON formatter, image compressor, calculator, password generator and more. No signup.">\n<meta property="og:url" content="' + _base + '/tools/">\n<meta property="og:type" content="website">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="All ' + _totalCount + ' Online Developer Tools by Category | DevTools Hub">\n<meta name="twitter:description" content="All ' + _totalCount + ' free online developer tools by category. No signup.">\n<meta name="twitter:image" content="/og-image.png">\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","datePublished":"2026-05-21","dateModified":"' + _today + '","author":{"@id":"https://tools.scoreroute.com/#author","@type":"Person","name":"BAOMING","url":"https://github.com/Evan-MJ","sameAs":["https://github.com/Evan-MJ","https://github.com/Evan-MJ/devtools-hub"]},"publisher":{"@id":"https://tools.scoreroute.com/#organization","@type":"Organization","name":"DevTools Hub","url":"https://tools.scoreroute.com/"},"name":"All ' + _totalCount + ' DevTools Hub Tools","description":"Browse all ' + _totalCount + ' free online developer tools by category.","url":"' + _base + '/tools/"}</script>' + _hubSchemaHtml + '</head>\n<body class="hub-page">\n<header class="site-header"><div class="container">\n<a href="/" class="site-logo">All Tools</a>\n<p class="subtitle">DevTools Hub &middot; ' + _totalCount + ' tools</p>\n<nav class="top-nav"><a href="/">Home</a> <a href="/about/">About</a> <a href="/privacy/">Privacy</a> <a href="/subprocessors/">Subprocessors</a> <a href="/sitemap.xml">Sitemap</a></nav>\n<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> &gt; <span>All Tools</span> <a href="/tools/feedback/" class="feedback-link">Report Problem</a></nav>\n</div></header>\n<main><div class="container">\n<section class="section-block">\n<h1 style="font-size:2rem;margin:40px 0 8px;letter-spacing:-0.02em;">All ' + _totalCount + ' Free Online Developer Tools</h1>\n<p style="color:#9aa0a6;margin-bottom:16px;line-height:1.6;">Browse by category, or search the index by tool name</p>';
+        // Build popular and recent tools (same logic as homepage)
+        const _popular = _tools.filter(t => t.featured).slice(0, 8);
+        const _popularSlugs = new Set(_popular.map(t => t.slug));
+        const _RECENT_COUNT = 6;
+        const _recentTools = _tools.slice(-_RECENT_COUNT).reverse();
+        const _recentOnly = _recentTools.filter(t => !_popularSlugs.has(t.slug));
+        
+        // Category nav HTML (same as homepage)
+        const _catNavHtml = '<nav class="category-nav" aria-label="Category navigation"><div class="container">' + nl +
+            _CAT_ORDER.map(c => '<button class="nav-btn" data-target="' + c[0] + '" aria-label="Jump to ' + _esc(c[1]) + '">' + _esc(c[1]) + '</button>').join('') + nl +
+            '</div></nav>' + nl;
+        
+        let _html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<link rel="icon" type="image/x-icon" href="/favicon.ico">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">\n<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n<meta property="og:image" content="/og-image.png">\n<link rel="canonical" href="' + _base + '/tools/">\n<link rel="stylesheet" href="/home.css">\n<link rel="stylesheet" href="/styles.css">\n<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">\n<title>All ' + _totalCount + ' Free Online Developer Tools by Category | DevTools Hub</title>\n<meta name="description" content="Browse all ' + _totalCount + ' free online developer tools in ' + _CAT_ORDER.length + ' categories. JSON formatter, image compressor, calculator, password generator and more. No signup.">\n<meta property="og:title" content="All ' + _totalCount + ' Free Online Developer Tools by Category | DevTools Hub">\n<meta property="og:description" content="Browse all ' + _totalCount + ' free online developer tools in ' + _CAT_ORDER.length + ' categories. JSON formatter, image compressor, calculator, password generator and more. No signup.">\n<meta property="og:url" content="' + _base + '/tools/">\n<meta property="og:type" content="website">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="All ' + _totalCount + ' Free Online Developer Tools by Category | DevTools Hub">\n<meta name="twitter:description" content="All ' + _totalCount + ' free online developer tools by category. No signup.">\n<meta name="twitter:image" content="/og-image.png">\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","datePublished":"2026-05-21","dateModified":"' + _today + '","author":{"@id":"https://tools.scoreroute.com/#author","@type":"Person","name":"BAOMING","url":"https://github.com/Evan-MJ","sameAs":["https://github.com/Evan-MJ","https://github.com/Evan-MJ/devtools-hub"]},"publisher":{"@id":"https://tools.scoreroute.com/#organization","@type":"Organization","name":"DevTools Hub","url":"https://tools.scoreroute.com/"},"name":"All ' + _totalCount + ' DevTools Hub Tools","description":"Browse all ' + _totalCount + ' free online developer tools by category.","url":"' + _base + '/tools/"}</script>' + _hubSchemaHtml + '</head>\n<body class="hub-page">\n<header class="site-header"><div class="container">\n<a href="/" class="site-logo">All Tools</a>\n<p class="subtitle">DevTools Hub &middot; ' + _totalCount + ' tools</p>\n<nav class="top-nav"><a href="/">Home</a> <a href="/about/">About</a> <a href="/privacy/">Privacy</a> <a href="/subprocessors/">Subprocessors</a> <a href="/sitemap.xml">Sitemap</a></nav>\n<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> > <span>All Tools</span> <a href="/tools/feedback/" class="feedback-link">Report Problem</a></nav>\n</div></header>\n' + _catNavHtml +
+        '<main><div class="container">\n<section class="section-block">\n<h1 style="font-size:2rem;margin:40px 0 8px;letter-spacing:-0.02em;">All ' + _totalCount + ' Free Online Developer Tools</h1>\n<p style="color:#9aa0a6;margin-bottom:16px;line-height:1.6;">Browse by category, or search the index by tool name</p>';
+        // Popular Tools section
+        if (_popular.length > 0) {
+            _html += '<section class="section-block" id="popular"><div class="section-header"><h2>Popular Tools</h2><span class="section-count">' + _popular.length + ' most-used</span></div><div class="tools-grid">';
+            for (const t of _popular) {
+                const _hay = (t.slug + ' ' + t.name + ' ' + t.desc + ' ' + (t.tags || '')).toLowerCase().replace(/[|]/g, ',');
+                _html += '<div class="tool-card" data-search="' + _esc(_hay) + '"><h3><a href="/tools/' + t.slug + '/">' + _esc(t.name) + '</a></h3><p>' + _esc(t.desc) + '</p>' + (t.isnew ? '<span class="tool-tag">New</span>' : '<span class="tool-tag">Popular</span>') + '</div>';
+            }
+            _html += '</div></section>\n';
+        }
+        // Recently Updated section
+        if (_recentOnly.length > 0) {
+            _html += '<section class="section-block" id="recent"><div class="section-header"><h2>Recently Updated</h2><span class="section-count">' + _recentOnly.length + ' tools</span></div><div class="tools-grid">';
+            for (const t of _recentOnly) {
+                const _hay = (t.slug + ' ' + t.name + ' ' + t.desc + ' ' + (t.tags || '')).toLowerCase().replace(/[|]/g, ',');
+                _html += '<div class="tool-card" data-search="' + _esc(_hay) + '"><h3><a href="/tools/' + t.slug + '/">' + _esc(t.name) + '</a></h3><p>' + _esc(t.desc) + '</p>' + (t.isnew ? '<span class="tool-tag">New</span>' : (t.featured ? '<span class="tool-tag">Popular</span>' : '')) + '</div>';
+            }
+            _html += '</div></section>\n';
+        }
         _html += '<section class="category-grid-section"><div class="section-header"><h2>Browse by Category</h2><span class="section-count">' + _CAT_ORDER.length + ' categories</span></div><div class="category-grid">';
         for (const [_ck,_cn] of _CAT_ORDER) {
           const _count = _tools.filter(t=>t.category===_ck).length;
@@ -2697,8 +2738,18 @@ export async function onRequest(context) {
           'si.addEventListener("input",filt);' + '\n' +
           'si.addEventListener("keydown",function(e){if(e.key==="Escape"){si.value="";filt();}});' + '\n' +
           'window.catClearSearch=function(){si.value="";filt();si.focus();};' + '\n' +
-          '});' + '\n' +
-          '</script>\n</body>\n</html>';
+            // Category nav buttons - scroll to categories section
+            'var catNavButtons = document.querySelectorAll(".category-nav .nav-btn");' + '\n' +
+            'catNavButtons.forEach(function(btn) {' + '\n' +
+            'btn.addEventListener("click", function() {' + '\n' +
+            'var catSection = document.getElementById("categories");' + '\n' +
+            'if (catSection) {' + '\n' +
+            'catSection.scrollIntoView({ behavior: "smooth", block: "start" });' + '\n' +
+            '}' + '\n' +
+            '});' + '\n' +
+            '});' + '\n' +
+            '});' + '\n' +
+            '</script>\n</body>\n</html>';
         const _resp = new Response(_html, {headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'public, max-age=300','Strict-Transport-Security':'max-age=31536000; includeSubDomains; preload','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','Permissions-Policy':'accelerometer=(), camera=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()','X-Served-By':'[[catchall]]-tools-index'}});
         await caches.default.put(_cacheKey, _resp.clone());
         return _resp;
@@ -3226,13 +3277,18 @@ export async function onRequest(context) {
     '</div></header>' + nl +
     '<main><div class="container">' + nl +
     '<section class="section-block">' + nl +
-    '<h1 style="font-size:2rem;margin:40px 0 8px;letter-spacing:-0.02em;">' + esc(displayName) + ' \u2014 ' + total + ' Free Online Tools</h1>' + nl +
+    // BUG-550: same separator as the <title> and the .md mirror h1 above, so the hub's title,
+    // its h1 and its markdown h1 are one string. The em dash that used to sit here was BUG-371's
+    // "ship the character, not the entity" fix — it kept the two HEADING surfaces in step but left
+    // the <title> as the third spelling of the same heading.
+    '<h1 style="font-size:2rem;margin:40px 0 8px;letter-spacing:-0.02em;">' + esc(displayName) + ' - ' + total + ' Free Online Tools</h1>' + nl +
     // BUG-313: the "N free online X. No signup required." line that used to sit between the h1
     // and this paragraph restated the h1 and repeated a no-signup claim that the how-to section,
     // the FAQ and the footer all make again. Two lede paragraphs, each saying one thing.
     '<p style="color:#9aa0a6;margin-bottom:16px;line-height:1.6;">' + esc(catDescription) + '</p>' + nl +
     (catIntro(CAT_INTRO[category], 'html') ? '<p style="color:#b8bcc8;margin-bottom:32px;line-height:1.6;">' + catIntro(CAT_INTRO[category], 'html') + '</p>' + nl : '') +
     (CAT_PRIMARY_TOOL[category] ? '<p style="color:#b8bcc8;margin-bottom:24px;line-height:1.6;"><strong>Just one calculation?</strong> Use the <a href="/tools/' + CAT_PRIMARY_TOOL[category].slug + '/">' + esc(CAT_PRIMARY_TOOL[category].label) + '</a> for ' + esc(CAT_PRIMARY_TOOL[category].note) + '. Everything else in the collection is listed below.</p>' + nl : '') +
+    '<p style="color:#b8bcc8;margin-bottom:24px;line-height:1.6;"><a href="/tools/">View all ' + siteToolCount + ' tools across all categories &rarr;</a></p>' + nl +
     catSearchHtml +
     '<div class="tools-grid">' + toolsHtml + '</div>' + (catTotalPages > 1 ? (() => {
       const pageUrl = (n) => n === 1 ? '/tools/' + category + '/' : '/tools/' + category + '/?page=' + n;

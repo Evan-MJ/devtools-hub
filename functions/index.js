@@ -473,11 +473,16 @@ export async function onRequest(context) {
     '<body>' + nl +
     '<div class="hub-page">';
 
+  const catNavHtml = '<nav class="category-nav" aria-label="Category navigation"><div class="container">' + nl +
+    CAT_ORDER.map(c => '<button class="nav-btn" data-target="' + c[0] + '" aria-label="Jump to ' + esc(c[1]) + '">' + esc(c[1]) + '</button>').join('') + nl +
+    '</div></nav>' + nl;
+
   const main = nl +     '<header class="site-header"><div class="container">' + nl +
     '<h1><a href="/">DevTools Hub - ' + totalCount + ' Free Online Developer Tools</a></h1>' + nl +
     '<p class="subtitle">' + totalCount + ' free developer tools &middot; no signup &middot; runs in your browser</p>' + nl +
     '<nav class="top-nav"><a href="/about/">About</a> <a href="/privacy/">Privacy</a> <a href="/subprocessors/">Subprocessors</a> <a href="/sitemap.xml">Sitemap</a> <a href="/tools/feedback/">Feedback</a></nav>' + nl +
     '</div></header>' + nl +
+    catNavHtml +
     '<main><div class="container">' + nl +
     '<section class="hero">' + nl +
     '<h2>Developer tools that work.</h2>' + nl +
@@ -624,7 +629,8 @@ export async function onRequest(context) {
     'nr.hidden = true;' + nl +
     'return;' + nl +
     '}' + nl +
-    'var localN = localFilter(q);' + nl +
+    // Always use full index from /api/tools for consistent results across all 375 tools
+    // (BUG-287: localFilter only searched the 64 visible cards, missing tools on other pages)
     'det && det.setAttribute("open", "");' + nl +
     'nr.hidden = true;' + nl +
     'timer = setTimeout(function(){' + nl +
@@ -655,6 +661,16 @@ export async function onRequest(context) {
     // BUG-315: accept ?q= so any other surface can deep-link into this search. Added for the 404
     // page, whose search box otherwise dropped the visitor back on a blank homepage. Dispatching
     // `input` reuses the handler above verbatim rather than duplicating the scoring logic.
+    // Category nav buttons - scroll to categories section
+    'var catNavButtons = document.querySelectorAll(".category-nav .nav-btn");' + nl +
+    'catNavButtons.forEach(function(btn) {' + nl +
+    'btn.addEventListener("click", function() {' + nl +
+    'var catSection = document.getElementById("categories");' + nl +
+    'if (catSection) {' + nl +
+    'catSection.scrollIntoView({ behavior: "smooth", block: "start" });' + nl +
+    '}' + nl +
+    '});' + nl +
+    '});' + nl +
     'try {' + nl +
     'var q0 = new URLSearchParams(location.search).get("q");' + nl +
     'if (q0) { si.value = q0; si.dispatchEvent(new Event("input")); }' + nl +
