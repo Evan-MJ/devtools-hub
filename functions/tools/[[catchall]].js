@@ -61,7 +61,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['tile-calculator', 'Tile Calculator'],
       ' and ',
       ['paint-calculator', 'Paint Calculator'],
-      ' turn a room measurement into an order of materials instead of a guess, and when the job is not arithmetic at all — a payload that needs reformatting rather than a number, or an image that needs to weigh less rather than be measured — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
+      ' turn a room measurement into an order of materials instead of a guess, and when the job is not arithmetic at all — a payload that needs reformatting rather than a number, or an image that needs to weigh less rather than be measured — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ],
     'generators': [
       'Most of these exist because you need a value that is random, unique or correctly formatted, and you need it now. The ',
@@ -72,7 +72,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['cron-generator', 'Cron Generator'],
       ' explains what each of the five fields does, and the ',
       ['css-grid-generator', 'CSS Grid Generator'],
-      ' writes the rule as you move the controls, and when the need is actually a formatted or compressed artifact rather than a generated value, the Code Formatters and Media Tools categories answer it — for example the JSON Formatter for API payloads and config files, or an image compressor for oversized assets.'
+      ' writes the rule as you move the controls, and when the need is actually a formatted or compressed artifact rather than a generated value, the Code Formatters and Media Tools categories answer it — for example the json formatter online for API payloads and config files, or an image compressor for oversized assets.'
     ],
     'converters': [
       'Conversion is only trustworthy when the arithmetic is visible, so each of these shows how it got the answer instead of hiding it behind a server. The ',
@@ -81,7 +81,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['timestamp-converter', 'Timestamp Converter'],
       ' reads Unix time in both directions including milliseconds, and the ',
       ['json-csv-converter', 'JSON to CSV Converter'],
-      ' and its siblings run both ways, so you can paste a fragment back the other direction, and when the data or the file is not here to be converted at all — a payload that needs reformatting rather than reshaping, or an image that needs to weigh less rather than change type — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
+      ' and its siblings run both ways, so you can paste a fragment back the other direction, and when the data or the file is not here to be converted at all — a payload that needs reformatting rather than reshaping, or an image that needs to weigh less rather than change type — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ],
     'media': [
       'Images, audio and video: the work that usually wants a desktop app. The ',
@@ -90,7 +90,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['audio-joiner', 'Audio Joiner'],
       ' merges several recordings into a single file, and the ',
       ['subtitle-editor', 'Subtitle Editor'],
-      ' reads and writes SRT and VTT. Tools that need a GPU — upscaling, background removal, restoration — say so on their own page, and those are the exception rather than the rule here, and when the file leaving this category is media but the job is structured text instead — a config dump or an API payload that arrived formatted badly — the Code Formatters category\'s JSON Formatter is where that work happens.'
+      ' reads and writes SRT and VTT. Tools that need a GPU — upscaling, background removal, restoration — say so on their own page, and those are the exception rather than the rule here, and when the file leaving this category is media but the job is structured text instead — a config dump or an API payload that arrived formatted badly — the Code Formatters category\'s json formatter online is where that work happens.'
     ],
     'network': [
       'Diagnostics for problems sitting on infrastructure you do not control. The ',
@@ -101,7 +101,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['ssl-checker', 'SSL Certificate Checker'],
       ' shows the full chain and the expiry date, and the ',
       ['ping-test', 'Ping Test'],
-      ' separates latency from jitter and loss so you know whether a slow request is a long path or a congested one, and when the fault you are chasing turns out to be a file rather than a link — a payload that arrived formatted badly, or an image too heavy to upload — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are two of the developer tools that answer that job.'
+      ' separates latency from jitter and loss so you know whether a slow request is a long path or a congested one, and when the fault you are chasing turns out to be a file rather than a link — a payload that arrived formatted badly, or an image too heavy to upload — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are two of the developer tools that answer that job.'
     ],
     'code-testing': [
       'Paste something in, get an answer you can act on. The ',
@@ -112,7 +112,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['jwt-decoder', 'JWT Decoder'],
       ' shows header and payload separately so a signing fault is distinguishable from a bad claim, and the ',
       ['online-code-runner', 'Online Code Runner'],
-      ' executes Python, JavaScript and HTML so you can check a snippet before it reaches your codebase, and when the thing you pasted turns out to be a payload that needs reformatting rather than testing, the sibling Code Formatters category\'s JSON Formatter is where that work happens.'
+      ' executes Python, JavaScript and HTML so you can check a snippet before it reaches your codebase, and when the thing you pasted turns out to be a payload that needs reformatting rather than testing, the sibling Code Formatters category\'s json formatter online is where that work happens.'
     ],
     'pdf-tools': [
       'PDF is a container format rather than a document format, which is why so many editors mangle it. These tools work on the page structure instead: the ',
@@ -123,7 +123,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['pdf-redactor', 'PDF Redactor'],
       ' is built to remove content rather than draw a box over it, and the ',
       ['pdf-accessibility-checker', 'PDF Accessibility Checker'],
-      ' reports the PDF/UA and WCAG problems that make a file unusable with a screen reader, and when the file you were handed is not a PDF at all — a payload that needs reformatting, or an image that has to weigh less before it is sent — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are two of the developer tools that cover those jobs.'
+      ' reports the PDF/UA and WCAG problems that make a file unusable with a screen reader, and when the file you were handed is not a PDF at all — a payload that needs reformatting, or an image that has to weigh less before it is sent — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are two of the developer tools that cover those jobs.'
     ],
     'life': [
       'Everyday utilities: what time it is where you are, how long until a date, and whether your hardware is working. The ',
@@ -136,7 +136,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['mouse-tester', 'Mouse Tester'],
       ' find dead keys and failing buttons, and the ',
       ['weather-forecast', 'Weather Forecast'],
-      ' gives a seven-day outlook you can chart, and none of this needs a server; when the task that follows is a file rather than a device — a payload that arrived formatted badly, or an image too heavy to upload — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are two of the developer tools for that.'
+      ' gives a seven-day outlook you can chart, and none of this needs a server; when the task that follows is a file rather than a device — a payload that arrived formatted badly, or an image too heavy to upload — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are two of the developer tools for that.'
     ],
     'finance': [
       'Rates, prices and repayment arithmetic. The ',
@@ -145,7 +145,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['loan-calculator', 'Loan Calculator'],
       ' build a full amortisation schedule including PMI, tax and insurance, so an extra monthly payment can be weighed against a shorter term, and the ',
       ['compound-interest-calculator', 'Compound Interest Calculator'],
-      ' shows what a fixed monthly contribution becomes over decades. Live quotes are indicative and can lag the market by a few seconds, and when the figure you are checking has to travel inside a document — a payload that arrived formatted badly, or an image too heavy to attach — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are two of the developer tools for that.'
+      ' shows what a fixed monthly contribution becomes over decades. Live quotes are indicative and can lag the market by a few seconds, and when the figure you are checking has to travel inside a document — a payload that arrived formatted badly, or an image too heavy to attach — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are two of the developer tools for that.'
     ],
     'ai-language': [
       'Everything here calls a model, so treat the output as a draft and check arithmetic, citations and quoted sources before it goes anywhere public. The ',
@@ -158,7 +158,7 @@ import { parseManifest } from '../../libs/manifest.js';
       ['citation-generator', 'Citation Generator'],
       ' formats APA, MLA and Chicago from details you supply rather than inventing a source, and the ',
       ['ats-resume-checker', 'ATS Resume Checker'],
-      ' scores a resume against the parsing rules employers actually use, and when the job is structured text or a lighter file rather than drafted prose — an API payload that needs reformatting, or an image that needs to weigh less — the Code Formatters category\'s JSON Formatter and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
+      ' scores a resume against the parsing rules employers actually use, and when the job is structured text or a lighter file rather than drafted prose — an API payload that needs reformatting, or an image that needs to weigh less — the Code Formatters category\'s json formatter online and the Media Tools category\'s image compressor are the two pages those jobs belong to.'
     ]
   };
 
