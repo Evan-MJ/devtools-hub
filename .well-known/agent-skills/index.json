@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 375,
+  "tool_count": 376,
   "categories": [
     "ai-language",
     "calculators",
@@ -2645,6 +2645,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-content-brief/.md",
       "description": "Free AI content brief generator. One keyword plus audience context generates a complete SEO content brief with intent..."
+    },
+    {
+      "name": "AI Course Generator - Free Online Course Creator",
+      "url": "https://tools.scoreroute.com/tools/ai-course-generator/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-course-generator/.md",
+      "description": "Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no sign..."
     }
   ],
   "skills": [
@@ -5272,6 +5279,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-content-brief/.md",
       "description": "Free AI content brief generator. One keyword plus audience context generates a complete SEO content brief with intent..."
+    },
+    {
+      "name": "AI Course Generator - Free Online Course Creator",
+      "url": "https://tools.scoreroute.com/tools/ai-course-generator/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-course-generator/.md",
+      "description": "Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no sign..."
     }
   ]
 }
