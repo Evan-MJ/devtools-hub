@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="description" content="Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.">
+<meta property="og:image" content="/og-image.png">
+<title>AI Course Generator - Free Online Course Creator</title>
+<meta property="og:title" content="AI Course Generator - Free Online Course Creator">
+<meta property="og:description" content="Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/ai-course-generator/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Course Generator - Free Online Course Creator">
+<meta name="twitter:description" content="Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/ai-course-generator/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, ai-train:no">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AI Course Generator - Free Online Course Creator","description":"Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.","url":"https://tools.scoreroute.com/tools/ai-course-generator/","applicationCategory":"BusinessApplication","operatingSystem":"Any","browserRequirements":"Modern browser with JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"BAOMING"},"datePublished":"2026-11-17","dateModified":"2026-11-17","featureList":["Generate a complete course from one topic","Learning objectives and measurable outcomes","Sequenced modules and lessons","Lesson key points and quizzes","Quiz pass criteria and duration estimate","DeAI humanized output with raw fallback","No signup, no daily limits, no tracking, 100% free"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this AI course generator really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. 100% free with no signup, no daily limits, no hidden costs. Generate complete course designs without creating an account."}},{"@type":"Question","name":"What does the generated course include?","acceptedAnswer":{"@type":"Answer","text":"The course design includes title, description, learning objectives, modules, lessons, key points, quiz questions with answers, estimated total duration and quiz pass criteria."}},{"@type":"Question","name":"How does it differ from asking ChatGPT for a course outline?","acceptedAnswer":{"@type":"Answer","text":"ChatGPT can draft modules, but it does not design a complete sequenced course with measurable objectives, lesson-level quizzes and pass criteria in one structured output."}},{"@type":"Question","name":"Does it use AI humanization on the generated text?","acceptedAnswer":{"@type":"Answer","text":"Yes. Long text fields such as the course description and quiz answers pass through the DeAI humanizer when configured; if the DeAI service is unavailable, the raw AI output is used."}},{"@type":"Question","name":"Is the generated content factually safe?","acceptedAnswer":{"@type":"Answer","text":"The generator instructs the model to avoid fabricating facts about real people, companies or events. It is a drafting aid and human review is required before use in formal education settings."}}]}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+.acg-wrap { max-width: 860px; margin: 0 auto; }
+.acg-hero { text-align:center; padding: 24px 0 10px; }
+.acg-hero h2 { color: #7eb3ff; font-size: 1.5rem; margin: 0 0 8px; }
+.acg-hero p { color: #a8a8c0; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+.acg-hero-pills { margin-top: 14px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.acg-hero-pill { background: #1a1a3e; border: 1px solid #2a2a52; color:#a8a8c0; border-radius: 999px; padding: 4px 12px; font-size: 0.8rem; }
+.acg-hero-pill strong { color: #7eb3ff; }
+.acg-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 18px; margin-top: 16px; }
+.acg-card-title { color: #7eb3ff; font-weight: 600; margin: 0 0 12px; }
+.acg-card-desc { color: #9090b0; font-size: 0.9rem; margin: -6px 0 12px; }
+.acg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 700px) { .acg-grid { grid-template-columns: 1fr; } }
+.acg-field { margin-bottom: 12px; }
+.acg-label { display:block; color:#a8a8c0; font-size:0.85rem; margin-bottom:6px; }
+.acg-label .req { color:#ff6b6b; }
+.acg-input, .acg-textarea, .acg-select, .acg-tag-text { width:100%; background:#0f0f23; color:#e8e8f0; border:1px solid #2a2a4a; border-radius:8px; padding:10px; font-size:0.9rem; box-sizing:border-box; font-family:inherit; }
+.acg-textarea { min-height:90px; resize:vertical; }
+.acg-select { max-width: 100%; }
+.acg-input:focus, .acg-textarea:focus, .acg-select:focus { outline: 2px solid #7eb3ff; outline-offset: 1px; }
+.acg-tag-text { min-height:60px; background:#0f0f23; color:#e8e8f0; border:1px solid #2a2a4a; border-radius:8px; padding:10px; font-size:0.85rem; box-sizing:border-box; font-family:inherit; resize:vertical; }
+.acg-row { display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+.acg-btn { border:none; border-radius:8px; padding:10px 18px; font-size:0.9rem; cursor:pointer; color:#0f0f23; background:#7eb3ff; font-weight:600; }
+.acg-btn-secondary { background:#2a2a4a; color:#e8e8f0; font-weight:500; }
+.acg-btn:disabled { opacity:0.6; cursor:default; }
+.acg-loading { display:none; text-align:center; padding: 30px 0; }
+.acg-spinner { width:34px; height:34px; border:3px solid #2a2a4a; border-top-color:#7eb3ff; border-radius:50%; margin:0 auto 12px; animation: acg-spin 0.9s linear infinite; }
+@keyframes acg-spin { to { transform: rotate(360deg); } }
+.acg-loading-text { color:#a8a8c0; }
+#acg-status { margin-top:14px; font-size:0.9rem; }
+#acg-status.info { color:#7eb3ff; }
+#acg-status.success { color:#7bed9f; }
+#acg-status.error { color:#ff6b6b; }
+#acg-results { display:none; margin-top:18px; }
+.acg-sub-section { background:#0f0f23; border:1px solid #2a2a4a; border-radius:10px; padding:14px; margin-top:12px; }
+.acg-sub-title { color:#7eb3ff; font-weight:600; margin:0 0 8px; }
+.acg-sub-desc { color:#a8a8c0; font-size:0.85rem; margin:0 0 10px; }
+.acg-tag-text { min-height:60px; background:#0f0f23; color:#e8e8f0; border:1px solid #2a2a4a; border-radius:8px; padding:10px; font-size:0.85rem; width:100%; box-sizing:border-box; font-family:inherit; resize:vertical; }
+.acg-tags-list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.acg-tag { background:#1a1a3e; border:1px solid #2a2a52; color:#7eb3ff; border-radius:999px; padding:4px 12px; font-size:0.8rem; }
+.acg-callout { background:#141432; border-left:3px solid #7eb3ff; border-radius:8px; padding:14px; margin-top:16px; color:#c8c8e0; font-size:0.88rem; line-height:1.6; }
+.acg-callout h3 { color:#7eb3ff; margin:0 0 8px; font-size:1rem; }
+.acg-feature-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:16px; }
+@media (max-width: 640px) { .acg-feature-grid { grid-template-columns: 1fr; } }
+.acg-feature-card { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:10px; padding:14px; }
+.acg-feature-card h3 { color:#7eb3ff; font-size:0.95rem; margin:0 0 6px; }
+.acg-feature-card p { color:#a8a8c0; font-size:0.82rem; margin:0; line-height:1.5; }
+.acg-info-section { margin-top:18px; background:#1a1a2e; border:1px solid #2a2a4a; border-radius:10px; padding:16px; }
+.acg-info-section h2 { color:#7eb3ff; font-size:1.1rem; margin:0 0 10px; }
+.acg-info-section ol { color:#c8c8e0; padding-left:20px; line-height:1.8; font-size:0.9rem; }
+.acg-info-section li { margin-bottom: 6px; }
+.acg-faq-block { background:#0f0f23; border:1px solid #2a2a4a; border-radius:8px; padding:12px; margin-top:10px; }
+.acg-faq-block summary { color:#e8e8f0; cursor:pointer; font-size:0.9rem; }
+.acg-faq-block p { color:#a8a8c0; font-size:0.87rem; line-height:1.6; margin:8px 0 0; }
+.acg-related-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+@media (max-width: 640px) { .acg-related-grid { grid-template-columns: 1fr; } }
+.acg-related-link { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:8px; padding:12px; text-decoration:none; display:block; }
+.acg-related-link strong { color:#7eb3ff; display:block; font-size:0.9rem; margin-bottom:4px; }
+.acg-related-link span { color:#a8a8c0; font-size:0.8rem; }
+.acg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.acg-chip { padding: 8px 14px; background: #252540; border: 1px solid #3a3a5c; border-radius: 18px; color: #c8c8e0; cursor: pointer; font-size: 0.85rem; }
+.acg-chip:hover { border-color: #7eb3ff; color: #fff; }
+@media (max-width: 390px) { .tool-main, .container { padding-left: 12px; padding-right: 12px; } }
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>AI Course Generator</h1>
+<p class="subtitle">Free AI Course Creator - Complete Courses with Modules, Lessons and Quizzes</p>
+<nav class="breadcrumb">
+<a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>AI Course Generator</span>
+<a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="tool-page">
+<div class="tool-main">
+<div class="acg-wrap">
+
+<div class="acg-hero">
+<h2>Turn One Topic Into a Complete Course</h2>
+<p>Describe the subject and the AI designs a full course: title, description, learning objectives, sequenced modules, lessons, key points and quizzes. One structured call, everything included.</p>
+<div class="acg-hero-pills">
+<span class="acg-hero-pill"><strong>1</strong> topic</span>
+<span class="acg-hero-pill"><strong>3-6</strong> objectives</span>
+<span class="acg-hero-pill"><strong>2-5</strong> quizzes/lesson</span>
+<span class="acg-hero-pill">full course</span>
+<span class="acg-hero-pill">100% private</span>
+</div>
+</div>
+
+<div class="acg-card">
+<p class="acg-card-title">1. Course Input</p>
+<div class="acg-grid">
+<div class="acg-field">
+<label class="acg-label" for="acg-topic">Course Topic <span class="req">*</span></label>
+<input class="acg-input" id="acg-topic" type="text" placeholder="e.g. AI prompt engineering for non-technical teams" maxlength="300" aria-label="Course topic">
+</div>
+<div class="acg-field">
+<label class="acg-label" for="acg-audience">Audience</label>
+<input class="acg-input" id="acg-audience" type="text" placeholder="e.g. content marketers, product managers, small business owners" maxlength="300" aria-label="Audience">
+</div>
+</div>
+<div class="acg-grid">
+<div class="acg-field">
+<label class="acg-label" for="acg-goal">Learning Goal</label>
+<input class="acg-input" id="acg-goal" type="text" placeholder="e.g. teams can write and refine AI prompts safely and effectively" maxlength="300" aria-label="Learning goal">
+</div>
+<div class="acg-field">
+<label class="acg-label" for="acg-level">Level</label>
+<select class="acg-select" id="acg-level" name="level">
+<option value="">Select level</option>
+<option value="beginner">Beginner</option>
+<option value="intermediate">Intermediate</option>
+<option value="advanced">Advanced</option>
+</select>
+</div>
+</div>
+<div class="acg-field">
+<label class="acg-label" for="acg-duration">Target Duration (minutes)</label>
+<input class="acg-input" id="acg-duration" type="number" min="15" max="600" value="60" aria-label="Target duration in minutes">
+</div>
+<label class="acg-label" for="acg-language">Output Language</label>
+<select class="acg-select" id="acg-language" name="language">
+<option value="en">English</option>
+<option value="es">Spanish</option>
+<option value="pt">Portuguese</option>
+<option value="fr">French</option>
+<option value="de">German</option>
+<option value="it">Italian</option>
+<option value="ja">Japanese</option>
+<option value="ko">Korean</option>
+<option value="zh">Chinese (Simplified)</option>
+<option value="hi">Hindi</option>
+<option value="ar">Arabic</option>
+<option value="ru">Russian</option>
+</select>
+</div>
+
+<div class="acg-row">
+<button class="acg-btn" id="acg-btn-generate" type="button">Generate Course</button>
+<button class="acg-btn acg-btn-secondary" id="acg-btn-clear" type="button">Clear</button>
+</div>
+
+<div class="acg-loading" id="acg-loading">
+<div class="acg-spinner"></div>
+<div class="acg-loading-text" id="acg-loading-text">Designing the complete course...</div>
+</div>
+
+<div id="acg-status"></div>
+
+<div id="acg-results" style="display:none; margin-top:18px;">
+<div class="acg-row" style="justify-content:space-between; margin-bottom:14px;">
+<h3 style="color:#7eb3ff; margin:0; font-size:1.05rem;">Your Course</h3>
+<div class="acg-row" style="margin:0;">
+<button class="acg-btn acg-btn-secondary" id="acg-btn-copy-all" type="button">Copy All as Markdown</button>
+<button class="acg-btn acg-btn-secondary" id="acg-btn-download-md" type="button">Download .md</button>
+<button class="acg-btn acg-btn-secondary" id="acg-btn-regenerate" type="button">Regenerate</button>
+</div>
+</div>
+
+<div class="acg-sub-section" id="acg-section-course">
+<p class="acg-sub-title">Course</p>
+<textarea class="acg-tag-text" id="acg-course-json" readonly placeholder="Course JSON will appear here..." aria-label="Course JSON"></textarea>
+</div>
+
+<div class="acg-sub-section" id="acg-section-desc">
+<p class="acg-sub-title">Course Description</p>
+<textarea class="acg-tag-text" id="acg-desc" readonly placeholder="Course description will appear here..." aria-label="Course description"></textarea>
+</div>
+
+<div class="acg-sub-section" id="acg-section-obj">
+<p class="acg-sub-title">Learning Objectives</p>
+<div id="acg-obj-list"></div>
+<textarea class="acg-tag-text" id="acg-obj-text" placeholder="Learning objectives will appear here..." aria-label="Learning objectives"></textarea>
+</div>
+
+<div class="acg-sub-section" id="acg-section-modules">
+<p class="acg-sub-title">Modules + Lessons + Quizzes</p>
+<div id="acg-modules-list"></div>
+<textarea class="acg-tag-text" id="acg-modules-text" placeholder="Modules, lessons and quizzes will appear here..." aria-label="Modules, lessons and quizzes"></textarea>
+</div>
+
+<div class="acg-sub-section" id="acg-section-meta">
+<p class="acg-sub-title">Estimated Duration + Quiz Pass Criteria</p>
+<textarea class="acg-tag-text" id="acg-meta" readonly placeholder="Estimated duration and quiz pass criteria will appear here..." aria-label="Estimated duration and quiz pass criteria"></textarea>
+</div>
+</div>
+</div>
+
+<div class="acg-card" style="margin-top:16px;">
+<p class="acg-card-title">Try These Sample Topics</p>
+<div class="acg-chips">
+<button class="acg-chip" data-sample="course" type="button">AI Prompt Engineering</button>
+<button class="acg-chip" data-sample="data" type="button">Data Privacy Training</button>
+<button class="acg-chip" data-sample="writing" type="button">Editorial Calendar</button>
+<button class="acg-chip" data-sample="science" type="button">Science Communication</button>
+</div>
+</div>
+
+<div class="acg-callout">
+<h3>Why an AI Course Generator?</h3>
+<p>ChatGPT or Claude can draft an outline, but it does not design a complete course with sequenced modules, measurable learning objectives, lesson-level quizzes and pass criteria. Coursebox, Teachable, Thinkific and Mini Course Generator cover parts of this; we give you the complete curriculum design in a single structured call with zero signup and full privacy.</p>
+</div>
+
+<div class="acg-feature-grid">
+<div class="acg-feature-card">
+<h3>Complete Course</h3>
+<p>Title, description, objectives, modules, lessons, key points, quizzes, duration estimate and pass criteria in one call.</p>
+</div>
+<div class="acg-feature-card">
+<h3>Validated Output</h3>
+<p>Structured JSON with strict field sets, parseable by any consumer, and humanized prose via the DeAI pass.</p>
+</div>
+<div class="acg-feature-card">
+<h3>Educator Ready</h3>
+<p>Designed for instructors, coaches and creators who need a full curriculum draft before recording or teaching.</p>
+</div>
+</div>
+
+<div class="acg-info-section">
+<h2>How It Works</h2>
+<ol>
+<li><strong>Enter the course topic</strong> — subject, audience, learning goal, level and target duration.</li>
+<li><strong>Click Generate Course</strong> — one AI call returns the complete course design as structured JSON.</li>
+<li><strong>Review the modules, lessons and quizzes</strong> — every section is rendered and editable.</li>
+<li><strong>Humanize the prose</strong> — long text fields pass through the DeAI humanizer; raw output is kept as fallback.</li>
+<li><strong>Use the curriculum</strong> — feed the design into authoring, recording or lesson planning.</li>
+</ol>
+</div>
+
+<div class="acg-info-section">
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item">
+<summary>Is this AI course generator really free?</summary>
+<p>Yes. 100% free with no signup, no daily limits, no hidden costs. Generate complete course designs without creating an account.</p>
+</details>
+<details class="faq-item">
+<summary>What does the generated course include?</summary>
+<p>The course design includes title, description, learning objectives, modules, lessons, key points, quiz questions with answers, estimated total duration and quiz pass criteria.</p>
+</details>
+<details class="faq-item">
+<summary>How does it differ from asking ChatGPT for a course outline?</summary>
+<p>ChatGPT can draft modules, but it does not design a complete sequenced course with measurable objectives, lesson-level quizzes and pass criteria in one structured output.</p>
+</details>
+<details class="faq-item">
+<summary>Does it use AI humanization on the generated text?</summary>
+<p>Yes. Long text fields such as the course description and quiz answers pass through the DeAI humanizer when configured; if the DeAI service is unavailable, the raw AI output is used.</p>
+</details>
+<details class="faq-item">
+<summary>Is the generated content factually safe?</summary>
+<p>The generator instructs the model to avoid fabricating facts about real people, companies or events. It is a drafting aid and human review is required before use in formal education settings.</p>
+</details>
+</div>
+
+<div class="acg-related">
+<h3>Related Free Tools</h3>
+<div class="acg-related-grid">
+<a href="/tools/ai-content-brief/" class="acg-related-link">
+<strong>AI Content Brief Generator</strong>
+SEO content brief
+</a>
+<a href="/tools/ai-content-writer/" class="acg-related-link">
+<strong>AI Content Writer</strong>
+SEO blog posts
+</a>
+<a href="/tools/ai-prompt-engineer/" class="acg-related-link">
+<strong>AI Prompt Engineer</strong>
+88 prompt templates
+</a>
+<a href="/tools/ai-video-script-generator/" class="acg-related-link">
+<strong>AI Video Script Generator</strong>
+Shorts &amp; social videos
+</a>
+<a href="/tools/ai-writing-coach/" class="acg-related-link">
+<strong>AI Writing Coach</strong>
+Essay &amp; content feedback
+</a>
+<a href="/tools/ai-ppt-maker/" class="acg-related-link">
+<strong>AI PPT Maker</strong>
+PowerPoint slides
+</a>
+</div>
+</div>
+
+</div>
+</section>
+</main>
+<footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:30px;">
+<p>&copy; 2026 DevTools Hub | <a href="/" style="color:#7eb3ff;">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+(function () {
+  'use strict';
+  var API_BASE = '';
+  var STATUS = document.getElementById('acg-status');
+  var RESULTS = document.getElementById('acg-results');
+  var LOADING = document.getElementById('acg-loading');
+
+  function setStatus(msg, type) {
+    if (!STATUS) return;
+    STATUS.textContent = msg;
+    STATUS.className = 'acg-status ' + (type || 'info');
+  }
+
+  function showResults() { if (RESULTS) RESULTS.style.display = 'block'; }
+
+  function gen() {
+    var topic = (document.getElementById('acg-topic') || {}).value || '';
+    if (!topic || topic.trim().length < 20) {
+      setStatus('Please enter a course topic of at least 20 characters.', 'info');
+      return;
+    }
+    setStatus('Designing the complete course...', 'info');
+    if (LOADING) LOADING.style.display = 'block';
+    fetch(API_BASE + '/api/ai-course-generator', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic: topic,
+        audience: (document.getElementById('acg-audience') || {}).value || '',
+        goal: (document.getElementById('acg-goal') || {}).value || '',
+        level: (document.getElementById('acg-level') || {}).value || '',
+        duration: (document.getElementById('acg-duration') || {}).value || '',
+        language: (document.getElementById('acg-language') || {}).value || 'en'
+      })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (LOADING) LOADING.style.display = 'none';
+      var course = data && data.course ? data.course : null;
+      if (!course) {
+        setStatus('No course returned from the generator.', 'error');
+        return;
+      }
+      document.getElementById('acg-course-json').value = JSON.stringify(course, null, 2);
+      document.getElementById('acg-desc').value = course.description || '';
+      var objEl = document.getElementById('acg-obj-list');
+      var objectives = course.learning_objectives || [];
+      if (objEl) {
+        objEl.innerHTML = '';
+        objectives.forEach(function (o) {
+          var p = document.createElement('div');
+          p.className = 'acg-tag';
+          p.style.marginBottom = '6px';
+          p.textContent = o;
+          objEl.appendChild(p);
+        });
+      }
+      var objText = document.getElementById('acg-obj-text');
+      if (objText) objText.value = (objectives || []).join('\n');
+      var modEl = document.getElementById('acg-modules-list');
+      var modules = course.modules || [];
+      if (modEl) {
+        modEl.innerHTML = '';
+        modules.forEach(function (m) {
+          var mh = document.createElement('div');
+          mh.style.color = '#7eb3ff';
+          mh.style.fontWeight = '600';
+          mh.style.margin = '10px 0 6px';
+          mh.textContent = (m.module_title || 'Module');
+          modEl.appendChild(mh);
+          (m.lessons || []).forEach(function (l) {
+            var lh = document.createElement('div');
+            lh.style.color = '#c8c8e0';
+            lh.style.marginLeft = '12px';
+            lh.style.fontSize = '0.88rem';
+            lh.textContent = (l.lesson_title || 'Lesson') + (l.key_points && l.key_points.length ? ' — ' + l.key_points.join(' | ') : '');
+            modEl.appendChild(lh);
+            (l.quiz_questions || []).forEach(function (q) {
+              var qh = document.createElement('div');
+              qh.style.color = '#a8a8c0';
+              qh.style.marginLeft = '24px';
+              qh.style.fontSize = '0.82rem';
+              qh.textContent = 'Q: ' + (q.question || '') + ' A: ' + (q.answer || '');
+              modEl.appendChild(qh);
+            });
+          });
+        });
+      }
+      var modText = document.getElementById('acg-modules-text');
+      if (modText) modText.value = JSON.stringify(modules, null, 2);
+      var metaEl = document.getElementById('acg-meta');
+      if (metaEl) metaEl.value = 'Estimated total minutes: ' + (course.estimated_total_minutes || '') + '\n\nQuiz pass criteria: ' + (course.quiz_pass_criteria || '');
+      if (LOADING) LOADING.style.display = 'none';
+      setStatus('Course designed via ' + (data.provider || 'ai') + (data.deai_used ? ' (de-AI applied)' : '') + '.', 'success');
+      showResults();
+    }).catch(function (err) {
+      if (LOADING) LOADING.style.display = 'none';
+      setStatus('Failed to design the course: ' + (err && err.message ? err.message : 'unknown error'), 'error');
+    });
+  }
+
+  function copyText(id, fallbackText) {
+    var el = document.getElementById(id);
+    var text = el ? (el.value || el.textContent || '') : fallbackText;
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        setStatus('Copied to clipboard.', 'success');
+      }).catch(function () {
+        setStatus('Copy failed.', 'error');
+      });
+    }
+  }
+
+  function downloadMd() {
+    var parts = ['# AI Course Generator', ''];
+    var course = {};
+    try { course = JSON.parse(document.getElementById('acg-course-json').value || '{}'); } catch (e) { course = {}; }
+    parts.push('## Course', '');
+    parts.push('### Title', course.title || '');
+    parts.push('### Description', course.description || '');
+    parts.push('### Learning Objectives', (course.learning_objectives || []).join('\n'));
+    parts.push('### Modules', JSON.stringify(course.modules || [], null, 2));
+    parts.push('### Estimated Total Minutes', String(course.estimated_total_minutes || ''));
+    parts.push('### Quiz Pass Criteria', course.quiz_pass_criteria || '');
+    var blob = new Blob([parts.join('\n')], { type: 'text/markdown' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'ai-course.md';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('acg-btn-generate').addEventListener('click', gen);
+  document.getElementById('acg-btn-clear').addEventListener('click', function () {
+    var fields = ['acg-topic', 'acg-audience', 'acg-goal', 'acg-duration', 'acg-course-json', 'acg-desc', 'acg-obj-text', 'acg-modules-text', 'acg-meta'];
+    for (var i = 0; i < fields.length; i++) {
+      var el = document.getElementById(fields[i]);
+      if (el) el.value = '';
+    }
+    var lists = ['acg-obj-list', 'acg-modules-list'];
+    for (var j = 0; j < lists.length; j++) {
+      var le = document.getElementById(lists[j]);
+      if (le) le.innerHTML = '';
+    }
+    if (RESULTS) RESULTS.style.display = 'none';
+    if (LOADING) LOADING.style.display = 'none';
+    setStatus('', 'info');
+  });
+  document.getElementById('acg-btn-copy-all').addEventListener('click', function () { copyText('acg-course-json'); });
+  document.getElementById('acg-btn-download-md').addEventListener('click', downloadMd);
+  document.getElementById('acg-btn-regenerate').addEventListener('click', function () { gen(); });
+
+  var chips = document.querySelectorAll('.acg-chip');
+  for (var k = 0; k < chips.length; k++) {
+    chips[k].addEventListener('click', function () {
+      var btn = this;
+      var topicEl = document.getElementById('acg-topic');
+      var map = {
+        course: 'AI prompt engineering for content teams building safe repeatable workflows',
+        data: 'Data privacy compliance training for small software teams handling customer data',
+        writing: 'How to build an editorial calendar and content production system for a small team',
+        science: 'Science communication course for translating research into public-friendly explainers'
+      };
+      if (topicEl && map[btn.getAttribute('data-sample')]) topicEl.value = map[btn.getAttribute('data-sample')];
+    });
+  }
+})();
+</script>
+<script src="/tools.js"></script>
+</body>
+</html>
