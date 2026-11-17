@@ -285,14 +285,7 @@
         });
     }
 
-    function showStatus(id, msg, type) {
-        var el = document.getElementById(id) || document.getElementById('status-rg');
-        if (!el) return;
-        el.textContent = msg;
-        el.className = 'status ' + type;
-        setTimeout(function() { if (el) { el.textContent = ''; el.className = 'status'; } }, 2000);
-    }
-
+    
     function genNumber() {
         var min = parseInt(document.getElementById('num-min').value) || 1;
         var max = parseInt(document.getElementById('num-max').value) || 100;

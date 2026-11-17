@@ -606,12 +606,6 @@
             document.querySelector('.tab-btn[onclick*="' + tab + '"]').classList.add('active');
         }
 
-        function showStatus(id, msg, type) {
-            var el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            setTimeout(function() { el.textContent = ''; el.className = 'status'; }, 4000);
-        }
-    </script>
+        </script>
 </body>
 </html>

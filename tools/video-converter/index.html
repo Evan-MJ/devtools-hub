@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <meta property="og:image" content="/og-image.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Converter - Change Video Format Online | DevTools Hub</title>
+<meta name="description" content="Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no watermark, no cost.">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/video-converter/">
+<meta property="og:title" content="Video Converter - Change Video Format Online | DevTools Hub">
+<meta property="og:description" content="Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no watermark, no cost.">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/video-converter/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Video Converter - Change Video Format Online | DevTools Hub","url":"https://tools.scoreroute.com/tools/video-converter/","description":"Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no watermark, no cost.","applicationCategory":"MultimediaApplication","operatingSystem":"All"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a video from MP4 to WebM?","acceptedAnswer":{"@type":"Answer","text":"Drop the MP4 into the converter, pick WebM as the target format, and press Convert. The tool re-encodes the video and audio with the codec that WebM uses and downloads the result."}},{"@type":"Question","name":"Is my video uploaded to a server when I convert it?","acceptedAnswer":{"@type":"Answer","text":"No. The file is read into the tab and handed to a WebAssembly build of FFmpeg running in the browser. Once the engine loads, no data moves to a server."}},{"@type":"Question","name":"Which formats can I convert between?","acceptedAnswer":{"@type":"Answer","text":"The tool converts between common modern containers such as MP4, WebM, MOV, MKV and AVI, choosing the matching codec for each target."}},{"@type":"Question","name":"How long does a conversion take?","acceptedAnswer":{"@type":"Answer","text":"Conversion decodes and re-encodes the video on your own device, so it scales with the file. Short clips finish in seconds; longer clips take minutes because the encoder is CPU bound in WebAssembly."}},{"@type":"Question","name":"Can I convert a video that is too large?","acceptedAnswer":{"@type":"Answer","text":"The in-browser engine handles files up to about 500 MB. Larger files may exceed what the tab can hold in memory during a re-encode, and for anything bigger a desktop encoder is the honest answer."}}]}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+.converter-area { max-width: 800px; margin: 2rem auto; }
+.converter-area * { color: #ccc; }
+.dropzone { border: 3px dashed #555; border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.3s; background: #1a1a3e; }
+.dropzone:hover, .dropzone.dragover { border-color: #667eea; background: #222250; }
+.dropzone.has-file { border-color: #28a745; background: #1a3e2a; }
+.dropzone-icon { font-size: 3rem; margin-bottom: 1rem; }
+.dropzone-text { font-size: 1.1rem; }
+.dropzone-text strong { color: #667eea; }
+.file-info { display: none; margin: 1rem 0; padding: 1rem; background: #1a1a3e; border-radius: 8px; border: 1px solid #333; }
+.file-info.visible { display: block; }
+.file-info-row { display: flex; justify-content: space-between; padding: 0.3rem 0; }
+.file-info-label { color: #888; }
+.preview-area { display: none; margin: 1rem 0; }
+.preview-area.visible { display: block; }
+.preview-area video { max-width: 100%; max-height: 300px; border-radius: 8px; }
+.progress-area { display: none; margin: 1rem 0; padding: 1rem; background: #1a1a3e; border-radius: 8px; border: 1px solid #333; }
+.progress-area.visible { display: block; }
+.progress-bar { height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+.progress-fill { height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: 0%; transition: width 0.3s; border-radius: 4px; }
+.result-area { display: none; margin: 1rem 0; padding: 1.5rem; background: #1a3e2a; border-radius: 8px; text-align: center; border: 1px solid #28a745; }
+.result-area.visible { display: block; }
+.result-area p { color: #fff; }
+.btn { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: opacity 0.2s; }
+.btn:hover { opacity: 0.9; }
+.btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+.btn-success { background: #28a745; color: #fff; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.opt-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+.opt-row label { color: #ccc; font-weight: 500; }
+select { padding: 0.5rem; border-radius: 4px; border: 1px solid #555; font-size: 0.95rem; background: #1a1a3e; color: #fff; }
+select option { background: #0f0f23; color: #fff; }
+section h2 { color: #fff; margin-top: 2rem; }
+section h3 { color: #fff; margin-top: 1.5rem; }
+section p, section li { color: #ccc; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+.feature-card { background: #1a1a3e; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #667eea; }
+.feature-card h3 { color: #fff; margin-bottom: 0.5rem; }
+.feature-card p { color: #aaa; }
+.hero-text { color: #ccc; font-size: 1.1rem; }
+ol li, ul li { margin: 0.5rem 0; }
+.status-line { margin: 0.75rem 0; color: #f8d477; }
+.status-line.ok { color: #2ecc71; }
+.status-line.over { color: #e67e22; }
+</style>
+
+<script src="/ffmpeg/ffmpeg.js" onload="console.log('FFmpeg.wasm loaded')" onerror="console.log('FFmpeg.wasm FAILED to load')"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="logo">DevTools Hub</a>
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/tools/feedback/">Feedback</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <section class="tool-page">
+    <nav class="breadcrumb">
+      <a href="/">Home</a> &gt; <a href="/tools/media/">Media Tools</a> &gt; <span aria-current="page">Video Converter</span>
+      <a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+    </nav>
+    <h1>Video Converter</h1>
+    <p class="hero-text">Change a video's format without uploading it anywhere. Drop in an MP4, WebM, MOV or MKV file, pick the destination format, and press Convert. The conversion runs in your browser, so your footage never leaves your device.</p>
+    <div class="tool-main">
+      <h2>Convert video format</h2>
+      <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Video file dropzone">
+        <div class="dropzone-icon">🎬</div>
+        <div class="dropzone-text">
+          <strong>Click to upload</strong> or drag &amp; drop<br>
+          MP4, WebM, MOV, MKV, AVI, FLV, WMV, 3GP
+        </div>
+        <input type="file" id="fileInput" accept="video/*,.mkv,.flv,.wmv,.3gp,.avi" style="display:none" aria-label="Choose a video file to convert">
+      </div>
+
+      <div id="fileInfo" class="file-info">
+        <div class="file-info-row"><span class="file-info-label">File</span><span id="infoName"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Original size</span><span id="infoSize"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Duration</span><span id="infoDuration"></span></div>
+        <div class="file-info-row"><span class="file-info-label">Resolution</span><span id="infoRes"></span></div>
+      </div>
+
+      <div id="previewArea" class="preview-area">
+        <video id="previewVideo" controls preload="metadata"></video>
+      </div>
+
+      <div class="opt-row">
+        <label for="formatSelect">Convert to:</label>
+        <select id="formatSelect">
+          <option value="mp4">MP4 (H.264 + AAC)</option>
+          <option value="webm" selected>WebM (VP9 + Opus)</option>
+          <option value="mkv">MKV (H.264 + AAC)</option>
+          <option value="avi">AVI (MJPEG + MP3)</option>
+          <option value="mov">MOV (H.264 + AAC)</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button id="convertBtn" class="btn btn-primary" disabled>Convert Video</button>
+        <button id="clearBtn" class="btn">Reset</button>
+      </div>
+
+      <div id="statusLine" class="status-line" role="status"></div>
+
+      <div id="progressArea" class="progress-area">
+        <div id="progText">Loading the conversion engine (~31 MB, first use only)...</div>
+        <div class="progress-bar"><div id="progFill" class="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <div id="resultArea" class="result-area" aria-live="polite">
+        <p id="resultSummary"></p>
+        <p><button id="downloadBtn" class="btn btn-success" disabled>Download File</button></p>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>How it works</h2>
+      <p>Drop a video file on the page, choose the format you need, and press Convert. The tool reads the file with the File API, hands it to a WebAssembly build of FFmpeg that runs in the tab, re-encodes it for the destination format, and downloads the result. Because the engine runs client side, the file never touches a server.</p>
+
+      <h2>Why format conversion matters</h2>
+      <p>The same clip can be blocked by the player you already use. A screen recording saved as MOV may not open in an HTML5 video tag, a phone export saved as MKV may not play in an app that expects MP4, and a screen recording saved as MP4 may be far larger than the platform allows. Converting to the container and codec a target actually accepts removes that friction without re-encoding by hand.</p>
+
+      <h2>Private by design</h2>
+      <p>Nothing about your file travels anywhere. The video is read into the tab and encoded in WebAssembly on your device, then written back to a download you trigger yourself. Once the page and the engine are loaded, no data moves on the network.</p>
+
+      <h2>Honest limits</h2>
+      <p>Re-encoding is real work and it happens on your machine, so it scales with the file. A long clip takes minutes rather than seconds because the encoder is CPU bound in WebAssembly. Output is re-encoded rather than stream copied, so the source codec may not be preserved. Files much over about 500 MB may exceed what the tab can hold in memory during a re-encode; for anything bigger a desktop encoder is the right tool.</p>
+
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>How do I convert a video from MP4 to WebM?</summary><p>Drop the MP4 into the converter, pick WebM as the target format, and press Convert. The tool re-encodes the video and audio with the codec that WebM uses and downloads the result.</p></details>
+      <details class="faq-item"><summary>Is my video uploaded to a server when I convert it?</summary><p>No. The file is read into the tab and handed to a WebAssembly build of FFmpeg running in the browser. Once the engine loads, no data moves to a server.</p></details>
+      <details class="faq-item"><summary>Which formats can I convert between?</summary><p>The tool converts between common modern containers such as MP4, WebM, MOV, MKV and AVI, choosing the matching codec for each target.</p></details>
+      <details class="faq-item"><summary>How long does a conversion take?</summary><p>Conversion decodes and re-encodes the video on your own device, so it scales with the file. Short clips finish in seconds; longer clips take minutes because the encoder is CPU bound in WebAssembly.</p></details>
+      <details class="faq-item"><summary>Can I convert a video that is too large?</summary><p>The in-browser engine handles files up to about 500 MB. Larger files may exceed what the tab can hold in memory during a re-encode, and for anything bigger a desktop encoder is the honest answer.</p></details>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+(function() {
+  var MAX_MB = 500;
+  var AUDIO_KBPS = 96;
+  var currentFile = null;
+  var ffmpeg = null;
+  var engineLoaded = false;
+  var busy = false;
+  var outBlob = null;
+  var outName = 'converted.webm';
+  var logLines = [];
+
+  var dz = document.getElementById('dropzone');
+  var fi = document.getElementById('fileInput');
+  var finfo = document.getElementById('fileInfo');
+  var infoName = document.getElementById('infoName');
+  var infoSize = document.getElementById('infoSize');
+  var infoDuration = document.getElementById('infoDuration');
+  var infoRes = document.getElementById('infoRes');
+  var previewArea = document.getElementById('previewArea');
+  var vid = document.getElementById('previewVideo');
+  var convertBtn = document.getElementById('convertBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var statusLine = document.getElementById('statusLine');
+  var prog = document.getElementById('progressArea');
+  var progText = document.getElementById('progText');
+  var progFill = document.getElementById('progFill');
+  var formatSel = document.getElementById('formatSelect');
+  var resultArea = document.getElementById('resultArea');
+  var resultSummary = document.getElementById('resultSummary');
+
+  function fmtMB(bytes) { return (bytes / 1048576).toFixed(1) + ' MB'; }
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec < 0) return '';
+    sec = Math.round(sec);
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  function setStatus(msg, cls) {
+    statusLine.textContent = msg;
+    statusLine.className = 'status-line' + (cls ? ' ' + cls : '');
+  }
+
+  dz.addEventListener('click', function(e) { if (e.target === fi) return; fi.click(); });
+  dz.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fi.click(); } });
+  dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', function(e) { e.preventDefault(); dz.classList.remove('dragover'); });
+  dz.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) pickFile(e.dataTransfer.files[0]);
+  });
+  fi.addEventListener('change', function() { if (this.files && this.files[0]) pickFile(this.files[0]); });
+
+  function pickFile(file) {
+    if (!/^video\//.test(file.type) && !/\.(mkv|flv|wmv|3gp|m4v|mp4|webm|mov|avi)$/i.test(file.name)) {
+      setStatus('That does not look like a video file.', 'over');
+      return;
+    }
+    var bytes = file.size;
+    if (bytes > MAX_MB * 1048576) {
+      setStatus('This file is ' + fmtMB(bytes) + '. The in-browser engine handles up to about ' + MAX_MB + ' MB; use a desktop encoder for more.', 'over');
+      return;
+    }
+    currentFile = file;
+    setStatus('');
+    finfo.classList.add('visible');
+    infoName.textContent = file.name;
+    infoSize.textContent = fmtMB(file.size);
+    infoDuration.textContent = 'measuring...';
+    infoRes.textContent = 'measuring...';
+    dz.classList.add('has-file');
+    convertBtn.disabled = false;
+    readMeta(file);
+  }
+
+  function readMeta(file) {
+    var url = URL.createObjectURL(file);
+    vid.src = url;
+    vid.onloadedmetadata = function() {
+      URL.revokeObjectURL(url);
+      var d = vid.videoWidth > 0 ? vid.duration : null;
+      if (d && isFinite(d)) {
+        infoDuration.textContent = fmtTime(d);
+        infoRes.textContent = vid.videoWidth + ' x ' + vid.videoHeight;
+        previewArea.classList.add('visible');
+      } else {
+        infoDuration.textContent = 'read during conversion';
+        infoRes.textContent = 'shown after conversion';
+      }
+    };
+    vid.onerror = function() {
+      URL.revokeObjectURL(url);
+      infoDuration.textContent = 'read during conversion';
+      infoRes.textContent = 'shown after conversion';
+    };
+  }
+
+  clearBtn.addEventListener('click', function() {
+    if (busy) return;
+    currentFile = null;
+    outBlob = null;
+    dz.classList.remove('has-file');
+    fi.value = '';
+    finfo.classList.remove('visible');
+    previewArea.classList.remove('visible');
+    vid.removeAttribute('src');
+    vid.load();
+    resultArea.classList.remove('visible');
+    prog.classList.remove('visible');
+    progFill.style.width = '0%';
+    setStatus('');
+    convertBtn.disabled = true;
+    downloadBtn.disabled = false;
+    URL.revokeObjectURL(downloadBtn.href || '');
+    downloadBtn.removeAttribute('href');
+    resultSummary.textContent = '';
+  });
+
+  convertBtn.addEventListener('click', run);
+
+  function ensureEngine() {
+    if (engineLoaded) return Promise.resolve();
+    progText.textContent = 'Loading the conversion engine (~31 MB, first use only)...';
+    progText.style.color = '#f8d477';
+    prog.classList.add('visible');
+    return fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm')
+      .then(function(r) {
+        if (!r.ok) throw new Error('engine download failed (' + r.status + ')');
+        return r.arrayBuffer();
+      })
+      .then(function(buf) {
+        var blobUrl = URL.createObjectURL(new Blob([buf], { type: 'application/wasm' }));
+        ffmpeg = new FFmpegWASM.FFmpeg();
+        return ffmpeg.load({ coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js', wasmURL: blobUrl });
+      })
+      .then(function() {
+        engineLoaded = true;
+      });
+  }
+
+  function execArgs(ext, container) {
+    var args = ['-i', 'input.' + ext];
+    var out = 'out.' + container;
+    if (container === 'webm') {
+      args.push('-c:v', 'libvpx-vp9', '-c:a', 'libopus', '-b:v', '0', '-b:a', '0', '-row_mt', '1', '-pix_fmt', 'yuva420p', '-y', out);
+    } else if (container === 'avi') {
+      args.push('-c:v', 'mpeg4', '-c:a', 'mp3', '-b:v', '0', '-b:a', AUDIO_KBPS + 'k', '-y', out);
+    } else {
+      args.push('-c:v', 'libx264', '-preset', 'veryfast', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', AUDIO_KBPS + 'k', '-movflags', '+faststart', '-y', out);
+    }
+    return args;
+  }
+
+  function run() {
+    if (!currentFile) return;
+    if (busy) return;
+    busy = true;
+    convertBtn.disabled = true;
+    setStatus('Starting conversion...');
+    progFill.style.width = '0%';
+    var ext = /\.(\w+)$/.exec(currentFile.name.toLowerCase());
+    var srcExt = ext ? ext[1].toLowerCase() : 'mp4';
+    var container = formatSel.value;
+    ensureEngine()
+      .then(function() {
+        progText.textContent = 'Converting...';
+        var args = execArgs(srcExt, container);
+        return ffmpeg.exec(args, function(ev) {
+          var p = ev.progress || 0;
+          if (p > 0 && p < 1.05) progFill.style.width = Math.min(5 + p * 90, 96) + '%';
+        });
+      })
+      .then(function() {
+        return ffmpeg.readFile('out.' + container);
+      })
+      .then(function(data) {
+        var blob = new Blob([data], { type: 'video/' + container });
+        outBlob = blob;
+        outName = 'converted.' + container;
+        var url = URL.createObjectURL(blob);
+        downloadBtn.href = url;
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download ' + container.toUpperCase();
+        resultArea.classList.add('visible');
+        resultSummary.textContent = 'Converted to ' + container.toUpperCase() + ' - ready to download.';
+      })
+      .catch(function(e) {
+        setStatus('Conversion failed: ' + (e && e.message ? e.message : String(e)), 'over');
+      })
+      .finally(function() {
+        busy = false;
+        convertBtn.disabled = false;
+      });
+  }
+
+  document.getElementById('convertBtn').addEventListener('click', run);
+})();
+</script>
+</body>
+</html>

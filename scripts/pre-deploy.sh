@@ -43,6 +43,19 @@ EOF
   echo "[pre-deploy] .env redacted; real token parked at $BACKUP (outside the deploy root)"
 fi
 
+# Regenerate everything and run every gate — the same build the Git path runs.
+#
+# BUG-562 (2026-11-17): this used to run AFTER the harness was parked. The park
+# list includes every file under test-scripts/ (BUG-482), and scripts/build.sh
+# runs the 53 gates out of scripts/gates.json — each gate file lives in
+# test-scripts/. So the gates were asked to run with their own sources missing:
+# "[gates] MISSING gate file: test-scripts/<first gate in the list>" and the
+# emergency deploy path aborted BEFORE wrangler ever ran. The site could not be
+# hot-fixed at all. The gates need their files; the park only matters for the
+# upload set. So: build (gates) first, park second.
+echo "[pre-deploy] Building..."
+bash scripts/build.sh
+
 # Move the Playwright harness out of the deploy root.
 #
 # BUG-309 (2026-10-05): `.gitignore` has listed `test-*.js` for months, and 68 of
@@ -91,10 +104,6 @@ if [ -n "$HARNESS_FILES" ]; then
 else
   rmdir "$HARNESS" 2>/dev/null || true
 fi
-
-# Regenerate everything and run every gate — the same build the Git path runs.
-echo "[pre-deploy] Building..."
-bash scripts/build.sh
 
 # dist/ is the output of the Git path; this path uploads the tree itself.
 rm -rf dist

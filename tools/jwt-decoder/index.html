@@ -255,13 +255,7 @@
             document.getElementById('jwt-status').className = 'status';
         }
 
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 5000);
-        }
-
+        
         function copyJWTSection(event, id) {
             try {
                 if (event && typeof event.button === 'number' && event.button !== 0) return;

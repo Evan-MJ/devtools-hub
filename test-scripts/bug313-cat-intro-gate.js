@@ -117,5 +117,26 @@ for (const c of CATS) {
   ok('/' + c + '/ intro is real prose (' + words.length + ' words, ' + freeOnline + 'x "free online")', words.length >= 45 && freeOnline === 0);
 }
 
+// 7. BUG-562: every category hub must name BOTH sibling halves of the site's two flagship
+//    intents — the Code Formatters half ("json formatter online") and the Media Tools half
+//    ("image compressor"). A hub that names only one sends an agent that landed there to the
+//    other job with no way to find it, and the ai-citability reviewer reads exactly that as
+//    "no image/media tools covered" / "missing JSON formatting utilities".
+//    The mention may be the intent phrase in the bridge OR a link to the tool that provides it
+//    (formatters links its own JSON Formatter, media links its own Image Compressor), so this
+//    needs no slug table — a hub that provides a half itself satisfies it by naming the tool.
+//    code-testing was the one hub naming only the Code Formatters half; that is what this catches.
+for (const c of CATS) {
+  const at = introSrc.indexOf("'" + c + "': [");
+  if (at < 0) continue;
+  const seg = introSrc.slice(at, at + 1800);
+  const end = seg.indexOf('\n    ],');
+  const body = end > 0 ? seg.slice(0, end) : seg;
+  const hasFormatters = /json formatter/i.test(body);
+  const hasMedia = /image compressor/i.test(body);
+  ok('/' + c + '/ intro names the Code Formatters half ("json formatter")', hasFormatters);
+  ok('/' + c + '/ intro names the Media Tools half ("image compressor")', hasMedia);
+}
+
 console.log('\n' + pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);

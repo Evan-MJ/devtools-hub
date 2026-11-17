@@ -285,13 +285,7 @@
             return issues;
         }
 
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 3000);
-        }
-
+        
         function copyOutput() {
             const output = document.getElementById('html-output');
             if (output && output.value) {
