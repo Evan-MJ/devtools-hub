@@ -80,7 +80,11 @@
         .score-divider { font-size: 0.8rem; color: #555; text-align: center; min-width: 20px; }
         .empty-state { text-align: center; padding: 60px 20px; color: #888; }
         .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-        .empty-state h3 { color: #aaa; margin-bottom: 8px; font-size: 1.2rem; }
+        /* BUG-558: this heading is injected at runtime. It was an <h3>, so the page's outline
+           jumped from the <h1> straight to level 3 — a screen-reader user navigating by heading
+           heard "Heading level 3" right under the page title, with no level 2 anywhere.
+           It is the first heading inside the tool's result area, so it is an <h2>. */
+        .empty-state h2 { color: #aaa; margin-bottom: 8px; font-size: 1.2rem; }
         .empty-state p { font-size: 0.9rem; color: #666; max-width: 400px; margin: 0 auto; }
         .loading-scores { text-align: center; padding: 60px 20px; }
         .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 3px solid #2a2a4a; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -319,7 +323,7 @@
             var lastUpdated = document.getElementById('last-updated');
 
             if (events.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><h3>No Games Today</h3><p>No games scheduled for this date in the selected league. Try a different date or league.</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><h2>No Games Today</h2><p>No games scheduled for this date in the selected league. Try a different date or league.</p></div>';
                 var now = new Date();
                 lastUpdated.textContent = 'Checked at ' + now.toLocaleTimeString();
                 return;

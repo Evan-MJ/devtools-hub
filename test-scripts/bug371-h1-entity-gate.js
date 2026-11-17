@@ -66,17 +66,55 @@ ok(hcount >= 340, 'found ' + hcount + ' headings h1-h6 (expected >=340)');
 ok(dirty.length === 0, 'no tool-page heading (h1-h6) ships a typographic named entity — got: ' + dirty.join(' | '));
 
 // ── Tier B: the generated category page (11 pages, one template) ───────────────
-// Read the real template; do not re-derive it. The H1 and the .md H1 must use the SAME character.
+// Read the real template; do not re-derive it.
+//
+// BUG-550 widened this tier. It used to pin ONE character (`—`) for the visible <h1> and the
+// .md mirror <h1> — which fixed BUG-371's entity-vs-character bug but left the <title> as the
+// third spelling of the same heading ("one heading, three strings", only two-thirds fixed). The
+// 2026-11-16 review bot's [CONTENT QUALITY SCORES] then named the remaining disagreement on
+// /tools/code-testing/, /tools/formatters/ and /tools/ai-language/ ("Title uses hyphen, H1 uses
+// em dash"). The durable rule is not "which character" but "ONE character, everywhere": the
+// <title>, the visible <h1>, the .md mirror's <h1> and the homepage's <h1> must all use the same
+// separator for the "Name - N Free Online ... Tools" shape. That is decidable from the source and
+// it cannot rot into "half the site was changed" the way a pinned character can.
 const fn = fs.readFileSync(path.join(ROOT, 'functions/tools/[[catchall]].js'), 'utf8');
+const homeFn = fs.readFileSync(path.join(ROOT, 'functions/index.js'), 'utf8');
 const htmlH1 = fn.match(/<h1[^>]*>' \+ esc\(displayName\) \+ ' ([^']+) ' \+ total \+ ' Free Online Tools/);
 const mdH1 = fn.match(/let md = '# ' \+ displayName \+ ' ([^']+) ' \+ total \+ ' Free Online Tools/);
+const titleT = fn.match(/<title>' \+ esc\(displayName\) \+ ' ([^']+) ' \+ total \+ ' Free Online Tools/);
+const homeH1 = homeFn.match(/<h1><a href="\/">DevTools Hub ([^']+?) ' \+ totalCount \+ ' Free Online Developer Tools/);
 ok(!!htmlH1, 'category HTML <h1> template found in functions/tools/[[catchall]].js');
 ok(!!mdH1, 'category .md  <h1> template found in categoryToMarkdown()');
-if (htmlH1 && mdH1) {
-  ok(/^\\u2014$/.test(htmlH1[1].trim()), 'category HTML <h1> separator is the literal em-dash — got "' + htmlH1[1] + '"');
-  ok(/^\\u2014$/.test(mdH1[1].trim()), 'category .md  <h1> separator is the literal em-dash — got "' + mdH1[1] + '"');
-  ok(htmlH1[1].trim() === mdH1[1].trim(),
-    'the visible <h1> and its .md mirror use the SAME separator (' + htmlH1[1] + ' vs ' + mdH1[1] + ')');
+ok(!!titleT, 'category <title> template found in functions/tools/[[catchall]].js');
+ok(!!homeH1, 'homepage <h1> template found in functions/index.js');
+
+// The rule, as a pure function so the anti-vacuity tier can feed it a deliberately broken set.
+function separatorFailures(seps) {
+  const names = ['<title>', 'visible <h1>', '.md <h1>', 'homepage <h1>'];
+  const vals = seps.map((s) => (s == null ? null : s.trim()));
+  const out = [];
+  if (vals.some((v) => v === null)) { out.push('a separator could not be read from the source'); return out; }
+  for (let i = 1; i < vals.length; i++) {
+    if (vals[i] !== vals[0]) out.push(names[i] + ' uses "' + vals[i] + '" but ' + names[0] + ' uses "' + vals[0] + '"');
+  }
+  for (let i = 0; i < vals.length; i++) {
+    if (/&[a-z]+;|&#\d+;/.test(vals[i])) out.push(names[i] + ' separator ships an entity name instead of the character — got "' + vals[i] + '"');
+  }
+  return out;
+}
+
+if (htmlH1 && mdH1 && titleT && homeH1) {
+  const seps = [titleT[1], htmlH1[1], mdH1[1], homeH1[1]];
+  const bad = separatorFailures(seps);
+  ok(bad.length === 0,
+    'the category <title>, its visible <h1>, its .md mirror <h1> and the homepage <h1> all use the SAME separator (got: ' +
+    seps.map((s) => JSON.stringify(s.trim())).join(' / ') + ')' + (bad.length ? ' -> ' + bad.join(' | ') : ''));
+
+  // Anti-vacuity: the rule must be able to go red. Feed it the exact disagreement the review bot
+  // reported (title hyphen, h1 em dash) and require the same checker to report it.
+  const broken = separatorFailures([titleT[1], ' \u2014 ', mdH1[1], homeH1[1]]);
+  ok(broken.length > 0, 'anti-vacuity: a <title>/<h1> separator disagreement is detected');
+  ok(broken.some((f) => /visible <h1> uses/.test(f)), 'anti-vacuity: the disagreement is named (' + broken.join(' | ') + ')');
 }
 
 // ── Tier B2: the stale hardcoded tool count, same generated block ──────────────

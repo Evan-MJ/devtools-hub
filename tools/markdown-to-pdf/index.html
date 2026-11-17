@@ -31,7 +31,16 @@
         .converter-editor{flex:1;width:100%;min-height:460px;padding:16px;border:none;background:transparent;color:#e6edf3;font-family:'JetBrains Mono','Monaco',monospace;font-size:0.9rem;line-height:1.7;resize:none;tab-size:2}
         .converter-editor:focus{outline:2px solid transparent}
         .preview{flex:1;overflow:auto;padding:16px;color:#e6edf3;font-size:0.95rem;line-height:1.7;background:#0d1117}
-        .preview h1{font-size:1.8rem;margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid #2a2a4a}
+        /* BUG-558: the preview renders the USER's markdown, and a markdown document can
+           start with an <h1> — injected as-is, the page ended up with two <h1>s. Every
+           preview heading is demoted one level now, and the level the user wrote is kept
+           in data-md-level, so each level keeps exactly the style it had before. */
+        .preview [data-md-level="1"]{font-size:1.8rem;font-weight:700;margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid #2a2a4a;color:#e6edf3}
+        .preview [data-md-level="2"]{font-size:1.4rem;font-weight:700;margin:0 0 20px;color:#7eb3ff}
+        .preview [data-md-level="3"]{font-size:1.17em;font-weight:700;margin:0;color:#e6edf3}
+        .preview [data-md-level="4"]{font-size:1em;font-weight:700;margin:0;color:#e6edf3}
+        .preview [data-md-level="5"]{font-size:0.83em;font-weight:700;margin:0;color:#e6edf3}
+        .preview [data-md-level="6"]{font-size:0.67em;font-weight:700;margin:0;color:#e6edf3}
         .preview pre{background:#161b22;border:1px solid #2a2a4a;border-radius:8px;padding:12px;overflow:auto}
         .converter-actions{display:flex;gap:8px;padding:12px 14px;background:#161b22;border-top:1px solid #2a2a4a;flex-wrap:wrap}
         .btn-opt{padding:8px 16px;border:none;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer;background:#21262d;color:#8b949e;border:1px solid #2a2a4a}
@@ -135,10 +144,28 @@ Table example:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+// BUG-558: the preview shows the USER's document, and a markdown document can start with
+// an <h1>. Rendered as-is, the page carried a second <h1> next to its own — a screen reader
+// announced "Heading level 1: Title" in the middle of the page. Demote every preview
+// heading one level and remember the level the user wrote in data-md-level — the CSS keys
+// on that, so the preview looks the same.
+function demotePreviewHeadings(root){
+    root.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(function(h){
+        const lvl=parseInt(h.tagName[1],10);
+        if(lvl>=6){h.setAttribute('data-md-level',lvl);return;}
+        const demoted=document.createElement('h'+(lvl+1));
+        Array.prototype.forEach.call(h.attributes,function(a){demoted.setAttribute(a.name,a.value);});
+        demoted.setAttribute('data-md-level',lvl);
+        demoted.innerHTML=h.innerHTML;
+        h.parentNode.replaceChild(demoted,h);
+    });
+}
 function updatePreview(){
     const md=document.getElementById('mdInput').value;
     const html=marked.parse(md);
-    document.getElementById('preview').innerHTML=html;
+    const preview=document.getElementById('preview');
+    preview.innerHTML=html;
+    demotePreviewHeadings(preview);
 }
 document.getElementById('mdInput').addEventListener('input',updatePreview);
 updatePreview();
@@ -146,9 +173,11 @@ function loadSample(){document.getElementById('mdInput').value='# Sample Documen
 function clearEditor(){document.getElementById('mdInput').value='';updatePreview()}
 function copyMarkdown(){navigator.clipboard.writeText(document.getElementById('mdInput').value).then(()=>showToast('Copied'))}
 function downloadPDF(){
-    const preview=document.getElementById('preview').innerHTML;
+    // BUG-558: build the PDF from the markdown source, not from the preview's DOM — the
+    // preview's headings are demoted one level so the page keeps exactly one <h1>, and the
+    // PDF has to keep the document's own heading levels.
     const container=document.createElement('div');
-    container.innerHTML=preview;
+    container.innerHTML=marked.parse(document.getElementById('mdInput').value);
     const opt={
         margin: parseInt(document.getElementById('margin').value)/25.4,
         filename:'markdown.pdf',

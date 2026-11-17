@@ -47,7 +47,12 @@
         .ce-badge.count { background: rgba(16,185,129,0.14); border-color: rgba(16,185,129,0.45); color: #6ee7b7; }
         .ce-badge.warn { background: rgba(234,179,8,0.14); border-color: rgba(234,179,8,0.45); color: #fde68a; }
         .ce-say { background: #0f0f23; border: 1px solid #2a2a4a; border-left: 3px solid #667eea; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; color: #e5e7eb; font-size: 0.98rem; }
-        .ce-say h3 { color: #7eb3ff; margin: 0 0 8px; font-size: 0.95rem; }
+        /* BUG-558: every heading in this file is injected at runtime. Their levels were
+           off by one against the page's outline: the first one was an <h3> (a jump from
+           the page's <h1> straight to level 3) and the nested ones were <h4> under an
+           <h2> (a jump from level 2 to level 4). The font-size stays what it was:
+           the UA sizes h3/h4 differently, so it is declared explicitly. */
+        .ce-say h2 { color: #7eb3ff; margin: 0 0 8px; font-size: 0.95rem; }
         .ce-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
         .ce-table th, .ce-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #1f2638; font-size: 0.88rem; vertical-align: top; }
         .ce-table th { color: #8b90a0; font-weight: 600; }
@@ -55,16 +60,16 @@
         .ce-table td.vals { font-family: 'Fira Code', ui-monospace, monospace; color: #cbd5e1; word-break: break-word; }
         .ce-h2 { color: #7eb3ff; font-size: 1.05rem; margin: 26px 0 10px; }
         .ce-note { background: #0f0f23; border: 1px solid #2a2a4a; border-left: 3px solid #eab308; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; color: #d1d5db; font-size: 0.9rem; }
-        .ce-note h4 { color: #eab308; margin: 0 0 8px; }
+        .ce-note h3 { color: #eab308; margin: 0 0 8px; font-size: 1em; }
         .ce-note.error { border-left-color: #ef4444; }
-        .ce-note.error h4 { color: #fca5a5; }
+        .ce-note.error h3 { color: #fca5a5; }
         .ce-note ul { margin: 0; padding-left: 20px; }
         .ce-note li { margin-bottom: 8px; }
         .ce-note li:last-child { margin-bottom: 0; }
         .ce-note code { color: #7eb3ff; }
         .ce-outs { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .ce-out { background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 8px; padding: 14px 16px; }
-        .ce-out h4 { margin: 0 0 4px; font-size: 0.95rem; }
+        .ce-out h3 { margin: 0 0 4px; font-size: 0.95rem; }
         .ce-out .meta { color: #8b90a0; font-size: 0.78rem; margin-bottom: 8px; }
         .ce-out pre { margin: 0; overflow-x: auto; color: #6ee7b7; font-family: 'Fira Code', ui-monospace, monospace; font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; }
         .ce-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
@@ -662,9 +667,9 @@
             (warns.length && warns[0].indexOf('No common traps') === 0 ? '' : '<span class="ce-badge warn">' + (warns[0].indexOf('No common traps') === 0 ? 'clean' : (warns.length) + ' thing' + (warns.length === 1 ? '' : 's') + ' to check') + '</span>');
         document.getElementById('ce-badges').innerHTML = badges;
 
-        document.getElementById('ce-say').innerHTML = '<h3>In plain English</h3>' + esc(explain(cron));
+        document.getElementById('ce-say').innerHTML = '<h2>In plain English</h2>' + esc(explain(cron));
 
-        document.getElementById('ce-warnings').innerHTML = '<div class="ce-note"><h4>Read this before you trust the schedule</h4><ul>' +
+        document.getElementById('ce-warnings').innerHTML = '<div class="ce-note"><h3>Read this before you trust the schedule</h3><ul>' +
             warns.map(function (w) { return '<li>' + w + '</li>'; }).join('') + '</ul></div>';
 
         var rows = cron.parts.map(function (p, i) {
@@ -705,7 +710,7 @@
         }).join('\n');
 
         document.getElementById('ce-platforms').innerHTML = platforms(cron).map(function (p) {
-            return '<div class="ce-out"><h4>' + esc(p.name) + '</h4><div class="meta">' + esc(p.meta) + '</div><pre>' + esc(p.code) + '</pre>' +
+            return '<div class="ce-out"><h3>' + esc(p.name) + '</h3><div class="meta">' + esc(p.meta) + '</div><pre>' + esc(p.code) + '</pre>' +
                 (p.note ? '<div class="meta" style="margin:8px 0 0">' + esc(p.note) + '</div>' : '') + '</div>';
         }).join('');
 

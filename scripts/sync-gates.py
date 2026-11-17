@@ -113,6 +113,7 @@ GATES = [
     'bug447-ctr-metadata-gate.js',
     'bug451-lastmod-honesty-gate.js',
     'bug532-benign-guard-gate.js',
+    'bug557-index-title-gate.js',
     'bug452-plaintext-credentials-gate.js',
     'bug480-permissions-policy-gate.js',
     'compliance-claims-gate.js',

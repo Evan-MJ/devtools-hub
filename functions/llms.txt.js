@@ -84,7 +84,7 @@ export async function onRequest(context) {
   const base = 'https://tools.scoreroute.com';
 
   let out = '# DevTools Hub\n\n';
-  out += '> Free collection of ' + total + ' browser-based developer tools across ' + CAT_ORDER.length + ' categories. No signup, no tracking, all processing happens in your browser.\n\n';
+  out += '> ' + total + ' free developer tools across ' + CAT_ORDER.length + ' categories. No signup, no tracking.\n\n';
   out += '> Each tool has a markdown version at /tools/<slug>/.md for AI agents.\n\n';
   out += '> For complete descriptions and details see [/llms-full.txt](' + base + '/llms-full.txt).\n\n';
 
@@ -107,8 +107,8 @@ export async function onRequest(context) {
     // that could stop mid-word ("... currency exchange.") and could publish a different
     // sentence than the category page's own description. Now the same sentence-aware
     // truncation the category page uses, so the two surfaces cannot drift again.
-    const short = sentenceTruncate(d, 100);
-    out += '- [' + displayName + ' (' + items.length + ' tools)](' + base + '/tools/' + cat + '/.md): ' + short + ' [HTML](' + base + '/tools/' + cat + '/)\n';
+    const short = "";
+    out += '- [' + displayName + '](' + base + '/tools/' + cat + '/.md)[HTML](' + base + '/tools/' + cat + '/)\n';
   }
   out += '\n';
 
