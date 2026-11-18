@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 379 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 380 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,12 +8,12 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 379
+- Total tools: 380
 - Categories: 11
 - Last updated: 2026-11-18
 - License: Free to use, no signup, no tracking, 100% client-side
 
-## Code Formatters (10 tools)
+## Code Formatters (11 tools)
 
 Browse all: [Code Formatters](https://tools.scoreroute.com/tools/formatters/.md)
 
@@ -106,6 +106,15 @@ Free online JSON Schema validator. Validate JSON data against Draft-07, 2019-09,
 - Tags: css, specificity, selector, calculator, weight, cascade, css3, developer
 
 Free CSS specificity calculator. Compute a,b,c values for any selector instantly. Understand selector weight and cascade priority. No signup.
+
+### JSON Schema Generator - Infer from JSON
+
+- URL: https://tools.scoreroute.com/tools/json-schema-generator/
+- Markdown: https://tools.scoreroute.com/tools/json-schema-generator/.md
+- Category: Code Formatters
+- Tags: json, schema, generator, infer, draft, sample, api
+
+Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.
 
 ## Calculators (39 tools)
 
@@ -3470,7 +3479,7 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 379 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 380 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

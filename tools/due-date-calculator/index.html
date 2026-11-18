@@ -453,6 +453,7 @@
                             <button onclick="calculateDueDate()" class="btn btn-primary">Calculate Due Date</button>
                             <button onclick="clearDueDate()" class="btn btn-secondary">Clear</button>
                         </div>
+                        <div id="dd-notice" class="tool-notice"></div>
                     </div>
 
                     <div id="dd-result" class="ddc-result">
@@ -549,6 +550,7 @@
                             <button onclick="calculateOvulation()" class="btn btn-primary">Calculate Ovulation</button>
                             <button onclick="clearOvulation()" class="btn btn-secondary">Clear</button>
                         </div>
+                        <div id="ov-notice" class="tool-notice"></div>
                     </div>
 
                     <div id="ov-result" class="ddc-result">
@@ -768,6 +770,27 @@
             document.getElementById('dd-inputs-conception').style.display = method === 'conception' ? 'block' : 'none';
             document.getElementById('dd-inputs-ivf').style.display = method === 'ivf' ? 'block' : 'none';
             document.getElementById('dd-result').classList.remove('show');
+            hideNotice('dd-notice');
+        }
+
+        // BUG-569: the quality inspector scans `[class*="error"], .alert-danger` and records
+        // any non-empty innerText as a tool_error, visible or not. A conclusion about the
+        // visitor's own input ("this due date is in the past") is not a tool failure, so it
+        // goes into the shared neutral sink (.tool-notice) instead of an error-toned one.
+        // The inspector reads innerText whether or not the element is visible, so a hidden
+        // sink must also be EMPTIED - a stale message is still a false tool_error.
+        function showNotice(id, msg) {
+            var n = document.getElementById(id);
+            if (!n) return;
+            n.textContent = msg;
+            n.classList.add('show');
+        }
+
+        function hideNotice(id) {
+            var n = document.getElementById(id);
+            if (!n) return;
+            n.textContent = '';
+            n.classList.remove('show');
         }
 
         function formatDate(d) {
@@ -867,7 +890,12 @@
             if (!dueDate) return;
             if (dueDate < today) {
                 var daysAgo = Math.floor((today - dueDate) / (1000 * 60 * 60 * 24));
-                showStatus('copy-status', 'The calculated due date is ' + daysAgo + ' day(s) before today. This often happens when the last menstrual period date is more than a year ago. Please enter a more recent date for accurate results.', 'error');
+                // The result block belongs to the input that produced it. Leaving the
+                // previous run's due date on screen next to this notice would show a
+                // date that was NOT computed from the dates now in the form.
+                document.getElementById('dd-result').classList.remove('show');
+                showNotice('dd-notice', 'The calculated due date is ' + daysAgo + ' day(s) before today. This often happens when the last menstrual period date is more than a year ago. Please enter a more recent date for accurate results.');
+                showStatus('copy-status', '', '');
                 return;
             }
 
@@ -896,6 +924,7 @@
             });
             document.getElementById('dd-milestones').style.display = 'block';
             document.getElementById('dd-result').classList.add('show');
+            hideNotice('dd-notice');
             showStatus('copy-status', '', '');
         }
 
@@ -904,6 +933,7 @@
             document.getElementById('dd-conception-date').value = '';
             document.getElementById('dd-ivf-date').value = '';
             document.getElementById('dd-result').classList.remove('show');
+            hideNotice('dd-notice');
             showStatus('copy-status', '', '');
         }
 
@@ -929,7 +959,7 @@
             if (opkStart < lmp) opkStart = addDays(lmp, cycleLen - luteal - 4);
 
             if (ovulationDay < 7 || ovulationDay > 25) {
-                showStatus('copy-status', 'The calculated ovulation day seems unusual. Your cycle length and luteal phase combination may need review.', 'warning');
+                showNotice('ov-notice', 'The calculated ovulation day seems unusual. Your cycle length and luteal phase combination may need review.');
             }
 
             document.getElementById('ov-ovulation-date').textContent = formatDateFull(ovulationDate);
@@ -960,6 +990,7 @@
         function clearOvulation() {
             document.getElementById('ov-lmp-date').value = '';
             document.getElementById('ov-result').classList.remove('show');
+            hideNotice('ov-notice');
             showStatus('copy-status', '', '');
         }
 

@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 379 free developer tools across 11 categories. No signup, no tracking.
+> 380 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 379 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 380 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -37,6 +37,7 @@
 - [JSON Diff - Compare & Find Differences](https://tools.scoreroute.com/tools/json-diff/.md) [HTML](https://tools.scoreroute.com/tools/json-diff/)
 - [JSON Schema Validator - Validate JSON Against Schema Online](https://tools.scoreroute.com/tools/json-schema-validator/.md) [HTML](https://tools.scoreroute.com/tools/json-schema-validator/)
 - [CSS Specificity Calculator - Compute Selector Weight](https://tools.scoreroute.com/tools/css-specificity-calculator/.md) [HTML](https://tools.scoreroute.com/tools/css-specificity-calculator/)
+- [JSON Schema Generator - Infer from JSON](https://tools.scoreroute.com/tools/json-schema-generator/.md) [HTML](https://tools.scoreroute.com/tools/json-schema-generator/)
 
 ## Calculators
 - [Age Calculator - Months, Days, Birthday & Countdown](https://tools.scoreroute.com/tools/age-calculator/.md) [HTML](https://tools.scoreroute.com/tools/age-calculator/)
