@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Schema Generator - Infer from JSON | DevTools Hub</title>
+    <meta name="description" content="Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/json-schema-generator/">
+    <meta property="og:title" content="JSON Schema Generator - Infer from JSON | DevTools Hub">
+    <meta property="og:description" content="Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/json-schema-generator/">
+    <meta property="og:type" content="website">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="JSON Schema Generator - Infer from JSON | DevTools Hub">
+    <meta property="twitter:description" content="Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.">
+    <meta property="twitter:image" content="/og-image.png">
+    <meta property="twitter:url" content="https://tools.scoreroute.com/tools/json-schema-generator/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-18",
+        "dateModified": "2026-11-18",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "JSON Schema Generator - Infer from JSON | DevTools Hub",
+        "description": "Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.",
+        "url": "https://tools.scoreroute.com/tools/json-schema-generator/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Infer JSON Schema from sample JSON", "Draft-07 output", "Copy generated schema", "100% private browser processing"]
+    }
+    </script>
+    <style>
+    .schema-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    @media (min-width: 768px) {
+        .schema-container {
+            flex-direction: row;
+        }
+    }
+
+    .schema-pane {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pane-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+    }
+
+    .pane-header label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #e0e0e0;
+    }
+
+    .pane-badge {
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+
+    .pane-badge.valid {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+    }
+
+    .pane-badge.error {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+
+    .schema-input {
+        width: 100%;
+        min-height: 280px;
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 12px;
+        border: 1px solid #2a2a3e;
+        border-radius: 6px;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    .schema-input:focus {
+        outline: 2px solid transparent;
+        border-color: #667eea;
+    }
+
+    .schema-controls {
+        margin-bottom: 16px;
+    }
+
+    .schema-controls-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .schema-result {
+        margin-top: 16px;
+        border: 1px solid #2a2a3e;
+        border-radius: 8px;
+        background: #1a1a2e;
+        overflow: hidden;
+    }
+
+    .result-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        font-weight: 600;
+        font-size: 15px;
+        border-left: 4px solid #667eea;
+    }
+
+    .result-header.success {
+        border-left-color: #10b981;
+    }
+
+    .result-header.error {
+        border-left-color: #ef4444;
+    }
+
+    .result-header .result-icon {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+    }
+
+    .result-details {
+        padding: 0 16px 16px;
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 10px;
+        padding: 0 16px 16px;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>JSON Schema Generator - Infer from JSON</h1>
+            <p class="subtitle">Infer JSON Schemas From Sample JSON Data Instantly</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>JSON Schema Generator - Infer from JSON</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="schema-container">
+                    <div class="schema-pane">
+                        <div class="pane-header">
+                            <label for="js-data">Sample JSON Data</label>
+                            <span class="pane-badge" id="data-status"></span>
+                        </div>
+                        <textarea id="js-data" class="schema-input" placeholder='Paste your sample JSON here, e.g.:&#10;{"name": "John", "age": 30, "tags": ["admin", "user"]}' spellcheck="false" aria-label="Sample JSON data to infer a schema from"></textarea>
+                    </div>
+                    <div class="schema-pane">
+                        <div class="pane-header">
+                            <label for="js-schema">Generated JSON Schema</label>
+                            <span class="pane-badge" id="schema-status"></span>
+                        </div>
+                        <textarea id="js-schema" class="schema-input" readonly placeholder='The inferred JSON Schema will appear here' spellcheck="false" aria-label="Generated JSON Schema"></textarea>
+                        <div class="schema-controls">
+                            <div class="schema-controls-row">
+                                <div class="btn-group">
+                                    <button onclick="generateSchema()" class="btn btn-primary">Generate Schema</button>
+                                    <button onclick="loadSample()" class="btn">Load Sample</button>
+                                    <button onclick="clearAll()" class="btn btn-secondary">Clear All</button>
+                                    <button onclick="copySchema()" class="copy-btn">Copy Schema</button>
+                                </div>
+                            </div>
+                            <div id="gen-status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>What is a JSON Schema Generator?</h2>
+                <p>A JSON Schema Generator is a tool that infers a JSON Schema from a sample JSON document. Instead of writing schema syntax by hand, you paste a sample of the JSON your API or application produces, and the tool walks the structure to derive the type, properties, required fields, and array item types.</p>
+                <p>This is the natural counterpart to the <a href="/tools/json-schema-validator/">JSON Schema Validator</a>. The validator answers "does this data conform?"; the generator answers "what contract should I write?". Both are deterministic, both run on structured data, and both are the right way to keep API contracts honest.</p>
+
+                <h2>Why AI Cannot Infer a JSON Schema Reliably</h2>
+                <p>Large Language Models, such as ChatGPT, Claude, and Gemini, are not reliable schema inferrers. They can pattern-match superficially and produce plausible looking JSON Schema that is wrong about nested objects, array item types, or required fields. On deeply nested payloads they drift, and asking the same question twice yields different schemas.</p>
+                <p>Inference is a traversal problem, not a language problem. The correct algorithm is deterministic: read the JSON, recurse over objects and arrays, and emit JSON Schema keywords. Because it is a pure function of the input bytes, the output is reproducible and auditable.</p>
+                <p>The inference here runs entirely in your browser. Nothing you paste is transmitted to a server, stored, or logged, and the generated schema can be copied out and used with any JSON Schema validator or with OpenAPI 3.1, which adopts JSON Schema Draft 2020-12.</p>
+
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Paste your sample JSON data into the <strong>Sample JSON Data</strong> pane</li>
+                    <li>Click <strong>Generate Schema</strong> — the inferred schema is written to the <strong>Generated JSON Schema</strong> pane</li>
+                    <li>Copy the generated schema with <strong>Copy Schema</strong> and paste it into your validator, linter, or API tooling</li>
+                </ol>
+
+                <h3>Inferred Schema Keywords</h3>
+                <ul>
+                    <li><strong>object</strong> — with a <code>properties</code> map and a <code>required</code> array for every present key</li>
+                    <li><strong>array</strong> — with an <code>items</code> schema inferred from the first element</li>
+                    <li><strong>string / number / integer / boolean / null</strong> — by runtime type, with integers distinguished from numbers</li>
+                </ul>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>What JSON Schema draft does the generator emit?</summary>
+                    <p>The generator emits Draft-07 (<code>https://json-schema.org/draft-07/schema#</code>) for maximum compatibility with existing validators, linters, and OpenAPI 3.0 tooling. If you need Draft 2019-09 or 2020-12 semantics, post-process the emitted schema.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does my JSON data leave the browser?</summary>
+                    <p>No. The inference runs client-side on the parsed value. Nothing is uploaded, stored, or shared, and the result is copied to the clipboard only when you ask for it.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How are nested objects and arrays inferred?</summary>
+                    <p>Objects become an <code>type: object</code> schema with a <code>properties</code> entry per key and <code>required</code> listing the present keys. Arrays become <code>type: array</code> with <code>items</code> inferred from the first element.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I use the generated schema with OpenAPI?</summary>
+                    <p>Yes. OpenAPI 3.1 uses JSON Schema Draft 2020-12 natively, so an inferred Draft-07 schema can be mapped forward. For full OpenAPI document validation, use a dedicated OpenAPI linter alongside this generator.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the difference between inferring and writing a schema by hand?</summary>
+                    <p>Inference is fast and good for samples; hand written schemas are precise and good for contracts. Use the generator to bootstrap a schema from real traffic, then tighten it by hand for required fields and constraints.</p>
+                </details>
+
+                <h3>Related Tools</h3>
+                <ul>
+                    <li><a href="/tools/json-schema-validator/">JSON Schema Validator</a> — Validate JSON data against a schema</li>
+                    <li><a href="/tools/json-formatter/">JSON Formatter</a> — Format, validate and beautify JSON</li>
+                    <li><a href="/tools/json-to-typescript/">JSON to TypeScript</a> — Generate TypeScript types from JSON</li>
+                    <li><a href="/tools/json-yaml-converter/">JSON to YAML</a> — Convert JSON to YAML</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+        </div>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+    function typeOf(v) {
+        if (v === null) return 'null';
+        if (Array.isArray(v)) return 'array';
+        if (typeof v === 'object') return 'object';
+        if (typeof v === 'boolean') return 'boolean';
+        if (typeof v === 'number') return Number.isInteger(v) ? 'integer' : 'number';
+        if (typeof v === 'string') return 'string';
+        if (typeof v === 'undefined') return 'null';
+        return 'string';
+    }
+
+    function inferSchema(value) {
+        var t = typeOf(value);
+        var base = { $schema: 'https://json-schema.org/draft-07/schema#', type: t };
+        if (t === 'array') {
+            var arr = { $schema: 'https://json-schema.org/draft-07/schema#', type: 'array', items: { type: 'null' } };
+            if (value.length > 0) arr.items = inferSchema(value[0]);
+            return arr;
+        }
+        if (t === 'object') {
+            var properties = {};
+            var required = [];
+            for (var k in value) {
+                if (!Object.prototype.hasOwnProperty.call(value, k)) continue;
+                properties[k] = inferSchema(value[k]);
+                required.push(k);
+            }
+            var obj = { $schema: 'https://json-schema.org/draft-07/schema#', type: 'object', properties: properties };
+            if (required.length) obj.required = required;
+            return obj;
+        }
+        return base;
+    }
+
+    function generateSchema() {
+        var dataText = document.getElementById('js-data').value.trim();
+        var out = document.getElementById('js-schema');
+        var badge = document.getElementById('schema-status');
+        if (!dataText) { showStatus('gen-status', 'Enter some sample JSON data first', 'info'); return; }
+        var data;
+        try { data = JSON.parse(dataText); } catch (e) { showStatus('gen-status', 'Invalid JSON: ' + e.message, 'error'); badge.textContent = 'Invalid JSON'; badge.className = 'pane-badge error'; return; }
+        var schema = inferSchema(data);
+        out.value = JSON.stringify(schema, null, 2);
+        badge.textContent = 'Generated';
+        badge.className = 'pane-badge valid';
+        showStatus('gen-status', 'Schema generated: ' + schema.type, 'success');
+    }
+
+    function loadSample() {
+        document.getElementById('js-data').value = '{\n  "id": 1,\n  "user": {\n    "name": "John Doe",\n    "email": "john@example.com",\n    "age": 30,\n    "active": true\n  },\n  "tags": ["admin", "user"],\n  "score": 98.5\n}';
+        document.getElementById('js-schema').value = '';
+        document.getElementById('data-status').textContent = 'Sample loaded';
+        document.getElementById('data-status').className = 'pane-badge valid';
+    }
+
+    function clearAll() {
+        document.getElementById('js-data').value = '';
+        document.getElementById('js-schema').value = '';
+        document.getElementById('data-status').textContent = '';
+        document.getElementById('data-status').className = '';
+        document.getElementById('schema-status').textContent = '';
+        document.getElementById('schema-status').className = '';
+        showStatus('gen-status', 'Cleared', 'info');
+    }
+
+    function copySchema() {
+        copyToClipboard('js-schema');
+        showStatus('gen-status', 'Schema copied to clipboard', 'success');
+    }
+    </script>
+</body>
+</html>

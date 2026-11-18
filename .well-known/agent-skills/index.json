@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 379,
+  "tool_count": 380,
   "categories": [
     "ai-language",
     "calculators",
@@ -2673,6 +2673,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-content-optimizer/.md",
       "description": "Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overvi..."
+    },
+    {
+      "name": "JSON Schema Generator - Infer from JSON",
+      "url": "https://tools.scoreroute.com/tools/json-schema-generator/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/json-schema-generator/.md",
+      "description": "Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100..."
     }
   ],
   "skills": [
@@ -5328,6 +5335,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-content-optimizer/.md",
       "description": "Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overvi..."
+    },
+    {
+      "name": "JSON Schema Generator - Infer from JSON",
+      "url": "https://tools.scoreroute.com/tools/json-schema-generator/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/json-schema-generator/.md",
+      "description": "Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100..."
     }
   ]
 }
