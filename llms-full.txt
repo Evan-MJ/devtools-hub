@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 377 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 379 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 377
+- Total tools: 379
 - Categories: 11
-- Last updated: 2026-11-17
+- Last updated: 2026-11-18
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (10 tools)
@@ -1352,7 +1352,7 @@ Translate an Excel formula between 17 spreadsheet languages and find the #NAME? 
 
 Free online MD to PDF converter. Convert markdown to PDF instantly in browser. Preserve formatting, headings, code blocks, tables. No signup, 100% private.
 
-## Media Tools (70 tools)
+## Media Tools (71 tools)
 
 Browse all: [Media Tools](https://tools.scoreroute.com/tools/media/.md)
 
@@ -1985,6 +1985,15 @@ Free AI image to video generator. Animate photos into AI videos with Agnes AI. N
 - Tags: video, converter, format, mp4, webm, mov, mkv, media, convert
 
 Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no watermark, no cost.
+
+### Video to Text Converter - Free Online Transcription
+
+- URL: https://tools.scoreroute.com/tools/video-to-text/
+- Markdown: https://tools.scoreroute.com/tools/video-to-text/.md
+- Category: Media Tools
+- Tags: video, text, converter, transcribe, transcription, whisper, audio, plain, free, no-signup, no-watermark, ai-resistant
+
+Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.
 
 ## Network Tools (25 tools)
 
@@ -3140,7 +3149,7 @@ Free income tax calculator 2026 with US federal, India new/old regime, and UK br
 
 Free rent vs buy calculator. Break-even year, year-by-year net worth comparison, PMI, and selling costs, with a sensitivity table. No signup.
 
-## AI Language (34 tools)
+## AI Language (35 tools)
 
 Browse all: [AI Language](https://tools.scoreroute.com/tools/ai-language/.md)
 
@@ -3450,9 +3459,18 @@ Free AI content brief generator. One keyword plus audience context generates a c
 
 Generate a complete AI course with modules, lessons and quizzes from any topic. Free online course generator, no signup, no limits, full privacy.
 
+### AI Content Optimizer - Make AI Content Citable
+
+- URL: https://tools.scoreroute.com/tools/ai-content-optimizer/
+- Markdown: https://tools.scoreroute.com/tools/ai-content-optimizer/.md
+- Category: AI Language
+- Tags: ai, content, optimizer, optimize, ai-answer, faq, qa, structure, direct, answer, overviews, free, private
+
+Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overviews. No signup.
+
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 377 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 379 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
