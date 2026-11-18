@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Optimizer - Make AI Content Citable</title>
+    <meta name="description" content="Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&amp;A and direct answers for AI Overviews. No signup.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/ai-content-optimizer/">
+    <meta property="og:title" content="AI Content Optimizer - Make AI Content Citable">
+    <meta property="og:description" content="Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&amp;A and direct answers for AI Overviews. No signup.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ai-content-optimizer/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Content Optimizer - Make AI Content Citable">
+    <meta name="twitter:description" content="Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&amp;A and direct answers for AI Overviews. No signup.">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AI Content Optimizer - Make AI Content Citable","description":"Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overviews. No signup.","url":"https://tools.scoreroute.com/tools/ai-content-optimizer/","applicationCategory":"WebApplication","operatingSystem":"Any","browserRequirements":"Modern browser with JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"BAOMING"},"datePublished":"2026-11-18","dateModified":"2026-11-18"}
+    </script>
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the AI content optimizer really free with no signup?","acceptedAnswer":{"@type":"Answer","text":"Yes. 100% free, no signup, no daily cap, no paywall. You give the AI a topic or draft plus optional key points, tone and length, and it returns an answer-engine-friendly content package: optimized title, meta description, outline, body draft and FAQ."}},{"@type":"Question","name":"What makes content AI-answer-friendly?","acceptedAnswer":{"@type":"Answer","text":"Answer-first headings, direct-answer paragraphs, Q&A structure, FAQ coverage and factual-but-hedged claims. These are the signals AI Overviews and ChatGPT tend to cite."}},{"@type":"Question","name":"Can I humanize the optimized content?","acceptedAnswer":{"@type":"Answer","text":"Yes. An optional Humanize button sends the draft through the DeAI service to reduce common AI writing patterns; it is opt-in and not automatic."}},{"@type":"Question","name":"Does the optimizer replace a human editor?","acceptedAnswer":{"@type":"Answer","text":"No. It produces an optimized draft package; human review for facts, brand voice and legal claims is still required."}}]}
+    </script>
+    <style>
+        .aco-wrap { max-width: 1080px; margin: 0 auto; }
+        .aco-hero { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #1a1a2e 100%); border-radius: 14px; padding: 22px 24px; margin: 16px 0 18px; text-align: center; border: 1px solid #333; }
+        .aco-hero h2 { color: #fff; margin: 0 0 6px; font-size: 1.45rem; }
+        .aco-hero p { color: #a8a8c0; margin: 0; font-size: 0.92rem; }
+        .aco-pills { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+        .aco-pill { padding: 4px 12px; background: #252540; border: 1px solid #3a3a5c; border-radius: 20px; font-size: 0.76rem; color: #a8a8c0; }
+        .aco-pill strong { color: #7eb3ff; }
+        .aco-card { background: #1a1a2e; border: 1px solid #333; border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+        .aco-card h3 { color: #fff; margin: 0 0 12px; font-size: 1rem; font-weight: 600; }
+        .aco-label { display: block; color: #a8a8c0; font-size: 0.84rem; margin-bottom: 5px; font-weight: 500; }
+        .aco-input, .aco-select, .aco-textarea { width: 100%; padding: 11px 13px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 0.92rem; font-family: inherit; box-sizing: border-box; }
+        .aco-input:focus, .aco-select:focus, .aco-textarea:focus { outline: 2px solid transparent; border-color: #667eea; }
+        .aco-textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
+        .aco-pills-row { display: flex; gap: 6px; flex-wrap: wrap; }
+        .aco-pill-btn { padding: 7px 14px; background: #252540; border: 1px solid #3a3a5c; color: #a8a8c0; border-radius: 18px; font-size: 0.82rem; cursor: pointer; transition: all 0.18s; font-family: inherit; }
+        .aco-pill-btn:hover { border-color: #667eea; }
+        .aco-pill-btn.active { background: #667eea; color: #fff; border-color: #667eea; }
+        .aco-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .aco-row > * { flex: 1; min-width: 170px; }
+        .aco-btn { padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: #fff; border-radius: 8px; font-size: 0.95rem; cursor: pointer; font-weight: 600; transition: filter 0.18s; font-family: inherit; }
+        .aco-btn:hover { filter: brightness(1.1); }
+        .aco-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .aco-btn-secondary { background: #252540; border: 1px solid #333; color: #a8a8c0; font-weight: 500; }
+        .aco-btn-secondary:hover { background: #2f2f55; color: #fff; }
+        .aco-loading { display: none; text-align: center; padding: 28px 18px; background: #1a1a2e; border-radius: 12px; margin-top: 14px; border: 1px solid #333; }
+        .aco-loading.show { display: block; }
+        .aco-spinner { width: 34px; height: 34px; border: 3px solid #333; border-top-color: #667eea; border-radius: 50%; animation: aco-spin 1s linear infinite; margin: 0 auto 10px; }
+        @keyframes aco-spin { to { transform: rotate(360deg); } }
+        .aco-loading-text { color: #a8a8c0; font-size: 0.94rem; }
+        .aco-loading-sub { color: #667eea; font-size: 0.78rem; margin-top: 4px; }
+        .aco-error { display: none; background: #2d1a1a; border: 1px solid #ff4444; border-radius: 8px; padding: 12px 14px; color: #ff8888; margin-top: 12px; font-size: 0.88rem; }
+        .aco-error.show { display: block; }
+        .aco-result { display: none; margin-top: 16px; }
+        .aco-result.show { display: block; }
+        .aco-result-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; padding: 10px 14px; background: #1a1a2e; border-radius: 10px; margin-bottom: 10px; border: 1px solid #333; font-size: 0.82rem; color: #a8a8c0; }
+        .aco-meta-pill { padding: 3px 9px; background: #252540; border: 1px solid #3a3a5c; border-radius: 14px; font-size: 0.74rem; }
+        .aco-meta-pill strong { color: #10b981; }
+        .aco-outline-section { background: #1a1a2e; border: 1px solid #333; border-left: 3px solid #667eea; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+        .aco-outline-section h4 { color: #fff; margin: 0 0 4px; font-size: 0.96rem; }
+        .aco-outline-section p { color: #a8a8c0; font-size: 0.84rem; margin: 0 0 8px; line-height: 1.5; }
+        .aco-outline-section ul { color: #a8a8c0; font-size: 0.84rem; margin: 0 0 0 18px; line-height: 1.6; }
+        .aco-outline-section ul li { margin-bottom: 3px; }
+        .aco-preview { width: 100%; min-height: 380px; padding: 18px; background: #fafafa; color: #111; border-radius: 10px; font-family: Georgia, 'Times New Roman', serif; font-size: 0.96rem; line-height: 1.7; white-space: pre-wrap; resize: vertical; box-sizing: border-box; border: 1px solid #444; outline: none; }
+        .aco-preview:focus { border-color: #667eea; }
+        .aco-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .aco-copy-msg { margin-top: 6px; color: #10b981; font-size: 0.84rem; display: none; }
+        .aco-copy-msg.show { display: inline-block; }
+        .aco-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0; }
+        .aco-info-card { background: #1a1a2e; border: 1px solid #333; border-left: 3px solid #667eea; border-radius: 8px; padding: 12px 14px; }
+        .aco-info-card b { color: #fff; font-size: 0.88rem; display: block; margin-bottom: 3px; }
+        .aco-info-card p { color: #a8a8c0; font-size: 0.81rem; margin: 0; line-height: 1.5; }
+        .aco-tips { background: #1a1a2e; border: 1px solid #333; border-radius: 10px; padding: 14px 16px; margin-top: 14px; color: #a8a8c0; font-size: 0.88rem; line-height: 1.7; }
+        .aco-tips b { color: #fff; }
+        .aco-section-title { color: #fff; font-size: 1.1rem; margin: 22px 0 10px; }
+        .aco-faq-item { background: #1a1a2e; border: 1px solid #333; border-radius: 8px; padding: 12px 14px; margin-bottom: 9px; }
+        .aco-faq-item h3 { color: #fff; font-size: 0.94rem; margin: 0 0 5px; }
+        .aco-faq-item p { color: #a8a8c0; font-size: 0.86rem; margin: 0; line-height: 1.6; }
+        .aco-related { background: #1a1a2e; border: 1px solid #333; border-radius: 10px; padding: 14px; margin-top: 16px; }
+        .aco-related h3 { color: #fff; font-size: 1rem; margin: 0 0 10px; }
+        .aco-related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .aco-related-link { display: block; padding: 10px 14px; background: #252540; border: 1px solid #3a3a5c; border-radius: 8px; color: #a8a8c0; text-decoration: none; font-size: 0.86rem; transition: all 0.18s; }
+        .aco-related-link:hover { border-color: #667eea; color: #fff; }
+        .aco-related-link strong { color: #fff; display: block; margin-bottom: 2px; font-size: 0.88rem; }
+        @media print {
+            header, .aco-hero, .aco-card, .aco-actions, .aco-info-grid, .aco-related, .aco-section-title, .aco-faq-item, footer, .aco-loading, .aco-error, .aco-result-meta { display: none !important; }
+            .aco-preview { border: none; background: white; color: black; }
+            .aco-wrap { max-width: 100%; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Content Optimizer</h1>
+            <p class="subtitle">AI Answer Engine Optimization &middot; One-Turn Content Package &middot; Title + Meta + Outline + Body + FAQ</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>AI Content Optimizer</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main aco-wrap">
+
+                <div class="aco-hero">
+                    <h2>Turn One Draft Into AI-Answer-Friendly Content</h2>
+                    <p>Feed the AI a topic or draft. Get an answer-engine-optimized content package: optimized title, meta description, outline, body draft and FAQ shaped for AI Overviews and ChatGPT answers.</p>
+                    <div class="aco-pills">
+                        <span class="aco-pill"><strong>1</strong> turn package</span>
+                        <span class="aco-pill"><strong>AI</strong> answer structure</span>
+                        <span class="aco-pill"><strong>FAQ</strong> + schema</span>
+                        <span class="aco-pill"><strong>Body</strong> draft</span>
+                        <span class="aco-pill">no signup</span>
+                        <span class="aco-pill">100% private</span>
+                    </div>
+                </div>
+
+                <div class="aco-card">
+                    <h3>1. Describe the content to optimize</h3>
+                    <label class="aco-label" for="aco-topic">Topic / draft seed</label>
+                    <textarea id="aco-topic" class="aco-textarea" placeholder="e.g. the role of carbon pricing in reducing industrial emissions" aria-label="Topic"></textarea>
+                    <label class="aco-label" for="aco-key-points">Key points / requirements (optional)</label>
+                    <textarea id="aco-key-points" class="aco-textarea" placeholder="List 2-6 facts, angles or claims the content must cover. Optional." aria-label="Key points"></textarea>
+                    <div class="aco-row" style="margin-top: 12px;">
+                        <div>
+                            <label class="aco-label">Tone</label>
+                            <div class="aco-pills-row" id="aco-tone-row">
+                                <button class="aco-pill-btn active" data-value="general" type="button">General</button>
+                                <button class="aco-pill-btn" data-value="professional" type="button">Professional</button>
+                                <button class="aco-pill-btn" data-value="casual" type="button">Casual</button>
+                                <button class="aco-pill-btn" data-value="academic" type="button">Academic</button>
+                                <button class="aco-pill-btn" data-value="persuasive" type="button">Persuasive</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="aco-label">Length</label>
+                            <div class="aco-pills-row" id="aco-length-row">
+                                <button class="aco-pill-btn" data-value="short" type="button">Short (400-550)</button>
+                                <button class="aco-pill-btn active" data-value="medium" type="button">Medium (800-1100)</button>
+                                <button class="aco-pill-btn" data-value="long" type="button">Long (1400-1800)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="aco-label">Audience</label>
+                            <div class="aco-pills-row" id="aco-audience-row">
+                                <button class="aco-pill-btn active" data-value="general" type="button">General</button>
+                                <button class="aco-pill-btn" data-value="technical" type="button">Technical</button>
+                                <button class="aco-pill-btn" data-value="business" type="button">Business</button>
+                                <button class="aco-pill-btn" data-value="student" type="button">Student</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aco-actions" style="margin-top: 14px;">
+                        <button class="aco-btn" id="aco-btn-submit" type="button">Generate AI-Optimized Content</button>
+                        <button class="aco-btn aco-btn-secondary" type="button" id="aco-btn-sample">Load Sample</button>
+                        <button class="aco-btn aco-btn-secondary" type="button" id="aco-btn-clear">Clear</button>
+                    </div>
+                </div>
+
+                <div class="aco-loading" id="aco-loading">
+                    <div class="aco-spinner"></div>
+                    <div class="aco-loading-text" id="aco-loading-text">Generating your AI-optimized content package...</div>
+                    <div class="aco-loading-sub" id="aco-loading-sub">Multi-provider fallback active</div>
+                </div>
+                <div class="aco-error" id="aco-error"></div>
+
+                <div class="aco-result" id="aco-result">
+                    <div class="aco-result-meta" id="aco-result-meta">
+                        <span class="aco-meta-pill">Words: <strong id="aco-meta-words">0</strong></span>
+                        <span class="aco-meta-pill">Reading time: <strong id="aco-meta-readtime">0 min</strong></span>
+                        <span class="aco-meta-pill">Outline items: <strong id="aco-meta-outline">0</strong></span>
+                        <span class="aco-meta-pill">FAQ: <strong id="aco-meta-faq">0</strong></span>
+                    </div>
+                    <div id="aco-outline"></div>
+                    <label class="aco-label" for="aco-preview">Optimized draft (edit before copying or downloading)</label>
+                    <textarea id="aco-preview" class="aco-preview" spellcheck="false"></textarea>
+                    <div class="aco-actions">
+                        <button class="aco-btn" type="button" id="aco-btn-copy">Copy Content</button>
+                        <button class="aco-btn aco-btn-secondary" type="button" id="aco-btn-download">Download TXT</button>
+                        <button class="aco-btn aco-btn-secondary" type="button" id="aco-btn-humanize">Humanize (DeAI)</button>
+                        <button class="aco-btn aco-btn-secondary" type="button" id="aco-btn-redo">Regenerate</button>
+                    </div>
+                    <div class="aco-copy-msg" id="aco-copy-msg">Copied.</div>
+                    <div class="aco-faq-item" style="margin-top:14px;">
+                        <h3>FAQ</h3>
+                        <div id="aco-faq-list"></div>
+                    </div>
+                    <div class="aco-outline-section" style="margin-top:14px;">
+                        <h3>FAQPage JSON-LD</h3>
+                        <pre id="aco-schema-code" style="margin:0;color:#a8a8c0;font-size:0.78rem;white-space:pre-wrap;word-break:break-word;"></pre>
+                    </div>
+                </div>
+
+                <div class="aco-info-grid">
+                    <div class="aco-info-card">
+                        <b>Answer-first structure</b>
+                        <p>Headings lead with the direct answer or the key question, which is what AI answer engines favor when citing sources.</p>
+                    </div>
+                    <div class="aco-info-card">
+                        <b>FAQ + Q&A coverage</b>
+                        <p>The package emits FAQ pairs that feed AI Overviews and ChatGPT answers, plus the FAQPage JSON-LD schema for structured data.</p>
+                    </div>
+                    <div class="aco-info-card">
+                        <b>Editable draft</b>
+                        <p>The optimized draft lands in an editable preview textarea before you copy or download. Rewrite any section before publishing.</p>
+                    </div>
+                    <div class="aco-info-card">
+                        <b>Optional Humanize (DeAI)</b>
+                        <p>One-click Humanize sends the draft through the DeAI service to reduce common AI writing patterns. Opt-in, not automatic.</p>
+                    </div>
+                </div>
+
+                <div class="aco-tips">
+                    <b>How to get a great result:</b>
+                    Give a specific topic rather than a broad category. Add 2-6 key points or facts the content must cover; the AI keeps them. Pick tone and length that match your audience. Use the FAQ pairs as the raw material for AI Overviews, follow-up content or structured data. Humanize after generation when the tone needs to sound human-written; the SEO package fields (title, meta, FAQ) are returned alongside the body so you publish with structure.
+                </div>
+
+                <h2 class="aco-section-title">Frequently Asked Questions</h2>
+                <div class="aco-faq-item">
+                    <h3>Is the AI content optimizer really free with no signup?</h3>
+                    <p>Yes. 100% free, no signup, no daily cap, no paywall. You give the AI a topic or draft plus optional key points, tone and length, and it returns an answer-engine-friendly content package.</p>
+                </div>
+                <div class="aco-faq-item">
+                    <h3>What makes content AI-answer-friendly?</h3>
+                    <p>Answer-first headings, direct-answer paragraphs, Q&A structure, FAQ coverage and factual-but-hedged claims. These are signals AI Overviews and ChatGPT tend to cite.</p>
+                </div>
+                <div class="aco-faq-item">
+                    <h3>Can I humanize the optimized content?</h3>
+                    <p>Yes. An optional Humanize button sends the draft through the DeAI service to reduce common AI writing patterns; it is opt-in, not automatic.</p>
+                </div>
+                <div class="aco-faq-item">
+                    <h3>Does the optimizer replace a human editor?</h3>
+                    <p>No. It produces an optimized draft package; human review for facts, brand voice and legal claims is still required.</p>
+                </div>
+
+                <div class="aco-related">
+                    <h3>Related Free Tools</h3>
+                    <div class="aco-related-grid">
+                        <a href="/tools/ai-content-writer/" class="aco-related-link">
+                            <strong>AI Content Writer</strong>
+                            Full SEO content package
+                        </a>
+                        <a href="/tools/ai-humanizer/" class="aco-related-link">
+                            <strong>AI Humanizer</strong>
+                            Make AI text undetectable
+                        </a>
+                        <a href="/tools/ai-detector/" class="aco-related-link">
+                            <strong>AI Detector</strong>
+                            Check if text is AI generated
+                        </a>
+                        <a href="/tools/ai-content-brief/" class="aco-related-link">
+                            <strong>AI Content Brief</strong>
+                            Keyword + intent brief
+                        </a>
+                        <a href="/tools/seo-checker/" class="aco-related-link">
+                            <strong>SEO Checker</strong>
+                            Technical site audit
+                        </a>
+                        <a href="/tools/ai-crawler-checker/" class="aco-related-link">
+                            <strong>AI Crawler Checker</strong>
+                            Audit AI bots + robots.txt
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">AI-answer-engine content optimization. Multi-provider AI. Your data is never stored.</p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+    var API_URL = '/api/ai-content-optimizer';
+
+    function $(id) { return document.getElementById(id); }
+
+    var TONE_LABELS = {
+        general: 'General',
+        professional: 'Professional',
+        casual: 'Casual',
+        academic: 'Academic',
+        persuasive: 'Persuasive'
+    };
+
+    var LENGTH_LABELS = {
+        short: 'Short (400-550)',
+        medium: 'Medium (800-1100)',
+        long: 'Long (1400-1800)'
+    };
+
+    var AUDIENCE_LABELS = {
+        general: 'General',
+        technical: 'Technical',
+        business: 'Business',
+        student: 'Student'
+    };
+
+    var SAMPLES = {
+        general: {
+            topic: 'the role of carbon pricing in reducing industrial emissions',
+            key_points: '1. Carbon pricing puts a price on emissions to make polluters internalize the cost.\n2. It can use a carbon tax or cap-and-trade system.\n3. Evidence: EU Emissions Trading System covered ~10,000 installations.\n4. Counter-argument: political feasibility and regressive impacts on low-income households.\n5. Mitigation: combine with revenue recycling and targeted support.',
+            tone: 'general',
+            length: 'medium',
+            audience: 'business'
+        },
+        professional: {
+            topic: 'how to build an SEO content strategy that compounds organic traffic',
+            key_points: '1. Start with audience intent clusters, not isolated keywords.\n2. Build topic authority with internal linking between cluster posts.\n3. Refresh and repurpose high-performing content quarterly.\n4. Measure by rankings, traffic and conversions, not just keyword rank.\n5. Assign clear ownership of content operations.',
+            tone: 'professional',
+            length: 'long',
+            audience: 'business'
+        }
+    };
+
+    var state = {
+        tone: 'general',
+        length: 'medium',
+        audience: 'general',
+        topic: '',
+        key_points: '',
+        lastRendered: ''
+    };
+
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+
+    function gatherInput() {
+        return {
+            topic: $('aco-topic').value,
+            key_points: $('aco-key-points').value,
+            tone: state.tone,
+            length: state.length,
+            audience: state.audience,
+            format: 'content_optimization'
+        };
+    }
+
+    function validateInput(input) {
+        if (!input.topic || input.topic.trim().length < 3) return 'Please provide a topic (at least 3 characters).';
+        if (input.topic.trim().length > 500) return 'Topic is too long (max 500 characters).';
+        if (input.key_points.length > 2000) return 'Key points are too long (max 2000 characters).';
+        return null;
+    }
+
+    async function generate() {
+        var input = gatherInput();
+        var err = validateInput(input);
+        if (err) { showError(err); return; }
+
+        state.topic = input.topic.trim();
+        state.key_points = input.key_points.trim();
+        showLoading(true);
+
+        try {
+            var response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(input)
+            });
+
+            var data;
+            try { data = await response.json(); }
+            catch (e) { throw new Error('Invalid response from server (HTTP ' + response.status + ')'); }
+
+            if (!response.ok) { throw new Error(data.error || ('HTTP ' + response.status)); }
+
+            state.lastRendered = data.body || '';
+            $('aco-preview').value = state.lastRendered;
+            $('aco-result').className = 'aco-result show';
+            $('aco-result').style.display = 'block';
+            $('aco-meta-words').textContent = String(data.word_count != null ? data.word_count : 0);
+            $('aco-meta-readtime').textContent = String(data.reading_time_minutes != null ? data.reading_time_minutes : 0) + ' min';
+            $('aco-meta-outline').textContent = String((data.outline || []).length);
+            $('aco-meta-faq').textContent = String((data.faq || []).length);
+
+            var outlineEl = $('aco-outline');
+            outlineEl.innerHTML = '';
+            var outline = Array.isArray(data.outline) ? data.outline : [];
+            for (var i = 0; i < outline.length; i++) {
+                var o = outline[i];
+                var section = document.createElement('div');
+                section.className = 'aco-outline-section';
+                var h4 = document.createElement('h4');
+                h4.textContent = (o.level || 'H2') + ' ' + o.heading;
+                var p = document.createElement('p');
+                p.textContent = o.notes || '';
+                var ul = document.createElement('ul');
+                var notes = (o.notes || '').split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+                for (var j = 0; j < notes.length; j++) { var li = document.createElement('li'); li.textContent = notes[j]; ul.appendChild(li); }
+                section.appendChild(h4);
+                section.appendChild(p);
+                if (ul.children.length) section.appendChild(ul);
+                outlineEl.appendChild(section);
+            }
+
+            var faqEl = $('aco-faq-list');
+            faqEl.innerHTML = '';
+            var faq = Array.isArray(data.faq) ? data.faq : [];
+            for (var k = 0; k < faq.length; k++) {
+                var f = faq[k];
+                var item = document.createElement('div');
+                item.className = 'aco-faq-item';
+                var h3 = document.createElement('h3');
+                h3.textContent = f.question;
+                var p = document.createElement('p');
+                p.textContent = f.answer;
+                item.appendChild(h3);
+                item.appendChild(p);
+                faqEl.appendChild(item);
+            }
+
+            var schemaEl = $('aco-schema-code');
+            schemaEl.textContent = JSON.stringify(data.faq_schema || {});
+        } catch (e) {
+            showError(e.message || 'Generation failed');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    function showError(msg) {
+        var el = $('aco-error');
+        el.textContent = msg || 'Unknown error';
+        el.className = 'aco-error show';
+    }
+
+    function showLoading(show) {
+        var el = $('aco-loading');
+        el.className = 'aco-loading' + (show ? ' show' : '');
+    }
+
+    function hideLoading() { $('aco-loading').className = 'aco-loading'; }
+
+    function sample() {
+        var s = SAMPLES[state.tone] || SAMPLES.general;
+        $('aco-topic').value = s.topic || '';
+        $('aco-key-points').value = s.key_points || '';
+        state.tone = s.tone || 'general';
+        state.length = s.length || 'medium';
+        state.audience = s.audience || 'general';
+        setPill('aco-tone-row', 'tone', state.tone);
+        setPill('aco-length-row', 'length', state.length);
+        setPill('aco-audience-row', 'audience', state.audience);
+    }
+
+    function setPill(rowId, key, value) {
+        var row = $(rowId);
+        if (!row) return;
+        var btns = row.querySelectorAll('.aco-pill-btn');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.toggle('active', btns[i].getAttribute('data-value') === value);
+        }
+    }
+
+    function bindAll() {
+        $('aco-btn-clear').addEventListener('click', function () { state.topic = ''; state.key_points = ''; state.lastRendered = ''; $('aco-topic').value = ''; $('aco-key-points').value = ''; $('aco-preview').value = ''; $('aco-result').className = 'aco-result'; $('aco-result').style.display = 'none'; $('aco-error').className = 'aco-error'; });
+        $('aco-btn-copy').addEventListener('click', function () {
+            var text = $('aco-preview').value || '';
+            var done = function () { $('aco-copy-msg').textContent = 'Copied.'; $('aco-copy-msg').className = 'aco-copy-msg show'; };
+            if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); }); } else { fallbackCopy(text, done); }
+        });
+        $('aco-btn-download').addEventListener('click', function () {
+            var text = $('aco-preview').value || '';
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'ai-content-optimizer-' + Date.now() + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+        });
+        $('aco-btn-humanize').addEventListener('click', async function () {
+            var text = $('aco-preview').value || '';
+            if (!text) { showError('Generate content first, then Humanize.'); return; }
+            showLoading(true);
+            try {
+                var response = await fetch('/api/ai-humanizer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text.substring(0, 6000) }) });
+                var data = await response.json();
+                if (!response.ok) throw new Error(data.error || ('HTTP ' + response.status));
+                $('aco-preview').value = data.humanized || text;
+            } catch (e) { showError(e.message || 'Humanize failed'); }
+            finally { hideLoading(); }
+        });
+        $('aco-btn-redo').addEventListener('click', function () { generate(); });
+        $('aco-tone-row').addEventListener('click', function (e) { var b = e.target.closest('.aco-pill-btn'); if (!b) return; setPill('aco-tone-row', 'tone', b.getAttribute('data-value')); });
+        $('aco-length-row').addEventListener('click', function (e) { var b = e.target.closest('.aco-pill-btn'); if (!b) return; setPill('aco-length-row', 'length', b.getAttribute('data-value')); });
+        var audRow = $('aco-audience-row'); if (audRow) { audRow.addEventListener('click', function (e) { var b = e.target.closest('.aco-pill-btn'); if (!b) return; setPill('aco-audience-row', 'audience', b.getAttribute('data-value')); }); }
+        $('aco-btn-submit').addEventListener('click', function () { generate(); });
+        $('aco-btn-sample').addEventListener('click', function () { sample(); });
+        $('aco-btn-clear').addEventListener('click', function () { sample(); });
+    }
+
+    function fallbackCopy(text, cb) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { cb(); }
+        document.body.removeChild(ta);
+    }
+
+    bindAll();
+    </script>
+</body>
+</html>

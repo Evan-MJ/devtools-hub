@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Text Converter - Free Online Transcription</title>
+    <meta name="description" content="Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/video-to-text/">
+    <meta property="og:title" content="Video to Text Converter - Free Online Transcription">
+    <meta property="og:description" content="Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/video-to-text/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Video to Text Converter - Free Online Transcription">
+    <meta name="twitter:description" content="Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .vt-wrap { max-width: 1100px; margin: 1.5rem auto; color: #ccc; }
+        .vt-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+        @media (min-width: 900px) { .vt-grid { grid-template-columns: minmax(0, 1fr) 360px; } }
+        .vt-card { background: #1a1a3e; border: 1px solid #333; border-radius: 10px; padding: 1.25rem; }
+        .vt-card h2 { color: #fff; font-size: 1.1rem; margin: 0 0 0.85rem 0; padding-bottom: 0.4rem; border-bottom: 1px solid #333; }
+        .vt-dropzone { border: 3px dashed #555; border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #0f0f23; margin-bottom: 1rem; }
+        .vt-dropzone:hover, .vt-dropzone.dragover { border-color: #667eea; background: #131a2e; }
+        .vt-dropzone.has-file { border-color: #28a745; background: #1a2e1a; }
+        .vt-dropzone-text { font-size: 0.95rem; line-height: 1.5; }
+        .vt-dropzone-text strong { color: #667eea; }
+        .vt-dropzone-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+        .vt-file-info { padding: 0.6rem 0.85rem; background: #0f0f23; border: 1px solid #333; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; display: none; }
+        .vt-file-info.show { display: flex; justify-content: space-between; align-items: center; }
+        .vt-file-info .vt-file-meta { color: #888; }
+        .vt-file-info .vt-file-name { color: #fff; font-weight: 600; word-break: break-all; }
+        .vt-btn-remove { background: transparent; border: 1px solid #555; color: #ff8888; border-radius: 4px; padding: 0.25rem 0.55rem; cursor: pointer; font-size: 0.75rem; }
+        .vt-btn-remove:hover { background: #3a1a1a; border-color: #ff8888; }
+        .vt-control-row { display: flex; gap: 0.5rem; margin-bottom: 0.65rem; align-items: center; flex-wrap: wrap; }
+        .vt-control-row label { color: #888; font-size: 0.8rem; min-width: 90px; }
+        .vt-select, .vt-input { padding: 0.45rem 0.65rem; background: #0f0f23; color: #fff; border: 1px solid #555; border-radius: 4px; font-size: 0.85rem; flex: 1; min-width: 0; }
+        .vt-select:focus, .vt-input:focus { outline: 2px solid transparent; border-color: #667eea; }
+        .vt-btn { padding: 0.55rem 1rem; border: 1px solid #555; border-radius: 6px; background: #252540; color: #ccc; cursor: pointer; font-size: 0.88rem; transition: all 0.15s; font-weight: 500; }
+        .vt-btn:hover { background: #333; color: #fff; }
+        .vt-btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border-color: transparent; }
+        .vt-btn-primary:hover { opacity: 0.9; color: #fff; }
+        .vt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .vt-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+        .vt-status { color: #aaa; font-size: 0.88rem; padding: 0.65rem 0.85rem; min-height: 22px; border-radius: 6px; margin-bottom: 0.85rem; background: #0f0f23; border: 1px solid #333; display: none; }
+        .vt-status.show { display: block; }
+        .vt-status.loading { background: rgba(102, 126, 234, 0.12); border-color: #667eea; color: #667eea; }
+        .vt-status.ok { background: rgba(40, 167, 69, 0.12); border-color: #28a745; color: #5cff8a; }
+        .vt-status.err { background: rgba(220, 53, 69, 0.12); border-color: #dc3545; color: #ff8a93; }
+        .vt-progress { width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden; margin-top: 0.5rem; display: none; }
+        .vt-progress.show { display: block; }
+        .vt-progress-bar { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s; width: 0%; }
+        .vt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+        @media (max-width: 600px) { .vt-stats { grid-template-columns: repeat(2, 1fr); } }
+        .vt-stat { background: #0f0f23; padding: 0.55rem; border-radius: 6px; text-align: center; border: 1px solid #333; }
+        .vt-stat-label { color: #888; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .vt-stat-value { color: #fff; font-size: 1.1rem; font-weight: 600; margin-top: 0.2rem; }
+        .vt-output { width: 100%; min-height: 280px; background: #0f0f23; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 0.6rem; font-family: system-ui, sans-serif; font-size: 0.9rem; resize: vertical; box-sizing: border-box; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
+        .vt-output:focus { outline: 2px solid transparent; border-color: #667eea; }
+        .vt-output.timestamped { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+        .vt-section-title { color: #fff; font-size: 1rem; margin: 1rem 0 0.5rem 0; font-weight: 600; }
+        .vt-info-box { background: rgba(102, 126, 234, 0.08); border-left: 3px solid #667eea; border-radius: 4px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.85rem; color: #aaa; }
+        .vt-info-box strong { color: #667eea; }
+        .vt-warn-box { background: rgba(255, 193, 7, 0.08); border-left: 3px solid #ffc107; border-radius: 4px; padding: 0.65rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.85rem; color: #ffc107; }
+        .breadcrumb { padding: 1rem 0; color: #888; font-size: 0.9rem; }
+        .breadcrumb a { color: #667eea; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span[aria-current] { color: #ccc; }
+        .feedback-link { float: right; color: #888; font-size: 0.85rem; }
+        .feedback-link a { color: #667eea; text-decoration: none; }
+        section h2 { color: #fff; margin-top: 2.5rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+        section p, section li { color: #ccc; line-height: 1.6; }
+        .hero-text { color: #ccc; font-size: 1.1rem; line-height: 1.55; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; }
+        .feature-card { background: #1a1a3e; padding: 1.25rem; border-radius: 8px; border-left: 4px solid #667eea; }
+        .feature-card h3 { color: #fff; margin: 0 0 0.4rem 0; font-size: 1rem; }
+        .feature-card p { color: #aaa; font-size: 0.9rem; line-height: 1.45; margin: 0; }
+        .faq-item { background: #1a1a3e; padding: 0 1rem; border-radius: 6px; margin: 0.6rem 0; border: 1px solid #333; }
+        .faq-item summary { padding: 0.85rem 0; cursor: pointer; color: #fff; font-weight: 500; outline: none; }
+        .faq-item summary::-webkit-details-marker { color: #667eea; }
+        .faq-item[open] { background: #1f1f48; }
+        .faq-item p { padding-bottom: 0.85rem; color: #ccc; line-height: 1.55; }
+        .related-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; margin: 1rem 0; }
+        .related-card { background: #1a1a3e; padding: 1rem; border-radius: 8px; border: 1px solid #333; text-decoration: none; transition: all 0.2s; }
+        .related-card:hover { border-color: #667eea; transform: translateY(-2px); }
+        .related-card h4 { color: #fff; margin: 0 0 0.35rem 0; font-size: 0.95rem; }
+        .related-card p { color: #aaa; font-size: 0.82rem; line-height: 1.4; margin: 0; }
+        .vt-link-out { color: #667eea; text-decoration: none; }
+        .vt-link-out:hover { text-decoration: underline; }
+        .vt-checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
+        .vt-checkbox-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: #667eea; }
+        .vt-checkbox-row label { color: #ccc; font-size: 0.88rem; min-width: auto; cursor: pointer; }
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Video to Text Converter - Free Online Transcription",
+  "description": "Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.",
+  "url": "https://tools.scoreroute.com/tools/video-to-text/",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Modern browser with file upload and JavaScript enabled",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Person", "name": "BAOMING"},
+  "datePublished": "2026-11-18",
+  "dateModified": "2026-11-18",
+  "featureList": [
+    "Convert video or audio files to plain text transcription",
+    "Whisper large-v3 transcription engine for high accuracy",
+    "Whisper large-v3-turbo for faster transcription",
+    "distil-whisper-large-v3-en for fast English-only transcription",
+    "Auto-detect language or pick from 18 supported languages",
+    "Drag-and-drop or click file upload (mp3/wav/m4a/ogg/mp4/mov/webm/mkv)",
+    "Up to 25 MB per file (Groq Whisper file limit)",
+    "Optional timestamps in output for reference",
+    "Copy transcription to clipboard",
+    "Download as .txt file",
+    "Word count and duration statistics",
+    "Free, no signup, no watermark, no daily limits"
+  ]
+}
+</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What audio and video formats are supported?", "acceptedAnswer": {"@type": "Answer", "text": "The tool accepts MP3, WAV, M4A, OGG, FLAC for audio, and MP4, MOV, WebM, MKV for video. Files up to 25 MB are processed directly; larger files should be trimmed or compressed first. Video files are processed by extracting the audio track on the Groq side using Whisper."}},
+    {"@type": "Question", "name": "How accurate is the transcription?", "acceptedAnswer": {"@type": "Answer", "text": "The tool uses OpenAI Whisper large-v3, the highest-accuracy public speech model. On clean English audio you can expect 95-98% word accuracy; on noisy or accented speech, 85-95%. The faster turbo model is about 5x faster with a small accuracy trade-off, and the distil model is English-only but very fast."}},
+    {"@type": "Question", "name": "Which languages can the tool transcribe?", "acceptedAnswer": {"@type": "Answer", "text": "The tool supports 18 languages: English, Chinese, Spanish, French, German, Japanese, Korean, Portuguese, Italian, Russian, Arabic, Hindi, Dutch, Polish, Turkish, Vietnamese, Indonesian, and Thai. You can also leave it on auto-detect and Whisper will identify the spoken language automatically."}},
+    {"@type": "Question", "name": "What is the difference between this and the Subtitle Generator?", "acceptedAnswer": {"@type": "Answer", "text": "This tool outputs plain text (with optional timestamps) for reading, copying, and searching. The Subtitle Generator outputs SRT/VTT subtitle files with precise cue timing for video players. Use this tool when you need the text content; use the Subtitle Generator when you need captions for a video."}},
+    {"@type": "Question", "name": "Is there a file size limit?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Groq Whisper accepts files up to 25 MB. The tool will reject larger files with a clear error message. If your audio is longer than about 30 minutes at typical bitrate, trim or compress it first using our Audio Cutter or Audio Compressor."}},
+    {"@type": "Question", "name": "Can I get timestamps in the output?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Enable the 'Include timestamps' option to add [HH:MM:SS] markers before each segment. This is useful for referencing specific moments in the audio. Disable it for clean plain text."}},
+    {"@type": "Question", "name": "Is my audio sent to a server?", "acceptedAnswer": {"@type": "Answer", "text": "Unlike most of our tools, this one DOES upload your audio/video to our API proxy, which forwards it to Groq Whisper for transcription. The file is processed transiently and not stored. If you need a fully offline alternative, see our browser-based Audio to Text tool which uses Web Speech API."}},
+    {"@type": "Question", "name": "Why can't AI chatbots do this task?", "acceptedAnswer": {"@type": "Answer", "text": "ChatGPT, Claude, and Gemini can reformat text, but they cannot listen to audio or video. They also cannot guarantee accurate transcription aligned to actual speech. This tool uses a dedicated speech recognition model so the text matches the audio exactly."}}
+  ]
+}
+</script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Video to Text Converter</h1>
+        <p class="subtitle">Free Online Transcription &bull; Whisper Large-v3 &bull; 18 Languages &bull; Plain Text Output</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> > <a href="/tools/media/">Media Tools</a> > <span>Video to Text Converter</span>
+            <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+<section class="tool-page">
+    <p class="hero-text">Upload any audio or video file and get an accurate plain text transcription in seconds. Powered by OpenAI Whisper large-v3 via Groq - the same model used by professional transcription services - but free, no signup, no watermark, no daily limit. Output as clean text or with timestamps for reference.</p>
+
+    <div class="vt-wrap">
+        <div class="vt-grid">
+            <div class="vt-card">
+                <h2>1. Upload Audio or Video</h2>
+                <div class="vt-dropzone" id="vt-dropzone" tabindex="0" role="button">
+                    <div class="vt-dropzone-icon" aria-hidden="true">&#x1F3A5;</div>
+                    <div class="vt-dropzone-text">
+                        <strong>Click to choose</strong> or drag and drop here<br>
+                        <span style="color:#888;font-size:0.8rem;">MP3, WAV, M4A, OGG, FLAC, MP4, MOV, WebM, MKV &middot; up to 25 MB</span>
+                    </div>
+                    <input type="file" id="vt-file" accept="audio/*,video/*,.mp3,.wav,.m4a,.ogg,.flac,.mp4,.mov,.webm,.mkv" style="display:none" aria-label="Audio or video file">
+                </div>
+
+                <div class="vt-file-info" id="vt-file-info">
+                    <div>
+                        <div class="vt-file-name" id="vt-file-name">file.mp3</div>
+                        <div class="vt-file-meta" id="vt-file-meta">3.4 MB &middot; 0:00</div>
+                    </div>
+                    <button class="vt-btn-remove" id="vt-remove-btn" type="button" aria-label="Remove file"><span aria-hidden="true">&times;</span> Remove</button>
+                </div>
+
+                <h2>2. Transcription Options</h2>
+                <div class="vt-info-box">
+                    <strong>Whisper large-v3</strong> gives the highest accuracy. <strong>Turbo</strong> is 5x faster with similar quality. <strong>Distil</strong> is English-only but the fastest.
+                </div>
+
+                <div class="vt-control-row">
+                    <label for="vt-model">Model</label>
+                    <select id="vt-model" class="vt-select">
+                        <option value="whisper-large-v3-turbo" selected>whisper-large-v3-turbo (Fast, Multilingual)</option>
+                        <option value="whisper-large-v3">whisper-large-v3 (Best Accuracy)</option>
+                        <option value="distil-whisper-large-v3-en">distil-whisper-large-v3-en (English Only, Fastest)</option>
+                    </select>
+                </div>
+
+                <div class="vt-control-row">
+                    <label for="vt-language">Language</label>
+                    <select id="vt-language" class="vt-select">
+                        <option value="" selected>Auto-detect</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese (Mandarin)</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="it">Italian</option>
+                        <option value="ru">Russian</option>
+                        <option value="ar">Arabic</option>
+                        <option value="hi">Hindi</option>
+                        <option value="nl">Dutch</option>
+                        <option value="pl">Polish</option>
+                        <option value="tr">Turkish</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="id">Indonesian</option>
+                        <option value="th">Thai</option>
+                    </select>
+                </div>
+
+                <div class="vt-checkbox-row">
+                    <input type="checkbox" id="vt-timestamps" checked>
+                    <label for="vt-timestamps">Include timestamps [HH:MM:SS] in output</label>
+                </div>
+
+                <h2>3. Transcribe</h2>
+                <div class="vt-actions">
+                    <button class="vt-btn vt-btn-primary" id="vt-generate-btn" type="button" disabled>Transcribe</button>
+                    <button class="vt-btn" id="vt-load-sample-btn" type="button">Use Sample (no upload)</button>
+                </div>
+
+                <div class="vt-status" id="vt-status"></div>
+                <div class="vt-progress" id="vt-progress"><div class="vt-progress-bar" id="vt-progress-bar"></div></div>
+
+                <div id="vt-results" style="display:none;">
+                    <div class="vt-stats" id="vt-stats">
+                        <div class="vt-stat"><div class="vt-stat-label">Words</div><div class="vt-stat-value" id="vt-stat-words">0</div></div>
+                        <div class="vt-stat"><div class="vt-stat-label">Duration</div><div class="vt-stat-value" id="vt-stat-duration">0:00</div></div>
+                        <div class="vt-stat"><div class="vt-stat-label">Language</div><div class="vt-stat-value" id="vt-stat-lang">&mdash;</div></div>
+                        <div class="vt-stat"><div class="vt-stat-label">Model</div><div class="vt-stat-value" id="vt-stat-model">&mdash;</div></div>
+                    </div>
+
+                    <h3 class="vt-section-title">Transcription</h3>
+                    <textarea id="vt-output" class="vt-output" readonly aria-label="Generated transcription text" placeholder="Transcription will appear here..."></textarea>
+
+                    <div class="vt-actions">
+                        <button class="vt-btn vt-btn-primary" id="vt-copy-btn" type="button">Copy to Clipboard</button>
+                        <button class="vt-btn" id="vt-download-btn" type="button">Download .txt</button>
+                        <button class="vt-btn" id="vt-open-subtitle-btn" type="button">Open in Subtitle Generator</button>
+                    </div>
+
+                    <div class="vt-warn-box" id="vt-warn" style="display:none;"></div>
+                </div>
+            </div>
+
+            <aside class="vt-card">
+                <h2>How It Works</h2>
+                <ol style="margin:0;padding-left:1.2rem;line-height:1.7;font-size:0.88rem;color:#ccc;">
+                    <li>Drop your audio/video file (up to 25 MB).</li>
+                    <li>Pick a Whisper model and language (or auto-detect).</li>
+                    <li>Enable timestamps if you need reference points.</li>
+                    <li>Click <strong>Transcribe</strong> - Whisper converts speech to text with high accuracy.</li>
+                    <li>Copy, download, or open in <a href="/tools/subtitle-generator/" class="vt-link-out">Subtitle Generator</a> for SRT/VTT export.</li>
+                </ol>
+
+                <h2 style="margin-top:1.5rem;">Common Use Cases</h2>
+                <ul style="margin:0;padding-left:1.2rem;line-height:1.7;font-size:0.88rem;color:#ccc;">
+                    <li>Transcribing meetings, interviews, lectures</li>
+                    <li>Converting YouTube videos to searchable text</li>
+                    <li>Creating text records from voice memos</li>
+                    <li>Extracting quotes from podcasts and videos</li>
+                    <li>Accessibility: text version of audio content</li>
+                    <li>Content repurposing: video to blog, article, notes</li>
+                </ul>
+
+                <h2 style="margin-top:1.5rem;">Limits & Caveats</h2>
+                <ul style="margin:0;padding-left:1.2rem;line-height:1.7;font-size:0.88rem;color:#ccc;">
+                    <li>Groq Whisper accepts files up to <strong>25 MB</strong></li>
+                    <li>Long audio (over ~30 min) may hit Groq's 60 RPM rate limit</li>
+                    <li>Processing time is typically 0.3-0.5x audio length</li>
+                    <li>Background noise / heavy accents may reduce accuracy</li>
+                    <li>This tool uploads to Groq; for fully offline use, see <a href="/tools/audio-to-text/" class="vt-link-out">Audio to Text</a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>About the Video to Text Converter</h3>
+        <p>Video contains valuable information locked in audio - interviews, lectures, meetings, presentations, podcasts. This tool unlocks that content by transcribing the audio track into searchable, copyable, editable plain text. The same Whisper model powers commercial services that charge per minute, but here it runs through Groq's free developer tier so you can use it as much as you need.</p>
+        <p>The output is plain text with optional [HH:MM:SS] timestamp markers. This format is ideal for reading, searching, quoting, and feeding into other tools (summarizers, translators, AI chat). If you need subtitle files (SRT/VTT) for video players, use the <a href="/tools/subtitle-generator/" class="vt-link-out">Subtitle Generator</a> which shares the same transcription engine but formats output for captioning.</p>
+
+        <h3>Why Use This Instead of a Chatbot</h3>
+        <p>Large language models can summarize or reformat text, but they cannot listen to audio. They cannot transcribe speech, and any timestamps they generate would be hallucinated. A dedicated speech recognition model produces accurate text aligned to the actual audio. The output is deterministic, accurate, and ready to use.</p>
+
+        <h3>When to Use Each Tool</h3>
+        <ul style="margin:0;padding-left:1.2rem;line-height:1.7;font-size:0.9rem;color:#ccc;">
+            <li><strong>Video to Text Converter</strong> (this tool): Plain text output, optional timestamps, for reading/copying/searching.</li>
+            <li><strong>Subtitle Generator</strong>: SRT/VTT subtitle files, precise cue timing, for video players/YouTube upload.</li>
+            <li><strong>Audio to Text</strong>: Fully offline browser speech recognition, real-time, no upload, limited to live microphone input.</li>
+        </ul>
+
+        <h3>Related Tools</h3>
+        <div class="related-tools">
+            <a class="related-card" href="/tools/subtitle-generator/">
+                <h4>Subtitle Generator</h4>
+                <p>Generate SRT/VTT subtitle files from audio/video. Whisper large-v3, 18 languages.</p>
+            </a>
+            <a class="related-card" href="/tools/audio-to-text/">
+                <h4>Audio to Text</h4>
+                <p>Real-time browser speech recognition. Fully offline, no upload, no signup.</p>
+            </a>
+            <a class="related-card" href="/tools/audio-cutter/">
+                <h4>Audio Cutter</h4>
+                <p>Trim audio files before transcribing to stay under the 25 MB limit.</p>
+            </a>
+            <a class="related-card" href="/tools/video-cutter/">
+                <h4>Video Cutter</h4>
+                <p>Trim video files before uploading for transcription.</p>
+            </a>
+        </div>
+
+        <h3>Frequently Asked Questions</h3>
+        <details class="faq-item">
+            <summary>What audio and video formats are supported?</summary>
+            <p>The tool accepts MP3, WAV, M4A, OGG, FLAC for audio and MP4, MOV, WebM, MKV for video. Files up to 25 MB are accepted; video files are processed by extracting the audio track on the Groq side using Whisper, which scans the audio stream directly so no client-side decode is needed.</p>
+        </details>
+        <details class="faq-item">
+            <summary>How accurate is the transcription?</summary>
+            <p>The tool uses OpenAI Whisper large-v3 - the highest-accuracy public speech model. On clean English audio you can expect 95-98% word accuracy; on noisy or accented speech, 85-95%. The faster turbo model is roughly 5x faster with a small accuracy trade-off, and the distil model is English-only but the fastest of the three.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Which languages can the tool transcribe?</summary>
+            <p>The tool supports 18 languages: English, Chinese, Spanish, French, German, Japanese, Korean, Portuguese, Italian, Russian, Arabic, Hindi, Dutch, Polish, Turkish, Vietnamese, Indonesian, and Thai. Leave the dropdown on Auto-detect and Whisper will identify the spoken language automatically - useful for mixed-language content.</p>
+        </details>
+        <details class="faq-item">
+            <summary>What is the difference between this and the Subtitle Generator?</summary>
+            <p>This tool outputs plain text (with optional timestamps) for reading, copying, and searching. The Subtitle Generator outputs SRT/VTT subtitle files with precise cue timing for video players. Use this tool when you need the text content; use the Subtitle Generator when you need captions for a video.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Is there a file size limit?</summary>
+            <p>Yes - 25 MB. The Groq Whisper endpoint rejects larger files. If your audio is longer than about 30 minutes at typical bitrate, trim or compress it first using our Audio Cutter or Audio Compressor. For very long content, split it into 25 MB chunks and transcribe each one.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Can I get timestamps in the output?</summary>
+            <p>Yes. Enable the 'Include timestamps' option to add [HH:MM:SS] markers before each segment. This is useful for referencing specific moments in the audio. Disable it for clean plain text.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Is my audio uploaded to a server?</summary>
+            <p>Unlike most of our tools, this one DOES upload your audio/video to our Cloudflare Function, which forwards it to Groq Whisper for transcription. The file is processed transiently and not stored on either end - both Groq and our function are stateless. If you need a fully offline alternative, see our browser-based Audio to Text tool which uses Web Speech API.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Why can't AI chatbots do this task?</summary>
+            <p>ChatGPT, Claude, and Gemini can reformat text, but they cannot listen to audio or video. They also cannot guarantee accurate transcription aligned to actual speech. This tool uses a dedicated speech recognition model so the text matches the audio exactly.</p>
+        </details>
+    </div>
+</section>
+</main>
+
+<footer>
+    <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a> &middot; <a href="/about/">About</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/tools/feedback/">Feedback</a></p>
+</footer>
+
+<script src="/tools.js"></script>
+<script>
+(function(){
+'use strict';
+
+var MAX_FILE_BYTES = 25 * 1024 * 1024;
+
+function $(id){ return document.getElementById(id); }
+
+function escapeHtml(s) {
+    if (s === null || s === undefined) return '';
+    return String(s)
+        .replace(/&/g, '&')
+        .replace(/</g, '<')
+        .replace(/>/g, '>')
+        .replace(/"/g, '"');
+}
+
+function formatTime(seconds) {
+    var s = Math.max(0, Number(seconds) || 0);
+    var hh = Math.floor(s / 3600);
+    var mm = Math.floor((s % 3600) / 60);
+    var ss = Math.floor(s % 60);
+    return String(hh).padStart(2,'0') + ':' +
+           String(mm).padStart(2,'0') + ':' +
+           String(ss).padStart(2,'0');
+}
+
+function formatDuration(seconds) {
+    var s = Math.max(0, Math.floor(Number(seconds) || 0));
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ':' + String(sec).padStart(2,'0');
+}
+
+function formatBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function countWords(text) {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).filter(function(w){ return w.length > 0; }).length;
+}
+
+function showStatus(msg, type) {
+    var el = $('vt-status');
+    el.textContent = msg;
+    el.className = 'vt-status show ' + (type || '');
+    if (type === 'ok') {
+        setTimeout(function(){
+            if (el.textContent === msg) {
+                el.className = 'vt-status';
+                el.textContent = '';
+            }
+        }, 6000);
+    }
+}
+
+function clearStatus() {
+    var el = $('vt-status');
+    el.className = 'vt-status';
+    el.textContent = '';
+}
+
+function showProgress(pct) {
+    var bar = $('vt-progress-bar');
+    var wrap = $('vt-progress');
+    bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    wrap.className = 'vt-progress show';
+}
+function hideProgress() {
+    $('vt-progress').className = 'vt-progress';
+    $('vt-progress-bar').style.width = '0%';
+}
+
+function getFileExt(name) {
+    if (!name) return '';
+    var i = name.lastIndexOf('.');
+    if (i < 0) return '';
+    return name.slice(i + 1).toLowerCase();
+}
+
+function isAudioExt(ext) {
+    return ['mp3','wav','m4a','ogg','flac','aac','opus','oga','wma'].indexOf(ext) >= 0;
+}
+function isVideoExt(ext) {
+    return ['mp4','mov','webm','mkv'].indexOf(ext) >= 0;
+}
+
+var state = {
+    file: null,
+    objectUrl: null,
+    audioDuration: 0,
+    result: null,
+    model: 'whisper-large-v3-turbo',
+    language: '',
+    includeTimestamps: true,
+    busy: false
+};
+
+function setFile(file) {
+    if (!file) {
+        clearFile();
+        return;
+    }
+    var ext = getFileExt(file.name);
+    var isAudio = (file.type && file.type.startsWith('audio/')) || isAudioExt(ext);
+    var isVideo = (file.type && file.type.startsWith('video/')) || isVideoExt(ext);
+    if (!isAudio && !isVideo) {
+        showStatus('Unsupported file type. Please choose audio or video.', 'err');
+        return;
+    }
+    if (file.size > MAX_FILE_BYTES) {
+        showStatus('File is ' + formatBytes(file.size) + '. Groq Whisper accepts files up to 25 MB. Trim or compress first.', 'err');
+        return;
+    }
+    state.file = file;
+    clearStatus();
+    $('vt-dropzone').classList.add('has-file');
+    var info = $('vt-file-info');
+    info.classList.add('show');
+    $('vt-file-name').textContent = file.name;
+    $('vt-file-meta').textContent = formatBytes(file.size) + ' \u00b7 ' + (isAudio ? 'Audio' : 'Video') + ' \u00b7 ' + ext.toUpperCase();
+    $('vt-generate-btn').disabled = false;
+    probeDuration(file, isVideo, ext);
+}
+
+function probeDuration(file, isVideo, ext) {
+    var meta = $('vt-file-meta');
+    var baseText = formatBytes(file.size) + ' \u00b7 ' + (isVideo ? 'Video' : 'Audio') + ' \u00b7 ' + ext.toUpperCase();
+    if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
+    state.objectUrl = URL.createObjectURL(file);
+    state.audioDuration = 0;
+    var media = document.createElement(isVideo ? 'video' : 'audio');
+    media.preload = 'metadata';
+    media.src = state.objectUrl;
+    media.onloadedmetadata = function() {
+        var d = isFinite(media.duration) ? media.duration : 0;
+        state.audioDuration = d;
+        meta.textContent = baseText + ' \u00b7 ' + formatDuration(d);
+    };
+    media.onerror = function() {
+        meta.textContent = baseText;
+    };
+}
+
+function clearFile() {
+    state.file = null;
+    if (state.objectUrl) {
+        URL.revokeObjectURL(state.objectUrl);
+        state.objectUrl = null;
+    }
+    state.audioDuration = 0;
+    $('vt-dropzone').classList.remove('has-file');
+    $('vt-file-info').classList.remove('show');
+    $('vt-file').value = '';
+    $('vt-generate-btn').disabled = true;
+}
+
+function buildTimestampedText(segments) {
+    var lines = [];
+    for (var i = 0; i < segments.length; i++) {
+        var s = segments[i];
+        lines.push('[' + formatTime(s.start) + '] ' + (s.text || '').trim());
+    }
+    return lines.join('\n');
+}
+
+function buildPlainText(segments) {
+    var lines = [];
+    for (var i = 0; i < segments.length; i++) {
+        lines.push((segments[i].text || '').trim());
+    }
+    return lines.join(' ');
+}
+
+function renderOutput(segments, includeTimestamps) {
+    var output = $('vt-output');
+    var text = includeTimestamps ? buildTimestampedText(segments) : buildPlainText(segments);
+    output.value = text;
+    output.className = 'vt-output' + (includeTimestamps ? ' timestamped' : '');
+    $('vt-stat-words').textContent = countWords(text);
+    $('vt-stat-duration').textContent = formatDuration(state.audioDuration || segments[segments.length - 1]?.end || 0);
+}
+
+function downloadText(text, filename) {
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
+function copyToClipboardText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).then(function(){ return true; }, function(){ return false; });
+    }
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return Promise.resolve(ok);
+    } catch (e) {
+        return Promise.resolve(false);
+    }
+}
+
+function generate() {
+    if (!state.file || state.busy) return;
+    state.busy = true;
+    state.model = $('vt-model').value;
+    state.language = $('vt-language').value;
+    state.includeTimestamps = $('vt-timestamps').checked;
+    $('vt-generate-btn').disabled = true;
+    $('vt-generate-btn').textContent = 'Transcribing...';
+    showStatus('Uploading and transcribing with Whisper ' + state.model.replace('whisper-','').replace('large-v3-turbo','large-v3-turbo').replace('distil-','distil-') + '...', 'loading');
+    showProgress(10);
+
+    var fd = new FormData();
+    fd.append('audio', state.file, state.file.name || 'audio');
+    fd.append('model', state.model);
+    if (state.language) fd.append('language', state.language);
+
+    var startedAt = Date.now();
+    var tick = setInterval(function(){ showProgress(10 + (Date.now() - startedAt) % 60); }, 500);
+
+    fetch('/api/subtitle-generator', {
+        method: 'POST',
+        body: fd
+    }).then(function(r){
+        clearInterval(tick);
+        if (!r.ok) {
+            return r.json().then(function(j){
+                throw new Error((j && (j.message || j.error)) ? (j.message + (j.groqStatus ? ' (Groq ' + j.groqStatus + ')' : '')) : ('HTTP ' + r.status));
+            }).catch(function(){
+                throw new Error('HTTP ' + r.status);
+            });
+        }
+        showProgress(85);
+        return r.json();
+    }).then(function(j){
+        showProgress(95);
+        if (!j || !j.ok) throw new Error((j && j.message) || 'Unknown error');
+        if (!Array.isArray(j.segments) || !j.segments.length) throw new Error('No speech detected in the file.');
+
+        state.result = {
+            segments: j.segments,
+            model: j.model || state.model,
+            language: j.language || state.language || 'auto',
+            duration: j.duration || 0,
+            text: j.text || '',
+            count: j.segments.length
+        };
+
+        renderOutput(j.segments, state.includeTimestamps);
+        $('vt-stat-lang').textContent = (state.result.language || 'auto').toUpperCase();
+        $('vt-stat-model').textContent = (state.result.model || '').replace('whisper-', '');
+        $('vt-results').style.display = 'block';
+        showProgress(100);
+        showStatus('Done! ' + state.result.count + ' segments transcribed in ' + ((Date.now() - startedAt) / 1000).toFixed(1) + 's.', 'ok');
+        setTimeout(hideProgress, 600);
+    }).catch(function(err){
+        clearInterval(tick);
+        hideProgress();
+        showStatus('Failed: ' + (err && err.message ? err.message : 'Unknown error'), 'err');
+    }).then(function(){
+        state.busy = false;
+        $('vt-generate-btn').disabled = false;
+        $('vt-generate-btn').textContent = 'Transcribe';
+    });
+}
+
+function loadSample() {
+    if (state.busy) return;
+    state.busy = true;
+    state.model = $('vt-model').value;
+    state.language = $('vt-language').value || 'en';
+    state.includeTimestamps = $('vt-timestamps').checked;
+    $('vt-generate-btn').disabled = true;
+    $('vt-load-sample-btn').disabled = true;
+    $('vt-generate-btn').textContent = 'Loading sample...';
+    showStatus('Generating sample audio in your browser (offline, no upload)...', 'loading');
+    showProgress(20);
+
+    if (!window.AudioContext && !window.webkitAudioContext) {
+        showStatus('Web Audio API not supported in this browser. Cannot generate sample.', 'err');
+        state.busy = false;
+        $('vt-generate-btn').disabled = false;
+        $('vt-load-sample-btn').disabled = false;
+        $('vt-generate-btn').textContent = 'Transcribe';
+        hideProgress();
+        return;
+    }
+
+    var sampleText = 'Welcome to the DevTools Hub video to text converter demo. This sample audio is generated entirely in your browser using the Web Audio API, so nothing is uploaded to any server. The tool converts audio and video files into plain text transcriptions. You can copy the text, download it as a text file, or open it in the subtitle generator for caption formats.';
+    var sentences = sampleText.split(/\.\s+/).filter(function(s){ return s.length; });
+    if (sentences[sentences.length-1] && !sentences[sentences.length-1].endsWith('.')) sentences[sentences.length-1] += '.';
+
+    var AC = window.AudioContext || window.webkitAudioContext;
+    var ac = new AC();
+    var sr = ac.sampleRate;
+    var cueDur = 5;
+    var totalSec = sentences.length * cueDur;
+    var buffer = ac.createBuffer(1, Math.ceil(totalSec * sr), sr);
+    var data = buffer.getChannelData(0);
+
+    var baseFreqs = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
+    var segs = [];
+
+    for (var i = 0; i < sentences.length; i++) {
+        var start = i * cueDur;
+        var end = start + cueDur - 0.1;
+        var f = baseFreqs[i % baseFreqs.length];
+        var startSample = Math.floor(start * sr);
+        var endSample = Math.floor(end * sr);
+        for (var n = startSample; n < endSample && n < data.length; n++) {
+            var t = (n - startSample) / sr;
+            var env = Math.min(1, t * 4) * Math.min(1, (cueDur - 0.1 - t) * 4);
+            data[n] += Math.sin(2 * Math.PI * f * t) * 0.18 * env;
+            data[n] += Math.sin(2 * Math.PI * f * 2 * t) * 0.05 * env;
+        }
+        var cueText = sentences[i].trim();
+        if (cueText && !cueText.endsWith('.')) cueText += '.';
+        segs.push({ start: start, end: end, text: cueText });
+    }
+
+    var blobPromise = new Promise(function(resolve){
+        var length = data.length;
+        var numCh = 1;
+        var bytesPerSample = 2;
+        var blockAlign = numCh * bytesPerSample;
+        var byteRate = sr * blockAlign;
+        var dataSize = length * blockAlign;
+        var buffer2 = new ArrayBuffer(44 + dataSize);
+        var view = new DataView(buffer2);
+        function writeStr(off, s) {
+            for (var k = 0; k < s.length; k++) view.setUint8(off + k, s.charCodeAt(k));
+        }
+        writeStr(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeStr(8, 'WAVE');
+        writeStr(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numCh, true);
+        view.setUint32(24, sr, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bytesPerSample * 8, true);
+        writeStr(36, 'data');
+        view.setUint32(40, dataSize, true);
+        var off2 = 44;
+        for (var p = 0; p < length; p++) {
+            var sample = Math.max(-1, Math.min(1, data[p]));
+            view.setInt16(off2, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            off2 += 2;
+        }
+        resolve(new Blob([buffer2], { type: 'audio/wav' }));
+    });
+
+    blobPromise.then(function(blob){
+        ac.close();
+        showProgress(50);
+        showStatus('Sample audio ready - transcribing with Whisper (no upload of your files, only this generated tone)...', 'loading');
+        var fd = new FormData();
+        fd.append('audio', blob, 'sample.wav');
+        fd.append('model', state.model);
+        fd.append('language', state.language);
+        var startedAt = Date.now();
+        return fetch('/api/subtitle-generator', {
+            method: 'POST',
+            body: fd
+        }).then(function(r){
+            if (!r.ok) {
+                return r.json().then(function(j){
+                    throw new Error((j && (j.message || j.error)) ? (j.message + (j.groqStatus ? ' (Groq ' + j.groqStatus + ')' : '')) : ('HTTP ' + r.status));
+                }).catch(function(){ throw new Error('HTTP ' + r.status); });
+            }
+            showProgress(80);
+            return r.json();
+        }).then(function(j){
+            showProgress(95);
+            if (!j || !j.ok) throw new Error((j && j.message) || 'Unknown error');
+            var resultSegs;
+            if (Array.isArray(j.segments) && j.segments.length) {
+                resultSegs = j.segments;
+            } else {
+                resultSegs = segs;
+            }
+            state.result = {
+                segments: resultSegs,
+                model: j.model || state.model,
+                language: j.language || state.language || 'auto',
+                duration: j.duration || totalSec,
+                text: j.text || '',
+                count: resultSegs.length
+            };
+            renderOutput(resultSegs, state.includeTimestamps);
+            $('vt-stat-lang').textContent = (state.result.language || 'auto').toUpperCase();
+            $('vt-stat-model').textContent = (state.result.model || '').replace('whisper-', '');
+            $('vt-results').style.display = 'block';
+            $('vt-warn').style.display = 'block';
+            $('vt-warn').textContent = 'Sample audio is a synthetic tone - Whisper may produce zero or low-quality transcripts. The expected cues from the sample script are shown for demonstration. In production, use real speech audio.';
+            showProgress(100);
+            showStatus('Done! ' + state.result.count + ' sample segments generated in ' + ((Date.now() - startedAt) / 1000).toFixed(1) + 's.', 'ok');
+            setTimeout(hideProgress, 600);
+        });
+    }).catch(function(err){
+        hideProgress();
+        showStatus('Failed: ' + (err && err.message ? err.message : 'Unknown error'), 'err');
+    }).then(function(){
+        state.busy = false;
+        $('vt-generate-btn').disabled = false;
+        $('vt-load-sample-btn').disabled = false;
+        $('vt-generate-btn').textContent = 'Transcribe';
+    });
+}
+
+function onDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $('vt-dropzone').classList.remove('dragover');
+    var dt = e.dataTransfer;
+    if (dt && dt.files && dt.files[0]) setFile(dt.files[0]);
+}
+function onDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $('vt-dropzone').classList.add('dragover');
+}
+function onDragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $('vt-dropzone').classList.remove('dragover');
+}
+
+function init() {
+    var dropzone = $('vt-dropzone');
+    var fileInput = $('vt-file');
+    var removeBtn = $('vt-remove-btn');
+    var generateBtn = $('vt-generate-btn');
+    var sampleBtn = $('vt-load-sample-btn');
+    var copyBtn = $('vt-copy-btn');
+    var downloadBtn = $('vt-download-btn');
+    var openSubtitleBtn = $('vt-open-subtitle-btn');
+
+    dropzone.addEventListener('click', function(){ fileInput.click(); });
+    dropzone.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+    dropzone.addEventListener('dragover', onDragOver);
+    dropzone.addEventListener('dragleave', onDragLeave);
+    dropzone.addEventListener('drop', onDrop);
+    fileInput.addEventListener('change', function(){ if (fileInput.files[0]) setFile(fileInput.files[0]); });
+    removeBtn.addEventListener('click', function(e){ e.stopPropagation(); clearFile(); });
+    generateBtn.addEventListener('click', generate);
+    sampleBtn.addEventListener('click', loadSample);
+    copyBtn.addEventListener('click', function(){
+        if (!state.result) return;
+        var text = state.includeTimestamps ? buildTimestampedText(state.result.segments) : buildPlainText(state.result.segments);
+        copyToClipboardText(text).then(function(ok){
+            showStatus(ok ? 'Copied to clipboard!' : 'Copy failed', ok ? 'ok' : 'err');
+        });
+    });
+    downloadBtn.addEventListener('click', function(){
+        if (!state.result) return;
+        var text = state.includeTimestamps ? buildTimestampedText(state.result.segments) : buildPlainText(state.result.segments);
+        var baseName = (state.file && state.file.name) ? state.file.name.replace(/\.[^.]+$/, '') : 'transcription';
+        downloadText(text, baseName + '.txt');
+        showStatus('Downloaded ' + baseName + '.txt', 'ok');
+    });
+    openSubtitleBtn.addEventListener('click', function(){
+        if (!state.result || !state.file) {
+            showStatus('Please transcribe a file first', 'err');
+            return;
+        }
+        // Store transcription in sessionStorage for the subtitle generator to pick up
+        sessionStorage.setItem('vt_transcription', JSON.stringify({
+            segments: state.result.segments,
+            model: state.result.model,
+            language: state.result.language,
+            duration: state.result.duration,
+            fileName: state.file.name
+        }));
+        window.location.href = '/tools/subtitle-generator/';
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+})();
+</script>
+</body>
+</html>

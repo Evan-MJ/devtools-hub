@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 377,
+  "tool_count": 379,
   "categories": [
     "ai-language",
     "calculators",
@@ -2659,6 +2659,20 @@
       "category": "media",
       "markdown_url": "https://tools.scoreroute.com/tools/video-converter/.md",
       "description": "Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no water..."
+    },
+    {
+      "name": "Video to Text Converter - Free Online Transcription",
+      "url": "https://tools.scoreroute.com/tools/video-to-text/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/video-to-text/.md",
+      "description": "Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, d..."
+    },
+    {
+      "name": "AI Content Optimizer - Make AI Content Citable",
+      "url": "https://tools.scoreroute.com/tools/ai-content-optimizer/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-content-optimizer/.md",
+      "description": "Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overvi..."
     }
   ],
   "skills": [
@@ -5300,6 +5314,20 @@
       "category": "media",
       "markdown_url": "https://tools.scoreroute.com/tools/video-converter/.md",
       "description": "Convert video files between formats like MP4, WebM, MOV and MKV right in your browser. No upload, no signup, no water..."
+    },
+    {
+      "name": "Video to Text Converter - Free Online Transcription",
+      "url": "https://tools.scoreroute.com/tools/video-to-text/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/video-to-text/.md",
+      "description": "Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, d..."
+    },
+    {
+      "name": "AI Content Optimizer - Make AI Content Citable",
+      "url": "https://tools.scoreroute.com/tools/ai-content-optimizer/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-content-optimizer/.md",
+      "description": "Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overvi..."
     }
   ]
 }
