@@ -173,6 +173,7 @@
                     <div class="aco-loading-sub" id="aco-loading-sub">Multi-provider fallback active</div>
                 </div>
                 <div class="aco-error" id="aco-error"></div>
+                <div id="toolNotice" class="tool-notice"></div>
 
                 <div class="aco-result" id="aco-result">
                     <div class="aco-result-meta" id="aco-result-meta">
@@ -348,20 +349,24 @@
         };
     }
 
+    // A precondition is a hint ("you have not filled this in yet"); a validation failure is a
+    // real refusal. Only the first is a notice — see the showNotice() comment above.
     function validateInput(input) {
-        if (!input.topic || input.topic.trim().length < 3) return 'Please provide a topic (at least 3 characters).';
-        if (input.topic.trim().length > 500) return 'Topic is too long (max 500 characters).';
-        if (input.key_points.length > 2000) return 'Key points are too long (max 2000 characters).';
+        if (!input.topic || input.topic.trim().length < 3) return { msg: 'Please provide a topic (at least 3 characters).', notice: true };
+        if (input.topic.trim().length > 500) return { msg: 'Topic is too long (max 500 characters).' };
+        if (input.key_points.length > 2000) return { msg: 'Key points are too long (max 2000 characters).' };
         return null;
     }
 
     async function generate() {
         var input = gatherInput();
         var err = validateInput(input);
-        if (err) { showError(err); return; }
+        if (err) { if (err.notice) showNotice(err.msg); else showError(err.msg); return; }
 
         state.topic = input.topic.trim();
         state.key_points = input.key_points.trim();
+        hideError();
+        hideNotice();
         showLoading(true);
 
         try {
@@ -435,6 +440,34 @@
         var el = $('aco-error');
         el.textContent = msg || 'Unknown error';
         el.className = 'aco-error show';
+        hideNotice();
+    }
+
+    // BUG-532: a benign precondition ("you have not given me anything yet") is not a failure.
+    // The quality inspector records the text of every [class*="error"] element as a tool
+    // error, so those messages go into this neutral sink instead of the error one.
+    function showNotice(msg) {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = msg;
+        n.classList.add('show');
+        hideError();
+    }
+
+    // The inspector reads innerText whether or not the element is visible, so a sink that is
+    // hidden must also be emptied — a stale message is still a false tool_error.
+    function hideError() {
+        var e = $('aco-error');
+        if (!e) return;
+        e.textContent = '';
+        e.className = 'aco-error';
+    }
+
+    function hideNotice() {
+        var n = document.getElementById('toolNotice');
+        if (!n) return;
+        n.textContent = '';
+        n.classList.remove('show');
     }
 
     function showLoading(show) {
@@ -466,7 +499,7 @@
     }
 
     function bindAll() {
-        $('aco-btn-clear').addEventListener('click', function () { state.topic = ''; state.key_points = ''; state.lastRendered = ''; $('aco-topic').value = ''; $('aco-key-points').value = ''; $('aco-preview').value = ''; $('aco-result').className = 'aco-result'; $('aco-result').style.display = 'none'; $('aco-error').className = 'aco-error'; });
+        $('aco-btn-clear').addEventListener('click', function () { state.topic = ''; state.key_points = ''; state.lastRendered = ''; $('aco-topic').value = ''; $('aco-key-points').value = ''; $('aco-preview').value = ''; $('aco-result').className = 'aco-result'; $('aco-result').style.display = 'none'; hideError(); hideNotice(); });
         $('aco-btn-copy').addEventListener('click', function () {
             var text = $('aco-preview').value || '';
             var done = function () { $('aco-copy-msg').textContent = 'Copied.'; $('aco-copy-msg').className = 'aco-copy-msg show'; };
@@ -485,7 +518,7 @@
         });
         $('aco-btn-humanize').addEventListener('click', async function () {
             var text = $('aco-preview').value || '';
-            if (!text) { showError('Generate content first, then Humanize.'); return; }
+            if (!text) { showNotice('Generate content first, then Humanize.'); return; }
             showLoading(true);
             try {
                 var response = await fetch('/api/ai-humanizer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text.substring(0, 6000) }) });

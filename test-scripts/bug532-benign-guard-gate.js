@@ -106,7 +106,6 @@ function toneClass(html, fn, tone, loadsToolsJs) {
 // the point of the list is that the fix must not swallow them. A benign message that moves
 // onto this list, or one of these that leaves it, has to turn the gate red.
 const KNOWN_REAL_FAILURES = [
-  'ai-content-optimizer :: Generate content first, then Humanize.',
   'image-to-excel :: No valid image files selected.',
   'image-to-excel :: No text detected. Try a clearer image or different language.',
   'pdf-to-excel :: No table data found in this PDF. Try a different PDF with structured tabular content.',
