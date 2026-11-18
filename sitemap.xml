@@ -1044,6 +1044,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/json-schema-generator/</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/json-schema-validator/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>

@@ -208,6 +208,7 @@ const LEDGER = {
   "tools/javascript-obfuscator/index.html": 2,
   "tools/js-formatter/index.html": 2,
   "tools/json-csv-converter/index.html": 2,
+  "tools/json-schema-generator/index.html": 1,
   "tools/json-schema-validator/index.html": 2,
   "tools/json-to-typescript/index.html": 3,
   "tools/json-xml-converter/index.html": 3,
