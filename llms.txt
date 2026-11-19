@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 381 free developer tools across 11 categories. No signup, no tracking.
+> 382 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 381 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 382 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -79,6 +79,7 @@
 - [Blood Pressure Calculator - Average & Stage](https://tools.scoreroute.com/tools/blood-pressure-calculator/.md) [HTML](https://tools.scoreroute.com/tools/blood-pressure-calculator/)
 - [Solar Sizing Calculator](https://tools.scoreroute.com/tools/solar-calculator/.md) [HTML](https://tools.scoreroute.com/tools/solar-calculator/)
 - [Heart Rate Zone Calculator - 5 Zones by Age](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/.md) [HTML](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/)
+- [Gravel Calculator - Tons, Cubic Yards & Bags](https://tools.scoreroute.com/tools/gravel-calculator/.md) [HTML](https://tools.scoreroute.com/tools/gravel-calculator/)
 
 ## Generators
 - [Barcode Generator - QR, UPC, EAN and Code 128](https://tools.scoreroute.com/tools/barcode-generator/.md) [HTML](https://tools.scoreroute.com/tools/barcode-generator/)

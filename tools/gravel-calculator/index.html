@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravel Calculator - Tons, Cubic Yards &amp; Bags</title>
+<meta name="description" content="Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.">
+<meta name="keywords" content="gravel calculator, gravel calculator tons, gravel calculator yards, crushed stone calculator, sand calculator, topsoil calculator, mulch calculator, cubic yards to tons, how much gravel do i need, bags of gravel, free, no signup">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/gravel-calculator/">
+<meta property="og:title" content="Gravel Calculator - Tons, Cubic Yards &amp; Bags">
+<meta property="og:description" content="Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/gravel-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gravel Calculator - Tons, Cubic Yards &amp; Bags">
+<meta name="twitter:description" content="Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.">
+<meta name="twitter:image" content="/og-image.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Gravel Calculator - Tons, Cubic Yards & Bags","description":"Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.","url":"https://tools.scoreroute.com/tools/gravel-calculator/","applicationCategory":"UtilityApplication","operatingSystem":"All","browserRequirements":"Requires modern browser with ES2020 support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Rectangular or circular area with the result in cubic feet, cubic yards and cubic metres","Depth presets from 1 inch to 6 inches for paths, beds and driveways","Seven bulk materials with editable bulk density: pea gravel, crushed stone, crusher run, river rock, sand, topsoil and mulch","Weight in US short tons, pounds and kilograms so you can order by the ton","Bag counts for 0.5 cubic foot and 2 cubic foot bags","Waste factor to cover compaction and uneven ground","Optional price per ton for an instant material cost estimate","Copy, print and reset controls, all math in the browser"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How much gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply the area in square feet by the depth in feet to get cubic feet, then divide by 27 to get cubic yards. A 20 by 30 foot driveway at 3 inches deep is 600 square feet times 0.25 feet, or 150 cubic feet, which is about 5.6 cubic yards before the waste factor."}},
+{"@type":"Question","name":"How many tons are in a cubic yard of gravel?","acceptedAnswer":{"@type":"Answer","text":"Most loose gravel weighs about 2,700 to 3,000 pounds per cubic yard, which is roughly 1.35 to 1.5 US short tons. Pea gravel is near the low end at about 1.4 tons per yard and crusher run near the high end at about 1.5 tons per yard. Moisture and source rock move the number by ten to fifteen percent, so the calculator lets you enter your supplier's density."}},
+{"@type":"Question","name":"How many square feet does a ton of gravel cover?","acceptedAnswer":{"@type":"Answer","text":"At a 2 inch depth, one ton of gravel at 1.4 tons per cubic yard covers about 115 square feet. The same ton covers about 58 square feet at 4 inches and about 38 square feet at 6 inches. Deeper layers always cover less area per ton."}},
+{"@type":"Question","name":"How deep should gravel be for a driveway?","acceptedAnswer":{"@type":"Answer","text":"A pedestrian path needs about 2 to 3 inches of gravel over a weed barrier. A residential driveway usually needs a 4 inch compacted base of crusher run with 2 to 4 inches of decorative gravel on top, so plan for 6 to 8 inches of total depth before compaction."}},
+{"@type":"Question","name":"Should I add a waste factor?","acceptedAnswer":{"@type":"Answer","text":"Yes. Uneven subgrade, spillage, and the reduction of loose gravel thickness are covered by a waste factor of 5 to 10 percent. A driveway or a large bed can be specified with ten percent as the safe default option, while small paths may opt for five percent."}},
+{"@type":"Question","name":"Why use this calculator instead of asking an AI chatbot?","acceptedAnswer":{"@type":"Answer","text":"An AI chatbot cannot weigh a material it has never seen and often guesses bag counts or skips the density step. This calculator runs the same arithmetic every time, shows the density it used, converts cubic yards to tons and to bags, and lets you override the density with the figure your supplier quotes."}}
+]}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+.gv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 860px) { .gv-grid { grid-template-columns: 1fr; } }
+.gv-panel { background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 10px; padding: 18px; }
+.gv-title { font-size: 0.85rem; font-weight: 700; color: #9090b0; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 8px; border-bottom: 1px solid #2a2a4e; }
+.gv-control { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.gv-control label { font-size: 0.78rem; color: #9090b0; }
+.gv-control input, .gv-control select { background: #0d0d1e; border: 1px solid #2a2a4e; color: #e8e8f0; padding: 10px 10px; border-radius: 6px; font-size: 0.9rem; width: 100%; min-height: 44px; font-family: inherit; }
+.gv-control input:focus-visible, .gv-control select:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; border-color: #7eb3ff; }
+.gv-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.gv-row > .gv-control { flex: 1; min-width: 110px; }
+.gv-help { font-size: 0.72rem; color: #9090b0; margin-top: 4px; line-height: 1.45; }
+.gv-presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 4px 0 12px; }
+@media (max-width: 520px) { .gv-presets { grid-template-columns: repeat(3, 1fr); } }
+.gv-preset { background: #131826; border: 1px solid #2a2a4e; color: #c9c9dd; padding: 10px 4px; border-radius: 6px; font-size: 0.78rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.gv-preset:hover { border-color: #7eb3ff; color: #fff; }
+.gv-preset:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; }
+.gv-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.gv-stat { background: #131826; border: 1px solid #2a2a4e; border-radius: 8px; padding: 12px; }
+.gv-stat.primary { border-color: #7eb3ff; background: linear-gradient(135deg, rgba(102,126,234,0.12), rgba(118,75,162,0.08)); }
+.gv-stat-label { font-size: 0.68rem; color: #9090b0; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.gv-stat-value { font-size: 1.3rem; font-weight: 700; color: #e8e8f0; font-family: monospace; line-height: 1.15; }
+.gv-stat.primary .gv-stat-value { color: #7eb3ff; }
+.gv-stat-unit { font-size: 0.68rem; color: #9090b0; margin-left: 4px; font-weight: 400; }
+.gv-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.gv-btn { background: #0d0d1e; color: #e8e8f0; border: 1px solid #2a2a4e; padding: 11px 18px; border-radius: 6px; font-size: 0.85rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.gv-btn:hover { border-color: #7eb3ff; color: #fff; }
+.gv-btn.primary { background: #7eb3ff; color: #0a0d14; border-color: #7eb3ff; font-weight: 700; }
+.gv-btn:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; }
+.gv-note { font-size: 0.78rem; color: #9090b0; min-height: 1.4em; margin: 10px 0 0; background: #131826; border: 1px solid #2a2a4e; border-radius: 6px; padding: 8px 10px; }
+.gv-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 0.85rem; }
+.gv-table caption { text-align: left; color: #9090b0; font-size: 0.78rem; padding-bottom: 6px; }
+.gv-table th, .gv-table td { border: 1px solid #2a2a4e; padding: 8px 10px; text-align: left; }
+.gv-table th { background: #131826; color: #e8e8f0; }
+.gv-table td { color: #c9c9dd; }
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  header, footer, .info-section, .breadcrumb, .gv-actions, .gv-presets, .gv-help { display: none !important; }
+  .gv-panel, .gv-stat { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; break-inside: avoid; }
+  .gv-stat-value, .gv-stat.primary .gv-stat-value { color: #000 !important; }
+}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>Gravel Calculator</h1>
+<p class="subtitle">Cubic yards, tons, bags and cost for bulk material</p>
+<nav class="breadcrumb">
+<a href="/">Home</a> &gt; <a href="/tools/calculators/">Calculators</a> &gt; <span>Gravel Calculator</span>
+<a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="tool-page">
+<div class="tool-main">
+<h2>Work out how much gravel, sand or soil to buy</h2>
+
+<div class="gv-grid">
+  <div class="gv-panel">
+    <div class="gv-title">Area and depth</div>
+
+    <div class="gv-control">
+      <label for="gv-shape">Area shape</label>
+      <select id="gv-shape">
+        <option value="rect" selected>Rectangle or square</option>
+        <option value="circle">Circle</option>
+      </select>
+    </div>
+
+    <div class="gv-control">
+      <label for="gv-units">Measurement units</label>
+      <select id="gv-units">
+        <option value="ft" selected>Feet and inches</option>
+        <option value="m">Metres and centimetres</option>
+      </select>
+    </div>
+
+    <div class="gv-row" id="gv-rect-row">
+      <div class="gv-control">
+        <label for="gv-len">Length <span id="gv-len-u">(ft)</span></label>
+        <input type="number" id="gv-len" value="20" min="0" step="any">
+      </div>
+      <div class="gv-control">
+        <label for="gv-wid">Width <span id="gv-wid-u">(ft)</span></label>
+        <input type="number" id="gv-wid" value="30" min="0" step="any">
+      </div>
+    </div>
+
+    <div class="gv-row" id="gv-circle-row" style="display:none;">
+      <div class="gv-control">
+        <label for="gv-dia">Diameter <span id="gv-dia-u">(ft)</span></label>
+        <input type="number" id="gv-dia" value="20" min="0" step="any">
+      </div>
+    </div>
+
+    <div class="gv-control">
+      <label for="gv-depth">Depth <span id="gv-depth-u">(in)</span></label>
+      <input type="number" id="gv-depth" value="3" min="0" step="any">
+    </div>
+
+    <div class="gv-presets" id="gv-presets">
+      <button type="button" class="gv-preset" data-ft="1" data-m="3">1 in</button>
+      <button type="button" class="gv-preset" data-ft="2" data-m="5">2 in</button>
+      <button type="button" class="gv-preset" data-ft="3" data-m="8">3 in</button>
+      <button type="button" class="gv-preset" data-ft="4" data-m="10">4 in</button>
+      <button type="button" class="gv-preset" data-ft="6" data-m="15">6 in</button>
+    </div>
+    <div class="gv-help">Depth presets are typical: 2 to 3 inches for a path, 4 inches for a bed, 6 inches for a driveway base.</div>
+  </div>
+
+  <div class="gv-panel">
+    <div class="gv-title">Material and cost</div>
+
+    <div class="gv-control">
+      <label for="gv-material">Material</label>
+      <select id="gv-material">
+        <option value="pea-gravel" selected>Pea gravel - 2,800 lb/yd3</option>
+        <option value="crushed-stone">Crushed stone #57 - 2,900 lb/yd3</option>
+        <option value="crusher-run">Crusher run / road base - 3,000 lb/yd3</option>
+        <option value="river-rock">River rock - 2,700 lb/yd3</option>
+        <option value="sand">Sand, dry - 2,700 lb/yd3</option>
+        <option value="topsoil">Topsoil, screened - 2,000 lb/yd3</option>
+        <option value="mulch">Bark mulch - 800 lb/yd3</option>
+      </select>
+    </div>
+
+    <div class="gv-control">
+      <label for="gv-density">Bulk density (lb per cubic yard)</label>
+      <input type="number" id="gv-density" value="2800" min="1" step="10">
+      <div class="gv-help">Typical dry bulk density. Confirm with your supplier; wet material is 10 to 15 percent heavier. Editing this value overrides the material preset.</div>
+    </div>
+
+    <div class="gv-row">
+      <div class="gv-control">
+        <label for="gv-waste">Waste factor (%)</label>
+        <input type="number" id="gv-waste" value="10" min="0" max="50" step="1">
+      </div>
+      <div class="gv-control">
+        <label for="gv-price">Price per ton (optional)</label>
+        <input type="number" id="gv-price" value="0" min="0" step="any">
+      </div>
+    </div>
+
+    <div class="gv-stats">
+      <div class="gv-stat primary">
+        <div class="gv-stat-label">Volume</div>
+        <div class="gv-stat-value" id="gv-out-yd3">0<span class="gv-stat-unit">yd3</span></div>
+      </div>
+      <div class="gv-stat primary">
+        <div class="gv-stat-label">Weight</div>
+        <div class="gv-stat-value" id="gv-out-tons">0<span class="gv-stat-unit">tons</span></div>
+      </div>
+      <div class="gv-stat">
+        <div class="gv-stat-label">Volume (metric)</div>
+        <div class="gv-stat-value" id="gv-out-m3">0<span class="gv-stat-unit">m3</span></div>
+      </div>
+      <div class="gv-stat">
+        <div class="gv-stat-label">Weight (metric)</div>
+        <div class="gv-stat-value" id="gv-out-kg">0<span class="gv-stat-unit">kg</span></div>
+      </div>
+      <div class="gv-stat">
+        <div class="gv-stat-label">0.5 ft3 bags</div>
+        <div class="gv-stat-value" id="gv-out-bag05">0</div>
+      </div>
+      <div class="gv-stat">
+        <div class="gv-stat-label">2 ft3 bags</div>
+        <div class="gv-stat-value" id="gv-out-bag2">0</div>
+      </div>
+      <div class="gv-stat" id="gv-cost-card" style="display:none;">
+        <div class="gv-stat-label">Estimated material cost</div>
+        <div class="gv-stat-value" id="gv-out-cost">$0</div>
+      </div>
+    </div>
+
+    <p class="gv-note" id="gv-note" role="status" aria-live="polite">Enter an area and a depth to see quantities.</p>
+  </div>
+</div>
+
+<div class="gv-actions">
+  <button type="button" class="gv-btn primary" id="gv-copy">Copy results</button>
+  <button type="button" class="gv-btn" id="gv-print">Print</button>
+  <button type="button" class="gv-btn" id="gv-reset">Reset</button>
+</div>
+</div>
+
+<section class="info-section">
+<h2>How This Gravel Calculator Works</h2>
+<p>The calculator multiplies the area of the shape by the depth to get a volume in cubic feet. A rectangle or square uses length times width; a circle uses pi times the radius squared. Dividing cubic feet by 27 gives cubic yards, and multiplying cubic yards by the bulk density of the material gives the weight, which is then divided by 2,000 to report US short tons.</p>
+<p>Bulk material is sold three different ways and the calculator reports all three. Yards are the volume unit most suppliers quote for delivery, tons are the weight unit most quarries quote, and bags are what a home centre sells for small jobs. Because 0.5 cubic foot and 2 cubic foot bags are both common, both counts are shown. The waste factor is applied before every output, so the bags and the tons already include it.</p>
+
+<h2>Bulk Density Used by Material</h2>
+<table class="gv-table">
+<caption>Typical dry bulk density. Wet or mixed material can be 10 to 15 percent heavier.</caption>
+<thead><tr><th scope="col">Material</th><th scope="col">Pounds per cubic yard</th><th scope="col">US tons per cubic yard</th></tr></thead>
+<tbody>
+<tr><td>Pea gravel</td><td>2,800</td><td>1.40</td></tr>
+<tr><td>Crushed stone #57</td><td>2,900</td><td>1.45</td></tr>
+<tr><td>Crusher run / road base</td><td>3,000</td><td>1.50</td></tr>
+<tr><td>River rock</td><td>2,700</td><td>1.35</td></tr>
+<tr><td>Sand, dry</td><td>2,700</td><td>1.35</td></tr>
+<tr><td>Topsoil, screened</td><td>2,000</td><td>1.00</td></tr>
+<tr><td>Bark mulch</td><td>800</td><td>0.40</td></tr>
+</tbody>
+</table>
+
+<h2>Coverage of One Cubic Yard</h2>
+<table class="gv-table">
+<caption>Square feet covered by one cubic yard at each depth.</caption>
+<thead><tr><th scope="col">Depth</th><th scope="col">Area covered</th></tr></thead>
+<tbody>
+<tr><td>1 inch</td><td>324 square feet</td></tr>
+<tr><td>2 inches</td><td>162 square feet</td></tr>
+<tr><td>3 inches</td><td>108 square feet</td></tr>
+<tr><td>4 inches</td><td>81 square feet</td></tr>
+<tr><td>6 inches</td><td>54 square feet</td></tr>
+<tr><td>12 inches</td><td>27 square feet</td></tr>
+</tbody>
+</table>
+
+<h2>Why This Beats Asking an AI Chatbot</h2>
+<p>A chatbot cannot weigh a pile of gravel, and it routinely guesses at bag counts or skips the density step entirely. This page shows the density it used, lets you replace it with the number your supplier quotes, and applies the waste factor consistently to volume, weight and bags. The arithmetic is the same on every visit, so the quotation you take to the yard can be checked line by line.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How much gravel do I need?</summary><p>Multiply the area in square feet by the depth in feet to get cubic feet, then divide by 27 to get cubic yards. A 20 by 30 foot driveway at 3 inches deep is 600 square feet times 0.25 feet, or 150 cubic feet, which is about 5.6 cubic yards before the waste factor.</p></details>
+<details class="faq-item"><summary>How many tons are in a cubic yard of gravel?</summary><p>Most loose gravel weighs about 2,700 to 3,000 pounds per cubic yard, which is roughly 1.35 to 1.5 US short tons. Pea gravel is near the low end at about 1.4 tons per yard and crusher run near the high end at about 1.5 tons per yard. Moisture and source rock move the number by ten to fifteen percent, so the calculator lets you enter your supplier's density.</p></details>
+<details class="faq-item"><summary>How many square feet does a ton of gravel cover?</summary><p>At a 2 inch depth, one ton of gravel at 1.4 tons per cubic yard covers about 115 square feet. The same ton covers about 58 square feet at 4 inches and about 38 square feet at 6 inches. Deeper layers always cover less area per ton.</p></details>
+<details class="faq-item"><summary>How deep should gravel be for a driveway?</summary><p>A pedestrian path needs about 2 to 3 inches of gravel over a weed barrier. A residential driveway usually needs a 4 inch compacted base of crusher run with 2 to 4 inches of decorative gravel on top, so plan for 6 to 8 inches of total depth before compaction.</p></details>
+<details class="faq-item"><summary>Should I add a waste factor?</summary><p>Yes. Uneven subgrade, spillage, and the reduction of loose gravel thickness are covered by a waste factor of 5 to 10 percent. A driveway or a large bed can be specified with ten percent as the safe default option, while small paths may opt for five percent.</p></details>
+<details class="faq-item"><summary>Why use this calculator instead of asking an AI chatbot?</summary><p>An AI chatbot cannot weigh a material it has never seen and often guesses bag counts or skips the density step. This calculator runs the same arithmetic every time, shows the density it used, converts cubic yards to tons and to bags, and lets you override the density with the figure your supplier quotes.</p></details>
+
+<h2>Related Tools</h2>
+<ul>
+<li><a href="/tools/concrete-calculator/">Concrete Calculator</a> - slab, footing and bag estimates</li>
+<li><a href="/tools/area-calculator/">Area Calculator</a> - square footage for any shape</li>
+<li><a href="/tools/tile-calculator/">Tile Calculator</a> - tile count and overage</li>
+<li><a href="/tools/paint-calculator/">Paint Calculator</a> - wall area and litres of paint</li>
+<li><a href="/tools/roofing-calculator/">Roofing Calculator</a> - roof area and material takeoffs</li>
+<li><a href="/tools/unit-converter/">Unit Converter</a> - convert tons, yards and square feet</li>
+</ul>
+</section>
+</section>
+</main>
+<footer>
+<p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+(function(){
+'use strict';
+var DENSITY = { 'pea-gravel':2800, 'crushed-stone':2900, 'crusher-run':3000, 'river-rock':2700, 'sand':2700, 'topsoil':2000, 'mulch':800 };
+var FT3_PER_YD3 = 27, LB_PER_TON = 2000, M3_PER_FT3 = 0.028316846592, FT2_PER_M2 = 10.763910417;
+
+var el = function (id) { return document.getElementById(id); };
+function num(node) { var v = parseFloat(node.value); return isFinite(v) && v > 0 ? v : 0; }
+function fmt(n, d) { if (!isFinite(n) || n < 0) return '0'; var x = Number(n.toFixed(d == null ? 2 : d)); return x.toLocaleString('en-US', { maximumFractionDigits: d == null ? 2 : d }); }
+function money(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function isMetric() { return el('gv-units').value === 'm'; }
+
+function recalc() {
+  var metric = isMetric();
+  var shape = el('gv-shape').value;
+  var depthRaw = num(el('gv-depth'));
+  var wastePct = parseFloat(el('gv-waste').value);
+  var waste = 1 + (isFinite(wastePct) && wastePct > 0 ? wastePct : 0) / 100;
+  var areaFt2 = 0, depthFt = 0;
+
+  if (metric) {
+    var aM2 = shape === 'circle'
+      ? Math.PI * Math.pow(num(el('gv-dia')) / 2, 2)
+      : num(el('gv-len')) * num(el('gv-wid'));
+    areaFt2 = aM2 * FT2_PER_M2;
+    depthFt = (depthRaw / 100) * 3.280839895;
+  } else {
+    areaFt2 = shape === 'circle'
+      ? Math.PI * Math.pow(num(el('gv-dia')) / 2, 2)
+      : num(el('gv-len')) * num(el('gv-wid'));
+    depthFt = depthRaw / 12;
+  }
+
+  var ft3 = areaFt2 * depthFt * waste;
+  var yd3 = ft3 / FT3_PER_YD3;
+  var m3 = ft3 * M3_PER_FT3;
+  var density = num(el('gv-density')) || DENSITY[el('gv-material').value] || 2800;
+  var lb = yd3 * density;
+  var tons = lb / LB_PER_TON;
+  var kg = lb * 0.45359237;
+  var price = num(el('gv-price'));
+  var cost = tons * price;
+
+  el('gv-out-yd3').innerHTML = fmt(yd3) + '<span class="gv-stat-unit">yd3</span>';
+  el('gv-out-tons').innerHTML = fmt(tons) + '<span class="gv-stat-unit">tons</span>';
+  el('gv-out-m3').innerHTML = fmt(m3) + '<span class="gv-stat-unit">m3</span>';
+  el('gv-out-kg').innerHTML = fmt(kg, 0) + '<span class="gv-stat-unit">kg</span>';
+  el('gv-out-bag05').textContent = ft3 > 0 ? fmt(Math.ceil(ft3 / 0.5), 0) : '0';
+  el('gv-out-bag2').textContent = ft3 > 0 ? fmt(Math.ceil(ft3 / 2), 0) : '0';
+
+  var costCard = el('gv-cost-card');
+  if (price > 0) { costCard.style.display = ''; el('gv-out-cost').textContent = money(cost); }
+  else { costCard.style.display = 'none'; }
+
+  if (ft3 <= 0) {
+    setNote('Enter an area and a depth to see quantities.');
+  } else if (metric) {
+    setNote(fmt(yd3) + ' cubic yards (' + fmt(m3) + ' m3) after a ' + (waste * 100 - 100).toFixed(0) + '% waste factor, using ' + fmt(density, 0) + ' lb/yd3.');
+  } else {
+    setNote(fmt(yd3) + ' cubic yards (' + fmt(tons) + ' US tons) after a ' + (waste * 100 - 100).toFixed(0) + '% waste factor, using ' + fmt(density, 0) + ' lb/yd3.');
+  }
+
+  return { yd3: yd3, m3: m3, tons: tons, kg: kg, ft3: ft3, bags05: ft3 > 0 ? Math.ceil(ft3 / 0.5) : 0, bags2: ft3 > 0 ? Math.ceil(ft3 / 2) : 0, cost: cost, density: density };
+}
+
+function setNote(text) { el('gv-note').textContent = text; }
+
+function syncLabels() {
+  var metric = isMetric();
+  var u = metric ? '(m)' : '(ft)';
+  el('gv-len-u').textContent = u;
+  el('gv-wid-u').textContent = u;
+  el('gv-dia-u').textContent = u;
+  el('gv-depth-u').textContent = metric ? '(cm)' : '(in)';
+  var presets = el('gv-presets').querySelectorAll('.gv-preset');
+  for (var i = 0; i < presets.length; i++) {
+    var b = presets[i];
+    b.textContent = (metric ? b.getAttribute('data-m') + ' cm' : b.getAttribute('data-ft') + ' in');
+  }
+}
+
+function syncShape() {
+  var circle = el('gv-shape').value === 'circle';
+  el('gv-rect-row').style.display = circle ? 'none' : '';
+  el('gv-circle-row').style.display = circle ? '' : 'none';
+}
+
+function syncDensity() {
+  el('gv-density').value = DENSITY[el('gv-material').value] || 2800;
+}
+
+function copyResults() {
+  var r = recalc();
+  if (r.ft3 <= 0) { setNote('Nothing to copy yet - enter an area and a depth first.'); return; }
+  var lines = [
+    'Gravel Calculator - DevTools Hub',
+    'Volume: ' + fmt(r.yd3) + ' cubic yards (' + fmt(r.m3) + ' m3)',
+    'Weight: ' + fmt(r.tons) + ' US tons (' + fmt(r.kg, 0) + ' kg)',
+    'Bags: ' + fmt(r.bags05, 0) + ' x 0.5 ft3, or ' + fmt(r.bags2, 0) + ' x 2 ft3',
+    'Bulk density used: ' + fmt(r.density, 0) + ' lb per cubic yard'
+  ];
+  if (r.cost > 0) lines.push('Estimated material cost: ' + money(r.cost));
+  var text = lines.join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { setNote('Results copied to clipboard.'); }, function () { setNote('The browser blocked clipboard access - select the figures and copy them manually.'); });
+  } else {
+    setNote('This browser has no clipboard API - select the figures and copy them manually.');
+  }
+}
+
+function reset() {
+  el('gv-shape').value = 'rect';
+  el('gv-units').value = 'ft';
+  el('gv-len').value = 20;
+  el('gv-wid').value = 30;
+  el('gv-dia').value = 20;
+  el('gv-depth').value = 3;
+  el('gv-material').value = 'pea-gravel';
+  el('gv-density').value = 2800;
+  el('gv-waste').value = 10;
+  el('gv-price').value = 0;
+  syncShape(); syncLabels(); recalc();
+}
+
+function onPreset(btn) {
+  el('gv-depth').value = isMetric() ? btn.getAttribute('data-m') : btn.getAttribute('data-ft');
+  recalc();
+}
+
+function wire() {
+  var ids = ['gv-len', 'gv-wid', 'gv-dia', 'gv-depth', 'gv-density', 'gv-waste', 'gv-price'];
+  for (var i = 0; i < ids.length; i++) {
+    var node = el(ids[i]);
+    if (node) node.addEventListener('input', recalc);
+  }
+  el('gv-shape').addEventListener('change', function () { syncShape(); recalc(); });
+  el('gv-units').addEventListener('change', function () { syncLabels(); recalc(); });
+  el('gv-material').addEventListener('change', function () { syncDensity(); recalc(); });
+  var presets = el('gv-presets').querySelectorAll('.gv-preset');
+  for (var j = 0; j < presets.length; j++) {
+    (function (b) { b.addEventListener('click', function () { onPreset(b); }); })(presets[j]);
+  }
+  el('gv-copy').addEventListener('click', copyResults);
+  el('gv-print').addEventListener('click', function () { window.print(); });
+  el('gv-reset').addEventListener('click', reset);
+
+  syncShape();
+  syncLabels();
+  syncDensity();
+  recalc();
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+else wire();
+})();
+</script>
+</body>
+</html>
