@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 381 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 382 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 381
+- Total tools: 382
 - Categories: 11
 - Last updated: 2026-11-19
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -116,7 +116,7 @@ Free CSS specificity calculator. Compute a,b,c values for any selector instantly
 
 Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.
 
-## Calculators (39 tools)
+## Calculators (40 tools)
 
 Browse all: [Calculators](https://tools.scoreroute.com/tools/calculators/.md)
 
@@ -470,6 +470,15 @@ Free solar sizing calculator. Estimate solar panel array size and battery storag
 - Tags: heart, rate, zones, bpm, zone 2, training, running, fitness, calculator
 
 Free heart rate zone calculator. Enter your age to get all five training zones in bpm, compare four max HR formulas, and find your personal Zone 2 range.
+
+### Gravel Calculator - Tons, Cubic Yards & Bags
+
+- URL: https://tools.scoreroute.com/tools/gravel-calculator/
+- Markdown: https://tools.scoreroute.com/tools/gravel-calculator/.md
+- Category: Calculators
+- Tags: gravel, gravel calculator, cubic yards, tons, crushed stone, sand, topsoil, mulch, landscaping, bags
+
+Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.
 
 ## Generators (53 tools)
 
@@ -3488,7 +3497,7 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 381 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 382 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

@@ -44,7 +44,7 @@ export async function onRequest({ request, env, params }) {
 
   if (pathParts.length === 1 && pathParts[0] === 'create' && method === 'POST') {
     const id = generateId();
-    const webhookUrl = `https://tools.scoreroute.com/api/webhook-tester/${id}`;
+    const webhookUrl = `https://tools.scoreroute.com/api/webhook-tester/${id}/receive`;
     await saveWebhookData(id, { requests: [], createdAt: new Date().toISOString() });
     return new Response(JSON.stringify({ id, webhook_url: webhookUrl, expires_in: TTL_SECONDS }), { headers });
   }
