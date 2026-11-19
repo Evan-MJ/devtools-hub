@@ -2526,6 +2526,18 @@ export async function onRequest(context) {
       // inlining all 357 here would be the third copy of a catalogue the site already serves three
       // times (the BUG-353 disease), and it would not fit the 50 KB budget.
       const _gridSlugs = new Set(_sortedByName.slice(0, _PAGE_SIZE).map(t => t.slug));
+      // BUG-569: the HTML renders THREE card lists — Popular Tools (8 featured), Recently
+      // Updated (<=6) and the first 50 by name — but the mirror described only the third. The
+      // other 12 cards' descriptions were on the page and absent from /tools/.md, i.e. the
+      // exact `agentimization/markdown-content-parity` defect BUG-397 closed for the grid and
+      // this round found still open for the other two lists. Declared ONCE, above the branch,
+      // so the page and the mirror cannot drift apart (BUG-397's own rule).
+      const _popular = _tools.filter(t => t.featured).slice(0, 8);
+      const _popularSlugs = new Set(_popular.map(t => t.slug));
+      const _RECENT_COUNT = 6;
+      const _recentTools = _tools.slice(-_RECENT_COUNT).reverse();
+      const _recentOnly = _recentTools.filter(t => !_popularSlugs.has(t.slug));
+      const _describedSlugs = new Set([..._gridSlugs, ..._popular.map(t => t.slug), ..._recentOnly.map(t => t.slug)]);
       if (_isMd) {
         // BUG-353: `agentimization/page-size-markdown` — /.md was 96 KB and this 182 KB, the only
         // two mirrors over the 50 KB budget (346 tool mirrors average 6.2 KB, the 11 category
@@ -2549,7 +2561,7 @@ export async function onRequest(context) {
         _md += 'Full description for every tool: [llms-full.txt](/llms-full.txt) ' +
                '(machine-readable catalogue: [/api/tools](/api/tools), compact index: ' +
                '[llms.txt](/llms.txt)). Each name below links to that tool\'s own markdown ' +
-               'mirror, which carries its description in full. The ' + _PAGE_SIZE + ' tools this page ' +
+               'mirror, which carries its description in full. The ' + _describedSlugs.size + ' tools this page ' +
                'shows carry their description on their own line.\n\n';
         for (const [_ck,_cn] of _CAT_ORDER) {
           const _catTools = _tools.filter(t=>t.category===_ck);
@@ -2557,7 +2569,7 @@ export async function onRequest(context) {
           for (const t of _catTools.slice().sort((a,b)=>a.name.localeCompare(b.name))) {
             _md += '- [' + t.name + '](/tools/' + t.slug + '/.md)' +
                    (t.isnew?' _(New)_':(t.featured?' _(Popular)_':'')) +
-                   (_gridSlugs.has(t.slug) ? ': ' + t.desc : '') + '\n';
+                   (_describedSlugs.has(t.slug) ? ': ' + t.desc : '') + '\n';
           }
           _md += '\n';
         }
@@ -2617,13 +2629,6 @@ const _today = new Date().toISOString().split('T')[0];
             { '@type': 'ListItem', 'position': 2, 'name': 'All Tools' }
           ]
         }) + '</script>';
-        // Build popular and recent tools (same logic as homepage)
-        const _popular = _tools.filter(t => t.featured).slice(0, 8);
-        const _popularSlugs = new Set(_popular.map(t => t.slug));
-        const _RECENT_COUNT = 6;
-        const _recentTools = _tools.slice(-_RECENT_COUNT).reverse();
-        const _recentOnly = _recentTools.filter(t => !_popularSlugs.has(t.slug));
-        
         // Category nav HTML (same as homepage)
         const _catNavHtml = '<nav class="category-nav" aria-label="Category navigation"><div class="container">' + nl +
             _CAT_ORDER.map(c => '<button class="nav-btn" data-target="' + c[0] + '" aria-label="Jump to ' + _esc(c[1]) + '">' + _esc(c[1]) + '</button>').join('') + nl +
