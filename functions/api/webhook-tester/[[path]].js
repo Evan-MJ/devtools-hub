@@ -1,5 +1,6 @@
 export async function onRequest({ request, env, params }) {
-  const path = params.path || '';
+  const pathArray = params.path || [];
+  const path = Array.isArray(pathArray) ? pathArray.join('/') : String(pathArray);
   const method = request.method;
 
   const WEBHOOK_PREFIX = 'webhook:';
