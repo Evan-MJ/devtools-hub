@@ -1,8 +1,6 @@
-export async function onRequest({ request, env }) {
-  const url = new URL(request.url);
-  const pathParts = url.pathname.split('/').filter(Boolean);
-  const action = pathParts[pathParts.length - 1];
-  const webhookId = pathParts[pathParts.length - 2];
+export async function onRequest({ request, env, params }) {
+  const path = params.path || '';
+  const method = request.method;
 
   const WEBHOOK_PREFIX = 'webhook:';
   const MAX_REQUESTS = 100;
@@ -37,19 +35,21 @@ export async function onRequest({ request, env }) {
     'Access-Control-Allow-Headers': 'Content-Type'
   };
 
-  if (request.method === 'OPTIONS') {
+  if (method === 'OPTIONS') {
     return new Response(null, { headers, status: 204 });
   }
 
-  if (action === 'create' && request.method === 'POST') {
+  if (path === 'create' && method === 'POST') {
     const id = generateId();
     const webhookUrl = `https://tools.scoreroute.com/api/webhook-tester/${id}`;
     await saveWebhookData(id, { requests: [], createdAt: new Date().toISOString() });
     return new Response(JSON.stringify({ id, webhook_url: webhookUrl, expires_in: TTL_SECONDS }), { headers });
   }
 
-  if (webhookId && action === 'receive') {
-    if (request.method === 'OPTIONS') return new Response(null, { headers, status: 204 });
+  if (path === 'receive' && method !== 'GET') {
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    const webhookId = pathParts[pathParts.length - 2];
 
     const data = await getWebhookData(webhookId);
     const timestamp = new Date().toISOString();
@@ -70,7 +70,7 @@ export async function onRequest({ request, env }) {
 
     const requestData = {
       id: generateId(),
-      method: request.method,
+      method,
       headers: Object.fromEntries(request.headers.entries()),
       query: Object.fromEntries(url.searchParams.entries()),
       body_text: bodyText,
@@ -88,12 +88,18 @@ export async function onRequest({ request, env }) {
     return new Response(JSON.stringify({ success: true, request_id: requestData.id }), { headers, status: 201 });
   }
 
-  if (webhookId && action === 'list' && request.method === 'GET') {
+  if (path === 'list' && method === 'GET') {
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    const webhookId = pathParts[pathParts.length - 2];
     const data = await getWebhookData(webhookId);
     return new Response(JSON.stringify(data), { headers });
   }
 
-  if (webhookId && action === 'clear' && request.method === 'POST') {
+  if (path === 'clear' && method === 'POST') {
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    const webhookId = pathParts[pathParts.length - 2];
     await saveWebhookData(webhookId, { requests: [], createdAt: new Date().toISOString() });
     return new Response(JSON.stringify({ success: true }), { headers });
   }
