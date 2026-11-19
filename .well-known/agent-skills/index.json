@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 380,
+  "tool_count": 381,
   "categories": [
     "ai-language",
     "calculators",
@@ -2680,6 +2680,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/json-schema-generator/.md",
       "description": "Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100..."
+    },
+    {
+      "name": "Webhook Tester - Capture & Inspect HTTP Webhooks",
+      "url": "https://tools.scoreroute.com/tools/webhook-tester/",
+      "category": "network",
+      "markdown_url": "https://tools.scoreroute.com/tools/webhook-tester/.md",
+      "description": "Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and b..."
     }
   ],
   "skills": [
@@ -5342,6 +5349,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/json-schema-generator/.md",
       "description": "Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100..."
+    },
+    {
+      "name": "Webhook Tester - Capture & Inspect HTTP Webhooks",
+      "url": "https://tools.scoreroute.com/tools/webhook-tester/",
+      "category": "network",
+      "markdown_url": "https://tools.scoreroute.com/tools/webhook-tester/.md",
+      "description": "Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and b..."
     }
   ]
 }

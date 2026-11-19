@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Webhook Tester - Capture &amp; Inspect HTTP Webhooks</title>
+  <meta name="description" content="Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.">
+  <link rel="canonical" href="https://tools.scoreroute.com/tools/webhook-tester/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Webhook Tester - Capture &amp; Inspect HTTP Webhooks">
+  <meta property="og:description" content="Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://tools.scoreroute.com/tools/webhook-tester/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Webhook Tester - Inspect HTTP Webhooks Free">
+  <meta name="twitter:description" content="Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Webhook Tester - Capture & Inspect HTTP Webhooks",
+    "description": "Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.",
+    "url": "https://tools.scoreroute.com/tools/webhook-tester/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any (Web-based)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "BAOMING (Evan-MJ)", "url": "https://github.com/Evan-MJ" },
+    "publisher": { "@type": "Organization", "name": "DevTools Hub", "url": "https://tools.scoreroute.com/" }
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Webhook Tester</h1>
+      <p class="subtitle">Capture and inspect HTTP webhooks in real-time</p>
+      <nav class="breadcrumb">
+        <a href="/">Home</a> > <a href="/tools/">Tools</a> > <a href="/tools/network/">Network</a> > <span>Webhook Tester</span>
+        <a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <div class="tool-main">
+        <h2>Your Webhook Endpoint</h2>
+
+        <div class="webhook-url-section">
+          <div id="url-display" class="url-display hidden">
+            <label>Webhook URL:</label>
+            <div class="url-input-group">
+              <input type="text" id="webhook-url" readonly placeholder="Click 'Generate URL' to create your endpoint">
+              <button id="copy-url" class="btn btn-secondary" title="Copy URL">Copy</button>
+            </div>
+            <p class="url-meta" id="url-meta"></p>
+          </div>
+
+          <div id="generate-section" class="generate-section">
+            <button id="generate-btn" class="btn btn-primary btn-large">Generate Webhook URL</button>
+            <p class="hint">Your unique endpoint will be ready instantly. No signup required.</p>
+          </div>
+
+          <div id="actions-section" class="actions-section hidden">
+            <div class="btn-group">
+              <button id="copy-url-main" class="btn btn-secondary">Copy URL</button>
+              <button id="open-url" class="btn" target="_blank">Open in New Tab</button>
+              <button id="clear-btn" class="btn btn-secondary">Clear History</button>
+              <button id="new-btn" class="btn">New Endpoint</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <h2>Received Requests</h2>
+        <div class="requests-header">
+          <span id="request-count">0 requests</span>
+          <label class="auto-refresh">
+            <input type="checkbox" id="auto-refresh" checked> Auto-refresh (3s)
+          </label>
+        </div>
+
+        <div id="requests-list" class="requests-list">
+          <div class="empty-state" id="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <p>Waiting for webhooks...</p>
+            <p class="hint">Send a request to your webhook URL to see it here</p>
+          </div>
+        </div>
+
+        <div id="request-detail" class="request-detail hidden">
+          <div class="detail-header">
+            <h3>Request Details</h3>
+            <button id="close-detail" class="btn btn-secondary btn-sm">Close</button>
+          </div>
+          <div class="detail-tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="headers">Headers</button>
+            <button class="tab-btn" data-tab="body">Body</button>
+            <button class="tab-btn" data-tab="curl">cURL</button>
+          </div>
+          <div class="detail-content">
+            <div id="tab-overview" class="tab-panel active"></div>
+            <div id="tab-headers" class="tab-panel"></div>
+            <div id="tab-body" class="tab-panel"></div>
+            <div id="tab-curl" class="tab-panel"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <details class="faq-item">
+          <summary>How does this work?</summary>
+          <p>Click "Generate Webhook URL" to create a unique endpoint. Send HTTP requests (POST, GET, PUT, DELETE, etc.) to that URL from your application, CI/CD pipeline, or testing tool. All requests are captured and displayed here in real-time with full headers, query parameters, and body content.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my data private?</summary>
+          <p>Yes. Requests are stored temporarily in Cloudflare KV with a 7-day TTL and a maximum of 100 requests per endpoint. No signup is required, no data is logged permanently, and endpoints are not shared. Each endpoint uses a cryptographically random ID that cannot be guessed.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What request types are supported?</summary>
+          <p>All HTTP methods (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, etc.). The body is captured as raw text and parsed as JSON when applicable. Query parameters, headers, and IP address are all recorded.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I test with cURL?</summary>
+          <p>Click the "cURL" tab on any captured request to see the exact cURL command to reproduce it. You can also use the "Copy URL" button and construct your own requests.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use this for production webhooks?</summary>
+          <p>This tool is designed for development and testing only. Endpoints expire after 7 days and are limited to 100 requests. For production use, consider services like webhook.site, ngrok, or your own infrastructure.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+  </footer>
+
+  <script src="/tools.js"></script>
+  <script>
+    const API_BASE = '/api/webhook-tester';
+    let currentWebhookId = null;
+    let pollInterval = null;
+    let selectedRequestId = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function showStatus(msg, type = 'info') {
+      const el = $('status');
+      el.textContent = msg;
+      el.className = 'status ' + type;
+      el.style.display = 'block';
+    }
+
+    function hideStatus() {
+      $('status').style.display = 'none';
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showStatus('Copied to clipboard!', 'success');
+        setTimeout(hideStatus, 2000);
+      }).catch(() => {
+        showStatus('Failed to copy', 'error');
+      });
+    }
+
+    function formatJson(obj) {
+      try {
+        return JSON.stringify(obj, null, 2);
+      } catch {
+        return String(obj);
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatHeaders(headers) {
+      return Object.entries(headers)
+        .map(([k, v]) => `${escapeHtml(k)}: ${escapeHtml(v)}`)
+        .join('\n');
+    }
+
+    function renderRequestList(requests) {
+      const list = $('requests-list');
+      const count = $('request-count');
+
+      count.textContent = `${requests.length} request${requests.length !== 1 ? 's' : ''}`;
+
+      if (requests.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <p>Waiting for webhooks...</p>
+            <p class="hint">Send a request to your webhook URL to see it here</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = requests.map(req => `
+        <div class="request-item" data-id="${req.id}">
+          <div class="request-summary">
+            <span class="method method-${req.method.toLowerCase()}">${req.method}</span>
+            <span class="req-time">${new Date(req.timestamp).toLocaleTimeString()}</span>
+            <span class="req-size">${formatBytes(req.size)}</span>
+            <span class="req-ip">${escapeHtml(req.ip)}</span>
+          </div>
+          <div class="req-preview">
+            ${req.body_json ? '<span class="badge json">JSON</span>' : ''}
+            ${req.query && Object.keys(req.query).length ? '<span class="badge query">Query</span>' : ''}
+            ${req.content_type ? `<span class="badge ctype">${escapeHtml(req.content_type.split(';')[0])}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      list.querySelectorAll('.request-item').forEach(item => {
+        item.addEventListener('click', () => showRequestDetail(item.dataset.id, requests));
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+    }
+
+    function showRequestDetail(requestId, requests) {
+      const req = requests.find(r => r.id === requestId);
+      if (!req) return;
+
+      selectedRequestId = requestId;
+      $('request-detail').classList.remove('hidden');
+
+      document.querySelectorAll('.request-item').forEach(el => {
+        el.classList.toggle('selected', el.dataset.id === requestId);
+      });
+
+      const hasQuery = req.query && Object.keys(req.query).length > 0;
+      const hasBody = req.body_text && req.body_text.length > 0;
+
+      $('tab-overview').innerHTML = `
+        <table class="detail-table">
+          <tr><th>Method</th><td><span class="method method-${req.method.toLowerCase()}">${req.method}</span></td></tr>
+          <tr><th>Timestamp</th><td>${new Date(req.timestamp).toLocaleString()}</td></tr>
+          <tr><th>IP Address</th><td>${escapeHtml(req.ip)}</td></tr>
+          <tr><th>Size</th><td>${formatBytes(req.size)}</td></tr>
+          <tr><th>Content-Type</th><td>${escapeHtml(req.content_type || 'none')}</td></tr>
+          <tr><th>Query Params</th><td>${hasQuery ? Object.keys(req.query).length + ' parameter(s)' : 'none'}</td></tr>
+          <tr><th>Has Body</th><td>${hasBody ? 'yes (' + req.body_text.length + ' chars)' : 'no'}</td></tr>
+        </table>
+      `;
+
+      $('tab-headers').innerHTML = `
+        <pre class="headers-pre">${formatHeaders(req.headers)}</pre>
+        <button class="btn btn-sm copy-headers" data-content="${escapeHtml(formatHeaders(req.headers))}">Copy Headers</button>
+      `;
+
+      const bodyContent = req.body_json ? formatJson(req.body_json) : (req.body_text || '(empty)');
+      $('tab-body').innerHTML = `
+        <pre class="body-pre">${escapeHtml(bodyContent)}</pre>
+        <button class="btn btn-sm copy-body" data-content="${escapeHtml(bodyContent)}">Copy Body</button>
+      `;
+
+      const curlUrl = `${API_BASE}/${currentWebhookId}/receive${req.query && Object.keys(req.query).length ? '?' + new URLSearchParams(req.query).toString() : ''}`;
+      const curlHeaders = Object.entries(req.headers)
+        .filter(([k]) => !['host', 'content-length', 'cf-connecting-ip', 'cf-ray', 'cf-visitor', 'cf-ipcountry'].includes(k.toLowerCase()))
+        .map(([k, v]) => `-H '${k}: ${v.replace(/'/g, "'\\''")}'`)
+        .join(' \\\n  ');
+      const curlBody = hasBody ? `-d '${req.body_text.replace(/'/g, "'\\''")}'` : '';
+      const curlCmd = `curl -X ${req.method} '${curlUrl}' \\\n  ${curlHeaders}${curlBody ? ' \\\n  ' + curlBody : ''}`;
+
+      $('tab-curl').innerHTML = `
+        <pre class="curl-pre">${escapeHtml(curlCmd)}</pre>
+        <button class="btn btn-sm copy-curl" data-content="${escapeHtml(curlCmd)}">Copy cURL</button>
+      `;
+
+      document.querySelectorAll('.copy-headers, .copy-body, .copy-curl').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          copyToClipboard(btn.dataset.content);
+        });
+      });
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === 'tab-' + tabName);
+      });
+    }
+
+    async function generateWebhook() {
+      $('generate-btn').disabled = true;
+      $('generate-btn').textContent = 'Generating...';
+      showStatus('Creating your webhook endpoint...', 'info');
+
+      try {
+        const res = await fetch(`${API_BASE}/create`, { method: 'POST' });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Failed to create webhook');
+
+        currentWebhookId = data.id;
+        $('webhook-url').value = data.webhook_url;
+        $('url-meta').textContent = `Expires in ${Math.floor(data.expires_in / 86400)} days · Max 100 requests`;
+        $('open-url').onclick = () => window.open(data.webhook_url, '_blank');
+
+        $('generate-section').classList.add('hidden');
+        $('url-display').classList.remove('hidden');
+        $('actions-section').classList.remove('hidden');
+        $('empty-state').classList.remove('hidden');
+
+        startPolling();
+        showStatus('Webhook endpoint ready!', 'success');
+        setTimeout(hideStatus, 3000);
+      } catch (e) {
+        showStatus('Error: ' + e.message, 'error');
+        $('generate-btn').disabled = false;
+        $('generate-btn').textContent = 'Generate Webhook URL';
+      }
+    }
+
+    async function fetchRequests() {
+      if (!currentWebhookId) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/${currentWebhookId}/list`);
+        const data = await res.json();
+        renderRequestList(data.requests || []);
+      } catch (e) {
+        console.error('Failed to fetch requests:', e);
+      }
+    }
+
+    function startPolling() {
+      if (pollInterval) clearInterval(pollInterval);
+      fetchRequests();
+      pollInterval = setInterval(() => {
+        if ($('auto-refresh').checked) fetchRequests();
+      }, 3000);
+    }
+
+    function stopPolling() {
+      if (pollInterval) clearInterval(pollInterval);
+      pollInterval = null;
+    }
+
+    async function clearHistory() {
+      if (!currentWebhookId) return;
+      if (!confirm('Clear all captured requests?')) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/${currentWebhookId}/clear`, { method: 'POST' });
+        if (!res.ok) throw new Error('Failed to clear');
+        fetchRequests();
+        showStatus('History cleared', 'success');
+        setTimeout(hideStatus, 2000);
+      } catch (e) {
+        showStatus('Error: ' + e.message, 'error');
+      }
+    }
+
+    function newEndpoint() {
+      stopPolling();
+      currentWebhookId = null;
+      selectedRequestId = null;
+      $('generate-section').classList.remove('hidden');
+      $('url-display').classList.add('hidden');
+      $('actions-section').classList.add('hidden');
+      $('request-detail').classList.add('hidden');
+      $('generate-btn').disabled = false;
+      $('generate-btn').textContent = 'Generate Webhook URL';
+      renderRequestList([]);
+    }
+
+    $('generate-btn').addEventListener('click', generateWebhook);
+    $('copy-url').addEventListener('click', () => copyToClipboard($('webhook-url').value));
+    $('copy-url-main').addEventListener('click', () => copyToClipboard($('webhook-url').value));
+    $('clear-btn').addEventListener('click', clearHistory);
+    $('new-btn').addEventListener('click', newEndpoint);
+    $('close-detail').addEventListener('click', () => {
+      $('request-detail').classList.add('hidden');
+      document.querySelectorAll('.request-item').forEach(el => el.classList.remove('selected'));
+      selectedRequestId = null;
+    });
+    $('auto-refresh').addEventListener('change', () => {
+      if ($('auto-refresh').checked) startPolling(); else stopPolling();
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !$('request-detail').classList.contains('hidden')) {
+        $('close-detail').click();
+      }
+    });
+  </script>
+  <style>
+    .webhook-url-section { margin-bottom: 24px; }
+    .url-display { background: #1a1a2e; border: 1px solid #1f2638; border-radius: 8px; padding: 20px; }
+    .url-display label { display: block; font-size: 14px; color: #b3b8c0; margin-bottom: 8px; }
+    .url-input-group { display: flex; gap: 12px; }
+    .url-input-group input { flex: 1; background: #0f0f23; border: 1px solid #1f2638; border-radius: 6px; padding: 12px 16px; color: #e8e8f0; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+    .url-meta { margin-top: 12px; font-size: 13px; color: #888; }
+    .generate-section { text-align: center; padding: 40px 20px; }
+    .generate-section .hint { margin-top: 12px; color: #888; font-size: 14px; }
+    .btn-large { padding: 16px 32px; font-size: 16px; }
+    .actions-section { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .requests-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .auto-refresh { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #b3b8c0; cursor: pointer; }
+    .requests-list { display: flex; flex-direction: column; gap: 8px; }
+    .request-item { background: #1a1a2e; border: 1px solid #1f2638; border-radius: 8px; padding: 16px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .request-item:hover { border-color: #667eea; background: #1e1e3a; }
+    .request-item.selected { border-color: #667eea; background: #1e1e3a; }
+    .request-summary { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .method { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+    .method-get { background: #10b981; color: #000; }
+    .method-post { background: #3b82f6; color: #fff; }
+    .method-put { background: #f59e0b; color: #000; }
+    .method-patch { background: #8b5cf6; color: #fff; }
+    .method-delete { background: #ef4444; color: #fff; }
+    .method-head, .method-options { background: #6b7280; color: #fff; }
+    .req-time { color: #888; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+    .req-size { color: #888; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+    .req-ip { color: #667eea; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+    .req-preview { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 100px; background: #1f2638; color: #b3b8c0; }
+    .badge.json { background: #10b981; color: #fff; }
+    .badge.query { background: #8b5cf6; color: #fff; }
+    .badge.ctype { background: #f59e0b; color: #000; }
+    .empty-state { text-align: center; padding: 60px 20px; color: #888; }
+    .empty-state svg { margin-bottom: 16px; opacity: 0.5; }
+    .empty-state p { margin: 8px 0; }
+    .request-detail { background: #1a1a2e; border: 1px solid #1f2638; border-radius: 8px; padding: 20px; margin-top: 24px; animation: slideDown 0.2s ease; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .detail-header h3 { margin: 0; }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .detail-tabs { display: flex; gap: 4px; border-bottom: 1px solid #1f2638; margin-bottom: 16px; }
+    .tab-btn { background: none; border: none; padding: 10px 16px; color: #888; cursor: pointer; border-radius: 6px 6px 0 0; font-size: 13px; transition: all 0.2s; }
+    .tab-btn:hover { color: #e8e8f0; background: #1f2638; }
+    .tab-btn.active { color: #667eea; background: #1f2638; border-bottom: 2px solid #667eea; margin-bottom: -1px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.15s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .detail-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .detail-table th { text-align: left; padding: 10px 0; color: #888; width: 140px; }
+    .detail-table td { padding: 10px 0; color: #e8e8f0; }
+    .headers-pre, .body-pre, .curl-pre { background: #0f0f23; border: 1px solid #1f2638; border-radius: 6px; padding: 16px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: #e8e8f0; max-height: 400px; }
+    .hidden { display: none !important; }
+    @media (max-width: 600px) {
+      .url-input-group { flex-direction: column; }
+      .actions-section { flex-direction: column; }
+      .request-summary { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+  
+</body>
+</html>
