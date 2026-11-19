@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 380 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 381 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 380
+- Total tools: 381
 - Categories: 11
-- Last updated: 2026-11-18
+- Last updated: 2026-11-19
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (11 tools)
@@ -2004,7 +2004,7 @@ Convert video files between formats like MP4, WebM, MOV and MKV right in your br
 
 Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.
 
-## Network Tools (25 tools)
+## Network Tools (26 tools)
 
 Browse all: [Network Tools](https://tools.scoreroute.com/tools/network/.md)
 
@@ -2232,6 +2232,15 @@ Free AI crawler log analyzer. Drop an Apache, nginx, IIS or Cloudflare log: GPTB
 - Tags: port checker, port checker online, check open ports, port scanner, tcp port test, port test, is port open, open port checker, check port, port status, port 443 open, check port 22, ssh port test, port forwarding test, firewall port test, can i connect to port, port reachability, closed port vs filtered, inetd, netcat -vz, free, no signup, ai-resistant, problem-solver
 
 Free port checker. Test up to 25 TCP ports from outside your network and get open, closed or filtered with latency, no signup.
+
+### Webhook Tester - Capture & Inspect HTTP Webhooks
+
+- URL: https://tools.scoreroute.com/tools/webhook-tester/
+- Markdown: https://tools.scoreroute.com/tools/webhook-tester/.md
+- Category: Network Tools
+- Tags: webhook, tester, inspect, http, api, callback, debug
+
+Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.
 
 ## Code Testing (17 tools)
 
@@ -3479,7 +3488,7 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 380 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 381 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
