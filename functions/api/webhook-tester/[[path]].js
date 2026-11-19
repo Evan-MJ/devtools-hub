@@ -1,6 +1,5 @@
 export async function onRequest({ request, env, params }) {
   const pathArray = params.path || [];
-  const path = Array.isArray(pathArray) ? pathArray.join('/') : String(pathArray);
   const method = request.method;
 
   const WEBHOOK_PREFIX = 'webhook:';
@@ -40,69 +39,67 @@ export async function onRequest({ request, env, params }) {
     return new Response(null, { headers, status: 204 });
   }
 
-  if (path === 'create' && method === 'POST') {
+  const pathStr = Array.isArray(pathArray) ? pathArray.join('/') : String(pathArray);
+  const pathParts = pathStr.split('/').filter(Boolean);
+
+  if (pathParts.length === 1 && pathParts[0] === 'create' && method === 'POST') {
     const id = generateId();
     const webhookUrl = `https://tools.scoreroute.com/api/webhook-tester/${id}`;
     await saveWebhookData(id, { requests: [], createdAt: new Date().toISOString() });
     return new Response(JSON.stringify({ id, webhook_url: webhookUrl, expires_in: TTL_SECONDS }), { headers });
   }
 
-  if (path === 'receive' && method !== 'GET') {
-    const url = new URL(request.url);
-    const pathParts = url.pathname.split('/').filter(Boolean);
-    const webhookId = pathParts[pathParts.length - 2];
+  if (pathParts.length === 2) {
+    const webhookId = pathParts[0];
+    const action = pathParts[1];
 
-    const data = await getWebhookData(webhookId);
-    const timestamp = new Date().toISOString();
-    const clientIp = getClientIp(request);
+    if (action === 'receive' && method !== 'GET') {
+      const data = await getWebhookData(webhookId);
+      const timestamp = new Date().toISOString();
+      const clientIp = getClientIp(request);
 
-    let bodyText = '';
-    let bodyJson = null;
-    const contentType = request.headers.get('content-type') || '';
+      let bodyText = '';
+      let bodyJson = null;
+      const contentType = request.headers.get('content-type') || '';
 
-    try {
-      bodyText = await request.text();
-      if (contentType.includes('application/json') && bodyText) {
-        bodyJson = JSON.parse(bodyText);
+      try {
+        bodyText = await request.text();
+        if (contentType.includes('application/json') && bodyText) {
+          bodyJson = JSON.parse(bodyText);
+        }
+      } catch {
+        bodyJson = null;
       }
-    } catch {
-      bodyJson = null;
+
+      const requestData = {
+        id: generateId(),
+        method,
+        headers: Object.fromEntries(request.headers.entries()),
+        query: Object.fromEntries(new URL(request.url).searchParams.entries()),
+        body_text: bodyText,
+        body_json: bodyJson,
+        content_type: contentType,
+        ip: clientIp,
+        timestamp,
+        size: bodyText.length
+      };
+
+      data.requests.unshift(requestData);
+      if (data.requests.length > MAX_REQUESTS) data.requests.length = MAX_REQUESTS;
+      await saveWebhookData(webhookId, data);
+
+      return new Response(JSON.stringify({ success: true, request_id: requestData.id }), { headers, status: 201 });
     }
 
-    const requestData = {
-      id: generateId(),
-      method,
-      headers: Object.fromEntries(request.headers.entries()),
-      query: Object.fromEntries(url.searchParams.entries()),
-      body_text: bodyText,
-      body_json: bodyJson,
-      content_type: contentType,
-      ip: clientIp,
-      timestamp,
-      size: bodyText.length
-    };
+    if (action === 'list' && method === 'GET') {
+      const data = await getWebhookData(webhookId);
+      return new Response(JSON.stringify(data), { headers });
+    }
 
-    data.requests.unshift(requestData);
-    if (data.requests.length > MAX_REQUESTS) data.requests.length = MAX_REQUESTS;
-    await saveWebhookData(webhookId, data);
-
-    return new Response(JSON.stringify({ success: true, request_id: requestData.id }), { headers, status: 201 });
-  }
-
-  if (path === 'list' && method === 'GET') {
-    const url = new URL(request.url);
-    const pathParts = url.pathname.split('/').filter(Boolean);
-    const webhookId = pathParts[pathParts.length - 2];
-    const data = await getWebhookData(webhookId);
-    return new Response(JSON.stringify(data), { headers });
-  }
-
-  if (path === 'clear' && method === 'POST') {
-    const url = new URL(request.url);
-    const pathParts = url.pathname.split('/').filter(Boolean);
-    const webhookId = pathParts[pathParts.length - 2];
-    await saveWebhookData(webhookId, { requests: [], createdAt: new Date().toISOString() });
-    return new Response(JSON.stringify({ success: true }), { headers });
+    if (action === 'clear' && method === 'POST') {
+      await saveWebhookData(webhookId, { requests: [], createdAt: new Date().toISOString() });
+      return new Response(JSON.stringify({ success: true }), { headers });
+    }
   }
 
   return new Response(JSON.stringify({ error: 'Not found' }), { headers, status: 404 });
