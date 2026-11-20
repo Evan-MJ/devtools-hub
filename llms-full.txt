@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 382 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 383 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 382
+- Total tools: 383
 - Categories: 11
-- Last updated: 2026-11-19
+- Last updated: 2026-11-20
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (11 tools)
@@ -1370,7 +1370,7 @@ Translate an Excel formula between 17 spreadsheet languages and find the #NAME? 
 
 Free online MD to PDF converter. Convert markdown to PDF instantly in browser. Preserve formatting, headings, code blocks, tables. No signup, 100% private.
 
-## Media Tools (71 tools)
+## Media Tools (72 tools)
 
 Browse all: [Media Tools](https://tools.scoreroute.com/tools/media/.md)
 
@@ -2012,6 +2012,15 @@ Convert video files between formats like MP4, WebM, MOV and MKV right in your br
 - Tags: video, text, converter, transcribe, transcription, whisper, audio, plain, free, no-signup, no-watermark, ai-resistant
 
 Free video to text converter. Transcribe audio/video to plain text with Whisper AI. 18 languages, timestamps, copy, download. No signup.
+
+### AI Image Detector
+
+- URL: https://tools.scoreroute.com/tools/ai-image-detector/
+- Markdown: https://tools.scoreroute.com/tools/ai-image-detector/.md
+- Category: Media Tools
+- Tags: ai, image, detector, deepfake, generated, synthetic, authenticity
+
+Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you share a photo.
 
 ## Network Tools (26 tools)
 
@@ -3497,7 +3506,7 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 382 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 383 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

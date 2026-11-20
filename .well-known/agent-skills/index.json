@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 382,
+  "tool_count": 383,
   "categories": [
     "ai-language",
     "calculators",
@@ -2694,6 +2694,13 @@
       "category": "calculators",
       "markdown_url": "https://tools.scoreroute.com/tools/gravel-calculator/.md",
       "description": "Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sa..."
+    },
+    {
+      "name": "AI Image Detector",
+      "url": "https://tools.scoreroute.com/tools/ai-image-detector/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-image-detector/.md",
+      "description": "Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you s..."
     }
   ],
   "skills": [
@@ -5370,6 +5377,13 @@
       "category": "calculators",
       "markdown_url": "https://tools.scoreroute.com/tools/gravel-calculator/.md",
       "description": "Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sa..."
+    },
+    {
+      "name": "AI Image Detector",
+      "url": "https://tools.scoreroute.com/tools/ai-image-detector/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-image-detector/.md",
+      "description": "Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you s..."
     }
   ]
 }
