@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <title>AI Image Detector | DevTools Hub</title>
+    <meta name="description" content="Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you share a photo.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/ai-image-detector/">
+    <meta property="og:title" content="AI Image Detector | DevTools Hub">
+    <meta property="og:description" content="Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you share a photo.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ai-image-detector/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"AI Image Detector | DevTools Hub","description":"Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you share a photo.","url":"https://tools.scoreroute.com/tools/ai-image-detector/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"BAOMING"},"datePublished":"2026-11-20","dateModified":"2026-11-20"}
+    </script>
+    <style>
+        .aid-container { max-width: 900px; margin: 0 auto; }
+        .aid-desc { color: #b3b8c0; margin-bottom: 20px; }
+        .aid-upload { margin-bottom: 20px; }
+        .aid-dropzone { border: 2px dashed #667eea; border-radius: 12px; padding: 40px 20px; text-align: center; color: #b3b8c0; cursor: pointer; background: #131826; }
+        .aid-dropzone:hover { border-color: #7eb3ff; color: #e6eaf2; }
+        .aid-preview { margin-top: 16px; text-align: center; }
+        .aid-preview img { max-width: 100%; max-height: 420px; border-radius: 10px; }
+        .aid-loading { text-align: center; padding: 30px 0; }
+        .aid-error { background: rgba(255,80,80,.12); border: 1px solid rgba(255,80,80,.4); color: #ff9c9c; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; }
+        .aid-result { background: #131826; border: 1px solid #1f2638; border-radius: 12px; padding: 20px; }
+        .aid-verdict { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .aid-score-bar-bg { background: #0f0f23; border-radius: 8px; height: 12px; overflow: hidden; }
+        .aid-score-bar-fill { background: linear-gradient(90deg, #667eea, #7eb3ff); height: 100%; width: 0%; }
+        .aid-score-text { display: block; margin-top: 8px; color: #b3b8c0; }
+        .aid-details { margin-top: 16px; color: #d7dce4; }
+        .aid-actions { margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Image Detector</h1>
+            <p class="subtitle">AI Generated Image &amp; Deepfake Detection</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>AI Image Detector</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="aid-container">
+                    <h2>AI Image Authenticity Check</h2>
+                    <p class="aid-desc">Upload an image to check whether it looks AI generated or manipulated as a deepfake. The score is a probability, not proof, so use it as a lead signal before you share or trust the image.</p>
+
+                    <div class="aid-upload">
+                        <label for="image-input" class="aid-dropzone" id="aid-dropzone">Drop an image here or click to browse</label>
+                        <input type="file" id="image-input" accept="image/*" />
+                        <div class="aid-preview" id="aid-preview" style="display:none;">
+                            <img id="aid-preview-img" src="" alt="Upload preview" />
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button onclick="runAID()" class="btn btn-primary" id="aid-btn">Detect AI Image</button>
+                        <button onclick="clearAID()" class="btn btn-secondary">Clear</button>
+                    </div>
+
+                    <div id="aid-loading" class="aid-loading" style="display:none;">
+                        <div class="spinner"></div>
+                        <span>Analyzing image with AI vision...</span>
+                    </div>
+
+                    <div id="aid-error" class="aid-error" style="display:none;"></div>
+
+                    <div id="aid-result" class="aid-result" style="display:none;">
+                        <div class="result-header">
+                            <div class="verdict-section">
+                                <div class="verdict-badge" id="aid-verdict">Real</div>
+                                <div class="confidence-bar-container">
+                                    <div class="confidence-bar-bg">
+                                        <div class="confidence-bar-fill" id="aid-score-bar" style="width:0%;"></div>
+                                    </div>
+                                    <span class="confidence-text" id="aid-score-text">AI probability: 0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aid-details" id="aid-details"></div>
+                        <div class="aid-actions">
+                            <button onclick="aidCopyResult()" class="btn-action">Copy Full Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="problem-section">
+                    <h2>Why AI Image Detection Matters for Trust and Misinformation</h2>
+                    <p>AI image generators and face-swapping tools have made it cheap to produce convincing fake images. A single suspicious image can distort a public claim, a news story, or a personal memory before anyone checks it.</p>
+                    <ul>
+                        <li><strong>AI generated images</strong> are created end to end by a diffusion or GAN model rather than captured by a camera.</li>
+                        <li><strong>Deepfakes</strong> take a real photo and swap or modify a face so the subject looks like someone else.</li>
+                        <li><strong>Edited images</strong> can be spliced, inpainted, or retouched with generative tools.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+
+                    <div class="faq-item">
+                        <h3>What is an AI image detector?</h3>
+                        <p>An AI image detector estimates how likely an image is to have been produced by a generative model rather than captured by a camera. It reads statistical signals in the pixels and can check embedded provenance metadata.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>How is AI generated content detected?</h3>
+                        <p>Detectors combine pixel level analysis, frequency and noise artifacts, and provenance checks such as EXIF, XMP, PNG text chunks and C2PA records. Generator names usually come from metadata, never from the pixel model.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>How does deepfake detection differ from AI image detection?</h3>
+                        <p>Deepfake detection focuses on face swaps or identity level manipulation inside an otherwise real image. AI image detection covers content that is synthetic from start to finish. The two are complementary.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Can a detector catch edited images?</h3>
+                        <p>Edited images can be spliced or inpainted. Detection of heavily edited content is less reliable than detection of unedited synthetic content, and no detector is perfect.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Should I trust an AI image score as proof?</h3>
+                        <p>No. Published benchmarks show detectors can miss fakes and sometimes flag real photos. Use the score as a signal for a human or expert review, not as final proof of authenticity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 DevTools Hub. All rights reserved. | <a href="/">Free Developer Tools</a></p>
+        </div>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+        var imageInput = document.getElementById('image-input');
+        var previewImg = document.getElementById('aid-preview-img');
+        var previewBox = document.getElementById('aid-preview');
+        var errorBox = document.getElementById('aid-error');
+        var resultBox = document.getElementById('aid-result');
+        var detailsBox = document.getElementById('aid-details');
+        var btn = document.getElementById('aid-btn');
+        var scoreBar = document.getElementById('aid-score-bar');
+        var scoreText = document.getElementById('aid-score-text');
+        var verdictBadge = document.getElementById('aid-verdict');
+        var loadingBox = document.getElementById('aid-loading');
+
+        if (imageInput) {
+            imageInput.addEventListener('change', function () {
+                var file = imageInput.files && imageInput.files[0];
+                if (!file) { return; }
+                if (file.size > 10 * 1024 * 1024) {
+                    showAIDError('Image is too large. Please use an image under 10 MB.');
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var dataUrl = reader.result;
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                    hideAIDError();
+                    showAIDLoading(false);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        var dropzone = document.getElementById('aid-dropzone');
+        if (dropzone) {
+            dropzone.addEventListener('click', function () { if (imageInput) { imageInput.click(); } });
+            dropzone.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (imageInput) { imageInput.click(); } }
+            });
+        }
+
+        function showAIDError(msg) {
+            errorBox.textContent = msg;
+            errorBox.style.display = 'block';
+        }
+
+        function hideAIDError() {
+            errorBox.style.display = 'none';
+        }
+
+        function showAIDLoading(show) {
+            loadingBox.style.display = show ? 'block' : 'none';
+        }
+
+        function clearAID() {
+            if (imageInput) { imageInput.value = ''; }
+            previewBox.style.display = 'none';
+            previewImg.src = '';
+            resultBox.style.display = 'none';
+            scoreBar.style.width = '0%';
+            scoreText.textContent = 'AI probability: 0%';
+            verdictBadge.textContent = 'Real';
+            hideAIDError();
+            showAIDLoading(false);
+            if (typeof showStatus === 'function') { showStatus('aid-status', 'Cleared', 'ok'); }
+        }
+
+        function runAID() {
+            if (!imageInput || !imageInput.files || !imageInput.files[0]) {
+                showAIDError('Please choose or drop an image first.');
+                return;
+            }
+            var file = imageInput.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                showAIDError('Image is too large. Please use an image under 10 MB.');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function () {
+                var dataUrl = reader.result;
+                var comma = dataUrl.indexOf(',');
+                var meta = dataUrl.substring(0, comma);
+                var b64 = dataUrl.substring(comma + 1);
+                var mime = 'image/jpeg';
+                var m = /^data:([^;]*);base64/.exec(meta);
+                if (m) { mime = m[1]; }
+                showAIDLoading(true);
+                hideAIDError();
+                fetch('/api/ai-image-detector', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: b64, mimeType: mime })
+                })
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (!data || data.error) { throw new Error((data && data.error) || 'Detection failed'); }
+                        renderAID(data);
+                    })
+                    .catch(function (e) {
+                        showAIDError('Detection failed: ' + (e && e.message ? e.message : 'unknown error'));
+                        showAIDLoading(false);
+                    });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderAID(data) {
+            resultBox.style.display = 'block';
+            var aiPct = Math.round((data.aiScore !== undefined && data.aiScore !== null ? data.aiScore : 0) * 100);
+            scoreBar.style.width = aiPct + '%';
+            scoreText.textContent = 'AI probability: ' + aiPct + '%';
+            verdictBadge.textContent = data.verdictLabel || data.verdict || 'Uncertain';
+            var html = '';
+            html += '<div class="aid-details">';
+            html += '<p><strong>Verdict:</strong> ' + (data.verdictLabel || data.verdict || 'Uncertain') + '</p>';
+            html += '<p><strong>AI score:</strong> ' + aiPct + '%</p>';
+            html += '<p><strong>Confidence:</strong> ' + Math.round((data.confidence !== undefined && data.confidence !== null ? data.confidence : 0) * 100) + '%</p>';
+            html += '<p><strong>Source:</strong> ' + (data.source || 'AI vision') + '</p>';
+            html += '<p><strong>Reasoning:</strong> ' + (data.reasoning || 'No reasoning returned.') + '</p>';
+            detailsBox.innerHTML = html;
+            showAIDLoading(false);
+        }
+
+        function aidCopyResult() {
+            var text = 'AI Image Detector result: ' + (verdictBadge.textContent) + ', AI probability ' + scoreText.textContent + '.';
+            if (typeof copyToClipboard === 'function') { copyToClipboard('aid-status', text); }
+        }
+    </script>
+</body>
+</html>

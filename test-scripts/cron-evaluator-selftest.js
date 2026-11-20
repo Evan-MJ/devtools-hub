@@ -253,6 +253,7 @@ function probe(mutate, expectFail, label) {
   fs2.unlinkSync(tmp);
   let threw = false, ok = false;
   try {
+    freeze(NOW);
     // Five independent properties. A mutation that only touches one of them has to
     // be caught by one of the four, so the probe is not narrow enough to pass blind.
     const a = s2.nextRuns(s2.parseCron('0 0 * * 5L'), 'UTC', 1).runs[0];
