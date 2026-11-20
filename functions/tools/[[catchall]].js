@@ -1903,6 +1903,7 @@ function categoryToMarkdown(displayName, total, catDescription, pagedTools, cate
   if (primaryTool) {
     md += '**Just one calculation?** Use the [' + primaryTool.label + '](' + base + '/tools/' + primaryTool.slug + '/) for ' + primaryTool.note + '. Everything else in the collection is listed below.\n\n';
   }
+  md += '[View all ' + siteCount + ' tools across all categories \u2192](' + base + '/tools/)\n\n';
   md += 'URL: ' + base + '/tools/' + category + '/\n\n';
   md += '## ' + catHowToHeading(displayName) + '\n\n';
   md += catHowToText(displayName) + '\n\n';
