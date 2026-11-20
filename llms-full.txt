@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 383 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 384 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 383
+- Total tools: 384
 - Categories: 11
 - Last updated: 2026-11-20
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -2983,7 +2983,7 @@ Free air quality index checker. Live AQI for any city or your location, a pollut
 
 Draw names for your Secret Santa gift exchange right in the browser. Exclusion pairs keep couples apart, no email or signup, and nothing is stored online.
 
-## Money & Markets (22 tools)
+## Money & Markets (23 tools)
 
 Browse all: [Money & Markets](https://tools.scoreroute.com/tools/finance/.md)
 
@@ -3184,6 +3184,15 @@ Free income tax calculator 2026 with US federal, India new/old regime, and UK br
 - Tags: rent vs buy, rent vs buy calculator, rent or buy, rent or buy calculator, should i buy a house, buy vs rent, break even, home equity, down payment, opportunity cost, problem-solver, ai-resistant, no upload, private
 
 Free rent vs buy calculator. Break-even year, year-by-year net worth comparison, PMI, and selling costs, with a sensitivity table. No signup.
+
+### Car Lease Calculator - Monthly Payment & Lease vs Buy
+
+- URL: https://tools.scoreroute.com/tools/car-lease-calculator/
+- Markdown: https://tools.scoreroute.com/tools/car-lease-calculator/.md
+- Category: Money & Markets
+- Tags: car lease calculator, lease payment, money factor, residual value, lease vs buy, auto lease, monthly payment, finance, car
+
+Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.
 
 ## AI Language (35 tools)
 
@@ -3506,7 +3515,7 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 383 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 384 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
