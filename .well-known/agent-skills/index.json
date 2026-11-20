@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 383,
+  "tool_count": 384,
   "categories": [
     "ai-language",
     "calculators",
@@ -2701,6 +2701,13 @@
       "category": "media",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-image-detector/.md",
       "description": "Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you s..."
+    },
+    {
+      "name": "Car Lease Calculator - Monthly Payment & Lease vs Buy",
+      "url": "https://tools.scoreroute.com/tools/car-lease-calculator/",
+      "category": "finance",
+      "markdown_url": "https://tools.scoreroute.com/tools/car-lease-calculator/.md",
+      "description": "Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare le..."
     }
   ],
   "skills": [
@@ -5384,6 +5391,13 @@
       "category": "media",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-image-detector/.md",
       "description": "Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you s..."
+    },
+    {
+      "name": "Car Lease Calculator - Monthly Payment & Lease vs Buy",
+      "url": "https://tools.scoreroute.com/tools/car-lease-calculator/",
+      "category": "finance",
+      "markdown_url": "https://tools.scoreroute.com/tools/car-lease-calculator/.md",
+      "description": "Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare le..."
     }
   ]
 }

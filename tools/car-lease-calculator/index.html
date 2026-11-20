@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Lease Calculator - Monthly Payment &amp; Lease vs Buy</title>
+<meta name="description" content="Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.">
+<meta name="keywords" content="car lease calculator, lease payment calculator, money factor calculator, residual value, lease vs buy car, auto lease calculator, monthly lease payment, capitalized cost, rent charge, car leasing, free, no signup">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/car-lease-calculator/">
+<meta property="og:title" content="Car Lease Calculator - Monthly Payment &amp; Lease vs Buy">
+<meta property="og:description" content="Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/car-lease-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Car Lease Calculator - Payment &amp; Lease vs Buy">
+<meta name="twitter:description" content="Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.">
+<meta name="twitter:image" content="/og-image.png">
+<meta name="twitter:url" content="https://tools.scoreroute.com/tools/car-lease-calculator/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Car Lease Calculator - Monthly Payment & Lease vs Buy","description":"Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.","url":"https://tools.scoreroute.com/tools/car-lease-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"All","browserRequirements":"Requires modern browser with ES2020 support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Monthly lease payment from MSRP, negotiated price, residual percentage, money factor and term","Money factor converted to the equivalent APR automatically","Capitalized cost built from fees, down payment, rebate and trade-in equity, including negative equity","Monthly-payment tax, upfront tax or no-tax lease states","Due-at-signing and total lease cost, including an optional disposition fee","Lease vs buy comparison over the same months with a break-even resale value","Copy, print and reset controls, all math in the browser"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is a money factor on a car lease?","acceptedAnswer":{"@type":"Answer","text":"The money factor is the lease finance rate written as a decimal that is easy to multiply. Multiply it by 2,400 to get the equivalent APR. A money factor of 0.00125 is 3.00% APR. Lenders quote it this way because the rent charge is calculated on the average of the capitalized cost and the residual value."}},
+{"@type":"Question","name":"How do I convert a money factor to an interest rate?","acceptedAnswer":{"@type":"Answer","text":"Multiply the money factor by 2,400. For example, 0.00050 becomes 1.20%, 0.00125 becomes 3.00%, and 0.00250 becomes 6.00%. The result is the finance-rate equivalent, not the full APR, because a lease APR can also include fees."}},
+{"@type":"Question","name":"What is a residual value on a lease?","acceptedAnswer":{"@type":"Answer","text":"The residual value is the price the lender expects the car to be worth at the end of the lease, usually written as a percentage of the MSRP. A 55% residual on a 40,000 dollar car is 22,000 dollars. A higher residual lowers the depreciation part of the payment, so the same car can lease for less when the lender sets a stronger residual."}},
+{"@type":"Question","name":"Is it cheaper to lease or buy a car?","acceptedAnswer":{"@type":"Answer","text":"It depends on how long you keep the car and what it is worth at the end. This calculator compares the cash you put in, down payment plus monthly payments, minus the resale value you keep when you buy. Leasing usually wins if you return the car before the loan is paid off or if the resale value falls below the break-even figure shown. Buying usually wins if you keep the car longer than the lease term."}},
+{"@type":"Question","name":"What is due at signing on a car lease?","acceptedAnswer":{"@type":"Answer","text":"Due at signing normally includes the first month's payment, any capitalized cost reduction, and taxes or fees your state collects upfront. This calculator adds those to the down payment and first payment you enter. It does not include a refundable security deposit, registration, or a broker fee unless you add them to the other-fees field."}},
+{"@type":"Question","name":"How is sales tax calculated on a lease?","acceptedAnswer":{"@type":"Answer","text":"Most states tax the monthly payment, so the tax is the base payment times the local rate. Some states collect tax on the total of the payments at signing, and a few tax the full selling price. Choose the method that matches your state. The calculator shows the monthly tax or the upfront tax, not both."}},
+{"@type":"Question","name":"What happens if I have negative equity in my trade-in?","acceptedAnswer":{"@type":"Answer","text":"Negative equity is the amount you still owe on the trade-in above what it is worth. The calculator adds that difference to the capitalized cost, which raises the monthly payment. Positive equity works the other way and lowers the capitalized cost."}},
+{"@type":"Question","name":"Why is a lease payment not just the depreciation?","acceptedAnswer":{"@type":"Answer","text":"Because the lender also charges a rent charge for the money tied up in the car. The rent charge is the capitalized cost plus the residual value, multiplied by the money factor. On a 36-month lease that charge can add 50 to 150 dollars a month, which is why comparing only depreciation understates the payment."}},
+{"@type":"Question","name":"Does the calculator include insurance, maintenance or mileage overage?","acceptedAnswer":{"@type":"Answer","text":"No. Insurance, maintenance, registration, excess-mileage charges and wear-and-tear fees are separate. The payment shown is the depreciation, rent charge and tax on the lease you described."}}
+]}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+.clc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 860px) { .clc-grid { grid-template-columns: 1fr; } }
+.clc-panel { background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 10px; padding: 18px; }
+.clc-panel-wide { grid-column: 1 / -1; }
+.clc-title { font-size: 0.85rem; font-weight: 700; color: #9090b0; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 8px; border-bottom: 1px solid #2a2a4e; }
+.clc-control { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.clc-control label { font-size: 0.78rem; color: #9090b0; }
+.clc-control input, .clc-control select { background: #0d0d1e; border: 1px solid #2a2a4e; color: #e8e8f0; padding: 10px; border-radius: 6px; font-size: 0.9rem; width: 100%; min-height: 44px; font-family: inherit; }
+.clc-control input:focus-visible, .clc-control select:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; border-color: #7eb3ff; }
+.clc-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.clc-row > .clc-control { flex: 1; min-width: 120px; }
+.clc-help { font-size: 0.72rem; color: #9090b0; margin-top: 4px; line-height: 1.45; }
+.clc-apr { font-size: 0.75rem; color: #7eb3ff; font-weight: 700; }
+.clc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 6px; }
+@media (max-width: 860px) { .clc-stats { grid-template-columns: repeat(2, 1fr); } }
+.clc-stat { background: #131826; border: 1px solid #2a2a4e; border-radius: 8px; padding: 12px; }
+.clc-stat.primary { border-color: #7eb3ff; background: linear-gradient(135deg, rgba(102,126,234,0.12), rgba(118,75,162,0.08)); }
+.clc-stat-label { font-size: 0.66rem; color: #9090b0; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.clc-stat-value { font-size: 1.2rem; font-weight: 700; color: #e8e8f0; font-family: monospace; line-height: 1.2; overflow-wrap: anywhere; }
+.clc-stat.primary .clc-stat-value { color: #7eb3ff; }
+.clc-stat-unit { font-size: 0.66rem; color: #9090b0; margin-left: 3px; font-weight: 400; }
+.clc-subhead { font-size: 0.78rem; font-weight: 700; color: #c9c9dd; margin: 18px 0 8px; }
+.clc-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.clc-btn { background: #0d0d1e; color: #e8e8f0; border: 1px solid #2a2a4e; padding: 11px 18px; border-radius: 6px; font-size: 0.85rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.clc-btn:hover { border-color: #7eb3ff; color: #fff; }
+.clc-btn.primary { background: #7eb3ff; color: #0a0d14; border-color: #7eb3ff; font-weight: 700; }
+.clc-btn:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; }
+.clc-note { font-size: 0.78rem; color: #c9c9dd; min-height: 1.4em; margin: 12px 0 0; background: #131826; border: 1px solid #2a2a4e; border-radius: 6px; padding: 10px; line-height: 1.5; }
+.clc-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 0.85rem; }
+.clc-table caption { text-align: left; color: #9090b0; font-size: 0.78rem; padding-bottom: 6px; }
+.clc-table th, .clc-table td { border: 1px solid #2a2a4e; padding: 8px 10px; text-align: left; }
+.clc-table th { background: #131826; color: #e8e8f0; }
+.clc-table td { color: #c9c9dd; }
+.clc-table td.num { text-align: right; font-family: monospace; }
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  header, footer, .info-section, .breadcrumb, .clc-actions, .clc-help { display: none !important; }
+  .clc-panel, .clc-stat { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; break-inside: avoid; }
+  .clc-stat-value, .clc-stat.primary .clc-stat-value { color: #000 !important; }
+  .clc-control input, .clc-control select { border: 1px solid #999 !important; background: #fff !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>Car Lease Calculator</h1>
+<p class="subtitle">Monthly payment, money factor and lease vs buy</p>
+<nav class="breadcrumb">
+<a href="/">Home</a> &gt; <a href="/tools/finance/">Finance</a> &gt; <span>Car Lease Calculator</span>
+<a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="tool-page">
+<div class="tool-main">
+<h2>Work out the monthly payment and the real cost of the lease</h2>
+
+<div class="clc-grid">
+  <div class="clc-panel">
+    <div class="clc-title">The lease deal</div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-msrp">MSRP ($)</label>
+        <input type="number" id="clc-msrp" value="40000" min="0" step="100">
+      </div>
+      <div class="clc-control">
+        <label for="clc-price">Negotiated price ($)</label>
+        <input type="number" id="clc-price" value="38000" min="0" step="100">
+      </div>
+    </div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-residual">Residual (% of MSRP)</label>
+        <input type="number" id="clc-residual" value="55" min="0" max="100" step="0.5">
+      </div>
+      <div class="clc-control">
+        <label for="clc-term">Lease term (months)</label>
+        <select id="clc-term">
+          <option value="24">24</option>
+          <option value="27">27</option>
+          <option value="30">30</option>
+          <option value="36" selected>36</option>
+          <option value="39">39</option>
+          <option value="42">42</option>
+          <option value="48">48</option>
+          <option value="60">60</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="clc-control">
+      <label for="clc-mf">Money factor <span class="clc-apr" id="clc-apr-live">= 3.00% APR</span></label>
+      <input type="number" id="clc-mf" value="0.00125" min="0" step="0.00001">
+      <div class="clc-help">The dealer quote is a decimal, not a percentage. Multiply it by 2,400 for the APR.</div>
+    </div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-down">Down payment ($)</label>
+        <input type="number" id="clc-down" value="3000" min="0" step="100">
+      </div>
+      <div class="clc-control">
+        <label for="clc-rebate">Rebate / incentive ($)</label>
+        <input type="number" id="clc-rebate" value="0" min="0" step="100">
+      </div>
+    </div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-trade">Trade-in value ($)</label>
+        <input type="number" id="clc-trade" value="0" min="0" step="100">
+      </div>
+      <div class="clc-control">
+        <label for="clc-payoff">Trade-in payoff ($)</label>
+        <input type="number" id="clc-payoff" value="0" min="0" step="100">
+      </div>
+    </div>
+    <div class="clc-help">If you owe more than the trade is worth, the difference is negative equity and is added to the lease.</div>
+  </div>
+
+  <div class="clc-panel">
+    <div class="clc-title">Fees and tax</div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-acq">Acquisition fee ($)</label>
+        <input type="number" id="clc-acq" value="695" min="0" step="1">
+      </div>
+      <div class="clc-control">
+        <label for="clc-doc">Doc / dealer fee ($)</label>
+        <input type="number" id="clc-doc" value="399" min="0" step="1">
+      </div>
+    </div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-other">Other fees ($)</label>
+        <input type="number" id="clc-other" value="0" min="0" step="1">
+      </div>
+      <div class="clc-control">
+        <label for="clc-disposition">Disposition fee ($)</label>
+        <input type="number" id="clc-disposition" value="395" min="0" step="1">
+      </div>
+    </div>
+    <div class="clc-help">Fees are added to the capitalized cost, so they are paid through the monthly payment. Set the disposition fee to 0 if your lender waives it.</div>
+
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-tax">Sales tax rate (%)</label>
+        <input type="number" id="clc-tax" value="7" min="0" max="30" step="0.01">
+      </div>
+      <div class="clc-control">
+        <label for="clc-tax-method">Tax method</label>
+        <select id="clc-tax-method">
+          <option value="monthly" selected>Tax the monthly payment</option>
+          <option value="upfront">Tax all payments upfront</option>
+          <option value="none">No sales tax</option>
+        </select>
+      </div>
+    </div>
+    <div class="clc-help">Most states tax each monthly payment. Some collect tax on the total of the payments at signing. Check your state's rule.</div>
+
+    <div class="clc-control">
+      <label for="clc-resale">Estimated resale value at end of term ($)</label>
+      <input type="number" id="clc-resale" value="22000" min="0" step="100">
+      <div class="clc-help">Used only for the buy comparison: what the car would sell for after the same number of months.</div>
+    </div>
+  </div>
+
+  <div class="clc-panel clc-panel-wide">
+    <div class="clc-title">Buy comparison</div>
+    <div class="clc-row">
+      <div class="clc-control">
+        <label for="clc-buy-apr">Loan APR (%)</label>
+        <input type="number" id="clc-buy-apr" value="6.5" min="0" max="40" step="0.01">
+      </div>
+      <div class="clc-control">
+        <label for="clc-buy-term">Loan term (months)</label>
+        <select id="clc-buy-term">
+          <option value="24">24</option>
+          <option value="27">27</option>
+          <option value="30">30</option>
+          <option value="36" selected>36</option>
+          <option value="39">39</option>
+          <option value="42">42</option>
+          <option value="48">48</option>
+          <option value="60">60</option>
+          <option value="72">72</option>
+        </select>
+      </div>
+      <div class="clc-control">
+        <label for="clc-buy-down">Down payment ($)</label>
+        <input type="number" id="clc-buy-down" value="3000" min="0" step="100">
+      </div>
+    </div>
+    <div class="clc-help">Use the same number of months as the lease for a like-for-like comparison. Sales tax on the purchase is charged on the price after the trade-in value.</div>
+  </div>
+</div>
+
+<h3 class="clc-subhead">Lease results</h3>
+<div class="clc-stats">
+  <div class="clc-stat primary">
+    <div class="clc-stat-label">Monthly payment</div>
+    <div class="clc-stat-value" id="clc-out-payment">$0.00<span class="clc-stat-unit">/mo</span></div>
+  </div>
+  <div class="clc-stat primary">
+    <div class="clc-stat-label">Due at signing</div>
+    <div class="clc-stat-value" id="clc-out-due">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Total lease cost</div>
+    <div class="clc-stat-value" id="clc-out-total">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Effective monthly</div>
+    <div class="clc-stat-value" id="clc-out-effective">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Depreciation</div>
+    <div class="clc-stat-value" id="clc-out-dep">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Rent charge</div>
+    <div class="clc-stat-value" id="clc-out-rent">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Tax per month</div>
+    <div class="clc-stat-value" id="clc-out-tax">$0.00</div>
+  </div>
+  <div class="clc-stat">
+    <div class="clc-stat-label">Residual value</div>
+    <div class="clc-stat-value" id="clc-out-residual">$0.00</div>
+  </div>
+</div>
+
+<h3 class="clc-subhead">Lease vs buy over the same months</h3>
+<table class="clc-table">
+<caption>Cash paid minus the asset you keep. A negative net cost means you got money back at resale.</caption>
+<thead><tr><th scope="col">Item</th><th scope="col">Lease</th><th scope="col">Buy</th></tr></thead>
+<tbody>
+<tr><td>Cash out (down + payments)</td><td class="num" id="clc-cmp-lease-cash">$0.00</td><td class="num" id="clc-cmp-buy-cash">$0.00</td></tr>
+<tr><td>Value kept at the end</td><td class="num" id="clc-cmp-lease-keep">$0.00</td><td class="num" id="clc-cmp-buy-keep">$0.00</td></tr>
+<tr><td>Net cost</td><td class="num" id="clc-cmp-lease-net">$0.00</td><td class="num" id="clc-cmp-buy-net">$0.00</td></tr>
+<tr><td>Monthly loan payment</td><td class="num">&mdash;</td><td class="num" id="clc-cmp-buy-payment">$0.00</td></tr>
+</tbody>
+</table>
+
+<p class="clc-note" id="clc-note" role="status" aria-live="polite">Enter the lease quote and a resale estimate to compare.</p>
+
+<div class="clc-actions">
+  <button type="button" class="clc-btn primary" id="clc-copy">Copy results</button>
+  <button type="button" class="clc-btn" id="clc-print">Print</button>
+  <button type="button" class="clc-btn" id="clc-reset">Reset</button>
+</div>
+</div>
+
+<section class="info-section">
+<h2>How the Lease Payment Is Calculated</h2>
+<p>A lease is not a loan on the whole car. You finance the part of the car that is expected to disappear during the term, plus a finance charge on the money the lender has tied up. The calculator follows the standard money-factor method that dealers and lenders use, and it shows each step so you can check a quote line by line.</p>
+<ol>
+<li><strong>Residual value</strong> = MSRP &times; residual percentage.</li>
+<li><strong>Capitalized cost</strong> = negotiated price + acquisition, doc and other fees &minus; down payment &minus; rebate &minus; trade-in equity. Negative equity is added instead of subtracted.</li>
+<li><strong>Depreciation</strong> = (capitalized cost &minus; residual value) &divide; lease term in months.</li>
+<li><strong>Rent charge</strong> = (capitalized cost + residual value) &times; money factor.</li>
+<li><strong>Base payment</strong> = depreciation + rent charge.</li>
+<li><strong>Monthly tax</strong> = base payment &times; tax rate, when your state taxes each payment.</li>
+<li><strong>Due at signing</strong> = down payment + first month's payment + any tax collected upfront.</li>
+<li><strong>Total lease cost</strong> = down payment + monthly payment &times; term + upfront tax + disposition fee.</li>
+</ol>
+<p>With the defaults on this page, a $40,000 car at a $38,000 negotiated price, a 55% residual, a 0.00125 money factor, 36 months and $3,000 down gives a residual of $22,000, a capitalized cost of $36,094, depreciation of $391.50, a rent charge of $72.62 and a base payment of $464.12. At 7% monthly tax the payment is about $496.61, the amount due at signing is about $3,496.61, and the total lease cost including a $395 disposition fee is about $21,272.96. Small changes in the money factor or the negotiated price move the payment more than most buyers expect.</p>
+
+<h2>Money Factor to APR</h2>
+<p>The money factor is not a percentage. Multiply it by 2,400 to compare it with a loan APR. A lower money factor is not automatically a better deal if the residual is weak or the price is marked up, so read all three numbers together.</p>
+<table class="clc-table">
+<caption>Common money factors and their finance-rate equivalent.</caption>
+<thead><tr><th scope="col">Money factor</th><th scope="col">Equivalent APR</th></tr></thead>
+<tbody>
+<tr><td>0.00050</td><td>1.20%</td></tr>
+<tr><td>0.00100</td><td>2.40%</td></tr>
+<tr><td>0.00125</td><td>3.00%</td></tr>
+<tr><td>0.00150</td><td>3.60%</td></tr>
+<tr><td>0.00200</td><td>4.80%</td></tr>
+<tr><td>0.00250</td><td>6.00%</td></tr>
+<tr><td>0.00300</td><td>7.20%</td></tr>
+</tbody>
+</table>
+
+<h2>Lease vs Buy: What the Comparison Measures</h2>
+<p>The comparison uses cash flow, not sticker price. For the lease it adds the down payment and every monthly payment, then subtracts nothing because you return the car. For the purchase it adds the down payment and every loan payment, then subtracts the resale value you still own at the end. The difference is the net cost of each path over the same number of months.</p>
+<p>The break-even resale value is the number that makes the two paths equal. If you think the car will be worth more than that figure at the end of the term, buying and selling wins. If it will be worth less, or if you would rather not own a depreciating asset, leasing can cost less. The calculator prints that break-even figure in the result note so you can test your own resale assumption instead of accepting a default.</p>
+
+<h2>What the Payment Does Not Include</h2>
+<p>Insurance, maintenance, registration, excess-mileage charges, wear-and-tear fees and early-termination penalties are outside the payment. A refundable security deposit is also excluded because you get it back. The disposition fee is included in the total lease cost but not in the monthly payment, and it is often waived when you lease another car from the same lender. Add a broker fee or a document fee your dealer charges to the other-fees field, or the total will be low.</p>
+
+<h2>Why This Beats Asking an AI Chatbot</h2>
+<p>A language model usually treats the money factor as an interest rate, forgets that the rent charge is calculated on the capitalized cost plus the residual, and applies sales tax to the whole car instead of the monthly payment. It also cannot hold your actual quote while you change one number at a time. This page runs the same arithmetic on every visit, shows the depreciation and rent charge separately, converts the money factor to an APR, and lets you replace every assumption with the figure on your dealer's worksheet. The result is a number you can check, not a paragraph you have to trust.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What is a money factor on a car lease?</summary><p>The money factor is the lease finance rate written as a decimal that is easy to multiply. Multiply it by 2,400 to get the equivalent APR. A money factor of 0.00125 is 3.00% APR. Lenders quote it this way because the rent charge is calculated on the average of the capitalized cost and the residual value.</p></details>
+<details class="faq-item"><summary>How do I convert a money factor to an interest rate?</summary><p>Multiply the money factor by 2,400. For example, 0.00050 becomes 1.20%, 0.00125 becomes 3.00%, and 0.00250 becomes 6.00%. The result is the finance-rate equivalent, not the full APR, because a lease APR can also include fees.</p></details>
+<details class="faq-item"><summary>What is a residual value on a lease?</summary><p>The residual value is the price the lender expects the car to be worth at the end of the lease, usually written as a percentage of the MSRP. A 55% residual on a $40,000 car is $22,000. A higher residual lowers the depreciation part of the payment, so the same car can lease for less when the lender sets a stronger residual.</p></details>
+<details class="faq-item"><summary>Is it cheaper to lease or buy a car?</summary><p>It depends on how long you keep the car and what it is worth at the end. This calculator compares the cash you put in, down payment plus monthly payments, minus the resale value you keep when you buy. Leasing usually wins if you return the car before the loan is paid off or if the resale value falls below the break-even figure shown. Buying usually wins if you keep the car longer than the lease term.</p></details>
+<details class="faq-item"><summary>What is due at signing on a car lease?</summary><p>Due at signing normally includes the first month's payment, any capitalized cost reduction, and taxes or fees your state collects upfront. This calculator adds those to the down payment and first payment you enter. It does not include a refundable security deposit, registration, or a broker fee unless you add them to the other-fees field.</p></details>
+<details class="faq-item"><summary>How is sales tax calculated on a lease?</summary><p>Most states tax the monthly payment, so the tax is the base payment times the local rate. Some states collect tax on the total of the payments at signing, and a few tax the full selling price. Choose the method that matches your state. The calculator shows the monthly tax or the upfront tax, not both.</p></details>
+<details class="faq-item"><summary>What happens if I have negative equity in my trade-in?</summary><p>Negative equity is the amount you still owe on the trade-in above what it is worth. The calculator adds that difference to the capitalized cost, which raises the monthly payment. Positive equity works the other way and lowers the capitalized cost.</p></details>
+<details class="faq-item"><summary>Why is a lease payment not just the depreciation?</summary><p>Because the lender also charges a rent charge for the money tied up in the car. The rent charge is the capitalized cost plus the residual value, multiplied by the money factor. On a 36-month lease that charge can add $50 to $150 a month, which is why comparing only depreciation understates the payment.</p></details>
+<details class="faq-item"><summary>Does the calculator include insurance, maintenance or mileage overage?</summary><p>No. Insurance, maintenance, registration, excess-mileage charges and wear-and-tear fees are separate. The payment shown is the depreciation, rent charge and tax on the lease you described.</p></details>
+
+<h2>Related Tools</h2>
+<ul>
+<li><a href="/tools/auto-loan-calculator/">Auto Loan Calculator</a> - monthly car payment with tax and trade-in</li>
+<li><a href="/tools/loan-calculator/">Loan Calculator</a> - amortization and extra payments</li>
+<li><a href="/tools/rent-vs-buy-calculator/">Rent vs Buy Calculator</a> - the same break-even idea for a home</li>
+<li><a href="/tools/mortgage-calculator/">Mortgage Calculator</a> - PMI, tax and insurance</li>
+<li><a href="/tools/mileage-calculator/">Mileage Calculator</a> - IRS deduction and trip distance</li>
+<li><a href="/tools/inflation-calculator/">Inflation Calculator</a> - what a dollar buys over time</li>
+</ul>
+</section>
+</section>
+</main>
+<footer>
+<p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+(function(){
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
+function money(n) {
+  if (!isFinite(n)) n = 0;
+  var neg = n < 0;
+  var s = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (neg ? '-$' : '$') + s;
+}
+function money0(n) {
+  if (!isFinite(n)) n = 0;
+  var neg = n < 0;
+  var s = Math.round(Math.abs(n)).toLocaleString('en-US');
+  return (neg ? '-$' : '$') + s;
+}
+function amortPayment(principal, annualPct, months) {
+  if (months <= 0) return 0;
+  var r = annualPct / 100 / 12;
+  if (r === 0) return principal / months;
+  var factor = Math.pow(1 + r, months);
+  return principal * r * factor / (factor - 1);
+}
+
+function readInputs() {
+  var term = parseInt($('clc-term').value, 10) || 36;
+  var buyTerm = parseInt($('clc-buy-term').value, 10) || term;
+  return {
+    msrp: Math.max(0, num('clc-msrp')),
+    price: Math.max(0, num('clc-price')),
+    residualPct: clamp(num('clc-residual'), 0, 100),
+    mf: Math.max(0, num('clc-mf')),
+    term: term,
+    down: Math.max(0, num('clc-down')),
+    rebate: Math.max(0, num('clc-rebate')),
+    trade: Math.max(0, num('clc-trade')),
+    payoff: Math.max(0, num('clc-payoff')),
+    acq: Math.max(0, num('clc-acq')),
+    doc: Math.max(0, num('clc-doc')),
+    other: Math.max(0, num('clc-other')),
+    disposition: Math.max(0, num('clc-disposition')),
+    taxRate: clamp(num('clc-tax'), 0, 30),
+    taxMethod: $('clc-tax-method').value,
+    resale: Math.max(0, num('clc-resale')),
+    buyApr: clamp(num('clc-buy-apr'), 0, 40),
+    buyTerm: buyTerm,
+    buyDown: Math.max(0, num('clc-buy-down'))
+  };
+}
+
+function compute(v) {
+  var residual = v.msrp * v.residualPct / 100;
+  var equity = v.trade - v.payoff;
+  var capCost = v.price + v.acq + v.doc + v.other - v.down - v.rebate - equity;
+  if (capCost < 0) capCost = 0;
+  var depreciation = (capCost - residual) / v.term;
+  var rent = (capCost + residual) * v.mf;
+  var base = depreciation + rent;
+  if (base < 0) base = 0;
+  var monthlyTax = v.taxMethod === 'monthly' ? base * v.taxRate / 100 : 0;
+  var payment = base + monthlyTax;
+  var upfrontTax = v.taxMethod === 'upfront' ? base * v.term * v.taxRate / 100 : 0;
+  var dueAtSigning = v.down + payment + upfrontTax;
+  var totalLease = v.down + payment * v.term + upfrontTax + v.disposition;
+  var effective = totalLease / v.term;
+  var mfApr = v.mf * 2400;
+
+  var buyTaxBase = Math.max(0, v.price - v.trade);
+  var buyTax = v.taxMethod === 'none' ? 0 : buyTaxBase * v.taxRate / 100;
+  var buyFees = v.doc + v.other;
+  var buyAmount = v.price + buyTax + buyFees - v.buyDown - v.rebate - equity;
+  if (buyAmount < 0) buyAmount = 0;
+  var buyPayment = amortPayment(buyAmount, v.buyApr, v.buyTerm);
+  var buyTotal = v.buyDown + buyPayment * v.buyTerm;
+  var buyNet = buyTotal - v.resale;
+  var leaseNet = totalLease;
+  var diff = leaseNet - buyNet;
+  var breakEven = buyTotal - leaseNet;
+
+  return {
+    residual: residual,
+    equity: equity,
+    capCost: capCost,
+    depreciation: depreciation,
+    rent: rent,
+    base: base,
+    monthlyTax: monthlyTax,
+    payment: payment,
+    upfrontTax: upfrontTax,
+    dueAtSigning: dueAtSigning,
+    totalLease: totalLease,
+    effective: effective,
+    mfApr: mfApr,
+    buyTax: buyTax,
+    buyAmount: buyAmount,
+    buyPayment: buyPayment,
+    buyTotal: buyTotal,
+    buyNet: buyNet,
+    leaseNet: leaseNet,
+    diff: diff,
+    breakEven: breakEven
+  };
+}
+
+function setText(id, text) { var node = $(id); if (node) node.textContent = text; }
+function setHtml(id, html) { var node = $(id); if (node) node.innerHTML = html; }
+
+function render(v, r) {
+  setHtml('clc-out-payment', money(r.payment) + '<span class="clc-stat-unit">/mo</span>');
+  setText('clc-out-due', money(r.dueAtSigning));
+  setText('clc-out-total', money(r.totalLease));
+  setText('clc-out-effective', money(r.effective));
+  setText('clc-out-dep', money(r.depreciation));
+  setText('clc-out-rent', money(r.rent));
+  setText('clc-out-tax', money(v.taxMethod === 'upfront' ? r.upfrontTax : r.monthlyTax));
+  setText('clc-out-residual', money(r.residual));
+  setText('clc-apr-live', '= ' + (isFinite(r.mfApr) ? r.mfApr.toFixed(2) : '0.00') + '% APR');
+
+  setText('clc-cmp-lease-cash', money(v.down + r.payment * v.term + r.upfrontTax));
+  setText('clc-cmp-buy-cash', money(r.buyTotal));
+  setText('clc-cmp-lease-keep', money(0));
+  setText('clc-cmp-buy-keep', money(v.resale));
+  setText('clc-cmp-lease-net', money(r.leaseNet));
+  setText('clc-cmp-buy-net', money(r.buyNet));
+  setText('clc-cmp-buy-payment', money(r.buyPayment));
+
+  var note;
+  if (v.price <= 0 || v.msrp <= 0 || v.term <= 0) {
+    note = 'Enter an MSRP, a negotiated price and a lease term to see the payment.';
+  } else {
+    note = 'Payment ' + money(r.payment) + '/mo for ' + v.term + ' months, ' + money(r.dueAtSigning) + ' due at signing, ' + money(r.totalLease) + ' total lease cost. ';
+    if (r.diff > 1) {
+      note += 'Buying and selling after ' + v.buyTerm + ' months costs ' + money(r.diff) + ' less if the car is worth ' + money(v.resale) + ' at the end.';
+    } else if (r.diff < -1) {
+      note += 'Leasing costs ' + money(-r.diff) + ' less than buying and selling after ' + v.buyTerm + ' months at a ' + money(v.resale) + ' resale value.';
+    } else {
+      note += 'Leasing and buying cost about the same over ' + v.buyTerm + ' months at a ' + money(v.resale) + ' resale value.';
+    }
+    note += ' Break-even resale value: ' + money(r.breakEven) + '; buying wins above it, leasing wins below it.';
+  }
+  setText('clc-note', note);
+}
+
+function recalc() {
+  var v = readInputs();
+  var r = compute(v);
+  render(v, r);
+  return { v: v, r: r };
+}
+
+function copyResults() {
+  var out = recalc();
+  var v = out.v, r = out.r;
+  if (v.price <= 0 || v.msrp <= 0) {
+    setText('clc-note', 'Nothing to copy yet - enter an MSRP and a negotiated price first.');
+    return;
+  }
+  var lines = [
+    'Car Lease Calculator - DevTools Hub',
+    'MSRP: ' + money0(v.msrp) + ' | Negotiated price: ' + money0(v.price),
+    'Residual: ' + v.residualPct.toFixed(1) + '% (' + money0(r.residual) + ') | Money factor: ' + v.mf + ' (' + r.mfApr.toFixed(2) + '% APR)',
+    'Term: ' + v.term + ' months | Down: ' + money0(v.down) + ' | Rebate: ' + money0(v.rebate),
+    'Capitalized cost: ' + money(r.capCost),
+    'Depreciation: ' + money(r.depreciation) + '/mo | Rent charge: ' + money(r.rent) + '/mo',
+    'Tax: ' + money(v.taxMethod === 'upfront' ? r.upfrontTax : r.monthlyTax) + (v.taxMethod === 'upfront' ? ' upfront' : '/mo'),
+    'Monthly payment: ' + money(r.payment),
+    'Due at signing: ' + money(r.dueAtSigning),
+    'Total lease cost: ' + money(r.totalLease) + ' | Effective monthly: ' + money(r.effective),
+    'Lease net cost: ' + money(r.leaseNet) + ' | Buy net cost: ' + money(r.buyNet) + ' at ' + money0(v.resale) + ' resale',
+    'Break-even resale value: ' + money(r.breakEven)
+  ];
+  var text = lines.join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setText('clc-note', 'Results copied to the clipboard.');
+    }, function () {
+      setText('clc-note', 'The browser blocked clipboard access - select the figures and copy them manually.');
+    });
+  } else {
+    setText('clc-note', 'This browser has no clipboard API - select the figures and copy them manually.');
+  }
+}
+
+function reset() {
+  $('clc-msrp').value = 40000;
+  $('clc-price').value = 38000;
+  $('clc-residual').value = 55;
+  $('clc-term').value = '36';
+  $('clc-mf').value = 0.00125;
+  $('clc-down').value = 3000;
+  $('clc-rebate').value = 0;
+  $('clc-trade').value = 0;
+  $('clc-payoff').value = 0;
+  $('clc-acq').value = 695;
+  $('clc-doc').value = 399;
+  $('clc-other').value = 0;
+  $('clc-disposition').value = 395;
+  $('clc-tax').value = 7;
+  $('clc-tax-method').value = 'monthly';
+  $('clc-resale').value = 22000;
+  $('clc-buy-apr').value = 6.5;
+  $('clc-buy-term').value = '36';
+  $('clc-buy-down').value = 3000;
+  recalc();
+}
+
+function wire() {
+  var ids = ['clc-msrp', 'clc-price', 'clc-residual', 'clc-mf', 'clc-down', 'clc-rebate',
+             'clc-trade', 'clc-payoff', 'clc-acq', 'clc-doc', 'clc-other', 'clc-disposition',
+             'clc-tax', 'clc-resale', 'clc-buy-apr', 'clc-buy-down'];
+  for (var i = 0; i < ids.length; i++) {
+    var node = $(ids[i]);
+    if (node) node.addEventListener('input', recalc);
+  }
+  var selects = ['clc-term', 'clc-tax-method', 'clc-buy-term'];
+  for (var j = 0; j < selects.length; j++) {
+    var sel = $(selects[j]);
+    if (sel) sel.addEventListener('change', recalc);
+  }
+  $('clc-copy').addEventListener('click', copyResults);
+  $('clc-print').addEventListener('click', function () { window.print(); });
+  $('clc-reset').addEventListener('click', reset);
+  recalc();
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+else wire();
+})();
+</script>
+</body>
+</html>

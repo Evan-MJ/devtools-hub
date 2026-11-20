@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 383 free developer tools across 11 categories. No signup, no tracking.
+> 384 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 383 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 384 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -393,6 +393,7 @@
 - [SIP Calculator - Free Mutual Fund Returns](https://tools.scoreroute.com/tools/sip-calculator/.md) [HTML](https://tools.scoreroute.com/tools/sip-calculator/)
 - [Income Tax Calculator 2026 - US India UK](https://tools.scoreroute.com/tools/tax-calculator/.md) [HTML](https://tools.scoreroute.com/tools/tax-calculator/)
 - [Rent vs Buy Calculator - Find Your Break-even Year](https://tools.scoreroute.com/tools/rent-vs-buy-calculator/.md) [HTML](https://tools.scoreroute.com/tools/rent-vs-buy-calculator/)
+- [Car Lease Calculator - Monthly Payment & Lease vs Buy](https://tools.scoreroute.com/tools/car-lease-calculator/.md) [HTML](https://tools.scoreroute.com/tools/car-lease-calculator/)
 
 ## AI Language
 - [Free AI Chat - No Login, No Signup](https://tools.scoreroute.com/tools/ai-chat/.md) [HTML](https://tools.scoreroute.com/tools/ai-chat/)
