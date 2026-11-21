@@ -361,6 +361,9 @@
             setLoading(true, 'Repainting your photo...');
             setStatus('Sending the photo to the model...');
             var started = Date.now();
+            var slowNote = setTimeout(function () {
+                setLoading(true, 'Still working - a full repaint can take up to a minute.');
+            }, 25000);
 
             currentSize().then(function (size) {
                 return fetch('/api/ai-photo-editor', {
@@ -385,6 +388,7 @@
                     return r.blob();
                 });
             }).then(function (blob) {
+                clearTimeout(slowNote);
                 releaseResult();
                 resultBlob = blob;
                 resultObjectUrl = URL.createObjectURL(blob);
@@ -396,6 +400,7 @@
                 var secs = ((Date.now() - started) / 1000).toFixed(1);
                 setStatus('Edit ready in ' + secs + ' seconds.', 'success');
             }).catch(function (err) {
+                clearTimeout(slowNote);
                 setLoading(false);
                 showError((err && err.message) ? err.message : 'The edit failed. Try again.');
                 setStatus('');
