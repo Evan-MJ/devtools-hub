@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 384 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 386 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 384
+- Total tools: 386
 - Categories: 11
-- Last updated: 2026-11-20
+- Last updated: 2026-11-21
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (11 tools)
@@ -1370,7 +1370,7 @@ Translate an Excel formula between 17 spreadsheet languages and find the #NAME? 
 
 Free online MD to PDF converter. Convert markdown to PDF instantly in browser. Preserve formatting, headings, code blocks, tables. No signup, 100% private.
 
-## Media Tools (72 tools)
+## Media Tools (73 tools)
 
 Browse all: [Media Tools](https://tools.scoreroute.com/tools/media/.md)
 
@@ -2021,6 +2021,15 @@ Free video to text converter. Transcribe audio/video to plain text with Whisper 
 - Tags: ai, image, detector, deepfake, generated, synthetic, authenticity
 
 Free AI image detector that spots AI generated and deepfake images online. Get a synthetic content score before you share a photo.
+
+### Free AI Photo Editor - Edit Photos with Text Prompts
+
+- URL: https://tools.scoreroute.com/tools/ai-photo-editor/
+- Markdown: https://tools.scoreroute.com/tools/ai-photo-editor/.md
+- Category: Media Tools
+- Tags: ai photo editor, photo editor ai, edit photo with ai, generative photo editing, photo retouching, relight photo, change photo background, ai image editor
+
+Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.
 
 ## Network Tools (26 tools)
 
@@ -3194,7 +3203,7 @@ Free rent vs buy calculator. Break-even year, year-by-year net worth comparison,
 
 Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare lease vs buy total cost.
 
-## AI Language (35 tools)
+## AI Language (36 tools)
 
 Browse all: [AI Language](https://tools.scoreroute.com/tools/ai-language/.md)
 
@@ -3513,9 +3522,18 @@ Generate a complete AI course with modules, lessons and quizzes from any topic. 
 
 Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ, Q&A and direct answers for AI Overviews. No signup.
 
+### AI Deep Research Tool - Deep Research Reports
+
+- URL: https://tools.scoreroute.com/tools/ai-deep-research/
+- Markdown: https://tools.scoreroute.com/tools/ai-deep-research/.md
+- Category: AI Language
+- Tags: deep, research, ai, report, sources, search, assistant
+
+Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.
+
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 384 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 386 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

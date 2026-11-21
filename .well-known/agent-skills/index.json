@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 384,
+  "tool_count": 386,
   "categories": [
     "ai-language",
     "calculators",
@@ -2708,6 +2708,20 @@
       "category": "finance",
       "markdown_url": "https://tools.scoreroute.com/tools/car-lease-calculator/.md",
       "description": "Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare le..."
+    },
+    {
+      "name": "AI Deep Research Tool - Deep Research Reports",
+      "url": "https://tools.scoreroute.com/tools/ai-deep-research/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-deep-research/.md",
+      "description": "Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup req..."
+    },
+    {
+      "name": "Free AI Photo Editor - Edit Photos with Text Prompts",
+      "url": "https://tools.scoreroute.com/tools/ai-photo-editor/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-photo-editor/.md",
+      "description": "Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the ..."
     }
   ],
   "skills": [
@@ -5398,6 +5412,20 @@
       "category": "finance",
       "markdown_url": "https://tools.scoreroute.com/tools/car-lease-calculator/.md",
       "description": "Free car lease calculator. Work out monthly payments from MSRP, residual value, money factor and tax, then compare le..."
+    },
+    {
+      "name": "AI Deep Research Tool - Deep Research Reports",
+      "url": "https://tools.scoreroute.com/tools/ai-deep-research/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-deep-research/.md",
+      "description": "Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup req..."
+    },
+    {
+      "name": "Free AI Photo Editor - Edit Photos with Text Prompts",
+      "url": "https://tools.scoreroute.com/tools/ai-photo-editor/",
+      "category": "media",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-photo-editor/.md",
+      "description": "Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the ..."
     }
   ]
 }
