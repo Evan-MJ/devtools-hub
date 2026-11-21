@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Deep Research Tool - Deep Research Reports | DevTools Hub</title>
+    <meta name="description" content="Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/ai-deep-research/">
+    <meta property="og:title" content="AI Deep Research Tool - Deep Research Reports | DevTools Hub">
+    <meta property="og:description" content="Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ai-deep-research/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Deep Research Tool - Deep Research Reports | DevTools Hub">
+    <meta name="twitter:description" content="Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.">
+    <meta name="twitter:image" content="/og-image.png">
+    <meta name="twitter:url" content="https://tools.scoreroute.com/tools/ai-deep-research/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-20",
+        "dateModified": "2026-11-20",
+        "author": {"@type": "Person", "name": "BAOMING", "url": "https://github.com/Evan-MJ", "sameAs": ["https://github.com/Evan-MJ"]},
+        "name": "AI Deep Research Tool - Deep Research Reports | DevTools Hub",
+        "description": "Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.",
+        "url": "https://tools.scoreroute.com/tools/ai-deep-research/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Deep research agent", "Live web source search", "Cited reports", "Quick and deep modes", "Copy and download report", "No signup required"]
+    }
+    </script>
+    <style>
+        .research-controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+        #adr-question { min-height: 140px; width: 100%; }
+        .research-opts { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .research-opts label { font-size: 14px; color: var(--text-secondary); }
+        #research-status { margin-top: 12px; }
+        #loading { display: none; align-items: center; gap: 8px; padding: 12px; color: var(--text-secondary); font-size: 14px; }
+        #loading .spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: adr-spin 0.8s linear infinite; }
+        @keyframes adr-spin { to { transform: rotate(360deg); } }
+        #results { display: none; margin-top: 16px; }
+        #adr-report { padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; line-height: 1.7; font-size: 15px; white-space: pre-wrap; max-height: 600px; overflow-y: auto; }
+        #adr-sources { margin-top: 12px; }
+        #adr-sources .source-item { padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; font-size: 14px; }
+        #adr-sources .source-item .src-url { color: var(--accent); word-break: break-all; font-size: 13px; }
+        .btn-group { margin-top: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Deep Research Tool</h1>
+            <p class="subtitle">Deep Research Reports with Sources - Free AI Research Assistant</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> &gt; <a href="/">Tools</a> &gt; <span>AI Deep Research Tool</span>
+              <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Run Deep Research</h2>
+                <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px">Ask a research question. The agent searches live web sources, reads them, and returns a cited report.</p>
+
+                <div class="research-controls">
+                    <textarea id="adr-question" placeholder="e.g. What are the most important recent developments in solid-state battery technology?" aria-label="Research question"></textarea>
+                    <div class="research-opts">
+                        <label for="adr-depth">Research depth:</label>
+                        <select id="adr-depth">
+                            <option value="deep" selected>Deep (full source reading)</option>
+                            <option value="quick">Quick (top sources)</option>
+                        </select>
+                        <button onclick="runResearch()" class="btn btn-primary" id="adr-generate">Start Research</button>
+                        <button onclick="clearResearch()" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+
+                <div id="research-status" class="status"></div>
+                <div id="loading"><div class="spinner"></div> <span id="loading-text">Researching...</span></div>
+
+                <div id="results">
+                    <h3>Research Report</h3>
+                    <div id="adr-report" style="padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;line-height:1.7;font-size:15px;white-space:pre-wrap"></div>
+                    <div id="adr-sources"></div>
+                    <div class="btn-group" style="margin-top:12px">
+                        <button onclick="copyReport()" class="btn btn-secondary">Copy Report</button>
+                        <button onclick="downloadReport()" class="btn btn-secondary">Download Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>What Is an AI Deep Research Tool?</h3>
+                <p>An AI deep research tool takes a single question and turns it into a cited research report. Instead of answering from memory, it plans a search, browses many sources, reads the most relevant ones, and synthesizes a structured answer. It is built for questions that need evidence: market trends, technical comparisons, policy shifts, scientific topics, competitor analysis.</p>
+
+                <h3>How This Tool Researches</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong>Deep mode</strong>
+                        <p>Searches the live web with broad coverage, reads the most relevant sources in depth, then synthesizes a full report. Best for complex questions.</p>
+                    </div>
+                    <div class="example-item">
+                        <strong>Quick mode</strong>
+                        <p>Runs a focused web search and synthesizes from the top sources. Best for fast answers and follow-up checks.</p>
+                    </div>
+                </div>
+
+                <h3>Why Cite Sources?</h3>
+                <p>A cited report lets you verify claims instead of trusting a single generated paragraph. Every claim in the report is anchored to a source you can open. This matters because general AI answers can still be wrong, and a cited report is checkable rather than a black box.</p>
+
+                <h3>How It Uses AI</h3>
+                <p>The research pipeline uses the site's AI provider chain (Groq, NVIDIA, Cloudflare Workers AI, Gemini) with automatic fallback, and post-processes long reports through the DeAI humanizer before display. If the humanizer is unavailable, the raw report is shown unchanged.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>What is the difference between deep and quick research?</summary>
+                    <p>Deep research searches with broad coverage and reads the most relevant sources before synthesizing. Quick research runs a tighter search and synthesizes from the top sources. Use deep for complex questions, quick for fast checks.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does the tool store or share my question?</summary>
+                    <p>The question is sent to the site's own AI backend to run the research and is not retained for reuse. Like the other AI tools on this site, your input is processed by a third-party AI provider and is not used for training.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How are sources chosen?</summary>
+                    <p>The research backend ranks sources by relevance to the question and returns the top results with their content. The synthesis step cites only the sources it actually used.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I trust the report?</summary>
+                    <p>The report is a synthesis, not a primary source. Verify important claims against the cited sources. Use quick mode to check a specific fact quickly.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does the humanizer change the meaning?</summary>
+                    <p>The DeAI humanizer rewrites long prose to reduce AI-writing patterns while preserving meaning, using a multi-stage pipeline with a quality gate. If it declines, the original report is returned.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+    function showResearchStatus(msg, type) {
+        const el = document.getElementById('research-status');
+        if (el) {
+            el.textContent = msg;
+            el.className = type || 'status';
+            el.style.display = 'block';
+        }
+    }
+
+    function setResearchLoading(on, text) {
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loading-text');
+        if (loading) { loading.style.display = on ? 'flex' : 'none'; }
+        if (loadingText) { loadingText.textContent = text || 'Researching...'; }
+    }
+
+    function clearResearch() {
+        document.getElementById('adr-question').value = '';
+        document.getElementById('results').style.display = 'none';
+        const sources = document.getElementById('adr-sources');
+        if (sources) sources.innerHTML = '';
+        document.getElementById('research-status').style.display = 'none';
+    }
+
+    function renderSources(sources) {
+        const box = document.getElementById('adr-sources');
+        if (!box) return;
+        box.innerHTML = '';
+        if (!Array.isArray(sources) || sources.length === 0) {
+            box.innerHTML = '<p style="font-size:14px;color:var(--text-secondary)">No sources were found for this question.</p>';
+            return;
+        }
+        sources.forEach(function (s, i) {
+            const item = document.createElement('div');
+            item.className = 'source-item';
+            const url = document.createElement('div');
+            url.className = 'src-url';
+            url.textContent = (i + 1) + '. ' + (s.url || 'No URL');
+            const title = document.createElement('div');
+            title.textContent = s.title || '';
+            item.appendChild(url);
+            if (s.title) item.appendChild(title);
+            box.appendChild(item);
+        });
+    }
+
+    function copyReport() {
+        const text = document.getElementById('adr-report');
+        const report = text ? text.textContent : '';
+        if (!report) return;
+        navigator.clipboard.writeText(report).then(function () {
+            showResearchStatus('Report copied to clipboard', 'success');
+        }).catch(function () {
+            const ta = document.createElement('textarea');
+            ta.value = report;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showResearchStatus('Report copied to clipboard', 'success');
+        });
+    }
+
+    function downloadReport() {
+        const report = document.getElementById('adr-report');
+        const text = report ? report.textContent : '';
+        if (!text) return;
+        const blob = new Blob([text], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ai-deep-research-report.md';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function runResearch() {
+        const question = (document.getElementById('adr-question') || {}).value || '';
+        const q = question.trim();
+        if (q.length < 10) {
+            showResearchStatus('Please enter a research question of at least 10 characters.', 'error');
+            return;
+        }
+        setResearchLoading(true, 'Researching...');
+
+        fetch('/api/ai-deep-research', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: q, depth: document.getElementById('adr-depth').value })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            setResearchLoading(false);
+            const results = document.getElementById('results');
+            if (data.error) {
+                showResearchStatus('Research failed: ' + data.error, 'error');
+                return;
+            }
+            const report = data.report || '';
+            document.getElementById('adr-report').textContent = report;
+            renderSources(data.sources);
+            results.style.display = 'block';
+            showResearchStatus(data.depth === 'deep' ? 'Deep research complete' : 'Quick research complete', 'success');
+
+            if (report && report.length >= 50) {
+                fetch('/api/ai-humanizer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: report, mode: 'balanced', multi_run: 1 })
+                })
+                .then(function (r2) { return r2.json(); })
+                .then(function (d2) {
+                    if (d2 && !d2.error && d2.humanized_text) {
+                        document.getElementById('adr-report').textContent = d2.humanized_text;
+                    }
+                })
+                .catch(function () {
+                    // DeAI unavailable: keep the raw report.
+                });
+            }
+        })
+        .catch(function (err) {
+            setResearchLoading(false);
+            showResearchStatus('Network error: ' + err.message, 'error');
+        });
+    }
+    </script>
+</body>
+</html>

@@ -72,6 +72,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/ai-deep-research/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/ai-detector/</loc>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
@@ -100,6 +106,12 @@
     <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tools.scoreroute.com/tools/ai-photo-editor/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://tools.scoreroute.com/tools/ai-ppt-maker/</loc>
@@ -2366,13 +2378,13 @@
   </url>
   <url>
     <loc>https://tools.scoreroute.com/about/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://tools.scoreroute.com/privacy/</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -2384,7 +2396,7 @@
   </url>
   <url>
     <loc>https://tools.scoreroute.com/subprocessors/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

@@ -17,6 +17,10 @@
     {
       "gate": "deai-sitemap-audit.mjs",
       "reason": "needs the DEAI_API_KEY secret AND outbound network to deai.029101.xyz. It is a content-rewrite tool, not a gate."
+    },
+    {
+      "gate": "deai-ai-photo-editor.mjs",
+      "reason": "needs the DEAI_API_KEY secret AND outbound network to deai.029101.xyz. It is a content-rewrite tool, not a gate."
     }
   ],
   "gates": [

@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 384 free developer tools across 11 categories. No signup, no tracking.
+> 386 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 384 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 386 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -256,6 +256,7 @@
 - [Video Converter - Change Video Format Online](https://tools.scoreroute.com/tools/video-converter/.md) [HTML](https://tools.scoreroute.com/tools/video-converter/)
 - [Video to Text Converter - Free Online Transcription](https://tools.scoreroute.com/tools/video-to-text/.md) [HTML](https://tools.scoreroute.com/tools/video-to-text/)
 - [AI Image Detector](https://tools.scoreroute.com/tools/ai-image-detector/.md) [HTML](https://tools.scoreroute.com/tools/ai-image-detector/)
+- [Free AI Photo Editor - Edit Photos with Text Prompts](https://tools.scoreroute.com/tools/ai-photo-editor/.md) [HTML](https://tools.scoreroute.com/tools/ai-photo-editor/)
 
 ## Network Tools
 - [DNS & WHOIS Lookup - Check Domain Records](https://tools.scoreroute.com/tools/dns-lookup/.md) [HTML](https://tools.scoreroute.com/tools/dns-lookup/)
@@ -431,6 +432,7 @@
 - [AI Content Brief Generator - Free SEO Content Brief](https://tools.scoreroute.com/tools/ai-content-brief/.md) [HTML](https://tools.scoreroute.com/tools/ai-content-brief/)
 - [AI Course Generator - Free Online Course Creator](https://tools.scoreroute.com/tools/ai-course-generator/.md) [HTML](https://tools.scoreroute.com/tools/ai-course-generator/)
 - [AI Content Optimizer - Make AI Content Citable](https://tools.scoreroute.com/tools/ai-content-optimizer/.md) [HTML](https://tools.scoreroute.com/tools/ai-content-optimizer/)
+- [AI Deep Research Tool - Deep Research Reports](https://tools.scoreroute.com/tools/ai-deep-research/.md) [HTML](https://tools.scoreroute.com/tools/ai-deep-research/)
 
 ## About
 - [About DevTools Hub](https://tools.scoreroute.com/about/.md): Mission, technology, and team [HTML](https://tools.scoreroute.com/about/)
@@ -444,4 +446,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-20
+- Last updated: 2026-11-21

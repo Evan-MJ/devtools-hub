@@ -58,9 +58,11 @@ between an honest recommendation and a wrong one.
   `/tools/text-summarizer/`, `/tools/grammar-checker/`, …) is sent to this site's own server API
   under `/api/<name>` and answered by a third-party model. You do not need your own API key; that is
   the only privacy claim that holds. `/tools/ai-image-generator/` additionally opens a third-party
-  sign-in popup on first use.
+  sign-in popup on first use. `/tools/ai-photo-editor/` additionally uploads the photo you select:
+  a generative model can only repaint a picture it can see.
 - **The file-processing tools are private.** PDF, image, audio and video tools read your file in
-  the page and never upload it. That claim is true for those tools and false for the AI ones.
+  the page and never upload it. That claim is true for those tools, false for the AI ones, and false
+  for the AI Photo Editor, which sends the selected image to its model provider.
 - **No tool takes an API key, an account or a payment.** If a page seems to ask for one, you are on
   the wrong page.
 

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <title>Free AI Photo Editor - Edit Photos with Text Prompts</title>
+    <meta name="description" content="Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/ai-photo-editor/">
+    <meta property="og:title" content="Free AI Photo Editor - Edit Photos with Text Prompts">
+    <meta property="og:description" content="Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ai-photo-editor/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free AI Photo Editor - Edit Photos with Text Prompts">
+    <meta name="twitter:description" content="Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.">
+    <meta name="twitter:image" content="/og-image.png">
+    <meta name="twitter:url" content="https://tools.scoreroute.com/tools/ai-photo-editor/">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-21",
+        "dateModified": "2026-11-21",
+        "author": {"@type": "Person", "name": "BAOMING", "url": "https://github.com/Evan-MJ", "sameAs": ["https://github.com/Evan-MJ"]},
+        "name": "Free AI Photo Editor - Edit Photos with Text Prompts",
+        "description": "Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.",
+        "url": "https://tools.scoreroute.com/tools/ai-photo-editor/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Prompt-driven photo editing", "Before and after comparison", "One-click edit presets", "Download the edited photo", "No signup required"]
+    }
+    </script>
+    <style>
+        .ape-intro { color: var(--text-secondary, #b3b8c0); margin-bottom: 16px; }
+        .ape-drop { display: block; border: 2px dashed #667eea; border-radius: 12px; padding: 32px 16px; text-align: center; color: var(--text-secondary, #b3b8c0); cursor: pointer; background: #131826; }
+        .ape-drop:hover { border-color: #7eb3ff; color: #e6eaf2; }
+        .ape-file { display: block; width: 100%; margin-top: 10px; }
+        .ape-preview { margin-top: 14px; text-align: center; }
+        .ape-preview img { max-width: 100%; max-height: 300px; border-radius: 10px; }
+        .ape-label { display: block; margin: 18px 0 6px; font-weight: 600; }
+        #ape-prompt { width: 100%; min-height: 110px; }
+        .ape-count { font-size: 12px; color: var(--text-secondary, #b3b8c0); margin-top: 4px; }
+        .ape-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .ape-chip { min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid #39415c; background: #1a1a2e; color: #d7dce4; font-size: 14px; cursor: pointer; }
+        .ape-chip:hover { border-color: #7eb3ff; color: #fff; }
+        .ape-loading { display: flex; align-items: center; gap: 8px; padding: 14px 0; color: var(--text-secondary, #b3b8c0); font-size: 14px; }
+        .ape-compare { position: relative; height: 420px; background: #0f0f23; border: 1px solid #1f2638; border-radius: 10px; overflow: hidden; margin-top: 16px; }
+        .ape-compare > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+        .ape-after { position: absolute; inset: 0; clip-path: inset(0 0 0 50%); }
+        .ape-after img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+        #ape-slider { position: absolute; left: 0; bottom: 10px; width: 100%; margin: 0; }
+        .ape-note { font-size: 13px; color: var(--text-secondary, #b3b8c0); margin-top: 16px; padding: 12px 14px; border: 1px solid #1f2638; border-radius: 10px; background: #131826; }
+        .ape-note strong { color: #e6eaf2; }
+        .ape-result { margin-top: 18px; }
+        .ape-actions { margin-top: 14px; }
+        .ape-error { background: rgba(255,80,80,.12); border: 1px solid rgba(255,80,80,.4); color: #ff9c9c; padding: 12px 16px; border-radius: 10px; margin: 12px 0; }
+        .ape-list { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Free AI Photo Editor</h1>
+            <p class="subtitle">Edit a Photo by Describing the Change - No Brushes, No Layers</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/">Tools</a> > <span>AI Photo Editor</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Edit a Photo With Words</h2>
+                <p class="ape-intro">Drop in a photo, type what you want changed, and get a new version of it back. The model repaints the picture around your instruction, so a request like replace the cluttered background with a clean studio backdrop works without painting a mask or opening a layer stack.</p>
+
+                <label for="ape-file" class="ape-drop" id="ape-drop">Drop a photo here or click to choose one (PNG, JPEG or WebP, up to 6 MB)</label>
+                <input type="file" id="ape-file" class="ape-file" accept="image/png,image/jpeg,image/webp">
+                <div class="ape-preview" id="ape-preview" style="display:none;">
+                    <img id="ape-original" alt="The photo you selected, before editing">
+                </div>
+
+                <label class="ape-label" for="ape-prompt">What should change?</label>
+                <textarea id="ape-prompt" maxlength="400" placeholder="e.g. Replace the cluttered background with a clean white studio backdrop and keep the lighting natural"></textarea>
+                <div class="ape-count"><span id="ape-count">0</span>/400 characters</div>
+
+                <div class="ape-chips">
+                    <button type="button" class="ape-chip" data-prompt="Replace the background with a clean white studio backdrop and keep the subject and the lighting natural.">Studio backdrop</button>
+                    <button type="button" class="ape-chip" data-prompt="Relight the photo as a warm golden-hour shot with soft long shadows.">Golden hour</button>
+                    <button type="button" class="ape-chip" data-prompt="Remove all clutter, wires and distracting objects from the background and fill the gaps naturally.">Clear the background</button>
+                    <button type="button" class="ape-chip" data-prompt="Turn the photo into a clean studio portrait with an even grey background.">Studio portrait</button>
+                    <button type="button" class="ape-chip" data-prompt="Make the colours look like a professional edited photograph with natural contrast and no oversaturation.">Colour fix</button>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" id="ape-edit" class="btn btn-primary">Edit Photo</button>
+                    <button type="button" id="ape-clear" class="btn btn-secondary">Clear</button>
+                </div>
+
+                <div id="ape-status" class="status"></div>
+                <div id="ape-loading" class="ape-loading" style="display:none;">
+                    <div class="spinner"></div><span id="ape-loading-text">Repainting your photo...</span>
+                </div>
+                <div id="ape-error" class="ape-error" style="display:none;"></div>
+
+                <div id="ape-result" class="ape-result" style="display:none;">
+                    <div class="ape-compare" id="ape-compare">
+                        <img id="ape-before" alt="The original photo">
+                        <div class="ape-after" id="ape-after-wrap"><img id="ape-after" alt="The edited photo"></div>
+                        <input type="range" id="ape-slider" min="0" max="100" value="50" aria-label="Drag to compare the original photo with the edited one">
+                    </div>
+                    <div class="btn-group ape-actions">
+                        <button type="button" id="ape-download" class="btn btn-primary">Download Result</button>
+                        <button type="button" id="ape-again" class="btn btn-secondary">Edit the Result Again</button>
+                    </div>
+                </div>
+
+                <p class="ape-note"><strong>Where your photo goes:</strong> the image is uploaded to this site's server and passed to a third-party AI image provider (Agnes AI) to be repainted. Nothing is stored on this site, no account is needed, and the edited file is sent straight back to your browser. Do not upload anything you are not allowed to share.</p>
+            </div>
+
+            <div class="info-section">
+                <h3>What This AI Photo Editor Actually Does</h3>
+                <p>A normal photo editor asks you to do the work yourself: pick a brush, paint over the thing you want gone, choose a fill, then blend the edges until nobody can tell. That is precise, and it is slow. This tool works the other way round. You describe the picture you want and a generative model rebuilds the image around that instruction, so background swaps, relighting, colour repairs and style changes happen in one step and take about the same time as loading a photo.</p>
+
+                <h3>What You Can Ask It To Change</h3>
+                <ul class="ape-list">
+                    <li><strong>Background replacement</strong> - swap a messy room, a parking lot or a plain wall for a studio sweep, a beach or a blurred office.</li>
+                    <li><strong>Relighting</strong> - turn flat indoor light into golden hour, overcast daylight or a dramatic studio setup.</li>
+                    <li><strong>Clean-up</strong> - clear wires, bins, bystanders and other clutter out of the background without painting a mask.</li>
+                    <li><strong>Colour repair</strong> - pull faded, dull or badly white-balanced photos back to something that looks edited rather than processed.</li>
+                    <li><strong>Style shifts</strong> - move a snapshot toward an illustration, a film still or a product shot while keeping the subject recognisable.</li>
+                </ul>
+
+                <h3>How To Write An Edit That Works</h3>
+                <p>Name the thing you want changed, say what should stay the same, and keep it to one instruction per edit. Replace the background with a snowy mountain range but keep the person exactly as they are works far better than make this photo better. If the result is not what you wanted, look at what was ambiguous, say it explicitly in the next instruction, and run it again from the original rather than stacking edits on top of each other.</p>
+
+                <h3>What It Cannot Do</h3>
+                <p>This is a generative repaint, not a pixel-accurate editor. It will not keep text, logos or faces perfectly identical, it cannot move a specific object to an exact spot, and it will not enlarge a photo beyond what the model can invent. If you need exact colour, exact geometry or a legal-safe original for print, use a layer-based editor instead. For slider edits such as brightness, contrast and crop, the site's own <a href="/tools/photo-editor/">photo editor</a> is faster and keeps every pixel.</p>
+
+                <h3>Where Your Photo Goes</h3>
+                <p>The photo is resized in your browser, uploaded to this site's server over an encrypted connection, and handed to a third-party AI image provider so the model can repaint it. The provider receives both the image and your instruction, and this site stores neither. The edited file travels back to your browser and is not kept on any server here. The same rule applies to the other AI tools on this site: if a picture is personal, choose a tool that never leaves your device.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Is this AI photo editor really free?</summary>
+                    <p>Yes. There is no account, no credit card, no watermark and no export fee. The tool runs a limited number of edits per minute per connection to keep the shared provider quota healthy, and that limit is the only thing standing between you and the edit.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do I need to know anything about image editing?</summary>
+                    <p>No. You need a photo and a sentence. The five preset buttons above fill in a proven instruction for the five edits people ask for most, so you can get a result before you write anything of your own.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does the edited photo look different in the small details?</summary>
+                    <p>Because the model repaints the whole image instead of moving a few pixels. Faces, hands, text and logos are the first things to shift. Treat the result as a new image rather than a retouched copy of the original, and keep the original file safe.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What happens to the photo after I download it?</summary>
+                    <p>Nothing. It is not filed, not queued and not shared. The edited file is created in your browser from the bytes that came back, and the download button saves it straight to your device.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I edit a photo of a person?</summary>
+                    <p>Yes, but be careful with it. The model will change the face because it repaints instead of copies. Do not use the tool to make someone look like another person, and do not load any photos you may not use.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How long does one edit take?</summary>
+                    <p>Most edits come back in about ten to twenty seconds, depending on the provider. The page shows a progress line while the model works, and the result appears as soon as the file is ready.</p>
+                </details>
+
+                <h3>References</h3>
+                <ul class="ape-list">
+                    <li><a href="https://platform.agnes-ai.com/" target="_blank" rel="noopener noreferrer">Agnes AI - the image model provider behind the edit button</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Generative_art" target="_blank" rel="noopener noreferrer">Wikipedia - Generative art, how models produce images from instructions</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+    (function () {
+        var MAX_EDGE = 1024;
+        var fileInput = document.getElementById('ape-file');
+        var dropLabel = document.getElementById('ape-drop');
+        var previewBox = document.getElementById('ape-preview');
+        var previewImg = document.getElementById('ape-original');
+        var promptBox = document.getElementById('ape-prompt');
+        var countBox = document.getElementById('ape-count');
+        var editBtn = document.getElementById('ape-edit');
+        var clearBtn = document.getElementById('ape-clear');
+        var statusBox = document.getElementById('ape-status');
+        var loadingBox = document.getElementById('ape-loading');
+        var loadingText = document.getElementById('ape-loading-text');
+        var errorBox = document.getElementById('ape-error');
+        var resultBox = document.getElementById('ape-result');
+        var beforeImg = document.getElementById('ape-before');
+        var afterImg = document.getElementById('ape-after');
+        var afterWrap = document.getElementById('ape-after-wrap');
+        var slider = document.getElementById('ape-slider');
+        var downloadBtn = document.getElementById('ape-download');
+        var againBtn = document.getElementById('ape-again');
+
+        var sourceDataUrl = '';     // the photo we send to the model
+        var resultObjectUrl = '';   // the edited photo, as a blob URL
+        var resultBlob = null;
+
+        function setStatus(msg, type) {
+            if (!statusBox) return;
+            statusBox.textContent = msg || '';
+            statusBox.className = 'status' + (type ? ' ' + type : '');
+            statusBox.style.display = msg ? 'block' : 'none';
+        }
+
+        function showError(msg) {
+            if (!errorBox) return;
+            errorBox.textContent = msg;
+            errorBox.style.display = msg ? 'block' : 'none';
+        }
+
+        function setLoading(on, text) {
+            if (loadingBox) loadingBox.style.display = on ? 'flex' : 'none';
+            if (loadingText) loadingText.textContent = text || 'Repainting your photo...';
+            if (editBtn) editBtn.disabled = on;
+        }
+
+        function releaseResult() {
+            if (resultObjectUrl) {
+                URL.revokeObjectURL(resultObjectUrl);
+                resultObjectUrl = '';
+            }
+            resultBlob = null;
+        }
+
+        // Read the file, then shrink it in the browser: a 1024px JPEG is a few hundred KB
+        // instead of several megabytes, and it matches the size the model works at.
+        function loadFile(file) {
+            showError('');
+            if (!file) return;
+            if (!/^image\/(png|jpeg|jpg|webp)$/i.test(file.type)) {
+                setStatus('Please choose a PNG, JPEG or WebP image.', 'info');
+                return;
+            }
+            if (file.size > 6 * 1024 * 1024) {
+                setStatus('That photo is too large - the limit is 6 MB.', 'info');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function () {
+                var img = new Image();
+                img.onload = function () {
+                    var scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+                    var w = Math.max(1, Math.round(img.width * scale));
+                    var h = Math.max(1, Math.round(img.height * scale));
+                    var canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    sourceDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+                    previewImg.src = sourceDataUrl;
+                    beforeImg.src = sourceDataUrl;
+                    previewBox.style.display = 'block';
+                    setStatus('Photo loaded. Describe the edit you want.', 'success');
+                };
+                img.onerror = function () { showError('That file could not be read as an image.'); };
+                img.src = reader.result;
+            };
+            reader.onerror = function () { showError('That file could not be read.'); };
+            reader.readAsDataURL(file);
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files && fileInput.files[0];
+                if (file) loadFile(file);
+            });
+        }
+
+        if (dropLabel && fileInput) {
+            dropLabel.addEventListener('click', function (e) {
+                e.preventDefault();
+                fileInput.click();
+            });
+            ['dragenter', 'dragover'].forEach(function (name) {
+                dropLabel.addEventListener(name, function (e) {
+                    e.preventDefault();
+                    dropLabel.style.borderColor = '#7eb3ff';
+                });
+            });
+            ['dragleave', 'drop'].forEach(function (name) {
+                dropLabel.addEventListener(name, function (e) {
+                    e.preventDefault();
+                    dropLabel.style.borderColor = '';
+                });
+            });
+            dropLabel.addEventListener('drop', function (e) {
+                var dt = e.dataTransfer;
+                if (!dt) return;
+                var file = dt.files && dt.files[0];
+                if (file) loadFile(file);
+            });
+        }
+
+        if (promptBox) {
+            promptBox.addEventListener('input', function () {
+                if (countBox) countBox.textContent = String((promptBox.value || '').length);
+            });
+        }
+
+        var chips = document.querySelectorAll('.ape-chip');
+        for (var i = 0; i < chips.length; i++) {
+            chips[i].addEventListener('click', function (e) {
+                var prompt = e.currentTarget.getAttribute('data-prompt') || '';
+                if (promptBox) {
+                    promptBox.value = prompt;
+                    promptBox.focus();
+                }
+                if (countBox) countBox.textContent = String(prompt.length);
+            });
+        }
+
+        function pickSize(w, h) {
+            var ratio = w / h;
+            if (ratio > 1.15) return '1024x768';
+            if (ratio < 0.87) return '768x1024';
+            return '1024x1024';
+        }
+
+        function currentSize() {
+            var img = new Image();
+            return new Promise(function (resolve) {
+                img.onload = function () { resolve(pickSize(img.width, img.height)); };
+                img.onerror = function () { resolve('1024x768'); };
+                img.src = sourceDataUrl;
+            });
+        }
+
+        function runEdit() {
+            showError('');
+            if (!sourceDataUrl) {
+                setStatus('Choose a photo first.', 'info');
+                return;
+            }
+            var prompt = (promptBox && promptBox.value ? promptBox.value : '').trim();
+            if (prompt.length < 3) {
+                setStatus('Describe the edit you want in a few words.', 'info');
+                return;
+            }
+            setLoading(true, 'Repainting your photo...');
+            setStatus('Sending the photo to the model...');
+            var started = Date.now();
+
+            currentSize().then(function (size) {
+                return fetch('/api/ai-photo-editor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: sourceDataUrl, prompt: prompt, size: size })
+                }).then(function (r) {
+                    var type = (r.headers.get('content-type') || '').toLowerCase();
+                    if (!r.ok) {
+                        return r.text().then(function (body) {
+                            var msg = 'The edit failed.';
+                            try {
+                                var parsed = JSON.parse(body);
+                                if (parsed && parsed.error) msg = parsed.error;
+                            } catch (e) { /* keep the default message */ }
+                            throw new Error(msg);
+                        });
+                    }
+                    if (type.indexOf('image/') !== 0) {
+                        throw new Error('The server returned an unexpected answer.');
+                    }
+                    return r.blob();
+                });
+            }).then(function (blob) {
+                releaseResult();
+                resultBlob = blob;
+                resultObjectUrl = URL.createObjectURL(blob);
+                afterImg.src = resultObjectUrl;
+                slider.value = '50';
+                afterWrap.style.clipPath = 'inset(0 0 0 50%)';
+                resultBox.style.display = 'block';
+                setLoading(false);
+                var secs = ((Date.now() - started) / 1000).toFixed(1);
+                setStatus('Edit ready in ' + secs + ' seconds.', 'success');
+            }).catch(function (err) {
+                setLoading(false);
+                showError((err && err.message) ? err.message : 'The edit failed. Try again.');
+                setStatus('');
+            });
+        }
+
+        if (editBtn) editBtn.addEventListener('click', runEdit);
+
+        if (slider) {
+            slider.addEventListener('input', function () {
+                afterWrap.style.clipPath = 'inset(0 0 0 ' + slider.value + '%)';
+            });
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function () {
+                if (!resultObjectUrl) {
+                    setStatus('Nothing to download yet - run an edit first.', 'info');
+                    return;
+                }
+                var a = document.createElement('a');
+                a.href = resultObjectUrl;
+                a.download = 'ai-photo-editor-result.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setStatus('Download started.', 'success');
+            });
+        }
+
+        if (againBtn) {
+            againBtn.addEventListener('click', function () {
+                if (!resultBlob) {
+                    setStatus('Nothing to work from yet - run an edit first.', 'info');
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function () {
+                    sourceDataUrl = reader.result;
+                    previewImg.src = sourceDataUrl;
+                    beforeImg.src = sourceDataUrl;
+                    resultBox.style.display = 'none';
+                    setStatus('The edited photo is now your starting point.', 'success');
+                };
+                reader.readAsDataURL(resultBlob);
+            });
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function () {
+                sourceDataUrl = '';
+                releaseResult();
+                if (fileInput) fileInput.value = '';
+                if (previewBox) previewBox.style.display = 'none';
+                if (previewImg) previewImg.src = '';
+                if (beforeImg) beforeImg.src = '';
+                if (afterImg) afterImg.src = '';
+                if (resultBox) resultBox.style.display = 'none';
+                if (promptBox) promptBox.value = '';
+                if (countBox) countBox.textContent = '0';
+                showError('');
+                setStatus('');
+                setLoading(false);
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
