@@ -13,8 +13,12 @@ import { fetchWithTimeout } from '../../libs/http.js';
 const AGNES_ENDPOINT = 'https://apihub.agnes-ai.com/v1/images/generations';
 const AGNES_MODEL = 'agnes-image-2.1-flash';
 const OUTPUT_HOST = 'platform-outputs.agnes-ai.space';
-const GEN_TIMEOUT_MS = 21000;   // Pages free plan = 30s wall clock, 2 calls share it
-const FILE_TIMEOUT_MS = 8000;
+// The provider usually answers in ~10s but occasionally takes 70s+. A Worker request has no
+// wall-clock limit (only the 10ms free-plan CPU budget, and waiting on I/O costs no CPU),
+// so the generation gets a generous deadline instead of cutting a working edit short.
+const GEN_TIMEOUT_MS = 100000;
+const FILE_TIMEOUT_MS = 30000;
+const BUSY_RETRY_MS = 4000;     // the provider's 429 is a concurrency burst, not a quota
 const MAX_IMAGE_BYTES = 6 * 1024 * 1024;
 const MAX_PROMPT_CHARS = 400;
 const SIZES = ['1024x768', '768x1024', '1024x1024'];
@@ -29,10 +33,10 @@ function corsHeaders(extra) {
   }, extra || {});
 }
 
-function jsonError(msg, status) {
+function jsonError(msg, status, extra) {
   return new Response(JSON.stringify({ error: msg }), {
     status: status || 500,
-    headers: corsHeaders({ 'Content-Type': 'application/json' })
+    headers: corsHeaders(Object.assign({ 'Content-Type': 'application/json' }, extra || {}))
   });
 }
 
@@ -51,40 +55,52 @@ async function bumpRateLimit(kv, ip) {
 }
 
 // Generate with the first key, fall over to the second one on 429 / 5xx / network error.
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function generate(imageDataUrl, prompt, size, env) {
   const keys = [env.DEVTOOLS_AGNES_KEY_1, env.DEVTOOLS_AGNES_KEY_2].filter(Boolean);
   if (!keys.length) throw new Error('The AI image provider is not configured.');
   let last = 'generation failed';
+  let busy = false;
   for (const key of keys) {
-    let r;
-    try {
-      r = await fetchWithTimeout(AGNES_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: AGNES_MODEL,
-          prompt: prompt,
-          size: size,
-          extra_body: { image: [imageDataUrl], response_format: 'url' }
-        })
-      }, GEN_TIMEOUT_MS);
-    } catch (e) {
-      last = 'provider timeout or network error';
-      continue;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      let r;
+      try {
+        r = await fetchWithTimeout(AGNES_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: AGNES_MODEL,
+            prompt: prompt,
+            size: size,
+            extra_body: { image: [imageDataUrl], response_format: 'url' }
+          })
+        }, GEN_TIMEOUT_MS);
+      } catch (e) {
+        last = 'The model took too long to answer. Try again.';
+        break;
+      }
+      if (r.status === 429) {
+        last = 'The image service is busy right now - try again in a moment.';
+        busy = true;
+        if (attempt === 0) { await sleep(BUSY_RETRY_MS); continue; }
+        break;
+      }
+      if (!r.ok) {
+        const t = await r.text();
+        last = 'The image service answered with an error (' + r.status + ').';
+        break;
+      }
+      let d;
+      try { d = await r.json(); } catch (e) { last = 'The image service returned an unreadable answer.'; break; }
+      const url = d && d.data && d.data[0] && d.data[0].url;
+      if (!url) { last = 'The image service returned no image.'; break; }
+      return url;
     }
-    if (r.status === 429) { last = 'the provider is busy right now'; continue; }
-    if (!r.ok) {
-      const t = await r.text();
-      last = 'provider error ' + r.status + ': ' + t.slice(0, 120);
-      continue;
-    }
-    let d;
-    try { d = await r.json(); } catch (e) { last = 'provider returned invalid JSON'; continue; }
-    const url = d && d.data && d.data[0] && d.data[0].url;
-    if (!url) { last = 'provider returned no image URL'; continue; }
-    return url;
   }
-  throw new Error(last);
+  const err = new Error(last);
+  err.status = busy ? 429 : 500;
+  throw err;
 }
 
 // The provider hands back a URL: fetch it, but only from the one host it is allowed to use.
@@ -158,6 +174,8 @@ export async function onRequest({ request, env }) {
       })
     });
   } catch (e) {
-    return jsonError(e && e.message ? e.message : 'The edit failed. Try again.', 500);
+    const status = (e && e.status) || 500;
+    const extra = status === 429 ? { 'Retry-After': '30' } : {};
+    return jsonError(e && e.message ? e.message : 'The edit failed. Try again.', status, extra);
   }
 }
