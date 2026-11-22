@@ -372,15 +372,16 @@ export async function onRequest(context) {
     '<title>DevTools Hub - ' + totalCount + ' Free Online Developer Tools</title>' + nl +
     // BUG-172: trimmed to ≤155 chars while preserving 3 probe phrases ("free online developer tools", "JSON formatter online", "image compressor free") for SquirrelScan AI-citability (was 174/158 — Warning 1/17 `core/meta-description`)
     // BUG-571: stronger CTA in meta description per content quality feedback
-    '<meta name="description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking. Try free now.">' + nl +
+    // BUG-579: meta description ≤160 chars (was 166)
+    '<meta name="description" content="' + totalCount + ' free browser tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger & ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
     '<link rel="canonical" href="https://tools.scoreroute.com/">' + nl +
     '<meta property="og:title" content="DevTools Hub - ' + totalCount + ' Free Online Developer Tools">' + nl +
-    '<meta property="og:description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
+    '<meta property="og:description" content="' + totalCount + ' free browser tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger & ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
     '<meta property="og:url" content="https://tools.scoreroute.com/">' + nl +
     '<meta property="og:type" content="website">' + nl +
     '<meta name="twitter:card" content="summary_large_image">' + nl +
     '<meta name="twitter:title" content="DevTools Hub - ' + totalCount + ' Free Online Developer Tools">' + nl +
-    '<meta name="twitter:description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
+    '<meta name="twitter:description" content="' + totalCount + ' free browser tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger & ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
     '<meta name="twitter:image" content="/og-image.png">' + nl +
     '<meta name="twitter:url" content="https://tools.scoreroute.com/">' + nl +
     '<script type="application/ld+json">' + nl +

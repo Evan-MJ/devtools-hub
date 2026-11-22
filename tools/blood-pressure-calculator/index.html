@@ -50,6 +50,7 @@
         .bpc-field input:focus, .bpc-field select:focus, .bpc-field textarea:focus { outline:2px solid #667eea; border-color:transparent; }
         .bpc-gr { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
         .bpc-note { color:#8888a0; font-size:0.78rem; margin-top:4px; }
+        .status.info { background:rgba(59,130,246,0.15); border:1px solid #3b82f6; color:#60a5fa; }
         .bpc-cat { display:inline-block; padding:6px 14px; border-radius:8px; font-weight:600; font-size:0.95rem; margin-bottom:10px; }
         .bpc-cat-normal { background:rgba(16,185,129,0.18); color:#10b981; }
         .bpc-cat-elevated { background:rgba(245,158,11,0.18); color:#f59e0b; }
@@ -590,9 +591,9 @@
                 var ageErr = bpAgeCheck();
                 if (ageErr) { bpStatus(ageErr, 'error'); return; }
                 var discard = document.getElementById('bpc-avg-discard').checked;
-                if (!bpQueue.length) { bpStatus('Add at least one reading to the batch first. Two or more give a steadier average.', 'error'); return; }
+                if (!bpQueue.length) { bpStatus('Add at least one reading to the batch first. Two or more give a steadier average.', 'info'); return; }
                 var list = bpQueue.slice();
-                if (discard && list.length < 2) { bpStatus('Discarding the first reading needs at least two readings, otherwise nothing would be left to average.', 'error'); return; }
+                if (discard && list.length < 2) { bpStatus('Discarding the first reading needs at least two readings, otherwise nothing would be left to average.', 'info'); return; }
                 if (discard) list = list.slice(1);
                 var sumS = 0, sumD = 0, sumP = 0, nP = 0, minS = list[0].sys, maxS = list[0].sys;
                 for (var i = 0; i < list.length; i++) {
@@ -630,7 +631,7 @@
                 bpHideStatus();
             });
             document.getElementById('bpc-avg-save').addEventListener('click', function () {
-                if (!bpAvgLast) { bpStatus('Compute an average first, then save it.', 'error'); return; }
+                if (!bpAvgLast) { bpStatus('Compute an average first, then save it.', 'info'); return; }
                 if (bpSaveEntry(bpEntry('avg', bpAvgLast.sys, bpAvgLast.dia, bpAvgLast.pulse, 'Average of ' + bpAvgLast.count + ' readings'))) {
                     bpStatus('Batch average saved to history. See it under History and Trends.', 'ok');
                     bpRenderHistory();
@@ -642,7 +643,7 @@
         (function bootHistory() {
             document.getElementById('bpc-hist-csv').addEventListener('click', function () {
                 var list = bpHistSorted();
-                if (!list.length) { bpStatus('Nothing to export yet. Save a reading first.', 'error'); return; }
+                if (!list.length) { bpStatus('Nothing to export yet. Save a reading first.', 'info'); return; }
                 var rows = ['When,Source,Systolic,Diastolic,Pulse,Note'];
                 for (var i = 0; i < list.length; i++) {
                     var r = list[i];
@@ -659,7 +660,7 @@
                 bpStatus('CSV downloaded.', 'ok');
             });
             document.getElementById('bpc-hist-clear').addEventListener('click', function () {
-                if (!bpLoad().length) { bpStatus('History is already empty.', 'error'); return; }
+                if (!bpLoad().length) { bpStatus('History is already empty.', 'info'); return; }
                 if (!window.confirm('Delete every saved reading from this browser? This cannot be undone.')) return;
                 bpSave([]);
                 bpStatus('All saved readings deleted from this browser.', 'ok');
