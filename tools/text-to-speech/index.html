@@ -325,24 +325,59 @@
         }
     }
 
+    var voicesLoaded = false;
+    var voicesLoadPromise = null;
+
     function loadBrowserVoices() {
         var select = document.getElementById('browser-voice');
+        var speakBtn = document.getElementById('speak-btn');
+        
         if (!window.speechSynthesis) {
-            select.innerHTML = '<option value="">Speech synthesis not available</option>';
-            return;
+            select.innerHTML = '<option value="">Speech synthesis not supported in this browser</option>';
+            select.disabled = true;
+            if (speakBtn) speakBtn.disabled = true;
+            voicesLoaded = true;
+            return Promise.resolve();
         }
+
+        // Check for headless environment early
+        var isHeadless = navigator.webdriver === true || 
+                         (window.chrome && !window.chrome.runtime) ||
+                         (window.navigator.userAgent.includes('HeadlessChrome'));
+        
         var voices = speechSynthesis.getVoices();
         if (voices.length === 0) {
             select.innerHTML = '<option value="">Loading voices...</option>';
-            if (!window.voicesLoadAttempted) {
-                window.voicesLoadAttempted = true;
-                setTimeout(loadBrowserVoices, 500);
-            } else {
-                select.innerHTML = '<option value="">No voices available (try Chrome or Edge)</option>';
+            select.disabled = true;
+            if (speakBtn) speakBtn.disabled = true;
+            
+            // If we detect headless, don't retry - fail fast
+            if (isHeadless) {
+                select.innerHTML = '<option value="">Speech synthesis unavailable in headless/automated environments</option>';
+                select.disabled = true;
+                if (speakBtn) speakBtn.disabled = true;
+                voicesLoaded = true;
+                return Promise.resolve();
             }
-            return;
+
+            var attempts = window.voicesLoadAttempts || 0;
+            if (attempts < 10) {
+                window.voicesLoadAttempts = attempts + 1;
+                return new Promise(function(resolve) {
+                    setTimeout(function() {
+                        loadBrowserVoices().then(resolve);
+                    }, 300 * (attempts + 1));
+                });
+            } else {
+                select.innerHTML = '<option value="">No voices found — this environment may not support speech synthesis</option>';
+                select.disabled = true;
+                if (speakBtn) speakBtn.disabled = true;
+                voicesLoaded = true;
+                return Promise.resolve();
+            }
         }
-        window.voicesLoadAttempted = false;
+
+        window.voicesLoadAttempts = 0;
         var englishVoices = voices.filter(function(v) { return v.lang.startsWith('en'); });
         var otherVoices = voices.filter(function(v) { return !v.lang.startsWith('en'); });
         var html = '<option value="">Select a voice</option>';
@@ -359,6 +394,10 @@
             html += '</optgroup>';
         }
         select.innerHTML = html;
+        select.disabled = false;
+        if (speakBtn) speakBtn.disabled = false;
+        voicesLoaded = true;
+        return Promise.resolve();
     }
 
     function isSpeechAvailable() {
@@ -371,8 +410,29 @@
             showStatus('browser-status', 'Please enter some text.', 'info');
             return;
         }
-        if (!isSpeechAvailable()) {
-            showStatus('browser-status', 'Speech synthesis not available in this browser. Try Chrome or Edge.', 'error');
+        if (!window.speechSynthesis) {
+            showStatus('browser-status', 'Speech synthesis is not supported in this browser.', 'error');
+            return;
+        }
+        
+        // Check if voices are loaded
+        var select = document.getElementById('browser-voice');
+        if (select.disabled || select.querySelectorAll('option').length <= 1) {
+            showStatus('browser-status', 'Voices still loading... Please wait.', 'info');
+            loadBrowserVoices();
+            return;
+        }
+        
+        var voices = speechSynthesis.getVoices();
+        if (voices.length === 0) {
+            var isHeadless = navigator.webdriver === true || 
+                             (window.chrome && !window.chrome.runtime) ||
+                             (window.navigator.userAgent.includes('HeadlessChrome'));
+            if (isHeadless) {
+                showStatus('browser-status', 'Speech synthesis is not available in headless/automated browser environments. Please use AI Voices mode or test in a regular browser (Chrome, Edge, Firefox, Safari).', 'error');
+            } else {
+                showStatus('browser-status', 'No voices available. This environment may not support speech synthesis. Try AI Voices mode instead.', 'error');
+            }
             return;
         }
 
@@ -401,7 +461,7 @@
         currentUtterance.onerror = function(e) {
             resetBrowserControls();
             if (e.error === 'synthesis-failed' || e.error === 'not-allowed') {
-                showStatus('browser-status', 'Speech not available in headless/restricted mode. Try a regular browser.', 'error');
+                showStatus('browser-status', 'Speech synthesis failed — this may be a headless/restricted environment. Try a regular browser (Chrome, Edge, Firefox, Safari).', 'error');
             } else {
                 showStatus('browser-status', 'Speech error: ' + e.error, 'error');
             }

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online SQL Playground - Run SQLite in Browser | DevTools Hub</title>
+    <meta name="description" content="Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/sql-playground/">
+    <meta property="og:title" content="Online SQL Playground - Run SQLite in Browser | DevTools Hub">
+    <meta property="og:description" content="Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/sql-playground/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Online SQL Playground - Run SQLite in Browser Free">
+    <meta name="twitter:description" content="Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/dracula.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-22",
+        "dateModified": "2026-11-22",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "Online SQL Playground - Run SQLite in Browser | DevTools Hub",
+        "description": "Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.",
+        "url": "https://tools.scoreroute.com/tools/sql-playground/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Modern browser with WebAssembly support",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": [
+            "Run SQLite queries in browser via WebAssembly (sql.js)",
+            "Pre-loaded sample databases: Chinook, Northwind, Employee",
+            "CodeMirror SQL editor with syntax highlighting",
+            "Multiple query tabs",
+            "Result table with pagination and sorting",
+            "Export results to CSV, JSON, SQL INSERT",
+            "Query EXPLAIN plan visualization",
+            "Query history with localStorage persistence",
+            "Share queries via URL",
+            "100% private - runs entirely in your browser"
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Is the Online SQL Playground really free?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. No signup, no credit card, no daily limits. Unlike SQLFiddle, DB Fiddle or Mode, this playground runs SQLite entirely in your browser via WebAssembly. There are no server costs, so no usage caps."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does SQLite run in the browser without a server?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The playground uses sql.js, which is SQLite compiled to WebAssembly. WebAssembly is a portable binary format that all major browsers execute at near-native speed. The database lives in memory (or IndexedDB for persistence) and SQL executes directly in your browser tab."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Which SQL dialect does it support?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "SQLite 3.x dialect. This covers most standard SQL: SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, CREATE INDEX, VIEWs, CTEs (WITH), window functions, JSON1 extension, FTS5 full-text search. MySQL/PostgreSQL-specific syntax (e.g., LIMIT ... OFFSET vs FETCH) may differ slightly."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What sample databases are included?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Three classic datasets: Chinook (digital media shop - artists, albums, tracks, invoices), Northwind (orders, customers, products, employees), and Employee (company org chart with self-referencing manager hierarchy). You can also create your own tables or load SQL from a file."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can AI replace this tool?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. AI can write SQL, but it cannot execute it against real data. When you ask an AI to test a query, it hallucinates the result. This playground runs your SQL for real against actual data so you see the exact rows, the actual errors, and the actual query plan."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is my data saved or sent to a server?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. Your queries and data stay in your browser. The SQLite database runs in WebAssembly memory. You can optionally persist to IndexedDB (local to your browser). Close the tab and everything is gone unless you explicitly save. You can share a query via URL hash which encodes the SQL in the link itself."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I use this for large datasets?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The browser memory limit applies (typically 2-4 GB). The sample databases are small (~1-5 MB). For larger datasets, consider a local database. This tool is designed for learning, prototyping, and testing queries on small-to-medium data."
+                }
+            }
+        ]
+    }
+    </script>
+    <style>
+        .sqlp-wrap { max-width: 1400px; margin: 0 auto; }
+        .sqlp-hero { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #1a1a2e 100%); border-radius: 14px; padding: 24px; margin: 18px 0; text-align: center; border: 1px solid #333; }
+        .sqlp-hero h2 { color: #fff; margin: 0 0 6px; font-size: 1.55rem; }
+        .sqlp-hero p { color: #a8a8c0; margin: 0; font-size: 0.95rem; }
+        .sqlp-pills { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+        .sqlp-pill { padding: 4px 12px; background: #252540; border: 1px solid #3a3a5c; border-radius: 20px; font-size: 0.78rem; color: #a8a8c0; }
+        .sqlp-pill strong { color: #7eb3ff; }
+        .sqlp-layout { display: grid; grid-template-columns: 280px 1fr; gap: 14px; min-height: 600px; }
+        @media(max-width: 1100px) { .sqlp-layout { grid-template-columns: 1fr; } }
+        .sqlp-sidebar { background: #1a1a2e; border: 1px solid #333; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; }
+        .sqlp-sidebar-section { padding: 14px; border-bottom: 1px solid #333; }
+        .sqlp-sidebar-section:last-child { border-bottom: none; }
+        .sqlp-sidebar-title { color: #fff; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 10px; }
+        .sqlp-db-select { width: 100%; padding: 8px 10px; background: #252540; border: 1px solid #3a3a5c; border-radius: 6px; color: #e0e0e0; font-size: 0.85rem; cursor: pointer; }
+        .sqlp-db-select:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: #667eea; }
+        .sqlp-tabs { display: flex; gap: 2px; background: #252540; padding: 4px; border-radius: 6px; margin-bottom: 8px; }
+        .sqlp-tab { flex: 1; padding: 8px 10px; background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.8rem; font-weight: 500; border-radius: 4px; transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sqlp-tab:hover { color: #fff; background: #2d2d4a; }
+        .sqlp-tab.active { color: #fff; background: #1a1a2e; }
+        .sqlp-tab-close { margin-left: 6px; opacity: 0.6; cursor: pointer; font-size: 0.9rem; line-height: 1; }
+        .sqlp-tab-close:hover { opacity: 1; color: #ef4444; }
+        .sqlp-add-tab { padding: 8px 12px; background: transparent; border: 1px dashed #444; color: #888; border-radius: 4px; cursor: pointer; font-size: 1rem; line-height: 1; transition: all 0.2s; }
+        .sqlp-add-tab:hover { border-color: #667eea; color: #667eea; }
+        .sqlp-editor-host { flex: 1; position: relative; min-height: 320px; display: flex; flex-direction: column; }
+        .sqlp-editor-host .CodeMirror { flex: 1; min-height: 320px; font-size: 0.88rem; }
+        .sqlp-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 10px 14px; background: #252540; border-top: 1px solid #333; }
+        .sqlp-btn { padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: #fff; border-radius: 6px; font-size: 0.85rem; cursor: pointer; font-weight: 500; transition: filter 0.2s; }
+        .sqlp-btn:hover { filter: brightness(1.1); }
+        .sqlp-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+        .sqlp-btn-secondary { background: #333; border: 1px solid #444; color: #a8a8c0; }
+        .sqlp-btn-secondary:hover { background: #3a3a5c; color: #fff; }
+        .sqlp-btn-danger { background: #ef4444; }
+        .sqlp-btn-danger:hover { background: #f87171; }
+        .sqlp-status-bar { display: flex; gap: 12px; align-items: center; padding: 8px 14px; background: #252540; border-top: 1px solid #333; font-size: 0.75rem; color: #888; flex-wrap: wrap; }
+        .sqlp-status-item { display: flex; align-items: center; gap: 4px; }
+        .sqlp-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+        .sqlp-status-dot.ready { background: #10b981; }
+        .sqlp-status-dot.running { background: #f59e0b; animation: sqlp-pulse 1s infinite; }
+        .sqlp-status-dot.error { background: #ef4444; }
+        @keyframes sqlp-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .sqlp-main { background: #1a1a2e; border: 1px solid #333; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; }
+        .sqlp-result-tabs { display: flex; background: #252540; border-bottom: 1px solid #333; padding: 0 8px; overflow-x: auto; }
+        .sqlp-result-tab { padding: 10px 14px; background: transparent; border: none; color: #888; cursor: pointer; font-size: 0.8rem; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; white-space: nowrap; }
+        .sqlp-result-tab:hover { color: #fff; }
+        .sqlp-result-tab.active { color: #fff; border-bottom-color: #667eea; }
+        .sqlp-result-pane { flex: 1; overflow: auto; min-height: 300px; }
+        .sqlp-table-wrap { overflow: auto; padding: 14px; }
+        .sqlp-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .sqlp-table th { background: #252540; color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; white-space: nowrap; border-bottom: 1px solid #333; cursor: pointer; user-select: none; }
+        .sqlp-table th:hover { background: #2d2d4a; }
+        .sqlp-table th.sorted-asc::after { content: ' \u25b2'; font-size: 0.7em; }
+        .sqlp-table th.sorted-desc::after { content: ' \u25bc'; font-size: 0.7em; }
+        .sqlp-table td { padding: 8px 12px; border-bottom: 1px solid #2a2a3e; color: #d0d0e0; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sqlp-table tr:hover td { background: #1f1f35; }
+        .sqlp-table .null { color: #888; font-style: italic; }
+        .sqlp-table .number { text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .sqlp-pagination { display: flex; align-items: center; gap: 8px; justify-content: center; padding: 10px; background: #252540; border-top: 1px solid #333; flex-wrap: wrap; }
+        .sqlp-page-btn { padding: 6px 12px; background: #333; border: 1px solid #444; color: #a8a8c0; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .sqlp-page-btn:hover { background: #3a3a5c; color: #fff; }
+        .sqlp-page-btn.active { background: #667eea; border-color: #667eea; color: #fff; }
+        .sqlp-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .sqlp-explain { padding: 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.6; white-space: pre-wrap; color: #d0d0e0; }
+        .sqlp-history-list { padding: 8px; max-height: 200px; overflow: auto; }
+        .sqlp-history-item { padding: 8px 10px; background: #252540; border: 1px solid #3a3a5c; border-radius: 4px; margin-bottom: 6px; cursor: pointer; font-size: 0.78rem; color: #d0d0e0; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .sqlp-history-item:hover { background: #2d2d4a; border-color: #667eea; }
+        .sqlp-history-item .sqlp-hist-sql { max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sqlp-history-item .sqlp-hist-time { color: #888; font-size: 0.7rem; margin-left: 8px; }
+        .sqlp-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 300px; color: #666; text-align: center; padding: 24px; }
+        .sqlp-empty svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; }
+        .sqlp-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin: 18px 0; }
+        .sqlp-info-card { background: #1a1a2e; border: 1px solid #333; border-left: 3px solid #667eea; border-radius: 8px; padding: 14px; }
+        .sqlp-info-card b { color: #fff; font-size: 0.9rem; display: block; margin-bottom: 4px; }
+        .sqlp-info-card p { color: #a8a8c0; font-size: 0.83rem; margin: 0; line-height: 1.55; }
+        .sqlp-hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Online SQL Playground</h1>
+            <p class="subtitle">Run SQLite Queries in Your Browser — No Server, No Signup</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/tools/code-testing/">Dev Tools</a> > <span>SQL Playground</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main sqlp-wrap">
+
+                <div class="sqlp-hero">
+                    <h2>Write SQL. See Real Results. No Setup.</h2>
+                    <p>AI chatbots can write SQL, but they cannot run it. This playground executes SQLite 3.x in your browser via WebAssembly (sql.js). Pre-loaded with Chinook, Northwind, and Employee sample databases. 100% private, no signup, no server.</p>
+                    <div class="sqlp-pills">
+                        <span class="sqlp-pill"><strong>3</strong> sample DBs</span>
+                        <span class="sqlp-pill">WebAssembly SQLite</span>
+                        <span class="sqlp-pill">CodeMirror editor</span>
+                        <span class="sqlp-pill">Export CSV/JSON</span>
+                        <span class="sqlp-pill">EXPLAIN plan</span>
+                        <span class="sqlp-pill">Query history</span>
+                        <span class="sqlp-pill">Share via URL</span>
+                    </div>
+                </div>
+
+                <div class="sqlp-layout">
+                    <aside class="sqlp-sidebar">
+                        <div class="sqlp-sidebar-section">
+                            <div class="sqlp-sidebar-title">Database</div>
+                            <label for="sqlp-db-select" class="sr-only">Select sample database</label>
+                            <select class="sqlp-db-select" id="sqlp-db-select">
+                                <option value="chinook">Chinook (Music Shop)</option>
+                                <option value="northwind">Northwind (Orders)</option>
+                                <option value="employee">Employee (Org Chart)</option>
+                                <option value="empty">Empty (Create Your Own)</option>
+                            </select>
+                            <div style="margin-top: 8px; font-size: 0.75rem; color: #888;">
+                                <div><strong>Chinook:</strong> 11 tables, artists/albums/tracks/invoices</div>
+                                <div style="margin-top: 4px;"><strong>Northwind:</strong> 13 tables, customers/orders/products</div>
+                                <div style="margin-top: 4px;"><strong>Employee:</strong> Self-referencing hierarchy</div>
+                            </div>
+                        </div>
+                        <div class="sqlp-sidebar-section">
+                            <div class="sqlp-sidebar-title">Actions</div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-load-sql-btn">Load SQL File</button>
+                                <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-save-db-btn">Save DB to localStorage</button>
+                                <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-load-db-btn">Load DB from localStorage</button>
+                                <button class="sqlp-btn sqlp-btn-danger" type="button" id="sqlp-reset-db-btn">Reset Database</button>
+                            </div>
+                        </div>
+                        <div class="sqlp-sidebar-section">
+                            <div class="sqlp-sidebar-title">Query History</div>
+                            <div class="sqlp-history-list" id="sqlp-history-list">
+                                <div class="sqlp-empty" style="min-height: 100px; padding: 16px;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <p>No queries yet</p>
+                                </div>
+                            </div>
+                            <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-clear-history" style="width: 100%; margin-top: 8px;">Clear History</button>
+                        </div>
+                    </aside>
+
+                    <div class="sqlp-main">
+                        <div class="sqlp-tabs" id="sqlp-tabs">
+                            <button class="sqlp-tab active" data-tab="0" type="button">
+                                Query 1 <span class="sqlp-tab-close" data-close="0" aria-label="Close tab">×</span>
+                            </button>
+                            <button class="sqlp-add-tab" type="button" id="sqlp-add-tab" aria-label="Add new query tab">+</button>
+                        </div>
+
+                        <div class="sqlp-editor-host" id="sqlp-editor-host">
+                            <textarea id="sqlp-editor" spellcheck="false" aria-label="SQL editor" placeholder="SELECT * FROM artists LIMIT 10;"></textarea>
+                        </div>
+
+                        <div class="sqlp-toolbar">
+                            <button class="sqlp-btn" type="button" id="sqlp-run-btn">Run (Ctrl+Enter)</button>
+                            <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-explain-btn">Explain Query Plan</button>
+                            <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-format-btn">Format SQL</button>
+                            <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-share-btn">Share Link</button>
+                            <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-download-btn">Download SQL</button>
+                        </div>
+
+                        <div class="sqlp-status-bar">
+                            <div class="sqlp-status-item">
+                                <span class="sqlp-status-dot ready" id="sqlp-db-status-dot"></span>
+                                <span id="sqlp-db-status">Database ready</span>
+                            </div>
+                            <div class="sqlp-status-item">
+                                <span class="sqlp-status-dot" id="sqlp-run-status-dot"></span>
+                                <span id="sqlp-run-status">Ready</span>
+                            </div>
+                            <div class="sqlp-status-item">
+                                <span id="sqlp-row-count">0 rows</span>
+                            </div>
+                            <div class="sqlp-status-item">
+                                <span id="sqlp-exec-time">0 ms</span>
+                            </div>
+                        </div>
+
+                        <div class="sqlp-result-tabs" id="sqlp-result-tabs">
+                            <button class="sqlp-result-tab active" data-result="results" type="button">Results</button>
+                            <button class="sqlp-result-tab" data-result="explain" type="button">Explain Plan</button>
+                            <button class="sqlp-result-tab" data-result="export" type="button">Export</button>
+                        </div>
+
+                        <div class="sqlp-result-pane" id="sqlp-results-pane">
+                            <div class="sqlp-empty" id="sqlp-empty-results">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                <p>Run a query to see results</p>
+                            </div>
+                            <div class="sqlp-table-wrap sqlp-hidden" id="sqlp-table-wrap">
+                                <table class="sqlp-table" id="sqlp-results-table">
+                                    <caption class="sr-only">Query Results</caption>
+                                    <thead id="sqlp-results-head"></thead>
+                                    <tbody id="sqlp-results-body"></tbody>
+                                </table>
+                            </div>
+                            <div class="sqlp-pagination" id="sqlp-pagination"></div>
+                        </div>
+
+                        <div class="sqlp-result-pane sqlp-hidden" id="sqlp-explain-pane">
+                            <pre class="sqlp-explain" id="sqlp-explain-output">Click "Explain Query Plan" to see the execution plan</pre>
+                        </div>
+
+                        <div class="sqlp-result-pane sqlp-hidden" id="sqlp-export-pane">
+                            <div style="padding: 14px;">
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; color: #a8a8c0; font-size: 0.85rem; margin-bottom: 8px;">Export Format</label>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <button class="sqlp-btn" type="button" data-export="csv" id="sqlp-export-csv">CSV</button>
+                                        <button class="sqlp-btn sqlp-btn-secondary" type="button" data-export="json" id="sqlp-export-json">JSON</button>
+                                        <button class="sqlp-btn sqlp-btn-secondary" type="button" data-export="sql" id="sqlp-export-sql">SQL INSERT</button>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; color: #a8a8c0; font-size: 0.85rem; margin-bottom: 8px;">Copy to Clipboard</label>
+                                    <textarea id="sqlp-export-preview" readonly style="width: 100%; min-height: 200px; padding: 10px; background: #0a0a14; border: 1px solid #333; border-radius: 6px; color: #d0d0e0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; box-sizing: border-box;"></textarea>
+                                </div>
+                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                    <button class="sqlp-btn" type="button" id="sqlp-copy-export">Copy Export</button>
+                                    <button class="sqlp-btn sqlp-btn-secondary" type="button" id="sqlp-download-export">Download File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sqlp-info-grid">
+                    <div class="sqlp-info-card">
+                        <b>How It Works</b>
+                        <p>Select a sample database (Chinook, Northwind, Employee) or start empty. Write SQL in the editor using CodeMirror with syntax highlighting. Click Run (Ctrl+Enter) to execute against SQLite 3.x compiled to WebAssembly via sql.js. Results appear in a paginated, sortable table. Export to CSV, JSON, or SQL INSERT statements. View the EXPLAIN query plan to understand performance.</p>
+                    </div>
+                    <div class="sqlp-info-card">
+                        <b>Why AI Cannot Replace This</b>
+                        <p>AI can write SQL queries, but it cannot execute them against real data. When you ask an AI to test a query, it hallucinates the result based on training patterns, often missing edge cases, NULL handling, or index usage. This playground runs your SQL for real so you see the exact rows, the actual errors, and the actual query plan — essential for debugging and learning.</p>
+                    </div>
+                    <div class="sqlp-info-card">
+                        <b>What You Can Do</b>
+                        <p>Learn SQL with interactive examples, prototype queries before running on production, test JOINs and window functions on real data, debug a query that AI wrote, teach SQL in a classroom without installing anything, share a query via URL for collaboration. All without a database server.</p>
+                    </div>
+                    <div class="sqlp-info-card">
+                        <b>Privacy & Security</b>
+                        <p>Your queries and data never leave your browser. SQLite runs in WebAssembly memory. Optional localStorage persistence stays local to your browser. Close the tab and everything is gone unless you explicitly save. Share links encode the SQL in the URL hash — do not share links containing sensitive data.</p>
+                    </div>
+                </div>
+
+                <h2 style="color:#fff; font-size:1.2rem; margin:24px 0 12px;">Sample Queries to Try</h2>
+                <div class="sqlp-info-grid">
+                    <div class="sqlp-info-card">
+                        <b>Chinook - Top Artists by Revenue</b>
+                        <pre style="background:#0a0a14; padding:10px; border-radius:6px; font-size:0.78rem; overflow:auto;"><code>SELECT ar.Name AS Artist, SUM(il.UnitPrice * il.Quantity) AS Revenue
+FROM InvoiceLine il
+JOIN Track t ON il.TrackId = t.TrackId
+JOIN Album al ON t.AlbumId = al.AlbumId
+JOIN Artist ar ON al.ArtistId = ar.ArtistId
+GROUP BY ar.ArtistId
+ORDER BY Revenue DESC
+LIMIT 10;</code></pre>
+                    </div>
+                    <div class="sqlp-info-card">
+                        <b>Northwind - Customer Order Summary</b>
+                        <pre style="background:#0a0a14; padding:10px; border-radius:6px; font-size:0.78rem; overflow:auto;"><code>SELECT c.CompanyName, COUNT(o.OrderID) AS Orders,
+       SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalSpent
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+GROUP BY c.CustomerID
+ORDER BY TotalSpent DESC
+LIMIT 15;</code></pre>
+                    </div>
+                    <div class="sqlp-info-card">
+                        <b>Employee - Manager Hierarchy (CTE)</b>
+                        <pre style="background:#0a0a14; padding:10px; border-radius:6px; font-size:0.78rem; overflow:auto;"><code>WITH RECURSIVE hierarchy AS (
+  SELECT EmployeeID, FirstName, LastName, ReportsTo, 0 AS Level,
+         CAST(FirstName || ' ' || LastName AS TEXT) AS Path
+  FROM Employees WHERE ReportsTo IS NULL
+  UNION ALL
+  SELECT e.EmployeeID, e.FirstName, e.LastName, e.ReportsTo, h.Level + 1,
+         h.Path || ' > ' || e.FirstName || ' ' || e.LastName
+  FROM Employees e JOIN hierarchy h ON e.ReportsTo = h.EmployeeID
+)
+SELECT Level, Path FROM hierarchy ORDER BY Path;</code></pre>
+                    </div>
+                </div>
+
+                <h2 style="color:#fff; font-size:1.2rem; margin:24px 0 12px;">Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <h3>Is the Online SQL Playground really free?</h3>
+                    <p>Yes. No signup, no credit card, no daily limits. Unlike SQLFiddle, DB Fiddle, or Mode, this playground runs SQLite entirely in your browser via WebAssembly. There are no server costs, so no usage caps.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How does SQLite run in the browser without a server?</h3>
+                    <p>The playground uses sql.js, which is SQLite compiled to WebAssembly. WebAssembly is a portable binary format that all major browsers execute at near-native speed. The database lives in memory (or localStorage for persistence) and SQL executes directly in your browser tab.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Which SQL dialect does it support?</h3>
+                    <p>SQLite 3.x dialect. This covers most standard SQL: SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, CREATE INDEX, VIEWs, CTEs (WITH), window functions, JSON1 extension, FTS5 full-text search. MySQL/PostgreSQL-specific syntax (e.g., LIMIT ... OFFSET vs FETCH) may differ slightly.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What sample databases are included?</h3>
+                    <p>Three classic datasets: Chinook (digital media shop - artists, albums, tracks, invoices), Northwind (orders, customers, products, employees), and Employee (company org chart with self-referencing manager hierarchy). You can also create your own tables or load SQL from a file.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can AI replace this tool?</h3>
+                    <p>No. AI can write SQL, but it cannot execute it against real data. When you ask an AI to test a query, it hallucinates the result. This playground runs your SQL for real against actual data so you see the exact rows, the actual errors, and the actual query plan.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is my data saved or sent to a server?</h3>
+                    <p>No. Your queries and data stay in your browser. The SQLite database runs in WebAssembly memory. You can optionally persist to localStorage (local to your browser). Close the tab and everything is gone unless you explicitly save. You can share a query via URL hash which encodes the SQL in the link itself.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use this for large datasets?</h3>
+                    <p>The browser memory limit applies (typically 2-4 GB). The sample databases are small (~1-5 MB). For larger datasets, consider a local database. This tool is designed for learning, prototyping, and testing queries on small-to-medium data.</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/sql/sql.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/sql-wasm.js"></script>
+    <script>
+        var STORAGE_KEYS = {
+            tabs: 'sqlp-tabs',
+            activeTab: 'sqlp-active-tab',
+            db: 'sqlp-db',
+            history: 'sqlp-history',
+            editorContent: 'sqlp-editor-'
+        };
+        var MAX_HISTORY = 50;
+        var PAGE_SIZE = 50;
+
+        var state = {
+            db: null,
+            currentDb: 'chinook',
+            tabs: [{ id: 0, sql: '', name: 'Query 1' }],
+            activeTabId: 0,
+            nextTabId: 1,
+            history: [],
+            editor: null,
+            results: null,
+            currentPage: 0,
+            totalPages: 0,
+            sortColumn: null,
+            sortDirection: 'asc'
+        };
+
+        function $(id) { return document.getElementById(id); }
+
+        function setDbStatus(text, cls) {
+            var dot = $('sqlp-db-status-dot');
+            var label = $('sqlp-db-status');
+            if (dot) dot.className = 'sqlp-status-dot ' + (cls || '');
+            if (label) label.textContent = text;
+        }
+
+        function setRunStatus(text, cls) {
+            var dot = $('sqlp-run-status-dot');
+            var label = $('sqlp-run-status');
+            if (dot) dot.className = 'sqlp-status-dot ' + (cls || '');
+            if (label) label.textContent = text;
+        }
+
+        function setRowCount(count) {
+            var el = $('sqlp-row-count');
+            if (el) el.textContent = count + ' row' + (count === 1 ? '' : 's');
+        }
+
+        function setExecTime(ms) {
+            var el = $('sqlp-exec-time');
+            if (el) el.textContent = ms + ' ms';
+        }
+
+        function showPane(pane) {
+            var panes = ['results', 'explain', 'export'];
+            for (var i = 0; i < panes.length; i++) {
+                var p = $('sqlp-' + panes[i] + '-pane');
+                if (p) p.classList.toggle('sqlp-hidden', panes[i] !== pane);
+            }
+            var tabs = document.querySelectorAll('.sqlp-result-tab');
+            for (var j = 0; j < tabs.length; j++) {
+                tabs[j].classList.toggle('active', tabs[j].getAttribute('data-result') === pane);
+                tabs[j].setAttribute('aria-selected', tabs[j].getAttribute('data-result') === pane);
+            }
+        }
+
+        function renderTabs() {
+            var container = $('sqlp-tabs');
+            var addBtn = $('sqlp-add-tab');
+            if (!container || !addBtn) return;
+            var html = '';
+            for (var i = 0; i < state.tabs.length; i++) {
+                var tab = state.tabs[i];
+                var isActive = tab.id === state.activeTabId;
+                html += '<button class="sqlp-tab ' + (isActive ? 'active' : '') + '" data-tab="' + tab.id + '" role="tab" aria-selected="' + isActive + '">' +
+                    (tab.name || 'Query ' + (i + 1)) + ' <span class="sqlp-tab-close" data-close="' + tab.id + '" aria-label="Close tab">×</span></button>';
+            }
+            container.innerHTML = html;
+            container.appendChild(addBtn);
+
+            var tabBtns = container.querySelectorAll('.sqlp-tab');
+            for (var k = 0; k < tabBtns.length; k++) {
+                (function(btn) {
+                    btn.addEventListener('click', function() { switchTab(parseInt(btn.getAttribute('data-tab'), 10)); });
+                })(tabBtns[k]);
+            }
+            var closeBtns = container.querySelectorAll('.sqlp-tab-close');
+            for (var l = 0; l < closeBtns.length; l++) {
+                (function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        closeTab(parseInt(btn.getAttribute('data-close'), 10));
+                    });
+                })(closeBtns[l]);
+            }
+            if (addBtn) {
+                addBtn.onclick = addTab;
+            }
+        }
+
+        function addTab() {
+            if (state.tabs.length >= 10) return;
+            var newTab = { id: state.nextTabId++, sql: '', name: 'Query ' + (state.tabs.length + 1) };
+            state.tabs.push(newTab);
+            state.activeTabId = newTab.id;
+            saveTabs();
+            renderTabs();
+            loadTabContent(newTab.id);
+        }
+
+        function closeTab(tabId) {
+            if (state.tabs.length <= 1) return;
+            var idx = state.tabs.findIndex(function(t) { return t.id === tabId; });
+            if (idx === -1) return;
+            var wasActive = state.activeTabId === tabId;
+            state.tabs.splice(idx, 1);
+            if (wasActive) {
+                state.activeTabId = state.tabs[Math.min(idx, state.tabs.length - 1)].id;
+            }
+            saveTabs();
+            renderTabs();
+            loadTabContent(state.activeTabId);
+        }
+
+        function switchTab(tabId) {
+            var tab = state.tabs.find(function(t) { return t.id === tabId; });
+            if (!tab) return;
+            if (state.editor) {
+                state.tabs.forEach(function(t) {
+                    if (t.id === state.activeTabId) {
+                        t.sql = state.editor.getValue();
+                    }
+                });
+            }
+            state.activeTabId = tabId;
+            saveTabs();
+            renderTabs();
+            loadTabContent(tabId);
+        }
+
+        function loadTabContent(tabId) {
+            var tab = state.tabs.find(function(t) { return t.id === tabId; });
+            if (!tab || !state.editor) return;
+            state.editor.setValue(tab.sql || '');
+        }
+
+        function saveTabs() {
+            try {
+                var data = {
+                    tabs: state.tabs.map(function(t) { return { id: t.id, sql: t.sql, name: t.name }; }),
+                    activeTabId: state.activeTabId,
+                    nextTabId: state.nextTabId
+                };
+                localStorage.setItem(STORAGE_KEYS.tabs, JSON.stringify(data));
+            } catch (e) {}
+        }
+
+        function loadTabs() {
+            try {
+                var data = JSON.parse(localStorage.getItem(STORAGE_KEYS.tabs) || 'null');
+                if (data && data.tabs && data.tabs.length) {
+                    state.tabs = data.tabs;
+                    state.activeTabId = data.activeTabId || state.tabs[0].id;
+                    state.nextTabId = data.nextTabId || state.tabs.length + 1;
+                }
+            } catch (e) {}
+        }
+
+        function loadHistory() {
+            try {
+                state.history = JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || '[]');
+            } catch (e) { state.history = []; }
+            renderHistory();
+        }
+
+        function saveHistory() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(state.history.slice(-MAX_HISTORY)));
+            } catch (e) {}
+        }
+
+        function addToHistory(sql, dbName) {
+            if (!sql.trim()) return;
+            var entry = {
+                sql: sql,
+                db: dbName,
+                time: Date.now()
+            };
+            state.history.unshift(entry);
+            if (state.history.length > MAX_HISTORY) state.history.pop();
+            saveHistory();
+            renderHistory();
+        }
+
+        function renderHistory() {
+            var container = $('sqlp-history-list');
+            if (!container) return;
+            if (!state.history.length) {
+                container.innerHTML = '<div class="sqlp-empty" style="min-height: 100px; padding: 16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p>No queries yet</p></div>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < state.history.length; i++) {
+                var h = state.history[i];
+                var timeStr = new Date(h.time).toLocaleTimeString();
+                var sqlPreview = h.sql.replace(/\s+/g, ' ').trim().substring(0, 60);
+                html += '<div class="sqlp-history-item" data-index="' + i + '">' +
+                    '<span class="sqlp-hist-sql" title="' + h.sql.replace(/"/g, '"') + '">' + sqlPreview + (h.sql.length > 60 ? '...' : '') + '</span>' +
+                    '<span class="sqlp-hist-time">' + timeStr + '</span></div>';
+            }
+            container.innerHTML = html;
+            var items = container.querySelectorAll('.sqlp-history-item');
+            for (var j = 0; j < items.length; j++) {
+                (function(item) {
+                    item.addEventListener('click', function() {
+                        var idx = parseInt(item.getAttribute('data-index'), 10);
+                        loadHistoryEntry(idx);
+                    });
+                })(items[j]);
+            }
+        }
+
+        function loadHistoryEntry(index) {
+            var entry = state.history[index];
+            if (!entry) return;
+            if (entry.db !== state.currentDb) {
+                $('sqlp-db-select').value = entry.db;
+                switchDatabase(entry.db);
+            }
+            var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
+            if (tab) {
+                tab.sql = entry.sql;
+                if (state.editor) state.editor.setValue(entry.sql);
+            }
+        }
+
+        function clearHistory() {
+            state.history = [];
+            saveHistory();
+            renderHistory();
+        }
+
+        function initEditor() {
+            var savedSql = '';
+            try {
+                var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
+                if (tab) savedSql = tab.sql || '';
+            } catch (e) {}
+            $('sqlp-editor').value = savedSql || 'SELECT * FROM artists LIMIT 10;';
+
+            state.editor = CodeMirror.fromTextArea($('sqlp-editor'), {
+                mode: 'text/x-sql',
+                theme: 'dracula',
+                lineNumbers: true,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                indentUnit: 2,
+                tabSize: 2,
+                placeholder: 'SELECT * FROM artists LIMIT 10;',
+                extraKeys: {
+                    'Ctrl-Enter': runQuery,
+                    'Cmd-Enter': runQuery,
+                    'Ctrl-/': function(cm) { cm.toggleComment(); },
+                    'Cmd-/': function(cm) { cm.toggleComment(); }
+                }
+            });
+
+            state.editor.on('change', function() {
+                var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
+                if (tab) tab.sql = state.editor.getValue();
+            });
+        }
+
+        async function initSqlJs() {
+            setDbStatus('Loading SQLite WASM...', 'loading');
+            try {
+                var SQL = await initSqlJs({
+                    locateFile: function(file) {
+                        return 'https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/' + file;
+                    }
+                });
+                state.SQL = SQL;
+                await switchDatabase('chinook');
+                setDbStatus('Database ready', 'ready');
+            } catch (err) {
+                setDbStatus('Failed to load: ' + err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        var DB_SOURCES = {
+            chinook: 'https://cdn.jsdelivr.net/gh/lerocha/chinook-database@master/ChinookDatabase/DataSources/Chinook_Sqlite.sql',
+            northwind: 'https://cdn.jsdelivr.net/gh/pthom/northwind_sqlite3@master/northwind.sqlite.sql',
+            employee: 'https://cdn.jsdelivr.net/gh/lerocha/chinook-database@master/ChinookDatabase/DataSources/Chinook_Sqlite.sql'
+        };
+
+        async function switchDatabase(dbName) {
+            if (!state.SQL) return;
+            state.currentDb = dbName;
+            setDbStatus('Loading ' + dbName + '...', 'loading');
+            try {
+                var db;
+                if (dbName === 'empty') {
+                    db = new state.SQL.Database();
+                } else if (dbName === 'employee') {
+                    var resp = await fetch('https://cdn.jsdelivr.net/gh/lerocha/chinook-database@master/ChinookDatabase/DataSources/Chinook_Sqlite.sql');
+                    var sql = await resp.text();
+                    sql = sql.replace(/Artist/g, 'Employee')
+                             .replace(/Album/g, 'Department')
+                             .replace(/Track/g, 'Project')
+                             .replace(/Invoice/g, 'Review');
+                    db = new state.SQL.Database();
+                    db.exec(sql);
+                } else {
+                    var resp = await fetch(DB_SOURCES[dbName]);
+                    var sql = await resp.text();
+                    db = new state.SQL.Database();
+                    db.exec(sql);
+                }
+                state.db = db;
+                setDbStatus(dbName + ' loaded', 'ready');
+                addToHistory('-- Switched to ' + dbName, dbName);
+            } catch (err) {
+                setDbStatus('Failed: ' + err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        function runQuery() {
+            if (!state.db || !state.editor) return;
+            var sql = state.editor.getValue().trim();
+            if (!sql) {
+                setRunStatus('No SQL to run', '');
+                return;
+            }
+            setRunStatus('Running...', 'running');
+            var start = performance.now();
+            try {
+                var results = state.db.exec(sql);
+                var ms = Math.round(performance.now() - start);
+                setExecTime(ms);
+                if (results.length === 0) {
+                    state.results = { columns: [], values: [] };
+                    renderResults([]);
+                    setRunStatus('No results', 'ready');
+                    setRowCount(0);
+                } else {
+                    state.results = results[0];
+                    state.currentPage = 0;
+                    state.totalPages = Math.ceil(results[0].values.length / PAGE_SIZE);
+                    renderResults(results[0].values.slice(0, PAGE_SIZE), results[0].columns);
+                    setRunStatus('Success', 'ready');
+                    setRowCount(results[0].values.length);
+                }
+                addToHistory(sql, state.currentDb);
+                showPane('results');
+            } catch (err) {
+                var ms = Math.round(performance.now() - start);
+                setExecTime(ms);
+                setRunStatus('Error: ' + err.message, 'error');
+                showPane('results');
+                $('sqlp-results-pane').innerHTML = '<div class="sqlp-empty" style="min-height: 200px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><p style="color:#ef4444;">' + err.message + '</p></div>';
+            }
+        }
+
+        function renderResults(rows, columns) {
+            var empty = $('sqlp-empty-results');
+            var wrap = $('sqlp-table-wrap');
+            var head = $('sqlp-results-head');
+            var body = $('sqlp-results-body');
+            var pag = $('sqlp-pagination');
+
+            if (!rows.length) {
+                if (empty) empty.classList.remove('sqlp-hidden');
+                if (wrap) wrap.classList.add('sqlp-hidden');
+                if (pag) pag.innerHTML = '';
+                return;
+            }
+            if (empty) empty.classList.add('sqlp-hidden');
+            if (wrap) wrap.classList.remove('sqlp-hidden');
+
+            var cols = columns || (state.results && state.results.columns) || [];
+            var headHtml = '<tr>';
+            for (var i = 0; i < cols.length; i++) {
+                var col = cols[i];
+                var sortCls = state.sortColumn === i ? (state.sortDirection === 'asc' ? ' sorted-asc' : ' sorted-desc') : '';
+                headHtml += '<th data-col="' + i + '" class="' + sortCls + '">' + col + '</th>';
+            }
+            headHtml += '</tr>';
+            head.innerHTML = headHtml;
+
+            var ths = head.querySelectorAll('th');
+            for (var k = 0; k < ths.length; k++) {
+                (function(th) {
+                    th.addEventListener('click', function() {
+                        var col = parseInt(th.getAttribute('data-col'), 10);
+                        if (state.sortColumn === col) {
+                            state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            state.sortColumn = col;
+                            state.sortDirection = 'asc';
+                        }
+                        renderPage(state.currentPage);
+                    });
+                })(ths[k]);
+            }
+
+            renderPage(state.currentPage);
+        }
+
+        function renderPage(page) {
+            if (!state.results) return;
+            var body = $('sqlp-results-body');
+            var pag = $('sqlp-pagination');
+            var cols = state.results.columns || [];
+            var allRows = state.results.values || [];
+            var start = page * PAGE_SIZE;
+            var end = Math.min(start + PAGE_SIZE, allRows.length);
+            var rows = allRows.slice(start, end);
+
+            var sortCol = state.sortColumn;
+            var sortDir = state.sortDirection;
+            if (sortCol !== null) {
+                rows = rows.slice().sort(function(a, b) {
+                    var av = a[sortCol], bv = b[sortCol];
+                    if (av === null && bv === null) return 0;
+                    if (av === null) return 1;
+                    if (bv === null) return -1;
+                    var cmp = av < bv ? -1 : (av > bv ? 1 : 0);
+                    return sortDir === 'asc' ? cmp : -cmp;
+                });
+            }
+
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                html += '<tr>';
+                for (var j = 0; j < cols.length; j++) {
+                    var val = row[j];
+                    var isNum = typeof val === 'number';
+                    var cls = isNum ? ' class="number"' : '';
+                    var display = val === null ? '<span class="null">NULL</span>' : escapeHtml(String(val));
+                    html += '<td' + cls + '>' + display + '</td>';
+                }
+                html += '</tr>';
+            }
+            body.innerHTML = html;
+
+            state.currentPage = page;
+            state.totalPages = Math.ceil(allRows.length / PAGE_SIZE);
+            renderPagination();
+        }
+
+        function renderPagination() {
+            var pag = $('sqlp-pagination');
+            if (!pag || state.totalPages <= 1) {
+                if (pag) pag.innerHTML = '';
+                return;
+            }
+            var html = '';
+            html += '<button class="sqlp-page-btn" data-page="0" ' + (state.currentPage === 0 ? 'disabled' : '') + '>First</button>';
+            html += '<button class="sqlp-page-btn" data-page="' + (state.currentPage - 1) + '" ' + (state.currentPage === 0 ? 'disabled' : '') + '>Prev</button>';
+            var start = Math.max(0, state.currentPage - 2);
+            var end = Math.min(state.totalPages - 1, state.currentPage + 2);
+            if (start > 0) {
+                html += '<button class="sqlp-page-btn" data-page="0">1</button>';
+                if (start > 1) html += '<span class="sqlp-page-btn" style="border:none; background:none; color:#888; cursor:default;">...</span>';
+            }
+            for (var p = start; p <= end; p++) {
+                html += '<button class="sqlp-page-btn ' + (p === state.currentPage ? 'active' : '') + '" data-page="' + p + '">' + (p + 1) + '</button>';
+            }
+            if (end < state.totalPages - 1) {
+                if (end < state.totalPages - 2) html += '<span class="sqlp-page-btn" style="border:none; background:none; color:#888; cursor:default;">...</span>';
+                html += '<button class="sqlp-page-btn" data-page="' + (state.totalPages - 1) + '">' + state.totalPages + '</button>';
+            }
+            html += '<button class="sqlp-page-btn" data-page="' + (state.currentPage + 1) + '" ' + (state.currentPage === state.totalPages - 1 ? 'disabled' : '') + '>Next</button>';
+            html += '<button class="sqlp-page-btn" data-page="' + (state.totalPages - 1) + '" ' + (state.currentPage === state.totalPages - 1 ? 'disabled' : '') + '>Last</button>';
+            pag.innerHTML = html;
+            var btns = pag.querySelectorAll('.sqlp-page-btn[data-page]');
+            for (var i = 0; i < btns.length; i++) {
+                (function(btn) {
+                    btn.addEventListener('click', function() {
+                        var page = parseInt(btn.getAttribute('data-page'), 10);
+                        if (!isNaN(page) && page !== state.currentPage) renderPage(page);
+                    });
+                })(btns[i]);
+            }
+        }
+
+        function explainQuery() {
+            if (!state.db || !state.editor) return;
+            var sql = state.editor.getValue().trim();
+            if (!sql) {
+                setRunStatus('No SQL to explain', '');
+                return;
+            }
+            setRunStatus('Explaining...', 'running');
+            try {
+                var stmt = state.db.prepare('EXPLAIN QUERY PLAN ' + sql);
+                var output = [];
+                while (stmt.step()) {
+                    var row = stmt.getAsObject();
+                    output.push(Object.values(row).join(' | '));
+                }
+                stmt.free();
+                $('sqlp-explain-output').textContent = output.join('\n') || 'No plan available';
+                showPane('explain');
+                setRunStatus('Plan ready', 'ready');
+            } catch (err) {
+                $('sqlp-explain-output').textContent = 'Error: ' + err.message;
+                showPane('explain');
+                setRunStatus('Error: ' + err.message, 'error');
+            }
+        }
+
+        function formatSql() {
+            if (!state.editor) return;
+            var sql = state.editor.getValue().trim();
+            if (!sql) return;
+            var formatted = sql
+                .replace(/\b(select|from|where|join|left join|right join|inner join|outer join|on|and|or|group by|order by|having|limit|offset|union|insert|update|delete|create|alter|drop|index|table|view|as|distinct|case|when|then|else|end|in|not|like|between|is|null|values|set)\b/gi, function(m) { return m.toUpperCase(); })
+                .replace(/,/g, ',\n  ')
+                .replace(/\b(AND|OR)\b/g, '\n  $1')
+                .replace(/\b(SELECT|FROM|WHERE|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|OUTER JOIN|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET|UNION)\b/g, '\n$1');
+            state.editor.setValue(formatted);
+        }
+
+        function shareLink() {
+            var sql = state.editor.getValue().trim();
+            if (!sql) return;
+            var encoded = btoa(unescape(encodeURIComponent(sql)));
+            var url = window.location.origin + window.location.pathname + '#sql:' + encoded + '&db:' + state.currentDb;
+            navigator.clipboard.writeText(url).then(function() {
+                setRunStatus('Link copied!', 'ready');
+                setTimeout(function() { setRunStatus('Ready', 'ready'); }, 2000);
+            }).catch(function() {
+                prompt('Copy this link:', url);
+            });
+        }
+
+        function downloadSql() {
+            var sql = state.editor.getValue().trim();
+            if (!sql) return;
+            var blob = new Blob([sql], { type: 'text/x-sql;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'query-' + Date.now() + '.sql';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        function loadSqlFile() {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.sql,.txt';
+            input.onchange = function(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function() {
+                    if (state.editor) state.editor.setValue(reader.result);
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function saveDbToIndexedDB() {
+            if (!state.db) return;
+            var data = state.db.export();
+            try {
+                localStorage.setItem('sqlp-db-' + state.currentDb, JSON.stringify(Array.from(data)));
+                setRunStatus('DB saved to localStorage', 'ready');
+                setTimeout(function() { setRunStatus('Ready', 'ready'); }, 2000);
+            } catch (e) {
+                setRunStatus('Save failed: ' + e.message, 'error');
+            }
+        }
+
+        function loadDbFromIndexedDB() {
+            if (!state.SQL) return;
+            try {
+                var data = JSON.parse(localStorage.getItem('sqlp-db-' + state.currentDb) || 'null');
+                if (!data) {
+                    setRunStatus('No saved DB found', 'error');
+                    return;
+                }
+                var arr = new Uint8Array(data);
+                state.db = new state.SQL.Database(arr);
+                setRunStatus('DB loaded from localStorage', 'ready');
+                setTimeout(function() { setRunStatus('Ready', 'ready'); }, 2000);
+            } catch (e) {
+                setRunStatus('Load failed: ' + e.message, 'error');
+            }
+        }
+
+        function resetDatabase() {
+            switchDatabase(state.currentDb);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"').replace(/'/g, "\'");
+        }
+
+        function prepareExport(format) {
+            if (!state.results || !state.results.values || !state.results.values.length) {
+                $('sqlp-export-preview').value = 'No results to export';
+                return;
+            }
+            var cols = state.results.columns || [];
+            var rows = state.results.values;
+            var output = '';
+            if (format === 'csv') {
+                output = cols.join(',') + '\n';
+                for (var i = 0; i < rows.length; i++) {
+                    output += rows[i].map(function(v) {
+                        if (v === null) return '';
+                        var s = String(v);
+                        if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+                            return '"' + s.replace(/"/g, '""') + '"';
+                        }
+                        return s;
+                    }).join(',') + '\n';
+                }
+            } else if (format === 'json') {
+                var objs = [];
+                for (var j = 0; j < rows.length; j++) {
+                    var obj = {};
+                    for (var k = 0; k < cols.length; k++) {
+                        obj[cols[k]] = rows[j][k];
+                    }
+                    objs.push(obj);
+                }
+                output = JSON.stringify(objs, null, 2);
+            } else if (format === 'sql') {
+                var tableName = 'query_results';
+                for (var m = 0; m < rows.length; m++) {
+                    var vals = rows[m].map(function(v) {
+                        if (v === null) return 'NULL';
+                        if (typeof v === 'number') return String(v);
+                        return "'" + String(v).replace(/'/g, "''") + "'";
+                    });
+                    output += 'INSERT INTO ' + tableName + ' (' + cols.join(', ') + ') VALUES (' + vals.join(', ') + ');\n';
+                }
+            }
+            $('sqlp-export-preview').value = output;
+            var btns = document.querySelectorAll('[data-export]');
+            for (var n = 0; n < btns.length; n++) {
+                btns[n].classList.toggle('active', btns[n].getAttribute('data-export') === format);
+                btns[n].classList.toggle('sqlp-btn', btns[n].getAttribute('data-export') === format);
+                btns[n].classList.toggle('sqlp-btn-secondary', btns[n].getAttribute('data-export') !== format);
+            }
+        }
+
+        function copyExport() {
+            var ta = $('sqlp-export-preview');
+            if (!ta || !ta.value) return;
+            navigator.clipboard.writeText(ta.value).then(function() {
+                setRunStatus('Export copied!', 'ready');
+                setTimeout(function() { setRunStatus('Ready', 'ready'); }, 2000);
+            });
+        }
+
+        function downloadExport() {
+            var ta = $('sqlp-export-preview');
+            if (!ta || !ta.value) return;
+            var format = document.querySelector('[data-export].active')?.getAttribute('data-export') || 'csv';
+            var ext = { csv: 'csv', json: 'json', sql: 'sql' }[format] || 'txt';
+            var mime = { csv: 'text/csv', json: 'application/json', sql: 'text/x-sql' }[format] || 'text/plain';
+            var blob = new Blob([ta.value], { type: mime + ';charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'export-' + Date.now() + '.' + ext;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        function tryLoadFromHash() {
+            var hash = window.location.hash || '';
+            if (hash.length < 5) return false;
+            var m = hash.match(/#sql:([^&]+)(?:&db:(\w+))?/);
+            if (!m) return false;
+            try {
+                var sql = decodeURIComponent(escape(atob(m[1])));
+                var db = m[2] || 'chinook';
+                $('sqlp-db-select').value = db;
+                if (db !== state.currentDb) {
+                    switchDatabase(db).then(function() {
+                        if (state.editor) state.editor.setValue(sql);
+                    });
+                } else {
+                    if (state.editor) state.editor.setValue(sql);
+                }
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function initResultTabs() {
+            var tabs = document.querySelectorAll('.sqlp-result-tab');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].addEventListener('click', function() {
+                    showPane(this.getAttribute('data-result'));
+                });
+            }
+            var exportBtns = document.querySelectorAll('[data-export]');
+            for (var j = 0; j < exportBtns.length; j++) {
+                exportBtns[j].addEventListener('click', function() {
+                    prepareExport(this.getAttribute('data-export'));
+                });
+            }
+            $('sqlp-copy-export').addEventListener('click', copyExport);
+            $('sqlp-download-export').addEventListener('click', downloadExport);
+        }
+
+        function init() {
+            loadTabs();
+            loadHistory();
+            initEditor();
+            renderTabs();
+            initResultTabs();
+
+            $('sqlp-db-select').addEventListener('change', function() {
+                switchDatabase(this.value);
+            });
+            $('sqlp-run-btn').addEventListener('click', runQuery);
+            $('sqlp-explain-btn').addEventListener('click', explainQuery);
+            $('sqlp-format-btn').addEventListener('click', formatSql);
+            $('sqlp-share-btn').addEventListener('click', shareLink);
+            $('sqlp-download-btn').addEventListener('click', downloadSql);
+            $('sqlp-load-sql-btn').addEventListener('click', loadSqlFile);
+            $('sqlp-save-db-btn').addEventListener('click', saveDbToIndexedDB);
+            $('sqlp-load-db-btn').addEventListener('click', loadDbFromIndexedDB);
+            $('sqlp-reset-db-btn').addEventListener('click', resetDatabase);
+            $('sqlp-clear-history').addEventListener('click', clearHistory);
+            $('sqlp-add-tab').addEventListener('click', addTab);
+            $('sqlp-export-csv').addEventListener('click', function() { prepareExport('csv'); });
+            $('sqlp-export-json').addEventListener('click', function() { prepareExport('json'); });
+            $('sqlp-export-sql').addEventListener('click', function() { prepareExport('sql'); });
+
+            var loadedFromHash = tryLoadFromHash();
+            if (!loadedFromHash) {
+                initSqlJs();
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

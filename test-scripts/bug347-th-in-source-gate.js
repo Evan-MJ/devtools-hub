@@ -73,6 +73,7 @@ const LEDGER = {
   'mock-data-generator': ['table-preview'],
   'image-to-excel': ['dataTable'],
   'zodiac-compatibility': ['zc-matrix'],
+  'sql-playground': ['sqlp-results-table'],
 };
 
 const slugs = readdirSync(join(ROOT, 'tools')).filter(d => {
