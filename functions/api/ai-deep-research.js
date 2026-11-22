@@ -34,7 +34,7 @@ export async function onRequest({ request, env }) {
     return new Response(JSON.stringify({ error: 'Research question is too long. Please keep it under 2000 characters.' }), { status: 422, headers: CORS });
   }
 
-  const tavilyKey = env.TAVILY_API_KEY_1 || env.TAVILY_API_KEY_2;
+  const tavilyKey = env.DEVTOOLS_TAVILY_KEY_1 || env.DEVTOOLS_TAVILY_KEY_2;
   if (!tavilyKey) {
     return new Response(JSON.stringify({ error: 'Research backend is not configured.' }), { status: 503, headers: CORS });
   }
