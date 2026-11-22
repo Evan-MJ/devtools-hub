@@ -206,22 +206,23 @@ for (const rel of ['about/index.html', 'privacy/index.html', 'contact/index.html
 console.log('\n[E] anti-vacuity — the pre-fix title must make the same checker go red');
 {
   // The pre-fix title is DERIVED from the title template that is in the tree right now: take the
-  // template's own body and drop the keyword the page's <h1> carries ("Free"), which is exactly
+  // template's own prefix and drop the keyword the page's <h1> carries ("Free"), which is exactly
   // the historical defect (the served title had lost "Free" while the h1 kept it). Deriving it
   // instead of hardcoding it is what keeps the tier runnable: a hardcoded anchor only matches the
   // tree it was written for, and the day the title template changes the tier stops running and
   // reports "could not run" instead of proving anything (that is how this tier went stale once).
-  const tpl = SRC.match(/<title>'\s*\+\s*_totalCount\s*\+\s*'([^<]*)</);
-  const body = tpl ? tpl[1] : '';
-  const preBody = body.replace(/\bFree\b/, '');            // the word the h1 still carried
-  const PRE = "<title>' + _totalCount + '" + body;
-  const POST = "<title>' + _totalCount + '" + preBody;
+  // New format: <title>Free Online Developer Tools by Category - ' + _totalCount + ' Tools | DevTools Hub</title>
+  const tpl = SRC.match(/<title>([^<]*?)'\s*\+\s*_totalCount\s*\+\s*'[^<]*<\/title>/);
+  const prefix = tpl ? tpl[1] : '';
+  const prePrefix = prefix.replace(/\bFree\b/, '');        // the word the h1 still carried
+  const PRE = "<title>" + prefix + "' + _totalCount + '";
+  const POST = "<title>" + prePrefix + "' + _totalCount + '";
   const hits = SRC.split(PRE).length - 1;
-  if (!body || preBody === body || hits < 1) {
+  if (!prefix || prePrefix === prefix || hits < 1) {
     // No title template, nothing to derive from, or the anchor does not match: the tier cannot
     // run. That is NOT a pass — report it as a failure rather than a silent skip.
     ok(false, '[E0] the anti-vacuity tier could not run (no title template to derive from, or the ' +
-      'anchor did not match)', 'body=' + JSON.stringify(body) + ' hits=' + hits);
+      'anchor did not match)', 'prefix=' + JSON.stringify(prefix) + ' hits=' + hits);
   } else {
     const stripped = SRC.split(PRE).join(POST);
     const html = await renderTools(stripped, '/tools/');
