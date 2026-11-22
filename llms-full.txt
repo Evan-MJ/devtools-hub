@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 388 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 389 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 388
+- Total tools: 389
 - Categories: 11
 - Last updated: 2026-11-22
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -2269,7 +2269,7 @@ Free port checker. Test up to 25 TCP ports from outside your network and get ope
 
 Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.
 
-## Code Testing (18 tools)
+## Code Testing (19 tools)
 
 Browse all: [Code Testing](https://tools.scoreroute.com/tools/code-testing/.md)
 
@@ -2434,6 +2434,15 @@ Merge many log files into one timeline ordered by the real time of each line. Pe
 - Tags: accessibility, wcag, validator, checker, ada, compliance, axe-core, html
 
 Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with axe-core. Paste HTML or fetch URL for detailed violations.
+
+### Online SQL Playground - Run SQLite in Browser
+
+- URL: https://tools.scoreroute.com/tools/sql-playground/
+- Markdown: https://tools.scoreroute.com/tools/sql-playground/.md
+- Category: Code Testing
+- Tags: sql, sqlite, playground, database, query, webassembly, chinook, northwind
+
+Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.
 
 ## PDF Tools (25 tools)
 
@@ -3551,7 +3560,7 @@ Free online AI deep research tool. Ask any question, get a cited research report
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 388 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 389 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

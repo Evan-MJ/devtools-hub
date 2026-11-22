@@ -719,7 +719,7 @@ SELECT Level, Path FROM hierarchy ORDER BY Path;</code></pre>
             });
         }
 
-        async function initSqlJs() {
+        async function initSqlJsLib() {
             setDbStatus('Loading SQLite WASM...', 'loading');
             try {
                 var SQL = await initSqlJs({
@@ -1199,7 +1199,7 @@ SELECT Level, Path FROM hierarchy ORDER BY Path;</code></pre>
 
             var loadedFromHash = tryLoadFromHash();
             if (!loadedFromHash) {
-                initSqlJs();
+                initSqlJsLib();
             }
         }
 
