@@ -2904,6 +2904,14 @@ const _today = new Date().toISOString().split('T')[0];
     const isKnownStaticPage = category === 'feedback';
     if (staticResp.ok && (manifest[category] || isKnownStaticPage)) {
       let body = await staticResp.text();
+      // BUG-FIX: Ensure the static file has a body; if not, the Assets binding may have returned a truncated response
+      if (!body.includes('<body')) {
+        console.error('[[catchall]] Static file for ' + category + ' missing <body> tag, length=' + body.length);
+        return new Response('Internal Server Error: static file truncated', {
+          status: 500,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }
+        });
+      }
       const tool = manifest[category];
       if (tool) {
         // BUG-375: real per-tool last-edit date served on the page; same map the sitemap reads.
