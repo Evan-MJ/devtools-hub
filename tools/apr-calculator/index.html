@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APR Calculator - Real Loan Cost Including Fees</title>
+<meta name="description" content="Free APR calculator. Work out the real yearly cost of a loan once fees are included, compare up to three offers, and see every payment.">
+<meta name="keywords" content="apr calculator, annual percentage rate, loan apr, car apr calculator, apr calculator online, true loan cost, interest rate vs apr, apr vs apy, loan fees, amortization, free, no signup, private">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/apr-calculator/">
+<meta property="og:title" content="APR Calculator - Real Loan Cost Including Fees">
+<meta property="og:description" content="Free APR calculator. Work out the real yearly cost of a loan once fees are included, compare up to three offers, and see every payment.">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/apr-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="APR Calculator - Real Loan Cost Including Fees">
+<meta name="twitter:description" content="Free APR calculator. Work out the real yearly cost of a loan once fees are included, compare up to three offers, and see every payment.">
+<meta name="twitter:image" content="/og-image.png">
+<meta name="twitter:url" content="https://tools.scoreroute.com/tools/apr-calculator/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"APR Calculator - Real Loan Cost Including Fees","description":"Free APR calculator. Work out the real yearly cost of a loan once fees are included, compare up to three offers, and see every payment.","url":"https://tools.scoreroute.com/tools/apr-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"All","browserRequirements":"Requires modern browser with ES2020 support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["APR solved from your payment, with the fees already included","Monthly payment worked out from a rate, with the fee uplift in percentage points","Upfront fees charged to the loan and costs paid outside the loan kept apart","Side-by-side comparison of up to three offers on payment, APR, interest and total cost","Full amortization schedule with the interest and principal split of every payment","Worked example showing how a single fee changes the APR","No signup, no upload, every figure calculated in your browser"]}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an APR?","acceptedAnswer":{"@type":"Answer","text":"The annual percentage rate is the yearly cost of a loan expressed as a percentage, with the charges you pay to get the loan folded into the rate. A 20,000 dollar loan at 6% interest over five years with 500 dollars of charges has a disclosed APR of about 7.06%, because the charges are spread across the life of the loan instead of being paid once at the start."}},{"@type":"Question","name":"How do I calculate the APR on a car loan?","acceptedAnswer":{"@type":"Answer","text":"Add the amount you borrowed and the lender charges such as the documentation fee, then find the monthly rate that makes your monthly payment worth exactly that total over the loan term. This calculator solves that equation directly, so enter the amount financed, the charges, your monthly payment and the number of months and the APR comes back."}},{"@type":"Question","name":"Why is my APR higher than the interest rate?","acceptedAnswer":{"@type":"Answer","text":"Because the disclosed rate includes the one-off charges. If you borrow 20,000 dollars over 60 months and pay 400 dollars of origination fees, those fees are spread over five years, so they add to the yearly rate even though you paid them on day one. The difference between the two numbers is the fee uplift in percentage points."}},{"@type":"Question","name":"Which fees are included in the APR?","acceptedAnswer":{"@type":"Answer","text":"Charges the lender makes for arranging the credit are included, such as origination fees, documentation fees, points and processing charges. Things paid to a government, including sales tax, title and registration fees, are not part of the APR, so this calculator keeps them in the total cost but leaves them out of the rate."}},{"@type":"Question","name":"Is a lower APR always the better loan?","acceptedAnswer":{"@type":"Answer","text":"No. A longer term usually carries a lower APR but costs more in total interest, because you are borrowing for longer. The comparison table shows the APR and the total cost side by side so you can see when the lowest rate is not the cheapest loan."}},{"@type":"Question","name":"How is APR different from APY?","acceptedAnswer":{"@type":"Answer","text":"The yearly cost of borrowing, charges included, is what lenders quote for loans, while APY is the yearly yield on an investment or the yearly cost of a credit card, where interest compounds and the charges are usually a flat annual fee. A credit card APR of 24% is much closer to a 27% APY once daily compounding is taken into account."}},{"@type":"Question","name":"Does the APR change if I pay the loan off early?","acceptedAnswer":{"@type":"Answer","text":"The disclosed APR assumes the loan runs to the end of its term, so it does not change when you pay it off early. Paying early does cut the total interest, and in most states a prepayment penalty on a personal loan can be charged as a separate cost, which this calculator treats as one of the fees."}},{"@type":"Question","name":"Will the lender show the same APR as this calculator?","acceptedAnswer":{"@type":"Answer","text":"Usually to the last decimal place. Lenders work from the same cash flows under the Truth in Lending Act, but they apply the monthly rate approximation set out in the regulation, so a small difference of a few hundredths is normal. The number on your loan agreement is the one that binds."}},{"@type":"Question","name":"Does this calculator upload my loan details?","acceptedAnswer":{"@type":"Answer","text":"No. Every figure is calculated in your browser with plain JavaScript, and nothing you type is sent to a server or stored. You can turn off your connection and the calculator keeps working."}}]}</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+.apc-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.apc-tab { background: #0d0d1e; color: #c9c9dd; border: 1px solid #2a2a4e; padding: 11px 16px; border-radius: 6px; font-size: 0.88rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.apc-tab:hover { border-color: #7eb3ff; color: #fff; }
+.apc-tab[aria-pressed="true"] { background: #7eb3ff; color: #0a0d14; border-color: #7eb3ff; font-weight: 700; }
+.apc-tab:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 2px; }
+.apc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 860px) { .apc-grid { grid-template-columns: 1fr; } }
+.apc-panel { background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 10px; padding: 18px; }
+.apc-panel-wide { grid-column: 1 / -1; }
+.apc-title { font-size: 0.85rem; font-weight: 700; color: #9090b0; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 8px; border-bottom: 1px solid #2a2a4e; }
+.apc-control { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.apc-control label { font-size: 0.78rem; color: #9090b0; }
+.apc-control input, .apc-control select { background: #0d0d1e; border: 1px solid #2a2a4e; color: #e8e8f0; padding: 10px; border-radius: 6px; font-size: 0.9rem; width: 100%; min-height: 44px; font-family: inherit; }
+.apc-control input:focus-visible, .apc-control select:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 1px; border-color: #7eb3ff; }
+.apc-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.apc-row > .apc-control { flex: 1; min-width: 130px; }
+.apc-help { font-size: 0.72rem; color: #9090b0; margin-top: 4px; line-height: 1.45; }
+.apc-presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.apc-preset { background: #0d0d1e; color: #c9c9dd; border: 1px solid #2a2a4e; padding: 9px 14px; border-radius: 6px; font-size: 0.78rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.apc-preset:hover { border-color: #7eb3ff; color: #fff; }
+.apc-preset:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 2px; }
+.apc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 6px; }
+@media (max-width: 860px) { .apc-stats { grid-template-columns: repeat(2, 1fr); } }
+.apc-stat { background: #131826; border: 1px solid #2a2a4e; border-radius: 8px; padding: 12px; }
+.apc-stat.primary { border-color: #7eb3ff; background: linear-gradient(135deg, rgba(102,126,234,0.12), rgba(118,75,162,0.08)); }
+.apc-stat-label { font-size: 0.66rem; color: #9090b0; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.apc-stat-value { font-size: 1.2rem; font-weight: 700; color: #e8e8f0; font-family: monospace; line-height: 1.2; overflow-wrap: anywhere; }
+.apc-stat.primary .apc-stat-value { color: #7eb3ff; }
+.apc-stat-unit { font-size: 0.66rem; color: #9090b0; margin-left: 3px; font-weight: 400; }
+.apc-subhead { font-size: 0.78rem; font-weight: 700; color: #c9c9dd; margin: 18px 0 8px; }
+.apc-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.apc-btn { background: #0d0d1e; color: #e8e8f0; border: 1px solid #2a2a4e; padding: 11px 18px; border-radius: 6px; font-size: 0.85rem; min-height: 44px; cursor: pointer; font-family: inherit; }
+.apc-btn:hover { border-color: #7eb3ff; color: #fff; }
+.apc-btn.primary { background: #7eb3ff; color: #0a0d14; border-color: #7eb3ff; font-weight: 700; }
+.apc-btn:focus-visible { outline: 2px solid #7eb3ff; outline-offset: 2px; }
+.apc-note { font-size: 0.78rem; color: #c9c9dd; min-height: 1.4em; margin: 12px 0 0; background: #131826; border: 1px solid #2a2a4e; border-radius: 6px; padding: 10px; line-height: 1.5; }
+.apc-scroll { overflow-x: auto; }
+.apc-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 0.85rem; }
+.apc-table caption { text-align: left; color: #9090b0; font-size: 0.78rem; padding-bottom: 6px; }
+.apc-table th, .apc-table td { border: 1px solid #2a2a4e; padding: 8px 10px; text-align: left; white-space: nowrap; }
+.apc-table th { background: #131826; color: #e8e8f0; }
+.apc-table td { color: #c9c9dd; }
+.apc-table td.num { text-align: right; font-family: monospace; }
+.apc-table tr.best td { background: rgba(126,179,255,0.12); }
+.apc-compare { min-width: 640px; }
+.apc-amort { min-width: 520px; }
+.apc-offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 980px) { .apc-offers { grid-template-columns: 1fr; } }
+.apc-offer-name { font-size: 0.85rem; font-weight: 700; color: #7eb3ff; margin: 0 0 10px; }
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  header, footer, .info-section, .breadcrumb, .apc-actions, .apc-help, .apc-tabs, .apc-presets { display: none !important; }
+  .apc-panel, .apc-stat { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; break-inside: avoid; }
+  .apc-stat-value, .apc-stat.primary .apc-stat-value { color: #000 !important; }
+  .apc-control input, .apc-control select { border: 1px solid #999 !important; background: #fff !important; color: #000 !important; }
+  .apc-table th, .apc-table td { border: 1px solid #999 !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>APR Calculator</h1>
+<p class="subtitle">Real loan cost with fees, in both directions</p>
+<nav class="breadcrumb">
+<a href="/">Home</a> > <a href="/tools/finance/">Finance</a> > <span>APR Calculator</span>
+<a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="tool-page">
+<div class="tool-main">
+<h2>Find the APR, the payment, or the cheaper of two loan offers</h2>
+<p class="apc-help" style="font-size:0.85rem;color:#c9c9dd;line-height:1.6;margin-bottom:14px;">The annual percentage rate is the only rate that compares two loan offers fairly, because it folds the charges into the rate instead of hiding them. This calculator works in both directions: give it a payment and it finds the APR, give it a rate and it finds the payment, then put two or three offers side by side to see which one costs less in the end. Everything runs in your browser, so none of your loan details leave the page.</p>
+
+<div class="apc-tabs" role="group" aria-label="Calculator mode">
+  <button type="button" class="apc-tab" id="apc-tab-apr" data-mode="apr" aria-pressed="true">Find the APR</button>
+  <button type="button" class="apc-tab" id="apc-tab-payment" data-mode="payment" aria-pressed="false">Find the payment</button>
+  <button type="button" class="apc-tab" id="apc-tab-compare" data-mode="compare" aria-pressed="false">Compare offers</button>
+</div>
+
+<section id="apc-mode-apr">
+  <div class="apc-presets">
+    <button type="button" class="apc-preset" id="apc-preset-car">Car loan example</button>
+    <button type="button" class="apc-preset" id="apc-preset-personal">Personal loan example</button>
+    <button type="button" class="apc-preset" id="apc-preset-mortgage">Mortgage example</button>
+  </div>
+  <div class="apc-grid">
+    <div class="apc-panel">
+      <div class="apc-title">The loan as quoted</div>
+      <div class="apc-control">
+        <label for="apc-amount">Amount financed ($)</label>
+        <input type="number" id="apc-amount" value="24000" min="0" step="100">
+        <div class="apc-help">The cash you receive from the lender. Do not add the fees: they go in the next field.</div>
+      </div>
+      <div class="apc-control">
+        <label for="apc-fees">Lender fees ($)</label>
+        <input type="number" id="apc-fees" value="600" min="0" step="10">
+        <div class="apc-help">Documentation, origination or processing fees charged by the lender. These are part of the APR.</div>
+      </div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-payment">Monthly payment ($)</label>
+          <input type="number" id="apc-payment" value="470" min="0" step="0.01">
+        </div>
+        <div class="apc-control">
+          <label for="apc-term">Term (months)</label>
+          <select id="apc-term">
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="36">36</option>
+            <option value="48">48</option>
+            <option value="60" selected>60</option>
+            <option value="72">72</option>
+            <option value="84">84</option>
+            <option value="120">120</option>
+            <option value="180">180</option>
+            <option value="360">360</option>
+          </select>
+        </div>
+      </div>
+      <div class="apc-help">The APR comes out of the same equation a lender uses: find the monthly rate that makes the present value of every payment, plus the fees, equal the amount financed.</div>
+    </div>
+    <div class="apc-panel">
+      <div class="apc-title">What the payment buys</div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-extra-costs">Other costs, paid outside the loan ($)</label>
+          <input type="number" id="apc-extra-costs" value="1400" min="0" step="10">
+        </div>
+        <div class="apc-control">
+          <label for="apc-down">Cash you put in ($)</label>
+          <input type="number" id="apc-down" value="0" min="0" step="10">
+        </div>
+      </div>
+      <div class="apc-help">Sales tax, title and registration fees are usually not part of the APR, so they are kept out of the rate and shown in the total cost instead. Cash you put in is the down payment or deposit.</div>
+      <div class="apc-title" style="margin-top:18px;">How this is different from a car loan payment</div>
+      <p class="apc-help">A dealer quote often mixes the tax and the fees into the amount financed. That raises the payment and it also raises the APR, even though a government tax is not a credit cost. Enter the two parts separately and the APR you get back is the one a lender is required to disclose for the credit itself.</p>
+    </div>
+  </div>
+
+  <h3 class="apc-subhead">The APR this offer works out to</h3>
+  <div class="apc-stats">
+    <div class="apc-stat primary">
+      <div class="apc-stat-label">APR</div>
+      <div class="apc-stat-value" id="apc-out-apr">0.00<span class="apc-stat-unit">%</span></div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Interest rate</div>
+      <div class="apc-stat-value" id="apc-out-rate">0.00<span class="apc-stat-unit">%</span></div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Fee uplift</div>
+      <div class="apc-stat-value" id="apc-out-uplift">0.00<span class="apc-stat-unit">pts</span></div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Monthly payment</div>
+      <div class="apc-stat-value" id="apc-out-payment">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Total of payments</div>
+      <div class="apc-stat-value" id="apc-out-payments">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Total interest</div>
+      <div class="apc-stat-value" id="apc-out-interest">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Cost of borrowing</div>
+      <div class="apc-stat-value" id="apc-out-borrow">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">All-in cost</div>
+      <div class="apc-stat-value" id="apc-out-allin">$0.00</div>
+    </div>
+  </div>
+</section>
+
+<section id="apc-mode-payment" hidden>
+  <div class="apc-presets">
+    <button type="button" class="apc-preset" id="apc-preset-car2">Car loan example</button>
+    <button type="button" class="apc-preset" id="apc-preset-personal2">Personal loan example</button>
+    <button type="button" class="apc-preset" id="apc-preset-mortgage2">Mortgage example</button>
+  </div>
+  <div class="apc-grid">
+    <div class="apc-panel">
+      <div class="apc-title">The loan</div>
+      <div class="apc-control">
+        <label for="apc-p-amount">Amount financed ($)</label>
+        <input type="number" id="apc-p-amount" value="24000" min="0" step="100">
+      </div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-p-rate">Interest rate (%)</label>
+          <input type="number" id="apc-p-rate" value="7" min="0" max="60" step="0.01">
+          <div class="apc-help">The note rate, before fees. A lender sets the payment from this number.</div>
+        </div>
+        <div class="apc-control">
+          <label for="apc-p-term">Term (months)</label>
+          <select id="apc-p-term">
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="36">36</option>
+            <option value="48">48</option>
+            <option value="60" selected>60</option>
+            <option value="72">72</option>
+            <option value="84">84</option>
+            <option value="120">120</option>
+            <option value="180">180</option>
+            <option value="360">360</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="apc-panel">
+      <div class="apc-title">Fees and other costs</div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-p-fees">Lender fees ($)</label>
+          <input type="number" id="apc-p-fees" value="600" min="0" step="10">
+        </div>
+        <div class="apc-control">
+          <label for="apc-p-extra">Other costs outside the loan ($)</label>
+          <input type="number" id="apc-p-extra" value="1400" min="0" step="10">
+        </div>
+      </div>
+      <div class="apc-help">Charges the lender makes are spread across the loan and raise the APR. Taxes and government fees are not part of the APR, so they are added to the all-in cost only.</div>
+    </div>
+  </div>
+
+  <h3 class="apc-subhead">What that rate costs you</h3>
+  <div class="apc-stats">
+    <div class="apc-stat primary">
+      <div class="apc-stat-label">Monthly payment</div>
+      <div class="apc-stat-value" id="apc-p-out-payment">$0.00</div>
+    </div>
+    <div class="apc-stat primary">
+      <div class="apc-stat-label">APR with the fees</div>
+      <div class="apc-stat-value" id="apc-p-out-apr">0.00<span class="apc-stat-unit">%</span></div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Fee uplift</div>
+      <div class="apc-stat-value" id="apc-p-out-uplift">0.00<span class="apc-stat-unit">pts</span></div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Total of payments</div>
+      <div class="apc-stat-value" id="apc-p-out-payments">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">Total interest</div>
+      <div class="apc-stat-value" id="apc-p-out-interest">$0.00</div>
+    </div>
+    <div class="apc-stat">
+      <div class="apc-stat-label">All-in cost</div>
+      <div class="apc-stat-value" id="apc-p-out-allin">$0.00</div>
+    </div>
+  </div>
+
+  <h3 class="apc-subhead">Amortization schedule</h3>
+  <div class="apc-scroll">
+    <table class="apc-table apc-amort">
+      <caption id="apc-amort-caption">The first year of payments and the final payment.</caption>
+      <thead><tr><th scope="col">Month</th><th scope="col">Payment</th><th scope="col">Interest</th><th scope="col">Principal</th><th scope="col">Balance</th></tr></thead>
+      <tbody id="apc-amort-body"><tr><td colspan="5">No data yet.</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="apc-mode-compare" hidden>
+  <div class="apc-offers">
+    <div class="apc-panel">
+      <p class="apc-offer-name">Offer A</p>
+      <div class="apc-control">
+        <label for="apc-a-amount">Amount financed ($)</label>
+        <input type="number" id="apc-a-amount" value="24000" min="0" step="100">
+      </div>
+      <div class="apc-control">
+        <label for="apc-a-fees">Lender fees ($)</label>
+        <input type="number" id="apc-a-fees" value="600" min="0" step="10">
+      </div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-a-known">I know the</label>
+          <select id="apc-a-known">
+            <option value="rate" selected>interest rate</option>
+            <option value="payment">monthly payment</option>
+          </select>
+        </div>
+        <div class="apc-control">
+          <label for="apc-a-value" id="apc-a-value-label">Rate (%)</label>
+          <input type="number" id="apc-a-value" value="7" min="0" max="60" step="0.01">
+        </div>
+      </div>
+      <div class="apc-control">
+        <label for="apc-a-term">Term (months)</label>
+        <select id="apc-a-term">
+          <option value="12">12</option><option value="24">24</option><option value="36">36</option>
+          <option value="48">48</option><option value="60" selected>60</option><option value="72">72</option>
+          <option value="84">84</option><option value="120">120</option><option value="180">180</option><option value="360">360</option>
+        </select>
+      </div>
+    </div>
+    <div class="apc-panel">
+      <p class="apc-offer-name">Offer B</p>
+      <div class="apc-control">
+        <label for="apc-b-amount">Amount financed ($)</label>
+        <input type="number" id="apc-b-amount" value="24000" min="0" step="100">
+      </div>
+      <div class="apc-control">
+        <label for="apc-b-fees">Lender fees ($)</label>
+        <input type="number" id="apc-b-fees" value="200" min="0" step="10">
+      </div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-b-known">I know the</label>
+          <select id="apc-b-known">
+            <option value="rate" selected>interest rate</option>
+            <option value="payment">monthly payment</option>
+          </select>
+        </div>
+        <div class="apc-control">
+          <label for="apc-b-value" id="apc-b-value-label">Rate (%)</label>
+          <input type="number" id="apc-b-value" value="7.5" min="0" max="60" step="0.01">
+        </div>
+      </div>
+      <div class="apc-control">
+        <label for="apc-b-term">Term (months)</label>
+        <select id="apc-b-term">
+          <option value="12">12</option><option value="24">24</option><option value="36">36</option>
+          <option value="48">48</option><option value="60" selected>60</option><option value="72">72</option>
+          <option value="84">84</option><option value="120">120</option><option value="180">180</option><option value="360">360</option>
+        </select>
+      </div>
+    </div>
+    <div class="apc-panel">
+      <p class="apc-offer-name">Offer C</p>
+      <div class="apc-control">
+        <label for="apc-c-amount">Amount financed ($)</label>
+        <input type="number" id="apc-c-amount" value="24000" min="0" step="100">
+      </div>
+      <div class="apc-control">
+        <label for="apc-c-fees">Lender fees ($)</label>
+        <input type="number" id="apc-c-fees" value="600" min="0" step="10">
+      </div>
+      <div class="apc-row">
+        <div class="apc-control">
+          <label for="apc-c-known">I know the</label>
+          <select id="apc-c-known">
+            <option value="rate" selected>interest rate</option>
+            <option value="payment">monthly payment</option>
+          </select>
+        </div>
+        <div class="apc-control">
+          <label for="apc-c-value" id="apc-c-value-label">Rate (%)</label>
+          <input type="number" id="apc-c-value" value="6.5" min="0" max="60" step="0.01">
+        </div>
+      </div>
+      <div class="apc-control">
+        <label for="apc-c-term">Term (months)</label>
+        <select id="apc-c-term">
+          <option value="12">12</option><option value="24">24</option><option value="36">36</option>
+          <option value="48">48</option><option value="60" selected>60</option><option value="72">72</option>
+          <option value="84">84</option><option value="120">120</option><option value="180">180</option><option value="360">360</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="apc-subhead">The three offers side by side</h3>
+  <div class="apc-scroll">
+    <table class="apc-table apc-compare">
+      <caption>The row marked in blue is the cheapest offer over the whole term, not the lowest rate.</caption>
+      <thead><tr><th scope="col">Offer</th><th scope="col">Monthly payment</th><th scope="col">APR</th><th scope="col">Total interest</th><th scope="col">Total cost</th><th scope="col">Difference</th></tr></thead>
+      <tbody id="apc-compare-body"><tr><td colspan="6">No data yet.</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<p class="apc-note" id="apc-note" role="status" aria-live="polite">Enter a loan to see the APR.</p>
+
+<div class="apc-actions">
+  <button type="button" class="apc-btn primary" id="apc-copy">Copy results</button>
+  <button type="button" class="apc-btn" id="apc-print">Print</button>
+  <button type="button" class="apc-btn" id="apc-reset">Reset</button>
+</div>
+</div>
+
+<section class="info-section">
+<h2>How the APR Is Worked Out</h2>
+<p>A lender does not guess the APR. It looks for the monthly rate that makes your loan add up exactly: the present value of every payment you make, plus the charges you paid to get the loan, has to equal the amount you borrowed. That rate is solved from the cash flows, and the annual percentage rate is that monthly rate times twelve, which is the monthly rate approximation the regulation allows.</p>
+<ol>
+<li><strong>Amount financed</strong> is the cash you received, before any fees.</li>
+<li><strong>Lender fees</strong> are added to the cost of the loan, because they are a credit charge whether you pay them on day one or spread them across five years.</li>
+<li><strong>Payment and term</strong> give the full set of cash flows the lender works with.</li>
+<li><strong>Monthly rate</strong> is solved so that the payments and the fees equal the amount financed.</li>
+<li><strong>APR</strong> is the monthly rate times twelve, and the <strong>interest rate</strong> is the rate the payment alone implies, without the fees.</li>
+</ol>
+<p>Take the default example on this page: 24,000 dollars borrowed, 600 dollars of lender charges, a 470 dollar monthly payment and 60 months. The payment on its own works out at an interest rate of about 6.54% a year. Once the 600 dollars of charges are folded in, the same payment works out at an APR of about 7.60%. The fee uplift is 1.06 percentage points, and it is not a rounding error: the loan costs 4,800 dollars over five years, 4,200 of it interest and 600 of it charges, and the disclosed APR is the rate that says so. The charges do not turn into interest in the payments you signed for, they simply mean you paid 4,800 dollars for 4,200 dollars of borrowing.</p>
+<p>Run it the other way and a 24,000 dollar loan at 7.00% over 60 months has a payment of 475.23 dollars, 4,513.73 dollars of interest in total, and an APR of 8.07% once the same 600 dollars of charges are added. Two lenders can quote the same payment on the same loan and still land on different APRs, because one of them charges 600 dollars and the other charges none.</p>
+
+<h2>APR Is Not the Interest Rate</h2>
+<p>The interest rate prices the money itself. The APR adds the cost of getting the money and expresses the whole thing as a yearly rate, so two offers can be compared on one number. A loan at 6.0% interest with 400 dollars of charges over three years can carry a higher APR than a loan at 6.5% interest with no fees at all, because the fees are spread over a long term.</p>
+<p>APR and APY are different animals. APY is the yearly return on an investment, or the yearly cost of a credit card where the interest compounds and the fee is usually a flat annual charge, so a 24% APR card is close to a 27% APY card. A loan APR is not compounded the same way, which is why lenders quote one and investors quote the other.</p>
+
+<h2>Which Costs Belong in the APR</h2>
+<p>Anything the lender charges for arranging the credit belongs in the APR: origination fees, documentation fees, points and processing charges. Amounts paid to a government do not, which covers sales tax, title and registration fees. This calculator keeps the two apart on purpose: lender charges raise the rate, and the government fees land in the all-in cost so nothing disappears from the total.</p>
+<p>The same split applies to a car. A dealer who rolls the tax and the doc fee into the amount financed raises your payment and your APR at the same time, even though only part of that is a credit charge. Price the car at two dealers with the same rate and the higher price always produces the higher payment, which is why the same car can be financed at two very different APRs.</p>
+
+<h2>Comparing Offers Without Fooling Yourself</h2>
+<p>The comparison table gives you the monthly payment, the APR, the total interest and the total cost for every offer, and it marks the cheapest one over the whole term. That last column is the one that matters when you are picking between a 60 month loan at 6.5% and a 72 month loan at 6.0%. The longer loan has the better-looking rate and the worse bill, because you are paying interest for a year longer. If you are certain you will sell the car or pay the loan off early, a longer term can still win on cash flow, so look at the payment column as well as the total.</p>
+
+<h2>Why AI Chatbots Get This Wrong</h2>
+<p>A language model will quote you the note rate, add the fees to the payment instead of solving for the rate that makes them disappear into it, and then call the result the APR. It also tends to treat a government tax as a credit charge, which inflates the rate, and it cannot hold three offers in front of you while you change one field at a time. This page solves the cash flow equation with the same method a lender uses, shows the fee uplift in percentage points and dollars, and keeps tax out of the rate where the regulation keeps it out.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What is an APR?</summary><p>The annual percentage rate is the yearly cost of a loan expressed as a percentage, with the charges you pay to get the loan folded into the rate. A 20,000 dollar loan at 6% interest over five years with 500 dollars of charges has a disclosed APR of about 7.06%, because the charges are spread across the life of the loan instead of being paid once at the start.</p></details>
+<details class="faq-item"><summary>How do I calculate the APR on a car loan?</summary><p>Add the amount you borrowed and the lender charges such as the documentation fee, then find the monthly rate that makes your monthly payment worth exactly that total over the loan term. This calculator solves that equation directly, so enter the amount financed, the charges, your monthly payment and the number of months and the APR comes back.</p></details>
+<details class="faq-item"><summary>Why is my APR higher than the interest rate?</summary><p>Because the disclosed rate includes the one-off charges. If you borrow 20,000 dollars over 60 months and pay 400 dollars of origination fees, those fees are spread over five years, so they add to the yearly rate even though you paid them on day one. The difference between the two numbers is the fee uplift in percentage points.</p></details>
+<details class="faq-item"><summary>Which fees are included in the APR?</summary><p>Charges the lender makes for arranging the credit are included, such as origination fees, documentation fees, points and processing charges. Things paid to a government, including sales tax, title and registration fees, are not part of the APR, so this calculator keeps them in the total cost but leaves them out of the rate.</p></details>
+<details class="faq-item"><summary>Is a lower APR always the better loan?</summary><p>No. A longer term usually carries a lower APR but costs more in total interest, because you are borrowing for longer. The comparison table shows the APR and the total cost side by side so you can see when the lowest rate is not the cheapest loan.</p></details>
+<details class="faq-item"><summary>How is APR different from APY?</summary><p>The yearly cost of borrowing, charges included, is what lenders quote for loans, while APY is the yearly yield on an investment or the yearly cost of a credit card, where interest compounds and the charges are usually a flat annual fee. A credit card APR of 24% is much closer to a 27% APY once daily compounding is taken into account.</p></details>
+<details class="faq-item"><summary>Does the APR change if I pay the loan off early?</summary><p>The disclosed APR assumes the loan runs to the end of its term, so it does not change when you pay it off early. Paying early does cut the total interest, and in most states a prepayment penalty on a personal loan can be charged as a separate cost, which this calculator treats as one of the fees.</p></details>
+<details class="faq-item"><summary>Will the lender show the same APR as this calculator?</summary><p>Usually to the last decimal place. Lenders work from the same cash flows under the Truth in Lending Act, but they apply the monthly rate approximation set out in the regulation, so a small difference of a few hundredths is normal. The number on your loan agreement is the one that binds.</p></details>
+<details class="faq-item"><summary>Does this calculator upload my loan details?</summary><p>No. Every figure is calculated in your browser with plain JavaScript, and nothing you type is sent to a server or stored. You can turn off your connection and the calculator keeps working.</p></details>
+
+<h2>Related Tools</h2>
+<ul>
+<li><a href="/tools/auto-loan-calculator/">Auto Loan Calculator</a> - monthly car payment with tax, trade-in and down payment</li>
+<li><a href="/tools/car-lease-calculator/">Car Lease Calculator</a> - lease payment, money factor and lease vs buy</li>
+<li><a href="/tools/loan-calculator/">Loan Calculator</a> - amortization and extra payments on any loan</li>
+<li><a href="/tools/mortgage-calculator/">Mortgage Calculator</a> - PMI, property tax and insurance</li>
+<li><a href="/tools/debt-payoff-calculator/">Debt Payoff Calculator</a> - snowball against avalanche</li>
+<li><a href="/tools/margin-calculator/">Margin Calculator</a> - markup against profit margin</li>
+<li><a href="/tools/investment-calculator/">Investment Calculator</a> - profit, ROI and cost basis</li>
+<li><a href="/tools/inflation-calculator/">Inflation Calculator</a> - what a dollar buys over time</li>
+</ul>
+
+<h2>References</h2>
+<ul>
+<li><a href="https://www.ecfr.gov/current/title-12/chapter-X/part-1026/subpart-C/section-1026.22">12 CFR 1026.22 - Annual percentage rate for closed-end credit (eCFR)</a></li>
+<li><a href="https://www.law.cornell.edu/cfr/text/12/1026.22">12 CFR 1026.22 - Truth in Lending Act APR rules (Cornell LII)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Annual_percentage_rate">Annual percentage rate (Wikipedia)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Truth_in_Lending_Act">Truth in Lending Act (Wikipedia)</a></li>
+</ul>
+</section>
+</section>
+</main>
+<footer>
+<p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+(function(){
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
+function money(n) {
+  if (!isFinite(n)) n = 0;
+  var neg = n < 0;
+  var s = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (neg ? '-$' : '$') + s;
+}
+function money0(n) {
+  if (!isFinite(n)) n = 0;
+  var neg = n < 0;
+  var s = Math.round(Math.abs(n)).toLocaleString('en-US');
+  return (neg ? '-$' : '$') + s;
+}
+function pct(n) { return isFinite(n) ? n.toFixed(2) : '0.00'; }
+function setText(id, text) { var node = $(id); if (node) node.textContent = text; }
+function setHtml(id, html) { var node = $(id); if (node) node.innerHTML = html; }
+
+function annuity(r, n) { return r === 0 ? n : (1 - Math.pow(1 + r, -n)) / r; }
+function paymentFor(principal, r, n) {
+  if (n <= 0 || principal <= 0) return 0;
+  if (r === 0) return principal / n;
+  var f = Math.pow(1 + r, n);
+  return principal * r * f / (f - 1);
+}
+function solveMonthlyRate(principal, fees, n, payment) {
+  if (n <= 0 || principal <= 0 || payment <= 0) return null;
+  if (payment * n + fees <= principal) return null;
+  var lo = 1e-9, hi = 1;
+  if (payment * annuity(hi, n) + fees >= principal) return null;
+  for (var i = 0; i < 200; i++) {
+    var mid = (lo + hi) / 2;
+    if (payment * annuity(mid, n) + fees > principal) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+function solveRateFromPayment(principal, n, payment) {
+  if (n <= 0 || principal <= 0 || payment <= 0) return 0;
+  if (payment <= principal / n) return 0;
+  var lo = 1e-9, hi = 1;
+  for (var i = 0; i < 200; i++) {
+    var mid = (lo + hi) / 2;
+    if (paymentFor(principal, mid, n) < payment) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+function aprFromCashFlows(principal, fees, n, payment) {
+  var solved = solveMonthlyRate(principal, fees, n, payment);
+  return solved === null ? NaN : solved * 12 * 100;
+}
+
+var OFFER_LABEL = { 'apc-a': 'A', 'apc-b': 'B', 'apc-c': 'C' };
+
+function offer(id) {
+  var known = $(id + '-known').value;
+  var value = Math.max(0, num(id + '-value'));
+  var amount = Math.max(0, num(id + '-amount'));
+  var fees = Math.max(0, num(id + '-fees'));
+  var n = parseInt($(id + '-term').value, 10) || 60;
+  var payment = known === 'payment' ? value : paymentFor(amount, value / 100 / 12, n);
+  var r = known === 'payment' ? solveRateFromPayment(amount, n, payment) : value / 100 / 12;
+  var apr = aprFromCashFlows(amount, fees, n, payment);
+  var totalPayments = payment * n;
+  var totalInterest = totalPayments - amount;
+  var totalCost = totalPayments + fees;
+  return { id: id, label: OFFER_LABEL[id] || id, known: known, amount: amount, fees: fees, n: n,
+           payment: payment, rate: r * 12 * 100, apr: apr, totalPayments: totalPayments,
+           totalInterest: totalInterest, totalCost: totalCost };
+}
+
+function renderAprMode() {
+  var amount = Math.max(0, num('apc-amount'));
+  var fees = Math.max(0, num('apc-fees'));
+  var payment = Math.max(0, num('apc-payment'));
+  var n = parseInt($('apc-term').value, 10) || 60;
+  var extra = Math.max(0, num('apc-extra-costs'));
+  var down = Math.max(0, num('apc-down'));
+
+  var solved = solveMonthlyRate(amount, fees, n, payment);
+  var note = solveRateFromPayment(amount, n, payment);
+  var apr = aprFromCashFlows(amount, fees, n, payment);
+  var notePct = note * 12 * 100;
+  var totalPayments = payment * n;
+  var totalInterest = totalPayments - amount;
+  var borrowCost = fees + totalInterest;
+  var allIn = totalPayments + fees + extra + down;
+
+  setHtml('apc-out-apr', (isFinite(apr) ? pct(apr) : '--') + '<span class="apc-stat-unit">%</span>');
+  setHtml('apc-out-rate', pct(notePct) + '<span class="apc-stat-unit">%</span>');
+  setHtml('apc-out-uplift', (isFinite(apr) ? pct(apr - notePct) : '--') + '<span class="apc-stat-unit">pts</span>');
+  setText('apc-out-payment', money(payment));
+  setText('apc-out-payments', money(totalPayments));
+  setText('apc-out-interest', money(totalInterest));
+  setText('apc-out-borrow', money(borrowCost));
+  setText('apc-out-allin', money(allIn));
+
+  var msg;
+  if (amount <= 0 || payment <= 0) {
+    msg = 'Enter an amount financed and a monthly payment to see the APR.';
+  } else if (!isFinite(apr)) {
+    if (payment * n + fees <= amount) {
+      msg = 'This payment does not cover the amount financed plus the fees, even at a zero rate. Check the payment or the term.';
+    } else {
+      msg = 'This payment is larger than the amount financed plus the fees, so no rate solves it. Check the payment or the term.';
+    }
+  } else {
+    msg = 'APR ' + pct(apr) + '% on a rate of ' + pct(notePct) + '%, so the ' + money0(fees) +
+          ' of fees add ' + pct(apr - notePct) + ' points. You pay ' + money(totalPayments) +
+          ' over ' + n + ' months, of which ' + money(totalInterest) + ' is interest.';
+    if (extra > 0 || down > 0) {
+      msg += ' With the deposit and the costs paid outside the loan included, you spend ' + money(allIn) + ' in total.';
+    }
+  }
+  setText('apc-note', msg);
+}
+
+function renderPaymentMode() {
+  var amount = Math.max(0, num('apc-p-amount'));
+  var rate = clamp(num('apc-p-rate'), 0, 60);
+  var n = parseInt($(apcTermId()).value, 10) || 60;
+  var fees = Math.max(0, num('apc-p-fees'));
+  var extra = Math.max(0, num('apc-p-extra'));
+  var r = rate / 100 / 12;
+  var payment = paymentFor(amount, r, n);
+  var apr = aprFromCashFlows(amount, fees, n, payment);
+  var totalPayments = payment * n;
+  var totalInterest = totalPayments - amount;
+  var allIn = totalPayments + fees + extra;
+
+  setText('apc-p-out-payment', money(payment));
+  setHtml('apc-p-out-apr', (isFinite(apr) ? pct(apr) : '--') + '<span class="apc-stat-unit">%</span>');
+  setHtml('apc-p-out-uplift', (isFinite(apr) ? pct(apr - rate) : '--') + '<span class="apc-stat-unit">pts</span>');
+  setText('apc-p-out-payments', money(totalPayments));
+  setText('apc-p-out-interest', money(totalInterest));
+  setText('apc-p-out-allin', money(allIn));
+
+  var rows = [];
+  var balance = amount;
+  var shown = Math.min(n, 12);
+  for (var m = 1; m <= n; m++) {
+    var interest = balance * r;
+    var principalPart = payment - interest;
+    if (m === n) principalPart = balance;
+    balance -= principalPart;
+    if (balance < 0.004) balance = 0;
+    if (m <= shown || m === n) {
+      rows.push('<tr><td>' + m + '</td><td class="num">' + money(m === n ? principalPart + interest : payment) +
+        '</td><td class="num">' + money(interest) + '</td><td class="num">' + money(principalPart) +
+        '</td><td class="num">' + money(balance) + '</td></tr>');
+    }
+  }
+  setHtml('apc-amort-body', rows.join(''));
+  setText('apc-amort-caption', n <= 12 ? 'Every payment of the loan.' :
+    'The first 12 payments and the final payment of ' + n + ' months.');
+
+  var msg = 'At ' + pct(rate) + '% over ' + n + ' months the payment is ' + money(payment) +
+            ' and the total interest is ' + money(totalInterest) + '.';
+  if (isFinite(apr) && fees > 0) {
+    msg += ' The ' + money0(fees) + ' of lender fees lift the disclosed APR to ' + pct(apr) + '%, ' + pct(apr - rate) + ' points above the rate.';
+  } else if (fees > 0) {
+    msg += ' With the fees added, the payment does not settle the loan, so no APR solves it. Check the figures.';
+  } else {
+    msg += ' With no lender fees the APR is the same as the rate.';
+  }
+  if (extra > 0) msg += ' Costs paid outside the loan add ' + money(extra) + ', so the all-in cost is ' + money(allIn) + '.';
+  setText('apc-note', msg);
+}
+
+function apcTermId() { return 'apc-p-term'; }
+
+function renderCompareMode() {
+  var offers = [offer('apc-a'), offer('apc-b'), offer('apc-c')];
+  var best = null;
+  var lowestApr = null;
+  var valid = [];
+  for (var i = 0; i < offers.length; i++) {
+    var o = offers[i];
+    if (o.amount <= 0) continue;
+    valid.push(o);
+    if (!best || o.totalCost < best.totalCost) best = o;
+    if (isFinite(o.apr) && (!lowestApr || o.apr < lowestApr.apr)) lowestApr = o;
+  }
+  var rows = [];
+  for (var j = 0; j < offers.length; j++) {
+    var x = offers[j];
+    var diff = best && x !== best ? x.totalCost - best.totalCost : 0;
+    var cls = best && x === best ? ' class="best"' : '';
+    rows.push('<tr' + cls + '><td>Offer ' + x.label + '</td><td class="num">' + money(x.payment) +
+      '</td><td class="num">' + (isFinite(x.apr) ? pct(x.apr) + '%' : '--') +
+      '</td><td class="num">' + money(x.totalInterest) + '</td><td class="num">' + money(x.totalCost) +
+      '</td><td class="num">' + (best && x === best ? 'cheapest' : (best ? '+' + money0(diff) : '--')) + '</td></tr>');
+  }
+  setHtml('apc-compare-body', rows.join(''));
+
+  var msg;
+  if (!valid.length) {
+    msg = 'Enter an amount for at least one offer to compare them.';
+  } else if (valid.length === 1) {
+    msg = 'Fill in a second offer to see which one costs less over the whole term.';
+  } else {
+    msg = 'Offer ' + best.label + ' costs the least over the term: ' + money(best.totalCost) + ' in total, with a payment of ' + money(best.payment) + '.';
+    if (lowestApr && lowestApr !== best) {
+      msg += ' Offer ' + lowestApr.label + ' has the lower APR at ' + pct(lowestApr.apr) +
+             '%, but it runs for ' + lowestApr.n + ' months instead of ' + best.n + ', so it costs ' +
+             money0(lowestApr.totalCost - best.totalCost) + ' more in the end.';
+    } else {
+      msg += ' It is also the offer with the lowest APR.';
+    }
+  }
+  setText('apc-note', msg);
+}
+
+var MODE = 'apr';
+function render() {
+  if (MODE === 'apr') renderAprMode();
+  else if (MODE === 'payment') renderPaymentMode();
+  else renderCompareMode();
+}
+
+function showMode(mode) {
+  MODE = mode;
+  var tabs = ['apr', 'payment', 'compare'];
+  for (var i = 0; i < tabs.length; i++) {
+    var tab = $('apc-tab-' + tabs[i]);
+    var panel = $('apc-mode-' + tabs[i]);
+    if (!tab || !panel) continue;
+    var on = tabs[i] === mode;
+    tab.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (on) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', 'hidden');
+  }
+  render();
+}
+
+function setValue(id, value) { var node = $(id); if (node) node.value = value; }
+
+var PRESETS = {
+  car: { amount: 24000, fees: 600, payment: 470, term: '60', rate: 7, extra: 1400, down: 0 },
+  personal: { amount: 15000, fees: 450, payment: 289, term: '48', rate: 8.5, extra: 0, down: 0 },
+  mortgage: { amount: 320000, fees: 4500, payment: 1890, term: '360', rate: 6.25, extra: 6500, down: 80000 }
+};
+
+function applyPreset(kind, mode) {
+  var p = PRESETS[kind];
+  if (!p) return;
+  if (mode === 'apr') {
+    setValue('apc-amount', p.amount);
+    setValue('apc-fees', p.fees);
+    setValue('apc-payment', p.payment);
+    setValue('apc-term', p.term);
+    setValue('apc-extra-costs', p.extra);
+    setValue('apc-down', p.down);
+  } else if (mode === 'payment') {
+    setValue('apc-p-amount', p.amount);
+    setValue('apc-p-rate', p.rate);
+    setValue('apc-p-term', p.term);
+    setValue('apc-p-fees', p.fees);
+    setValue('apc-p-extra', p.extra);
+  }
+  render();
+}
+
+function copyResults() {
+  var lines = ['APR Calculator - DevTools Hub'];
+  if (MODE === 'apr') {
+    var amount = Math.max(0, num('apc-amount'));
+    var fees = Math.max(0, num('apc-fees'));
+    var payment = Math.max(0, num('apc-payment'));
+    var n = parseInt($('apc-term').value, 10) || 60;
+    var apr = aprFromCashFlows(amount, fees, n, payment);
+    var note = solveRateFromPayment(amount, n, payment) * 12 * 100;
+    lines.push('Amount financed: ' + money0(amount) + ' | Fees: ' + money0(fees) + ' | Payment: ' + money(payment) + ' | Term: ' + n + ' months');
+    if (isFinite(apr)) {
+      lines.push('APR: ' + pct(apr) + '% | Interest rate: ' + pct(note) + '% | Fee uplift: ' + pct(apr - note) + ' points');
+    } else {
+      lines.push('APR: no rate solves this payment');
+    }
+    lines.push('Total of payments: ' + money(payment * n) + ' | Total interest: ' + money(payment * n - amount));
+    lines.push('All-in cost: ' + money(payment * n + fees + Math.max(0, num('apc-extra-costs')) + Math.max(0, num('apc-down'))));
+  } else if (MODE === 'payment') {
+    var pamount = Math.max(0, num('apc-p-amount'));
+    var prate = clamp(num('apc-p-rate'), 0, 60);
+    var pn = parseInt($('apc-p-term').value, 10) || 60;
+    var pfees = Math.max(0, num('apc-p-fees'));
+    var pextra = Math.max(0, num('apc-p-extra'));
+    var ppayment = paymentFor(pamount, prate / 100 / 12, pn);
+    var papr = aprFromCashFlows(pamount, pfees, pn, ppayment);
+    lines.push('Amount financed: ' + money0(pamount) + ' | Rate: ' + pct(prate) + '% | Term: ' + pn + ' months');
+    lines.push('Monthly payment: ' + money(ppayment) + ' | Total interest: ' + money(ppayment * pn - pamount));
+    lines.push('APR with fees: ' + (isFinite(papr) ? pct(papr) + '%' : 'no rate solves it'));
+    lines.push('All-in cost: ' + money(ppayment * pn + pfees + pextra));
+  } else {
+    var offers = [offer('apc-a'), offer('apc-b'), offer('apc-c')];
+    for (var i = 0; i < offers.length; i++) {
+      var o = offers[i];
+      lines.push('Offer ' + o.label + ': amount ' + money0(o.amount) + ' | fees ' + money0(o.fees) +
+        ' | ' + o.n + ' months | payment ' + money(o.payment) + ' | APR ' +
+        (isFinite(o.apr) ? pct(o.apr) + '%' : '--') + ' | total cost ' + money(o.totalCost));
+    }
+  }
+  var text = lines.join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setText('apc-note', 'Results copied to the clipboard.');
+    }, function () {
+      setText('apc-note', 'The browser blocked clipboard access - select the figures and copy them manually.');
+    });
+  } else {
+    setText('apc-note', 'This browser has no clipboard API - select the figures and copy them manually.');
+  }
+}
+
+function reset() {
+  setValue('apc-amount', 24000);
+  setValue('apc-fees', 600);
+  setValue('apc-payment', 470);
+  setValue('apc-term', '60');
+  setValue('apc-extra-costs', 1400);
+  setValue('apc-down', 0);
+  setValue('apc-p-amount', 24000);
+  setValue('apc-p-rate', 7);
+  setValue('apc-p-term', '60');
+  setValue('apc-p-fees', 600);
+  setValue('apc-p-extra', 1400);
+  setValue('apc-a-amount', 24000);
+  setValue('apc-a-fees', 600);
+  setValue('apc-a-known', 'rate');
+  setValue('apc-a-value', 7);
+  setValue('apc-a-term', '60');
+  setValue('apc-b-amount', 24000);
+  setValue('apc-b-fees', 200);
+  setValue('apc-b-known', 'rate');
+  setValue('apc-b-value', 7.5);
+  setValue('apc-b-term', '60');
+  setValue('apc-c-amount', 24000);
+  setValue('apc-c-fees', 600);
+  setValue('apc-c-known', 'rate');
+  setValue('apc-c-value', 6.5);
+  setValue('apc-c-term', '60');
+  syncOfferLabels();
+  render();
+}
+
+function syncOfferLabels(convert) {
+  var ids = ['a', 'b', 'c'];
+  for (var i = 0; i < ids.length; i++) {
+    var sel = $('apc-' + ids[i] + '-known');
+    var lab = $('apc-' + ids[i] + '-value-label');
+    var input = $('apc-' + ids[i] + '-value');
+    if (!sel || !lab || !input) continue;
+    var isPayment = sel.value === 'payment';
+    lab.textContent = isPayment ? 'Monthly payment ($)' : 'Rate (%)';
+    input.max = isPayment ? '100000' : '60';
+    if (convert) {
+      var amount = Math.max(0, num('apc-' + ids[i] + '-amount'));
+      var n = parseInt($('apc-' + ids[i] + '-term').value, 10) || 60;
+      var v = parseFloat(input.value);
+      if (isFinite(v) && v > 0) {
+        if (isPayment && v <= 60) {
+          input.value = paymentFor(amount, v / 100 / 12, n).toFixed(2);
+        } else if (!isPayment && v > 60) {
+          input.value = (solveRateFromPayment(amount, n, v) * 12 * 100).toFixed(2);
+        }
+      }
+    }
+  }
+}
+
+function wire() {
+  var tabs = ['apr', 'payment', 'compare'];
+  for (var i = 0; i < tabs.length; i++) {
+    (function (mode) {
+      var tab = $('apc-tab-' + mode);
+      if (tab) tab.addEventListener('click', function () { showMode(mode); });
+    })(tabs[i]);
+  }
+  var inputs = ['apc-amount', 'apc-fees', 'apc-payment', 'apc-extra-costs', 'apc-down',
+                'apc-p-amount', 'apc-p-rate', 'apc-p-fees', 'apc-p-extra',
+                'apc-a-amount', 'apc-a-fees', 'apc-a-value',
+                'apc-b-amount', 'apc-b-fees', 'apc-b-value',
+                'apc-c-amount', 'apc-c-fees', 'apc-c-value'];
+  for (var j = 0; j < inputs.length; j++) {
+    var node = $(inputs[j]);
+    if (node) node.addEventListener('input', render);
+  }
+  var selects = ['apc-term', 'apc-p-term', 'apc-a-term', 'apc-b-term', 'apc-c-term'];
+  for (var k = 0; k < selects.length; k++) {
+    var sel = $(selects[k]);
+    if (sel) sel.addEventListener('change', render);
+  }
+  var knowns = ['apc-a-known', 'apc-b-known', 'apc-c-known'];
+  for (var h = 0; h < knowns.length; h++) {
+    var known = $(knowns[h]);
+    if (known) known.addEventListener('change', function () { syncOfferLabels(true); render(); });
+  }
+  var presetMap = [
+    ['apc-preset-car', 'car'], ['apc-preset-personal', 'personal'], ['apc-preset-mortgage', 'mortgage'],
+    ['apc-preset-car2', 'car'], ['apc-preset-personal2', 'personal'], ['apc-preset-mortgage2', 'mortgage']
+  ];
+  for (var p = 0; p < presetMap.length; p++) {
+    (function (id, kind) {
+      var btn = $(id);
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        applyPreset(kind, id.indexOf('2') > -1 ? 'payment' : 'apr');
+      });
+    })(presetMap[p][0], presetMap[p][1]);
+  }
+  $('apc-copy').addEventListener('click', copyResults);
+  $('apc-print').addEventListener('click', function () { window.print(); });
+  $('apc-reset').addEventListener('click', reset);
+  syncOfferLabels(false);
+  render();
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+else wire();
+})();
+</script>
+</body>
+</html>

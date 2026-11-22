@@ -371,7 +371,8 @@ export async function onRequest(context) {
     '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">' + nl +
     '<title>DevTools Hub - ' + totalCount + ' Free Online Developer Tools</title>' + nl +
     // BUG-172: trimmed to ≤155 chars while preserving 3 probe phrases ("free online developer tools", "JSON formatter online", "image compressor free") for SquirrelScan AI-citability (was 174/158 — Warning 1/17 `core/meta-description`)
-    '<meta name="description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
+    // BUG-571: stronger CTA in meta description per content quality feedback
+    '<meta name="description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking. Try free now.">' + nl +
     '<link rel="canonical" href="https://tools.scoreroute.com/">' + nl +
     '<meta property="og:title" content="DevTools Hub - ' + totalCount + ' Free Online Developer Tools">' + nl +
     '<meta property="og:description" content="' + totalCount + ' browser-based developer tools: JSON formatter, image compressor, QR generator, AI chat, PDF merger and ' + (totalCount - 5) + ' more. No signup, no upload, no tracking.">' + nl +
@@ -429,7 +430,7 @@ export async function onRequest(context) {
       '@type': 'CollectionPage',
       'datePublished': '2026-05-21',
       'dateModified': today,
-      'name': 'DevTools Hub - ' + totalCount + ' Free Online Developer Tools',
+      'name': totalCount + ' Free Online Developer Tools',
       'description': 'A curated collection of ' + totalCount + ' free browser-based developer tools: JSON formatter, image compressor, QR generator, PDF merger, AI chat and more. No signup, no upload, runs in your browser.',
       'url': 'https://tools.scoreroute.com/',
       'isPartOf': { '@id': 'https://tools.scoreroute.com/#website' },

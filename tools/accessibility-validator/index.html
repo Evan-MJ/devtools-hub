@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker</title>
+<meta name="description" content="Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with axe-core. Paste HTML or fetch URL for detailed violations.">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/accessibility-validator/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker">
+<meta property="og:description" content="Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with axe-core. Paste HTML or fetch URL for detailed violations.">
+<meta property="og:image" content="https://tools.scoreroute.com/og-image.png">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/accessibility-validator/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker | DevTools Hub">
+<meta name="twitter:description" content="Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with axe-core. Paste HTML or fetch URL for detailed violations.">
+<meta name="twitter:image" content="https://tools.scoreroute.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker",
+  "description": "Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with axe-core. Paste HTML or fetch URL for detailed violations.",
+  "url": "https://tools.scoreroute.com/tools/accessibility-validator/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web Browser",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@id": "https://tools.scoreroute.com/#author"},
+  "publisher": {"@id": "https://tools.scoreroute.com/#organization"},
+  "featureList": [
+    "WCAG 2.1 AA/AAA compliance testing",
+    "axe-core engine (industry standard)",
+    "Paste HTML, fetch URL, or upload file",
+    "Detailed violations with code fixes",
+    "Export JSON, HTML, Markdown reports",
+    "Privacy-first: runs in your browser",
+    "No signup, no limits, free"
+  ],
+  "datePublished": "2026-11-22",
+  "dateModified": "2026-11-22"
+}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .tool-page { max-width: 1000px; margin: 0 auto; padding: 24px 16px; }
+  .tool-main { background: #1a1a2e; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  .tool-main h2 { margin-top: 0; color: #e8e8f0; font-size: 1.5rem; }
+  .input-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .input-tab { padding: 10px 20px; background: #252542; border: 1px solid #333355; border-radius: 8px; color: #b0b0cc; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+  .input-tab.active { background: #667eea; border-color: #667eea; color: white; }
+  .input-tab:hover:not(.active) { background: #2d2d4a; border-color: #444466; }
+  .input-panel { display: none; }
+  .input-panel.active { display: block; animation: fadeIn 0.2s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .textarea-wrapper { position: relative; }
+  #htmlInput { width: 100%; min-height: 280px; padding: 16px; background: #0f0f23; border: 1px solid #333355; border-radius: 8px; color: #e8e8f0; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 13px; line-height: 1.6; resize: vertical; box-sizing: border-box; }
+  #htmlInput:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2); }
+  #htmlInput::placeholder { color: #555577; }
+  .url-input-group { display: flex; gap: 12px; }
+  #urlInput { flex: 1; padding: 14px 16px; background: #0f0f23; border: 1px solid #333355; border-radius: 8px; color: #e8e8f0; font-size: 14px; }
+  #urlInput:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2); }
+  .file-input-group { display: flex; flex-direction: column; gap: 12px; }
+  #fileInput { padding: 12px; background: #0f0f23; border: 2px dashed #333355; border-radius: 8px; color: #e8e8f0; cursor: pointer; }
+  #fileInput:hover { border-color: #667eea; }
+  .options-row { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; align-items: center; }
+  .option-group { display: flex; align-items: center; gap: 8px; }
+  .option-group label { color: #b0b0cc; font-size: 0.9rem; cursor: pointer; }
+  .option-group select { padding: 8px 12px; background: #0f0f23; border: 1px solid #333355; border-radius: 6px; color: #e8e8f0; font-size: 0.9rem; }
+  .btn-group { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); }
+  .btn-secondary { background: #252542; color: #e8e8f0; border: 1px solid #333355; }
+  .btn-secondary:hover { background: #2d2d4a; border-color: #444466; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .status { min-height: 24px; margin-top: 12px; font-size: 0.9rem; }
+  .status.loading { color: #ffd700; }
+  .status.success { color: #4ade80; }
+  .status.err { color: #f87171; }
+  .results-section { display: none; }
+  .results-section.visible { display: block; animation: fadeIn 0.3s; }
+  .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .results-summary { display: flex; gap: 16px; flex-wrap: wrap; }
+  .summary-card { background: #1a1a2e; border-radius: 10px; padding: 16px 24px; min-width: 100px; text-align: center; border: 1px solid #333355; }
+  .summary-card.critical { border-left: 4px solid #f87171; }
+  .summary-card.serious { border-left: 4px solid #fb923c; }
+  .summary-card.moderate { border-left: 4px solid #fbbf24; }
+  .summary-card.minor { border-left: 4px solid #60a5fa; }
+  .summary-card.passed { border-left: 4px solid #4ade80; }
+  .summary-count { font-size: 2rem; font-weight: 700; color: #e8e8f0; line-height: 1; }
+  .summary-label { font-size: 0.8rem; color: #8888a0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .export-buttons { display: flex; gap: 8px; }
+  .violations-list { display: flex; flex-direction: column; gap: 16px; }
+  .violation-card { background: #1a1a2e; border-radius: 10px; padding: 20px; border: 1px solid #333355; }
+  .violation-card.critical { border-left: 4px solid #f87171; }
+  .violation-card.serious { border-left: 4px solid #fb923c; }
+  .violation-card.moderate { border-left: 4px solid #fbbf24; }
+  .violation-card.minor { border-left: 4px solid #60a5fa; }
+  .violation-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
+  .violation-title { font-size: 1.1rem; font-weight: 600; color: #e8e8f0; }
+  .violation-impact { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .violation-impact.critical { background: rgba(248, 113, 113, 0.2); color: #f87171; }
+  .violation-impact.serious { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
+  .violation-impact.moderate { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+  .violation-impact.minor { background: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+  .violation-meta { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; font-size: 0.85rem; color: #8888a0; }
+  .violation-meta span { display: flex; align-items: center; gap: 6px; }
+  .violation-description { color: #b0b0cc; margin-bottom: 16px; line-height: 1.6; }
+  .violation-description a { color: #667eea; text-decoration: none; }
+  .violation-description a:hover { text-decoration: underline; }
+  .violation-nodes { margin-bottom: 16px; }
+  .node-item { background: #0f0f23; border-radius: 8px; padding: 12px; margin-bottom: 8px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 12px; color: #b0b0cc; overflow-x: auto; border: 1px solid #22223a; }
+  .node-item:last-child { margin-bottom: 0; }
+  .violation-fix { background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 8px; padding: 16px; }
+  .violation-fix h5 { margin: 0 0 12px; color: #4ade80; font-size: 0.9rem; }
+  .fix-code { background: #0f0f23; border-radius: 6px; padding: 12px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 12px; color: #b0b0cc; overflow-x: auto; border: 1px solid #22223a; }
+  .passed-section { margin-top: 24px; padding-top: 24px; border-top: 1px solid #333355; }
+  .passed-section summary { cursor: pointer; color: #8888a0; font-size: 0.9rem; }
+  .passed-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .passed-item { background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; color: #4ade80; }
+  .empty-state { text-align: center; padding: 48px 24px; color: #8888a0; }
+  .empty-state svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; }
+  .info-section { background: #1a1a2e; border-radius: 12px; padding: 24px; }
+  .info-section h3 { margin-top: 0; color: #e8e8f0; font-size: 1.25rem; margin-bottom: 16px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .info-card { background: #0f0f23; border-radius: 10px; padding: 20px; border: 1px solid #22223a; }
+  .info-card h4 { margin: 0 0 12px; color: #667eea; font-size: 1rem; }
+  .info-card p { margin: 0; color: #b0b0cc; line-height: 1.7; font-size: 0.9rem; }
+  .faq-item { margin-bottom: 16px; }
+  .faq-item summary { cursor: pointer; color: #e8e8f0; font-weight: 600; padding: 12px 0; }
+  .faq-item p { color: #b0b0cc; line-height: 1.7; margin: 8px 0 0; font-size: 0.9rem; }
+  @media (max-width: 640px) {
+    .tool-main { padding: 16px; }
+    .options-row { flex-direction: column; align-items: flex-start; }
+    .url-input-group { flex-direction: column; }
+    .results-header { flex-direction: column; align-items: flex-start; }
+    .export-buttons { width: 100%; }
+    .export-buttons .btn { flex: 1; text-align: center; }
+    .violation-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>HTML Accessibility Validator</h1>
+<p class="subtitle">Free WCAG 2.1 AA/AAA compliance checker powered by axe-core</p>
+<nav class="breadcrumb">
+<a href="/">Home</a> > <a href="/tools/">Tools</a> > <a href="/tools/code-testing/">Code Testing</a> > <span>HTML Accessibility Validator</span>
+<a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="tool-page">
+<div class="tool-main">
+<h2>Test Your HTML for Accessibility Violations</h2>
+<div class="input-tabs">
+<button class="input-tab active" data-tab="paste">Paste HTML</button>
+<button class="input-tab" data-tab="url">Fetch URL</button>
+<button class="input-tab" data-tab="file">Upload File</button>
+</div>
+
+<div class="input-panel active" id="panel-paste">
+<div class="textarea-wrapper">
+<textarea id="htmlInput" placeholder="Paste your HTML code here..." spellcheck="false"></textarea>
+</div>
+</div>
+
+<div class="input-panel" id="panel-url">
+<div class="url-input-group">
+<input type="url" id="urlInput" placeholder="https://example.com" value="">
+<button class="btn btn-primary" id="fetchUrlBtn" style="height: 48px;">Fetch & Analyze</button>
+</div>
+<p style="font-size: 0.85rem; color: #8888a0; margin-top: 8px;">Note: Some sites block framing. If blocked, view page source and use the Paste HTML tab.</p>
+</div>
+
+<div class="input-panel" id="panel-file">
+<div class="file-input-group">
+<input type="file" id="fileInput" accept=".html,.htm,.txt" multiple>
+<p style="font-size: 0.85rem; color: #8888a0; margin: 0;">Select one or more .html, .htm, or .txt files (max 5MB each)</p>
+</div>
+</div>
+
+<div class="options-row">
+<div class="option-group">
+<label for="wcagLevel">WCAG Level:</label>
+<select id="wcagLevel">
+<option value="AA">AA (Recommended)</option>
+<option value="AAA">AAA (Strict)</option>
+<option value="A">A (Basic)</option>
+</select>
+</div>
+<div class="option-group">
+<label for="includeBestPractices">
+<input type="checkbox" id="includeBestPractices" checked> Include Best Practices
+</label>
+</div>
+<div class="option-group">
+<label for="includeExperimental">
+<input type="checkbox" id="includeExperimental"> Include Experimental Rules
+</label>
+</div>
+</div>
+
+<div class="btn-group">
+<button class="btn btn-primary" id="runBtn" onclick="runAccessibilityCheck()">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: -2px;"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+Run Accessibility Check
+</button>
+<button class="btn btn-secondary" id="clearBtn" onclick="clearResults()">Clear</button>
+</div>
+
+<div id="status" class="status"></div>
+</div>
+
+<div id="resultsSection" class="results-section">
+<div class="results-header">
+<div class="results-summary">
+<div class="summary-card critical"><div class="summary-count" id="count-critical">0</div><div class="summary-label">Critical</div></div>
+<div class="summary-card serious"><div class="summary-count" id="count-serious">0</div><div class="summary-label">Serious</div></div>
+<div class="summary-card moderate"><div class="summary-count" id="count-moderate">0</div><div class="summary-label">Moderate</div></div>
+<div class="summary-card minor"><div class="summary-count" id="count-minor">0</div><div class="summary-label">Minor</div></div>
+<div class="summary-card passed"><div class="summary-count" id="count-passed">0</div><div class="summary-label">Passed</div></div>
+</div>
+<div class="export-buttons">
+<button class="btn btn-secondary" onclick="exportReport('json')">Export JSON</button>
+<button class="btn btn-secondary" onclick="exportReport('html')">Export HTML</button>
+<button class="btn btn-secondary" onclick="exportReport('markdown')">Export Markdown</button>
+</div>
+</div>
+
+<div class="violations-list" id="violationsList"></div>
+
+<details class="passed-section" id="passedSection" style="display: none;">
+<summary>View Passed Rules (<span id="passedCount">0</span>)</summary>
+<div class="passed-list" id="passedList"></div>
+</details>
+</div>
+
+<div id="emptyState" class="empty-state" style="display: none;">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+<p>No accessibility violations found! Your HTML passes all selected rules.</p>
+</div>
+</section>
+
+<div class="info-section">
+<h3>Why Accessibility Testing Matters</h3>
+<div class="info-grid">
+<div class="info-card">
+<h4>Legal Compliance</h4>
+<p>ADA Title III, Section 508, EAA 2025, and WCAG 2.1 are legal requirements in many jurisdictions. Non-compliance risks lawsuits, fines, and reputational damage.</p>
+</div>
+<div class="info-card">
+<h4>SEO Benefits</h4>
+<p>Accessible websites rank better. Semantic HTML, proper headings, alt text, and ARIA labels are all ranking signals for search engines.</p>
+</div>
+<div class="info-card">
+<h4>Inclusive Design</h4>
+<p>15%+ of the global population has a disability. Accessible code serves everyone: screen readers, keyboard navigation, voice control, high contrast modes.</p>
+</div>
+<div class="info-card">
+<h4>axe-core Engine</h4>
+<p>Industry-standard accessibility engine used by Microsoft, Google, Deque, and 1000s of companies. Tests 50+ WCAG 2.1 rules with zero false positives.</p>
+</div>
+</div>
+
+<h3 style="margin-top: 32px;">How It Works</h3>
+<div class="info-grid">
+<div class="info-card">
+<h4>1. Input HTML</h4>
+<p>Paste HTML directly, fetch a live URL, or upload .html files. No server upload for pasted content — runs entirely in your browser.</p>
+</div>
+<div class="info-card">
+<h4>2. Select Rules</h4>
+<p>Choose WCAG level (A, AA, AAA), include best practices, or enable experimental rules for cutting-edge checks.</p>
+</div>
+<div class="info-card">
+<h4>3. Get Detailed Results</h4>
+<p>Each violation shows impact level, affected element, description, help URL, and a code fix example you can copy.</p>
+</div>
+<div class="info-card">
+<h4>4. Export & Share</h4>
+<p>Download reports as JSON (CI/CD), HTML (stakeholders), or Markdown (documentation). Shareable, no signup required.</p>
+</div>
+</div>
+
+<h3 style="margin-top: 32px;">Frequently Asked Questions</h3>
+<details class="faq-item"><summary>Is my HTML sent to your servers?</summary><p>No. When you paste HTML or upload a file, the analysis runs entirely in your browser using axe-core loaded from a CDN. Only the "Fetch URL" option makes a server request to retrieve the page HTML.</p></details>
+<details class="faq-item"><summary>What WCAG version and levels are supported?</summary><p>WCAG 2.1 levels A, AA, and AAA. The tool uses axe-core 4.8+ which covers 50+ rules. AA is recommended for most compliance requirements.</p></details>
+<details class="faq-item"><summary>Can this test a live website behind login?</summary><p>No. The "Fetch URL" option only works for publicly accessible pages. For authenticated pages, view the page source (Ctrl+U) and paste it into the "Paste HTML" tab.</p></details>
+<details class="faq-item"><summary>What's the difference between Critical, Serious, Moderate, and Minor?</summary><p>Impact levels from axe-core: Critical = blocks access entirely; Serious = significant barriers; Moderate = some barriers; Minor = minor issues or best practice violations.</p></details>
+<details class="faq-item"><summary>Can I integrate this into CI/CD?</summary><p>Yes. Export JSON and parse it in your pipeline. For automated testing, consider @axe-core/playwright or @axe-core/cli for headless browser testing.</p></details>
+<details class="faq-item"><summary>Does this guarantee 100% compliance?</summary><p>Automated testing catches ~30-50% of accessibility issues. Manual testing with screen readers, keyboard navigation, and user testing is essential for full compliance.</p></details>
+</div>
+</section>
+</main>
+<footer>
+<p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.4/axe.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function() {
+  'use strict';
+  const tabs = document.querySelectorAll('.input-tab');
+  const panels = document.querySelectorAll('.input-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  const htmlInput = document.getElementById('htmlInput');
+  const urlInput = document.getElementById('urlInput');
+  const fileInput = document.getElementById('fileInput');
+  const fetchUrlBtn = document.getElementById('fetchUrlBtn');
+  const runBtn = document.getElementById('runBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const statusEl = document.getElementById('status');
+  const resultsSection = document.getElementById('resultsSection');
+  const violationsList = document.getElementById('violationsList');
+  const passedSection = document.getElementById('passedSection');
+  const passedList = document.getElementById('passedList');
+  const emptyState = document.getElementById('emptyState');
+  const wcagLevel = document.getElementById('wcagLevel');
+  const includeBestPractices = document.getElementById('includeBestPractices');
+  const includeExperimental = document.getElementById('includeExperimental');
+
+  let lastResults = null;
+  let axeLoaded = false;
+
+  function checkAxeLoaded() {
+    if (typeof axe !== 'undefined') {
+      axeLoaded = true;
+      return true;
+    }
+    return false;
+  }
+
+  function setStatus(msg, type = '') {
+    statusEl.textContent = msg;
+    statusEl.className = 'status ' + type;
+  }
+
+  function showResults() {
+    resultsSection.classList.add('visible');
+    emptyState.style.display = 'none';
+    violationsList.style.display = 'flex';
+    passedSection.style.display = 'block';
+  }
+
+  function hideResults() {
+    resultsSection.classList.remove('visible');
+    violationsList.style.display = 'none';
+    passedSection.style.display = 'none';
+    emptyState.style.display = 'none';
+  }
+
+  function clearResults() {
+    htmlInput.value = '';
+    urlInput.value = '';
+    fileInput.value = '';
+    hideResults();
+    violationsList.innerHTML = '';
+    passedList.innerHTML = '';
+    setStatus('');
+    lastResults = null;
+    updateCounts(0,0,0,0,0);
+  }
+
+  function updateCounts(critical, serious, moderate, minor, passed) {
+    document.getElementById('count-critical').textContent = critical;
+    document.getElementById('count-serious').textContent = serious;
+    document.getElementById('count-moderate').textContent = moderate;
+    document.getElementById('count-minor').textContent = minor;
+    document.getElementById('count-passed').textContent = passed;
+    document.getElementById('passedCount').textContent = passed;
+  }
+
+  function getRunOptions() {
+    const tags = ['wcag2' + wcagLevel.value.toLowerCase()];
+    if (includeBestPractices.checked) tags.push('best-practice');
+    if (includeExperimental.checked) tags.push('experimental');
+    return { runOnly: { type: 'tag', values: tags } };
+  }
+
+  async function fetchHtmlFromUrl(url) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch('/api/fetch-html?url=' + encodeURIComponent(url), { signal: controller.signal });
+      clearTimeout(timeout);
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ error: 'Failed to fetch' }));
+        throw new Error(err.error || 'HTTP ' + response.status);
+      }
+      const data = await response.json();
+      return data.html;
+    } catch (e) {
+      clearTimeout(timeout);
+      if (e.name === 'AbortError') throw new Error('Request timeout (15s)');
+      throw e;
+    }
+  }
+
+  function readFileAsText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.readAsText(file);
+    });
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function truncateHtml(html, maxLen = 500) {
+    if (html.length <= maxLen) return escapeHtml(html);
+    return escapeHtml(html.slice(0, maxLen)) + '...';
+  }
+
+  function getFixExample(violation) {
+    const fixes = {
+      'image-alt': { desc: 'Add alt attribute to image', code: '<img src="chart.png" alt="Sales chart showing 20% growth">\n<!-- or for decorative images -->\n<img src="spacer.gif" alt="" role="presentation">' },
+      'label': { desc: 'Associate label with form control', code: '<label for="email">Email</label>\n<input type="email" id="email" name="email">\n<!-- or wrap -->\n<label>Email<input type="email" name="email"></label>' },
+      'button-name': { desc: 'Add accessible name to button', code: '<button aria-label="Close dialog">\n  <svg aria-hidden="true">...</svg>\n</button>\n<!-- or -->\n<button><span class="sr-only">Close</span>\u2715</button>' },
+      'link-name': { desc: 'Add accessible name to link', code: '<a href="/settings" aria-label="Account settings">\n  <svg aria-hidden="true">...</svg>\n</a>' },
+      'heading-order': { desc: 'Fix heading hierarchy', code: '<h1>Main Title</h1>\n<h2>Section</h2>\n<h3>Subsection</h3>\n<!-- Don\'t skip levels: h1 -> h3 is invalid -->' },
+      'landmark-one-main': { desc: 'Add main landmark', code: '<main>\n  <h1>Page Title</h1>\n  <p>Content...</p>\n</main>' },
+      'region': { desc: 'Add landmark region', code: '<nav aria-label="Main navigation">...</nav>\n<aside aria-label="Sidebar">...</aside>\n<footer>...</footer>' },
+      'color-contrast': { desc: 'Fix color contrast ratio', code: '<!-- Bad: 2.1:1 -->\n<style>.text { color: #777; background: #fff; }</style>\n<!-- Good: 4.5:1+ -->\n<style>.text { color: #333; background: #fff; }</style>' },
+      'html-has-lang': { desc: 'Add lang attribute to html', code: '<html lang="en">\n<!-- or -->\n<html lang="zh-CN">' },
+      'page-has-heading-one': { desc: 'Add unique h1 per page', code: '<main>\n  <h1>Unique Page Title</h1>\n  <!-- only one h1 per page -->\n</main>' },
+      'aria-valid-attr-value': { desc: 'Fix invalid ARIA attribute value', code: '<!-- Bad -->\n<div aria-expanded="yes">\n<!-- Good -->\n<div aria-expanded="true">' },
+      'duplicate-id': { desc: 'Remove duplicate IDs', code: '<!-- Each ID must be unique -->\n<div id="header">...</div>\n<div id="footer">...</div>' },
+      'html-lang-valid': { desc: 'Use valid language code', code: '<html lang="en-US">\n<!-- Use ISO 639-1/639-2 codes -->' }
+    };
+    return fixes[violation.id] || { desc: 'See axe-core documentation for remediation', code: '// Refer to: https://dequeuniversity.com/rules/axe/' + violation.id };
+  }
+
+  function renderViolations(violations) {
+    violationsList.innerHTML = '';
+    if (violations.length === 0) {
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+    violations.forEach(v => {
+      const fix = getFixExample(v);
+      const card = document.createElement('div');
+      card.className = 'violation-card ' + v.impact;
+      card.innerHTML = `
+        <div class="violation-header">
+          <h4 class="violation-title">${escapeHtml(v.help)}</h4>
+          <span class="violation-impact ${v.impact}">${v.impact}</span>
+        </div>
+        <div class="violation-meta">
+          <span>Rule: <strong>${v.id}</strong></span>
+          <span>Nodes: <strong>${v.nodes.length}</strong></span>
+          <span><a href="${v.helpUrl}" target="_blank" rel="noopener">Documentation \u2192</a></span>
+        </div>
+        <p class="violation-description">${escapeHtml(v.description)}</p>
+        <div class="violation-nodes">
+          ${v.nodes.slice(0, 3).map(node => `
+            <div class="node-item">${truncateHtml(node.html)}</div>
+          `).join('')}
+          ${v.nodes.length > 3 ? '<div class="node-item" style="color:#8888a0; text-align:center;">... and ' + (v.nodes.length - 3) + ' more element(s)</div>' : ''}
+        </div>
+        <div class="violation-fix">
+          <h5>${escapeHtml(fix.desc)}</h5>
+          <div class="fix-code">${escapeHtml(fix.code)}</div>
+        </div>
+      `;
+      violationsList.appendChild(card);
+    });
+  }
+
+  function renderPassed(passedRules) {
+    passedList.innerHTML = '';
+    passedRules.forEach(rule => {
+      const tag = document.createElement('span');
+      tag.className = 'passed-item';
+      tag.textContent = rule;
+      passedList.appendChild(tag);
+    });
+  }
+
+  function runAxeOnDocument(doc, options) {
+    return new Promise((resolve, reject) => {
+      axe.run(doc, options, (err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      });
+    });
+  }
+
+  async function runAccessibilityCheck() {
+    if (!checkAxeLoaded()) {
+      setStatus('Loading axe-core...', 'loading');
+      await new Promise(r => setTimeout(r, 500));
+      if (!checkAxeLoaded()) {
+        setStatus('Failed to load axe-core. Check network.', 'err');
+        return;
+      }
+    }
+
+    let html = '';
+    const activeTab = document.querySelector('.input-tab.active').dataset.tab;
+
+    if (activeTab === 'paste') {
+      html = htmlInput.value.trim();
+      if (!html) { setStatus('Please paste HTML code first', 'err'); return; }
+    } else if (activeTab === 'url') {
+      const url = urlInput.value.trim();
+      if (!url) { setStatus('Please enter a URL', 'err'); return; }
+      runBtn.disabled = true;
+      setStatus('Fetching URL...', 'loading');
+      try {
+        html = await fetchHtmlFromUrl(url);
+      } catch (e) {
+        runBtn.disabled = false;
+        setStatus('Fetch failed: ' + e.message, 'err');
+        return;
+      }
+      runBtn.disabled = false;
+    } else if (activeTab === 'file') {
+      const files = fileInput.files;
+      if (!files.length) { setStatus('Please select a file', 'err'); return; }
+      const file = files[0];
+      if (file.size > 5 * 1024 * 1024) { setStatus('File too large (max 5MB)', 'err'); return; }
+      try {
+        html = await readFileAsText(file);
+      } catch (e) {
+        setStatus('Failed to read file', 'err');
+        return;
+      }
+    }
+
+    if (!html.trim()) { setStatus('No HTML content to analyze', 'err'); return; }
+
+    runBtn.disabled = true;
+    setStatus('Analyzing accessibility...', 'loading');
+    hideResults();
+
+    try {
+      const options = getRunOptions();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const results = await runAxeOnDocument(doc, options);
+
+      lastResults = {
+        html,
+        url: activeTab === 'url' ? urlInput.value.trim() : '',
+        timestamp: new Date().toISOString(),
+        wcagLevel: wcagLevel.value,
+        violations: results.violations,
+        passes: results.passes,
+        incomplete: results.incomplete,
+        inapplicable: results.inapplicable
+      };
+
+      const critical = results.violations.filter(v => v.impact === 'critical').length;
+      const serious = results.violations.filter(v => v.impact === 'serious').length;
+      const moderate = results.violations.filter(v => v.impact === 'moderate').length;
+      const minor = results.violations.filter(v => v.impact === 'minor').length;
+      const passed = results.passes.length;
+
+      updateCounts(critical, serious, moderate, minor, passed);
+      renderViolations(results.violations);
+      renderPassed(results.passes.map(p => p.id));
+      showResults();
+
+      if (results.violations.length === 0) {
+        setStatus('No violations found! All checks passed.', 'success');
+      } else {
+        setStatus('Found ' + results.violations.length + ' violation(s) across ' + (critical + serious + moderate + minor) + ' issues', 'success');
+      }
+    } catch (e) {
+      console.error(e);
+      setStatus('Analysis failed: ' + e.message, 'err');
+    } finally {
+      runBtn.disabled = false;
+    }
+  }
+
+  function exportReport(format) {
+    if (!lastResults) return;
+    let content, filename, mime;
+    const baseName = 'accessibility-report-' + new Date().toISOString().slice(0, 10);
+
+    if (format === 'json') {
+      content = JSON.stringify(lastResults, null, 2);
+      filename = baseName + '.json';
+      mime = 'application/json';
+    } else if (format === 'html') {
+      const v = lastResults.violations;
+      const p = lastResults.passes;
+      content = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Accessibility Report</title><style>body{font-family:system-ui;margin:2rem;max-width:900px}.v{margin:1rem 0;padding:1rem;border-left:4px solid #f87171;background:#fef2f2}.v.serious{border-color:#fb923c;background:#fff7ed}.v.moderate{border-color:#fbbf24;background:#fefce8}.v.minor{border-color:#60a5fa;background:#eff6ff}pre{background:#1e1e1e;color:#d4d4d4;padding:1rem;overflow:auto}</style></head><body><h1>Accessibility Report</h1><p>Generated: ' + lastResults.timestamp + '</p><p>WCAG Level: ' + lastResults.wcagLevel + '</p><h2>Violations (' + v.length + ')</h2>' + v.map(vi => '<div class="v ' + vi.impact + '"><h3>' + escapeHtml(vi.help) + '</h3><p><strong>Rule:</strong> ' + vi.id + ' | <strong>Impact:</strong> ' + vi.impact + ' | <strong>Nodes:</strong> ' + vi.nodes.length + '</p><p>' + escapeHtml(vi.description) + '</p><a href="' + vi.helpUrl + '" target="_blank">Documentation</a><h4>Example Fix</h4><pre>' + escapeHtml(getFixExample(vi).code) + '</pre></div>').join('') + '<h2>Passed Rules (' + p.length + ')</h2><p>' + p.map(r => r.id).join(', ') + '</p></body></html>';
+      filename = baseName + '.html';
+      mime = 'text/html';
+    } else if (format === 'markdown') {
+      const v = lastResults.violations;
+      const p = lastResults.passes;
+      content = '# Accessibility Report\n\nGenerated: ' + lastResults.timestamp + '\nWCAG Level: ' + lastResults.wcagLevel + '\n\n## Violations (' + v.length + ')\n\n' + v.map(vi => '### ' + escapeHtml(vi.help) + '\n- **Rule:** ' + vi.id + '\n- **Impact:** ' + vi.impact + '\n- **Nodes affected:** ' + vi.nodes.length + '\n- **Description:** ' + escapeHtml(vi.description) + '\n- **Documentation:** ' + vi.helpUrl + '\n\n**Example Fix:**\n\n```html\n' + escapeHtml(getFixExample(vi).code) + '\n```\n').join('\n') + '\n\n## Passed Rules (' + p.length + ')\n\n' + p.map(r => r.id).join(', ');
+      filename = baseName + '.md';
+      mime = 'text/markdown';
+    }
+
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  fetchUrlBtn.addEventListener('click', async () => {
+    const url = urlInput.value.trim();
+    if (!url) { setStatus('Please enter a URL', 'err'); return; }
+    fetchUrlBtn.disabled = true;
+    fetchUrlBtn.textContent = 'Fetching...';
+    setStatus('Fetching URL...', 'loading');
+    try {
+      const html = await fetchHtmlFromUrl(url);
+      htmlInput.value = html;
+      tabs[0].click();
+      setStatus('URL fetched. Click "Run Accessibility Check" to analyze.', 'success');
+    } catch (e) {
+      setStatus('Fetch failed: ' + e.message, 'err');
+    } finally {
+      fetchUrlBtn.disabled = false;
+      fetchUrlBtn.textContent = 'Fetch & Analyze';
+    }
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 1) {
+      setStatus(fileInput.files.length + ' files selected. Only the first will be analyzed.', 'success');
+    }
+  });
+
+  console.log('Accessibility Validator loaded. axe-core:', typeof axe !== 'undefined' ? 'ready' : 'loading...');
+})();
+</script>
+
+</body>
+</html>

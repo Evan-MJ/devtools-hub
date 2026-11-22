@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 386 free developer tools across 11 categories. No signup, no tracking.
+> 388 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 386 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 388 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -304,6 +304,7 @@
 - [SemVer Conflict Solver - npm Version Range Checker](https://tools.scoreroute.com/tools/semver-solver/.md) [HTML](https://tools.scoreroute.com/tools/semver-solver/)
 - [Cron Expression Evaluator & Explainer](https://tools.scoreroute.com/tools/cron-evaluator/.md) [HTML](https://tools.scoreroute.com/tools/cron-evaluator/)
 - [Log File Merger - Merge Logs by Timestamp Online](https://tools.scoreroute.com/tools/log-file-merger/.md) [HTML](https://tools.scoreroute.com/tools/log-file-merger/)
+- [HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker](https://tools.scoreroute.com/tools/accessibility-validator/.md) [HTML](https://tools.scoreroute.com/tools/accessibility-validator/)
 
 ## PDF Tools
 - [PDF Editor - Edit, Rotate, Delete, Annotate PDF Pages](https://tools.scoreroute.com/tools/pdf-editor/.md) [HTML](https://tools.scoreroute.com/tools/pdf-editor/)
@@ -395,6 +396,7 @@
 - [Income Tax Calculator 2026 - US India UK](https://tools.scoreroute.com/tools/tax-calculator/.md) [HTML](https://tools.scoreroute.com/tools/tax-calculator/)
 - [Rent vs Buy Calculator - Find Your Break-even Year](https://tools.scoreroute.com/tools/rent-vs-buy-calculator/.md) [HTML](https://tools.scoreroute.com/tools/rent-vs-buy-calculator/)
 - [Car Lease Calculator - Monthly Payment & Lease vs Buy](https://tools.scoreroute.com/tools/car-lease-calculator/.md) [HTML](https://tools.scoreroute.com/tools/car-lease-calculator/)
+- [APR Calculator - Real Loan Cost Including Fees](https://tools.scoreroute.com/tools/apr-calculator/.md) [HTML](https://tools.scoreroute.com/tools/apr-calculator/)
 
 ## AI Language
 - [Free AI Chat - No Login, No Signup](https://tools.scoreroute.com/tools/ai-chat/.md) [HTML](https://tools.scoreroute.com/tools/ai-chat/)
@@ -446,4 +448,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-21
+- Last updated: 2026-11-22
