@@ -325,6 +325,7 @@ const LEDGER = {
   "tools/youtube-thumbnail-downloader/index.html": 1,
   "tools/zodiac-compatibility/index.html": 1,
   "tools/accessibility-validator/index.html": 2,
+  "tools/python-formatter/index.html": 1,
   "tools/sql-playground/index.html": 1,
 };
 // G4b/G4c — count DECLARATIONS, not rules, and resolve each declaration's owning selector

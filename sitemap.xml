@@ -1626,6 +1626,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/python-formatter/</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/qr-code-generator/</loc>
     <lastmod>2026-11-10</lastmod>
     <changefreq>monthly</changefreq>

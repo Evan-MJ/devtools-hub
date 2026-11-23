@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 389 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 390 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,12 +8,12 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 389
+- Total tools: 390
 - Categories: 11
-- Last updated: 2026-11-22
+- Last updated: 2026-11-23
 - License: Free to use, no signup, no tracking, 100% client-side
 
-## Code Formatters (11 tools)
+## Code Formatters (12 tools)
 
 Browse all: [Code Formatters](https://tools.scoreroute.com/tools/formatters/.md)
 
@@ -115,6 +115,15 @@ Free CSS specificity calculator. Compute a,b,c values for any selector instantly
 - Tags: json, schema, generator, infer, draft, sample, api
 
 Free online JSON Schema generator. Infer a JSON Schema from sample JSON data automatically. No signup, no upload, 100% private.
+
+### Python Formatter
+
+- URL: https://tools.scoreroute.com/tools/python-formatter/
+- Markdown: https://tools.scoreroute.com/tools/python-formatter/.md
+- Category: Code Formatters
+- Tags: python, formatter, beautifier, black, autopep8, format, indent
+
+Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private browser processing.
 
 ## Calculators (40 tools)
 
@@ -3560,7 +3569,7 @@ Free online AI deep research tool. Ask any question, get a cited research report
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 389 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 390 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
