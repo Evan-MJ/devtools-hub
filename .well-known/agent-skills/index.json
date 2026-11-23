@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 389,
+  "tool_count": 390,
   "categories": [
     "ai-language",
     "calculators",
@@ -2743,6 +2743,13 @@
       "category": "code-testing",
       "markdown_url": "https://tools.scoreroute.com/tools/sql-playground/.md",
       "description": "Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN..."
+    },
+    {
+      "name": "Python Formatter",
+      "url": "https://tools.scoreroute.com/tools/python-formatter/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/python-formatter/.md",
+      "description": "Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private br..."
     }
   ],
   "skills": [
@@ -5468,6 +5475,13 @@
       "category": "code-testing",
       "markdown_url": "https://tools.scoreroute.com/tools/sql-playground/.md",
       "description": "Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN..."
+    },
+    {
+      "name": "Python Formatter",
+      "url": "https://tools.scoreroute.com/tools/python-formatter/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/python-formatter/.md",
+      "description": "Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private br..."
     }
   ]
 }
