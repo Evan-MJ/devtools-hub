@@ -40,6 +40,7 @@
                 <div class="btn-group">
                     <button onclick="encodeBase64()" class="btn btn-primary">Encode</button>
                     <button onclick="decodeBase64()" class="btn btn-primary">Decode</button>
+                    <button onclick="loadBase64Example()" class="btn btn-secondary">Load Example</button>
                     <button onclick="clearBase64()" class="btn btn-secondary">Clear</button>
                 </div>
                 <textarea id="base64-output" readonly placeholder="Output..." aria-label="Output"></textarea>
@@ -132,6 +133,10 @@
         function decodeBase64() { try { document.getElementById('base64-output').value = atob(document.getElementById('base64-input').value); } catch(e) { document.getElementById('base64-output').value = 'Error: Invalid Base64'; } }
         function clearBase64() { document.getElementById('base64-input').value = ''; document.getElementById('base64-output').value = ''; }
         function copyToClipboard(id) { const e = document.getElementById(id); if (e) navigator.clipboard.writeText(e.value || e.textContent); }
+        function loadBase64Example() {
+            document.getElementById('base64-input').value = 'Hello, World!';
+            encodeBase64();
+        }
     </script>
     <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
         <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>

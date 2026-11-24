@@ -51,6 +51,7 @@
                 <textarea id="regex-test" placeholder="Enter test string..." style="width: 100%; min-height: 100px; background: #0f0f23; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; font-family: monospace; resize: vertical; margin-bottom: 10px;" aria-label="Enter test string" data-testid="rx-test"></textarea>
                 <div class="btn-group">
                     <button onclick="testRegex()" class="btn btn-primary" aria-label="Test Match" data-testid="rx-test-btn">Test Match</button>
+                    <button onclick="loadRegexExample()" class="btn btn-secondary" aria-label="Load Example" data-testid="rx-example-btn">Load Example</button>
                     <button onclick="clearRegex()" class="btn btn-secondary" aria-label="Clear" data-testid="rx-clear-btn">Clear</button>
                 </div>
                 <div id="regex-output" style="margin-top: 15px;"></div>
@@ -160,6 +161,13 @@
             }
         }
         function clearRegex() { document.getElementById('regex-pattern').value = ''; document.getElementById('regex-test').value = ''; document.getElementById('regex-output').innerHTML = ''; }
+        function loadRegexExample() {
+            document.getElementById('regex-pattern').value = '\\d{3}-\\d{2}-\\d{4}';
+            document.getElementById('regex-test').value = 'My SSN is 123-45-6789 and his is 987-65-4321';
+            document.getElementById('flag-g-cb').checked = true;
+            document.getElementById('flag-g').value = 'on';
+            testRegex();
+        }
 
         // BUG-022: Wire checkbox proxy <-> real checkbox sync (per BUG-008 pattern).
         // Each flag: hidden <input type="text" id="flag-X"> forwards fill() to the

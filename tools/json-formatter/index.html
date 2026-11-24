@@ -55,6 +55,7 @@
                     <button onclick="minifyJSON()" class="btn">Minify</button>
                     <button onclick="validateJSON()" class="btn">Validate</button>
                     <button onclick="jsonToYaml()" class="btn">To YAML</button>
+                    <button onclick="loadJSONExample()" class="btn btn-secondary">Load Example</button>
                     <button onclick="clearJSON()" class="btn btn-secondary">Clear</button>
                 </div>
                 <textarea id="json-output" readonly placeholder="Output..." aria-label="Output"></textarea>
@@ -204,6 +205,11 @@
         function copyToClipboard(id) {
             const e = document.getElementById(id);
             if (e && e.value) navigator.clipboard.writeText(e.value);
+        }
+        function loadJSONExample() {
+            const example = '{\n  "name": "John Doe",\n  "age": 30,\n  "city": "New York",\n  "skills": ["JavaScript", "Python", "TypeScript"],\n  "address": {\n    "street": "123 Main St",\n    "zipcode": "10001"\n  },\n  "isActive": true,\n  "lastLogin": "2026-01-15T10:30:00Z"\n}';
+            document.getElementById('json-input').value = example;
+            formatJSON();
         }
     </script>
     <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">

@@ -118,6 +118,7 @@
                 <div class="btn-group">
                     <button onclick="generatePassword()" class="btn btn-primary">Generate New</button>
                     <button onclick="generatePassword(true)" class="btn btn-secondary">Regenerate</button>
+                    <button onclick="loadPasswordExample()" class="btn">Load Example</button>
                 </div>
 
                 <div id="password-issues" style="margin-top: 20px;"></div>
@@ -407,6 +408,18 @@
 
         CHAR_TYPE_IDS.forEach(bindCharTypeProxy);
         generatePassword();
+
+        function loadPasswordExample() {
+            document.getElementById('password-length').value = '16';
+            document.getElementById('length-value').textContent = '16';
+            document.getElementById('use-uppercase-cb').checked = true;
+            document.getElementById('use-lowercase-cb').checked = true;
+            document.getElementById('use-numbers-cb').checked = true;
+            document.getElementById('use-symbols-cb').checked = true;
+            document.getElementById('exclude-ambiguous-cb').checked = false;
+            CHAR_TYPE_IDS.forEach(bindCharTypeProxy);
+            generatePassword();
+        }
     </script>
     <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
         <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>

@@ -368,6 +368,7 @@ export async function onRequest(context) {
     // rather than a font swap mid-read.
     '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional">' + nl +
     '<link rel="stylesheet" href="/home.css">' + nl +
+    '<link rel="stylesheet" href="/styles.css">' + nl +
     '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">' + nl +
     '<title>DevTools Hub - ' + totalCount + ' Free Online Developer Tools</title>' + nl +
     // BUG-172: trimmed to ≤155 chars while preserving 3 probe phrases ("free online developer tools", "JSON formatter online", "image compressor free") for SquirrelScan AI-citability (was 174/158 — Warning 1/17 `core/meta-description`)
@@ -475,9 +476,10 @@ export async function onRequest(context) {
     '<body>' + nl +
     '<div class="hub-page">';
 
-  const catNavHtml = '<nav class="category-nav" aria-label="Category navigation"><div class="container">' + nl +
+  const catNavHtml = '<nav class="category-nav" aria-label="Category navigation">' + nl +
     CAT_ORDER.map(c => '<button class="nav-btn" data-target="' + c[0] + '" aria-label="Jump to ' + esc(c[1]) + '">' + esc(c[1]) + '</button>').join('') + nl +
-    '</div></nav>' + nl;
+    '</nav>' + nl +
+    '<div class="nav-swipe-hint" id="nav-swipe-hint" hidden>Swipe left to see more categories →</div>' + nl;
 
   const main = nl +     '<header class="site-header"><div class="container">' + nl +
     '<h1><a href="/">DevTools Hub - ' + totalCount + ' Free Online Developer Tools</a></h1>' + nl +
@@ -663,6 +665,30 @@ export async function onRequest(context) {
     // BUG-315: accept ?q= so any other surface can deep-link into this search. Added for the 404
     // page, whose search box otherwise dropped the visitor back on a blank homepage. Dispatching
     // `input` reuses the handler above verbatim rather than duplicating the scoring logic.
+    // Search results dropdown keyboard navigation (ArrowUp/ArrowDown, Enter, Escape)
+    'si.addEventListener("keydown", function(e) {' + nl +
+    'if (!out.hidden && (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === "Escape")) {' + nl +
+    'e.preventDefault();' + nl +
+    'var hits = out.querySelectorAll(".search-hit[role=option]");' + nl +
+    'if (!hits.length) return;' + nl +
+    'var current = out.querySelector(".search-hit[aria-selected=true]");' + nl +
+    'var index = current ? Array.from(hits).indexOf(current) : -1;' + nl +
+    'if (e.key === "ArrowDown") {' + nl +
+    'index = Math.min(index + 1, hits.length - 1);' + nl +
+    '} else if (e.key === "ArrowUp") {' + nl +
+    'index = Math.max(index - 1, 0);' + nl +
+    '} else if (e.key === "Enter" && index >= 0) {' + nl +
+    'hits[index].click();' + nl +
+    'return;' + nl +
+    '} else if (e.key === "Escape") {' + nl +
+    'out.hidden = true;' + nl +
+    'si.blur();' + nl +
+    'return;' + nl +
+    '}' + nl +
+    'hits.forEach(function(h, i) { h.setAttribute("aria-selected", i === index); });' + nl +
+    'hits[index].scrollIntoView({ block: "nearest" });' + nl +
+    '}' + nl +
+    '});' + nl +
     // Category nav buttons - scroll to categories section
     'var catNavButtons = document.querySelectorAll(".category-nav .nav-btn");' + nl +
     'catNavButtons.forEach(function(btn) {' + nl +
@@ -673,6 +699,25 @@ export async function onRequest(context) {
     '}' + nl +
     '});' + nl +
     '});' + nl +
+    // Category nav scroll detection & one-time swipe hint (mobile only)
+    'var catNav = document.querySelector(".category-nav");' + nl +
+    'var swipeHint = document.getElementById("nav-swipe-hint");' + nl +
+    'function checkNavScroll() {' + nl +
+    'var isMobile = window.matchMedia("(max-width: 768px)").matches;' + nl +
+    'if (catNav && catNav.scrollWidth > catNav.clientWidth + 4) {' + nl +
+    'catNav.classList.add("scrollable");' + nl +
+    'if (isMobile && swipeHint && !localStorage.getItem("devtools-nav-hint-seen")) {' + nl +
+    'swipeHint.hidden = false;' + nl +
+    'swipeHint.classList.add("show");' + nl +
+    'localStorage.setItem("devtools-nav-hint-seen", "1");' + nl +
+    'setTimeout(function() { swipeHint.hidden = true; swipeHint.classList.remove("show"); }, 3500);' + nl +
+    '}' + nl +
+    '} else {' + nl +
+    'catNav.classList.remove("scrollable");' + nl +
+    '}' + nl +
+    '}' + nl +
+    'checkNavScroll();' + nl +
+    'window.addEventListener("resize", checkNavScroll);' + nl +
     'try {' + nl +
     'var q0 = new URLSearchParams(location.search).get("q");' + nl +
     'if (q0) { si.value = q0; si.dispatchEvent(new Event("input")); }' + nl +
