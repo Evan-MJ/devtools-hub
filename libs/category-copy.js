@@ -83,7 +83,7 @@ export const CAT_NOUNS = {
   'pdf-tools': 'PDF tools',
   'life': 'everyday utilities',
   'finance': 'finance tools',
-  'ai-language': 'AI writing tools'
+    'ai-language': 'AI language tools'
 };
 
 // BUG-359: cut at the last SENTENCE boundary inside `max`, not the last word.
