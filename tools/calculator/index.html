@@ -45,6 +45,9 @@
 
                 <div id="calc-basic" class="calc-panel">
                     <input type="text" id="calc-display-basic" data-testid="calc-display-basic" autocomplete="off" tabindex="-1" class="calc-display" aria-label="Calculator" aria-readonly="true">
+                    <div class="btn-group" style="margin-bottom: 16px;">
+                        <button onclick="loadCalcExample()" class="btn">Load Example</button>
+                    </div>
                     <div class="calc-grid">
                         <button onclick="calcClear('basic')" class="calc-btn calc-btn-clear" data-testid="calc-basic-clear" id="calc-basic-clear">C</button>
                         <button onclick="calcBackspace('basic')" class="calc-btn" data-testid="calc-basic-del" id="calc-basic-del">DEL</button>
@@ -334,6 +337,13 @@
             document.getElementById('calc-' + type).style.display = 'block';
             var target = btn || (typeof event !== 'undefined' ? event.target : null);
             if (target && target.classList) target.classList.add('active');
+        }
+
+        function loadCalcExample() {
+            const display = document.getElementById('calc-display-basic');
+            if (display) {
+                display.value = '25 * 0.08';
+            }
         }
 
         function calcInput(val, type) {

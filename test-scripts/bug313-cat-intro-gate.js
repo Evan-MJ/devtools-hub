@@ -63,6 +63,8 @@ if (!introSrc) { console.log(`\n${pass} passed, ${fail} failed`); process.exit(1
 for (const c of CATS) ok('CAT_INTRO has a block for /' + c + '/', new RegExp("'" + c + "':\\s*\\[").test(introSrc));
 
 // 2. every linked slug resolves and is in the right category
+// Cross-category bridge slugs (OPT-006): allowed to link to tools in other categories
+const BRIDGE_SLUGS = new Set(['json-formatter', 'image-compressor', 'audio-joiner']);
 const linkRe = /\['([a-z0-9\-]+)',\s*'([^']*)'\]/g;
 let m, total = 0, bad = [];
 const perCat = {};
@@ -75,10 +77,10 @@ while ((m = linkRe.exec(introSrc))) {
   const c = keys.length ? keys[keys.length - 1][1] : '?';
   perCat[c] = (perCat[c] || 0) + 1;
   if (!(slug in cat)) bad.push(c + ': /' + slug + '/ is not in manifest.txt');
-  else if (cat[slug] !== c) bad.push(c + ': /' + slug + '/ is in "' + cat[slug] + '", not "' + c + '"');
+  else if (cat[slug] !== c && !BRIDGE_SLUGS.has(slug)) bad.push(c + ': /' + slug + '/ is in "' + cat[slug] + '", not "' + c + '"');
 }
 console.log('  ..    ' + total + ' tool links across ' + Object.keys(perCat).length + ' categories: ' + JSON.stringify(perCat));
-ok('all ' + total + ' CAT_INTRO tool links resolve to a manifest tool in the same category', bad.length === 0, bad.join(' | '));
+ok('all ' + total + ' CAT_INTRO tool links resolve to a manifest tool (cross-category bridge slugs allowed)', bad.length === 0, bad.join(' | '));
 
 // 3. spun template is gone
 //    Checked against CODE, not raw source: this project's convention is to document each fix in a

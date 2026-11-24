@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 390,
+  "tool_count": 391,
   "categories": [
     "ai-language",
     "calculators",
@@ -2750,6 +2750,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/python-formatter/.md",
       "description": "Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private br..."
+    },
+    {
+      "name": "Keyword Research Tool - Free SEO Keyword Finder",
+      "url": "https://tools.scoreroute.com/tools/keyword-research/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/keyword-research/.md",
+      "description": "Free keyword research tool combining Google Trends, Bing Autosuggest, Datamuse, Wikipedia, HackerNews & GitHub. Find ..."
     }
   ],
   "skills": [
@@ -5482,6 +5489,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/python-formatter/.md",
       "description": "Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private br..."
+    },
+    {
+      "name": "Keyword Research Tool - Free SEO Keyword Finder",
+      "url": "https://tools.scoreroute.com/tools/keyword-research/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/keyword-research/.md",
+      "description": "Free keyword research tool combining Google Trends, Bing Autosuggest, Datamuse, Wikipedia, HackerNews & GitHub. Find ..."
     }
   ]
 }

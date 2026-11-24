@@ -52,6 +52,7 @@
                 <textarea id="jwt-input" placeholder="Paste your JWT token here (e.g., eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c)" aria-label="Paste your JWT token here"></textarea>
                 <div class="btn-group">
                     <button onclick="decodeJWT()" class="btn btn-primary">Decode</button>
+                    <button onclick="loadJWTExample()" class="btn btn-secondary">Load Example</button>
                     <button onclick="clearJWT()" class="btn btn-secondary">Clear</button>
                 </div>
 
@@ -253,6 +254,10 @@
             document.getElementById('jwt-output').style.display = 'none';
             document.getElementById('jwt-status').textContent = '';
             document.getElementById('jwt-status').className = 'status';
+        }
+        function loadJWTExample() {
+            document.getElementById('jwt-input').value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+            decodeJWT();
         }
 
         

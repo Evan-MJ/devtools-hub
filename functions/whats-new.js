@@ -95,6 +95,7 @@ export async function onRequest(context) {
     '<apple-touch-icon sizes="180x180" href="/apple-touch-icon.png">\n' +
     '<meta property="og:image" content="/og-image.png">\n' +
     '<link rel="canonical" href="https://tools.scoreroute.com/whats-new/">\n' +
+    '<link rel="alternate" type="text/markdown" href="https://tools.scoreroute.com/whats-new/.md">\n' +
     '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1, ai-train:no, ai-input:no">\n' +
     '<title>What\'s New - Latest Tools and Updates | DevTools Hub</title>\n' +
     '<meta name="description" content="' + pageDesc + '">\n' +

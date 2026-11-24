@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 390 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 391 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 390
+- Total tools: 391
 - Categories: 11
-- Last updated: 2026-11-23
+- Last updated: 2026-11-24
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (12 tools)
@@ -3239,7 +3239,7 @@ Free car lease calculator. Work out monthly payments from MSRP, residual value, 
 
 Free APR calculator. Work out the real yearly cost of a loan once fees are included, compare up to three offers, and see every payment.
 
-## AI Language (36 tools)
+## AI Language (37 tools)
 
 Browse all: [AI Language](https://tools.scoreroute.com/tools/ai-language/.md)
 
@@ -3567,9 +3567,18 @@ Free AI content optimizer turns drafts into AI-answer-friendly content with FAQ,
 
 Free online AI deep research tool. Ask any question, get a cited research report from live web sources. No signup required.
 
+### Keyword Research Tool - Free SEO Keyword Finder
+
+- URL: https://tools.scoreroute.com/tools/keyword-research/
+- Markdown: https://tools.scoreroute.com/tools/keyword-research/.md
+- Category: AI Language
+- Tags: keyword, research, seo, google, trends, bing, datamuse, wikipedia, hackernews, github, free
+
+Free keyword research tool combining Google Trends, Bing Autosuggest, Datamuse, Wikipedia, HackerNews & GitHub. Find SEO keywords & trending topics
+
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 390 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 391 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
