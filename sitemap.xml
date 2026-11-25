@@ -636,6 +636,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/docker-run-to-compose/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/dog-age-calculator/</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>monthly</changefreq>
