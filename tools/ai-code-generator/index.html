@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <title>AI Code Generator | DevTools Hub</title>
+    <meta name="description" content="Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 100% private.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/ai-code-generator/">
+    <meta property="og:title" content="AI Code Generator | DevTools Hub">
+    <meta property="og:description" content="Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 100% private.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/ai-code-generator/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-11-25","dateModified":"2026-11-25","author":{"@type":"Person","name":"BAOMING"},"name":"AI Code Generator | DevTools Hub","description":"Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 100% private.","url":"https://tools.scoreroute.com/tools/ai-code-generator/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Code Generator</h1>
+            <p class="subtitle">Free AI Coding Assistant - Generate, Explain, Debug & Convert Code</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/tools/">Tools</a> > <span>AI Code Generator</span>
+                <a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="tool-section">
+                    <div class="mode-selector">
+                        <label for="mode-select">Mode</label>
+                        <select id="mode-select">
+                            <option value="generate">Generate Code</option>
+                            <option value="explain">Explain Code</option>
+                            <option value="debug">Debug & Fix Code</option>
+                            <option value="convert">Convert Language</option>
+                            <option value="review">Review Code</option>
+                            <option value="optimize">Optimize Code</option>
+                        </select>
+                    </div>
+                    <div class="language-selector">
+                        <label for="lang-select">Language</label>
+                        <select id="lang-select">
+                            <option value="auto">Auto-detect / Any</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="java">Java</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                            <option value="cpp">C++</option>
+                            <option value="csharp">C#</option>
+                            <option value="php">PHP</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="swift">Swift</option>
+                            <option value="kotlin">Kotlin</option>
+                            <option value="sql">SQL</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="bash">Bash</option>
+                            <option value="powershell">PowerShell</option>
+                            <option value="r">R</option>
+                            <option value="matlab">MATLAB</option>
+                            <option value="scala">Scala</option>
+                        </select>
+                    </div>
+                    <div id="target-lang-container" class="language-selector" style="display:none;">
+                        <label for="target-lang">Target Language</label>
+                        <select id="target-lang">
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="java">Java</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                            <option value="cpp">C++</option>
+                            <option value="csharp">C#</option>
+                            <option value="php">PHP</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="swift">Swift</option>
+                            <option value="kotlin">Kotlin</option>
+                            <option value="bash">Bash</option>
+                        </select>
+                    </div>
+                    <textarea id="code-input" rows="15" aria-label="Input code or description" placeholder="Describe what code you want generated, or paste code to explain/debug/review..."></textarea>
+                    <div class="btn-group">
+                        <button onclick="runAI()" class="btn btn-primary" id="run-btn">Run</button>
+                        <button onclick="clearAll()" class="btn btn-secondary">Clear</button>
+                        <button onclick="copyToClipboard('output')" class="btn">Copy</button>
+                    </div>
+                    <div class="status" id="status"></div>
+                    <h2>Output</h2>
+                    <div id="output" class="output" aria-live="polite"></div>
+                </div>
+            </div>
+            <div class="info-section">
+                <h2>What is AI Code Generator?</h2>
+                <p>Free AI-powered coding assistant that helps you write, understand, debug, and convert code in 30+ programming languages. Powered by Groq and NVIDIA models with automatic fallback. No login, no signup, no data stored on our servers.</p>
+                
+                <h2>Modes</h2>
+                <ul>
+                    <li><strong>Generate Code:</strong> Describe what you need in plain English, get working code instantly</li>
+                    <li><strong>Explain Code:</strong> Paste any code snippet, get a clear step-by-step explanation</li>
+                    <li><strong>Debug & Fix:</strong> Paste broken code, get fixed version with explanation of the bug</li>
+                    <li><strong>Convert Language:</strong> Translate code from one language to another (e.g., Python to JavaScript)</li>
+                    <li><strong>Review Code:</strong> Get AI code review for bugs, performance, security, and best practices</li>
+                    <li><strong>Optimize Code:</strong> Improve performance, readability, and modernize your code</li>
+                </ul>
+
+                <h2>Supported Languages</h2>
+                <p>Python, JavaScript, TypeScript, Java, Go, Rust, C++, C#, PHP, Ruby, Swift, Kotlin, SQL, HTML, CSS, Bash, PowerShell, R, MATLAB, Scala, and more.</p>
+
+                <h2>Why Use This Tool?</h2>
+                <ul>
+                    <li><strong>No Login Required:</strong> Open and start coding immediately</li>
+                    <li><strong>Privacy First:</strong> Code is sent only for processing, never stored or logged</li>
+                    <li><strong>Multi-Provider AI:</strong> Groq + NVIDIA models with automatic fallback for high availability</li>
+                    <li><strong>Free Forever:</strong> No rate limits in practice, no premium tier, no ads</li>
+                    <li><strong>DeAI Integration:</strong> Optional human-like output that passes AI detection</li>
+                </ul>
+
+                <div class="faq-section">
+                    <h2>FAQ</h2>
+                    <details class="faq-item"><summary>Is my code private?</summary><p>Yes. Your code is sent only to the AI provider for processing and is not stored, logged, or used for training on our servers.</p></details>
+                    <details class="faq-item"><summary>Is it really free?</summary><p>Yes, 100% free with no hidden costs, no daily limits, no premium tier. We cover the inference costs.</p></details>
+                    <details class="faq-item"><summary>What AI models power this?</summary><p>Fast open-weight models on Groq (Llama, Mixtral) with automatic fallback to NVIDIA-hosted models. The system routes to the best available provider automatically.</p></details>
+                    <details class="faq-item"><summary>Can I use generated code commercially?</summary><p>Yes. Code generated by this tool is yours to use freely, including commercial projects. No attribution required.</p></details>
+                    <details class="faq-item"><summary>How accurate is the code generation?</summary><p>High accuracy for common tasks. Always review and test generated code before production use. The AI may occasionally make mistakes or use outdated patterns.</p></details>
+                    <details class="faq-item"><summary>Can it handle large codebases?</summary><p>Best for single files or functions (up to ~2000 lines). For large projects, use it module by module or ask specific questions about parts.</p></details>
+                    <details class="faq-item"><summary>Does it support frameworks?</summary><p>Yes. Specify the framework in your prompt (e.g., "React with TypeScript", "FastAPI with Pydantic", "Spring Boot").</p></details>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 DevTools Hub. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="/tools.js"></script>
+    <script>
+    const API_URL = '/api/ai-chat';
+    const MODE_PROMPTS = {
+        generate: (lang, input) => `Generate clean, production-ready ${lang} code for: ${input}\n\nRequirements:\n- Follow best practices and idiomatic ${lang}\n- Include necessary imports\n- Add helpful comments\n- Handle edge cases\n- Use modern ${lang} features where appropriate\n\nOutput only the code with minimal explanation.`,
+        explain: (lang, input) => `Explain this ${lang} code step by step in plain English:\n\n\`\`\`${lang}\n${input}\n\`\`\`\n\nCover:\n1. What the code does overall\n2. Key functions/classes and their purpose\n3. Important logic flow\n4. Any notable patterns or techniques used\n5. Potential issues or improvements`,
+        debug: (lang, input) => `Debug and fix this ${lang} code:\n\n\`\`\`${lang}\n${input}\n\`\`\`\n\nProvide:\n1. The bug(s) identified\n2. Root cause explanation\n3. Fixed code\n4. Why the fix works\n5. Any related best practices`,
+        convert: (lang, targetLang, input) => `Convert this ${lang} code to ${targetLang}:\n\n\`\`\`${lang}\n${input}\n\`\`\`\n\nRequirements:\n- Preserve exact functionality\n- Use idiomatic ${targetLang} patterns\n- Include necessary ${targetLang} imports/dependencies\n- Handle language-specific differences (e.g., types, async, error handling)\n- Add comments for non-obvious translations\n\nOutput only the converted code.`,
+        review: (lang, input) => `Review this ${lang} code for:\n1. Bugs and logic errors\n2. Performance issues\n3. Security vulnerabilities\n4. Best practices and style\n5. Maintainability concerns\n\n\`\`\`${lang}\n${input}\n\`\`\`\n\nFormat as:\n- Critical: [issue]\n- Warning: [issue]\n- Suggestion: [issue]\n- Good: [positive note]`,
+        optimize: (lang, input) => `Optimize this ${lang} code for performance, readability, and modern best practices:\n\n\`\`\`${lang}\n${input}\n\`\`\`\n\nProvide:\n1. Optimized code\n2. Key changes made and why\n3. Performance impact (if measurable)\n4. Any trade-offs`
+    };
+
+    function updateUI() {
+        const mode = document.getElementById('mode-select').value;
+        const targetLangContainer = document.getElementById('target-lang-container');
+        const langSelect = document.getElementById('lang-select');
+        const codeInput = document.getElementById('code-input');
+        
+        if (mode === 'convert') {
+            targetLangContainer.style.display = 'block';
+        } else {
+            targetLangContainer.style.display = 'none';
+        }
+
+        const placeholders = {
+            generate: 'Describe what code you want generated... (e.g., "REST API endpoint for user authentication with JWT")',
+            explain: 'Paste code to explain...',
+            debug: 'Paste broken code to debug and fix...',
+            convert: 'Paste code to convert to another language...',
+            review: 'Paste code to review...',
+            optimize: 'Paste code to optimize...'
+        };
+        codeInput.placeholder = placeholders[mode] || placeholders.generate;
+    }
+
+    async function runAI() {
+        const btn = document.getElementById('run-btn');
+        const status = document.getElementById('status');
+        const output = document.getElementById('output');
+        const mode = document.getElementById('mode-select').value;
+        const lang = document.getElementById('lang-select').value;
+        const targetLang = document.getElementById('target-lang').value;
+        const input = document.getElementById('code-input').value.trim();
+
+        if (!input) {
+            showStatus('Please provide input', 'info');
+            return;
+        }
+
+        btn.disabled = true;
+        showStatus('Processing...', 'success');
+        output.innerHTML = '';
+
+        let prompt;
+        if (mode === 'convert') {
+            prompt = MODE_PROMPTS.convert(lang, targetLang, input);
+        } else {
+            prompt = MODE_PROMPTS[mode](lang, input);
+        }
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.error || 'Request failed');
+
+            if (data.reply) {
+                output.innerHTML = formatOutput(data.reply);
+                showStatus('Done via ' + (data.label || data.provider || 'AI'), 'success');
+            } else {
+                throw new Error('Empty reply from AI');
+            }
+        } catch (e) {
+            console.error('AI code generator error:', e);
+            showStatus('Error: ' + e.message, 'error');
+            output.innerHTML = '<p style="color:#f88">Error: ' + e.message + '</p>';
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function clearAll() {
+        document.getElementById('code-input').value = '';
+        document.getElementById('output').innerHTML = '';
+        document.getElementById('status').textContent = '';
+    }
+
+    function showStatus(msg, type) {
+        const el = document.getElementById('status');
+        el.textContent = msg;
+        el.className = 'status ' + (type || 'success');
+        if (type === 'success') {
+            setTimeout(() => {
+                el.textContent = '';
+                el.className = 'status';
+            }, 3000);
+        }
+    }
+
+    function formatOutput(text) {
+        let escaped = text
+            .replace(/&/g, '&')
+            .replace(/</g, '<')
+            .replace(/>/g, '>');
+        
+        escaped = escaped.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+            return '<pre><code class="language-' + (lang || '') + '">' + code.trim() + '</code></pre>';
+        });
+        
+        escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        escaped = escaped.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        
+        escaped = escaped.replace(/\n/g, '<br>');
+        
+        return escaped;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateUI();
+        document.getElementById('mode-select').addEventListener('change', updateUI);
+        document.getElementById('lang-select').addEventListener('change', updateUI);
+    });
+    </script>
+    <style>
+    .mode-selector, .language-selector {
+        margin-bottom: 16px;
+    }
+    .mode-selector label, .language-selector label {
+        display: block;
+        margin-bottom: 6px;
+        color: #aaa;
+        font-size: 0.9rem;
+    }
+    .mode-selector select, .language-selector select {
+        width: 100%;
+        max-width: 300px;
+        background: #0f0f23;
+        border: 1px solid #2a2a4a;
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 14px;
+    }
+    .mode-selector select:focus, .language-selector select:focus {
+        outline: 2px solid transparent;
+        border-color: #667eea;
+    }
+    #code-input {
+        width: 100%;
+        background: #0f0f23;
+        border: 1px solid #2a2a4a;
+        color: #fff;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 200px;
+        line-height: 1.5;
+    }
+    #code-input:focus {
+        outline: 2px solid transparent;
+        border-color: #667eea;
+    }
+    .output {
+        background: #0f0f23;
+        border: 1px solid #2a2a4a;
+        border-radius: 8px;
+        padding: 16px;
+        min-height: 150px;
+        color: #e0e0e0;
+        font-family: 'Fira Code', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-x: auto;
+    }
+    .output pre {
+        background: #1a1a2e;
+        border: 1px solid #2a2a4a;
+        border-radius: 6px;
+        padding: 12px;
+        margin: 8px 0;
+        overflow-x: auto;
+    }
+    .output code {
+        background: #1a1a2e;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #8b9ef5;
+    }
+    .output pre code {
+        background: transparent;
+        padding: 0;
+        color: inherit;
+    }
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    </style>
+</body>
+</html>

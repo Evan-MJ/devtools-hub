@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 391,
+  "tool_count": 392,
   "categories": [
     "ai-language",
     "calculators",
@@ -2757,6 +2757,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/keyword-research/.md",
       "description": "Free keyword research tool combining Google Trends, Bing Autosuggest, Datamuse, Wikipedia, HackerNews & GitHub. Find ..."
+    },
+    {
+      "name": "AI Code Generator",
+      "url": "https://tools.scoreroute.com/tools/ai-code-generator/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-code-generator/.md",
+      "description": "Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 1..."
     }
   ],
   "skills": [
@@ -5496,6 +5503,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/keyword-research/.md",
       "description": "Free keyword research tool combining Google Trends, Bing Autosuggest, Datamuse, Wikipedia, HackerNews & GitHub. Find ..."
+    },
+    {
+      "name": "AI Code Generator",
+      "url": "https://tools.scoreroute.com/tools/ai-code-generator/",
+      "category": "ai-language",
+      "markdown_url": "https://tools.scoreroute.com/tools/ai-code-generator/.md",
+      "description": "Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 1..."
     }
   ]
 }
