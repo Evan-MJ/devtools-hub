@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 392 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 393 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 392
+- Total tools: 393
 - Categories: 11
 - Last updated: 2026-11-25
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -970,7 +970,7 @@ Free Minecraft circle generator. Draw pixel-perfect circles, ovals and domes wit
 
 Free keyword suggestions from Google and Bing autosuggest. Expand one seed into 20 live search ideas, compare both engines, and copy the list. No signup.
 
-## Converters (45 tools)
+## Converters (46 tools)
 
 Browse all: [Converters](https://tools.scoreroute.com/tools/converters/.md)
 
@@ -1378,6 +1378,15 @@ Translate an Excel formula between 17 spreadsheet languages and find the #NAME? 
 - Tags: markdown, pdf, converter, md to pdf, export, markdown to pdf
 
 Free online MD to PDF converter. Convert markdown to PDF instantly in browser. Preserve formatting, headings, code blocks, tables. No signup, 100% private.
+
+### Docker Run to Docker Compose Converter - Free Online Tool
+
+- URL: https://tools.scoreroute.com/tools/docker-run-to-compose/
+- Markdown: https://tools.scoreroute.com/tools/docker-run-to-compose/.md
+- Category: Converters
+- Tags: docker, compose, converter, run, cli, devops, container, yaml
+
+Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.
 
 ## Media Tools (73 tools)
 
@@ -3587,7 +3596,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 392 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 393 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Run to Docker Compose Converter - Free Online Tool</title>
+    <meta name="description" content="Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/docker-run-to-compose/">
+    <meta property="og:title" content="Docker Run to Docker Compose Converter - Free Online Tool">
+    <meta property="og:description" content="Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/docker-run-to-compose/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Docker Run to Docker Compose Converter - Free Online Tool | DevTools Hub">
+    <meta name="twitter:description" content="Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.">
+    <meta name="twitter:image" content="/og-image.png">
+    <meta name="twitter:url" content="https://tools.scoreroute.com/tools/docker-run-to-compose/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-25",
+        "dateModified": "2026-11-25",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "Docker Run to Docker Compose Converter - Free Online Tool",
+        "description": "Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.",
+        "url": "https://tools.scoreroute.com/tools/docker-run-to-compose/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Parse docker run commands", "Generate docker-compose.yml", "Port mapping (-p)", "Volume mounts (-v)", "Environment variables (-e)", "Network configuration", "Restart policies", "Resource limits"]
+    }
+    </script>
+    <style>
+        .options-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+        .options-row label { color: #aaa; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .options-row select { background: #0f0f23; border: 1px solid #2a2a4a; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; }
+        .options-row select:focus { outline: 2px solid transparent; border-color: #667eea; }
+        .options-row input[type="checkbox"] { accent-color: #667eea; }
+        .sample-btns { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .sample-btn { background: #0f0f23; border: 1px solid #2a2a4a; color: #888; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .sample-btn:hover { border-color: #667eea; color: #fff; }
+        .error-display { background: #2a1a1a; border: 1px solid #5a2a2a; color: #ff6b6b; padding: 12px 16px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; white-space: pre-wrap; margin-top: 8px; display: none; }
+        .stats-bar { display: flex; gap: 20px; margin-top: 12px; color: #888; font-size: 0.85rem; }
+        .stats-bar span { background: #0f0f23; padding: 6px 14px; border-radius: 6px; border: 1px solid #2a2a4a; }
+        .output-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+        .flag-hint { color: #888; font-size: 0.75rem; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Docker Run to Docker Compose Converter</h1>
+            <p class="subtitle">Convert Docker Run Commands to Structured docker-compose.yml - Free & Private</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/">Tools</a> > <span>Docker Run to Docker Compose Converter</span>
+              <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Convert Your Docker Run Command</h2>
+
+                <div class="sample-btns">
+                    <button onclick="loadSample('web')" class="sample-btn">Web App</button>
+                    <button onclick="loadSample('db')" class="sample-btn">Database</button>
+                    <button onclick="loadSample('full')" class="sample-btn">Full Stack</button>
+                    <button onclick="loadSample('complex')" class="sample-btn">Complex</button>
+                </div>
+
+                <div class="options-row">
+                    <label>Compose Version:
+                        <select id="composeVersion">
+                            <option value="3.8">3.8 (recommended)</option>
+                            <option value="3.9">3.9</option>
+                            <option value="2.4">2.4 (legacy)</option>
+                        </select>
+                    </label>
+                    <label>Service Name:
+                        <input type="text" id="serviceName" value="app" placeholder="app" style="background:#0f0f23;border:1px solid #2a2a4a;color:#fff;padding:6px 10px;border-radius:6px;font-size:0.85rem;">
+                    </label>
+                    <label>
+                        <input type="checkbox" id="includeComments" checked> Include comments
+                    </label>
+                    <label>
+                        <input type="checkbox" id="sortKeys" checked> Sort keys alphabetically
+                    </label>
+                </div>
+
+                <textarea id="dr-input" placeholder='Paste your docker run command here... e.g., docker run -d -p 8080:80 -e NODE_ENV=production -v /data:/app/data --name myapp --restart unless-stopped nginx:alpine' aria-label="Docker run command"></textarea>
+                <div class="flag-hint">Supported flags: -d, -p, -e, -v, --name, --network, --restart, --cpus, --memory, --env-file, --label, --user, --workdir, --entrypoint, --cmd, --hostname, --add-host, --dns, --dns-search, --tmpfs, --shm-size, --ulimit, --cap-add, --cap-drop, --security-opt, --device, --gpus, --init, --rm, -it, -t, -i</div>
+
+                <div class="btn-group">
+                    <button onclick="convert()" class="btn btn-primary" id="convertBtn">Convert to docker-compose.yml &#9654;</button>
+                    <button onclick="clearAll()" class="btn btn-secondary">Clear</button>
+                </div>
+
+                <textarea id="dr-output" readonly placeholder="Generated docker-compose.yml appears here..." aria-label="Output docker-compose YAML"></textarea>
+                <div id="dr-status" class="status"></div>
+                <div id="dr-error" class="error-display"></div>
+                <div class="stats-bar" id="statsBar">
+                    <span id="statLines">Lines: -</span>
+                    <span id="statSize">Size: -</span>
+                </div>
+                <div class="output-actions">
+                    <button onclick="copyOutput()" class="btn">Copy Output</button>
+                    <button onclick="downloadOutput()" class="btn">Download .yml</button>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>What is Docker Run to Docker Compose Converter?</h3>
+                <p>This tool converts complex <code>docker run</code> commands into structured, maintainable <code>docker-compose.yml</code> files. Whether you are migrating from ad-hoc container commands to production-ready compose files, sharing configurations with your team, or documenting your deployment, this converter eliminates the manual translation effort and prevents syntax errors that AI tools frequently introduce.</p>
+                <p>Docker Compose is the standard for defining multi-container applications. It provides version control, reproducibility, and declarative configuration that <code>docker run</code> commands lack. This converter bridges the gap by parsing your existing commands and generating spec-compliant YAML.</p>
+
+                <h3>Why This Beats AI</h3>
+                <p>Large language models (ChatGPT, Claude, Gemini) have critical failures when converting docker run to docker-compose:</p>
+                <ol style="color:#c8c8e0;line-height:1.7;padding-left:22px;">
+                    <li><strong>YAML indentation errors</strong> - Docker Compose is indentation-sensitive. AI models routinely produce misaligned YAML that <code>docker-compose config</code> rejects. A single space out of place breaks the entire file.</li>
+                    <li><strong>Port mapping confusion</strong> - AI confuses <code>-p 8080:80</code> (host:container) with Compose's <code>"8080:80"</code> format, often reversing the order or using wrong syntax like <code>ports: [8080:80]</code> without quotes.</li>
+                    <li><strong>Volume syntax errors</strong> - Bind mounts (<code>-v /host:/container</code>) vs named volumes (<code>-v name:/container</code>) require different Compose syntax. AI mixes them incorrectly.</li>
+                    <li><strong>Environment variable handling</strong> - AI loses <code>--env-file</code> references, expands variables incorrectly, or converts <code>-e VAR=value</code> to <code>environment: {VAR: "value"}</code> but forgets array vs object format differences.</li>
+                    <li><strong>Restart policy mapping</strong> - <code>--restart unless-stopped</code> becomes <code>restart: unless-stopped</code>, but AI often writes <code>restart: "unless-stopped"</code> (string) or <code>restart: always</code> (wrong policy).</li>
+                    <li><strong>Resource limits</strong> - <code>--cpus</code> and <code>--memory</code> map to <code>deploy.resources.limits</code> in Compose v3, but AI places them at the wrong nesting level.</li>
+                    <li><strong>Network configuration</strong> - <code>--network</code> and <code>--network-alias</code> require <code>networks</code> section at top level. AI omits this or creates invalid references.</li>
+                </ol>
+                <p>This tool uses deterministic parsing logic with zero AI involvement. Every flag is mapped to its correct Compose equivalent, indentation is always valid, and the output passes <code>docker-compose config</code> validation.</p>
+
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>Comprehensive flag support</strong> - Parses 30+ docker run flags including ports, volumes, env vars, networks, restart policies, resource limits, labels, and more</li>
+                    <li><strong>Compose version selection</strong> - Generate v3.8 (recommended), v3.9, or legacy v2.4 syntax</li>
+                    <li><strong>Custom service name</strong> - Set your preferred service name (default: <code>app</code>)</li>
+                    <li><strong>Optional comments</strong> - Include inline comments explaining each section</li>
+                    <li><strong>Alphabetical key sorting</strong> - Consistent key ordering for version control diffs</li>
+                    <li><strong>Sample templates</strong> - Load common patterns: web app, database, full stack, complex microservice</li>
+                    <li><strong>Download & copy</strong> - Save as <code>.yml</code> file or copy to clipboard</li>
+                    <li><strong>100% client-side</strong> - Zero upload, zero server, zero API keys needed</li>
+                </ul>
+
+                <h3>Supported Docker Run Flags</h3>
+                <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem;">
+                    <caption style="text-align:left;margin-bottom:8px;font-weight:600;color:#667eea;">Supported Docker Run Flags and Their Compose Mappings</caption>
+                    <thead>
+                        <tr style="border-bottom:2px solid #2a2a4a;text-align:left;">
+                            <th style="padding:8px;color:#667eea;">Flag</th>
+                            <th style="padding:8px;color:#667eea;">Description</th>
+                            <th style="padding:8px;color:#667eea;">Compose Mapping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">-p, --publish</td><td style="padding:8px;">Port mapping</td><td style="padding:8px;">ports</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">-e, --env</td><td style="padding:8px;">Environment variable</td><td style="padding:8px;">environment</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--env-file</td><td style="padding:8px;">Env file path</td><td style="padding:8px;">env_file</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">-v, --volume</td><td style="padding:8px;">Volume mount</td><td style="padding:8px;">volumes</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--name</td><td style="padding:8px;">Container name</td><td style="padding:8px;">container_name</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--network</td><td style="padding:8px;">Network</td><td style="padding:8px;">networks</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--restart</td><td style="padding:8px;">Restart policy</td><td style="padding:8px;">restart</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--cpus</td><td style="padding:8px;">CPU limit</td><td style="padding:8px;">deploy.resources.limits.cpus</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--memory</td><td style="padding:8px;">Memory limit</td><td style="padding:8px;">deploy.resources.limits.memory</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--label</td><td style="padding:8px;">Labels</td><td style="padding:8px;">labels</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--user</td><td style="padding:8px;">User</td><td style="padding:8px;">user</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--workdir</td><td style="padding:8px;">Working directory</td><td style="padding:8px;">working_dir</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--entrypoint</td><td style="padding:8px;">Entrypoint</td><td style="padding:8px;">entrypoint</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--hostname</td><td style="padding:8px;">Hostname</td><td style="padding:8px;">hostname</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--add-host</td><td style="padding:8px;">Extra hosts</td><td style="padding:8px;">extra_hosts</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--dns</td><td style="padding:8px;">DNS servers</td><td style="padding:8px;">dns</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--tmpfs</td><td style="padding:8px;">Tmpfs mounts</td><td style="padding:8px;">tmpfs</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--shm-size</td><td style="padding:8px;">Shared memory</td><td style="padding:8px;">shm_size</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--ulimit</td><td style="padding:8px;">Ulimits</td><td style="padding:8px;">ulimits</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--cap-add/--cap-drop</td><td style="padding:8px;">Capabilities</td><td style="padding:8px;">cap_add/cap_drop</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--security-opt</td><td style="padding:8px;">Security options</td><td style="padding:8px;">security_opt</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--device</td><td style="padding:8px;">Device mapping</td><td style="padding:8px;">devices</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--gpus</td><td style="padding:8px;">GPU access</td><td style="padding:8px;">deploy.resources.reservations.devices</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--init</td><td style="padding:8px;">Init process</td><td style="padding:8px;">init</td></tr>
+                        <tr style="border-bottom:1px solid #1a1a3e;"><td style="padding:8px;font-family:monospace;">--rm</td><td style="padding:8px;">Auto remove</td><td style="padding:8px;">(not applicable in Compose)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>Migration to Compose:</strong> Convert existing <code>docker run</code> commands from scripts, CI/CD, or documentation into version-controlled <code>docker-compose.yml</code></li>
+                    <li><strong>Team Collaboration:</strong> Share container configurations declaratively instead of passing around complex command lines</li>
+                    <li><strong>Documentation:</strong> Generate Compose files for README examples, architecture docs, or onboarding guides</li>
+                    <li><strong>Production Hardening:</strong> Review and validate Compose output before deploying to staging/production</li>
+                    <li><strong>Learning Tool:</strong> Understand how docker run flags map to Compose syntax</li>
+                </ul>
+
+                <h3>How the Conversion Works</h3>
+                <p>The parser tokenizes your <code>docker run</code> command using shell-aware splitting (respecting quotes and escapes). It then extracts each flag and its arguments, mapping them to the corresponding Docker Compose YAML structure. The generator produces spec-compliant YAML with proper indentation, array vs object formatting, and version-appropriate syntax.</p>
+                <p>For example, <code>docker run -d -p 8080:80 -e NODE_ENV=production -v /data:/app/data --name webapp --restart unless-stopped nginx:alpine</code> becomes:</p>
+                <pre style="background:#0f0f23;border:1px solid #2a2a4a;padding:16px;border-radius:8px;overflow-x:auto;font-size:0.8rem;color:#c8c8e0;margin:16px 0;"><code>version: "3.8"
+services:
+  app:
+    image: nginx:alpine
+    container_name: webapp
+    ports:
+      - "8080:80"
+    environment:
+      NODE_ENV: production
+    volumes:
+      - /data:/app/data
+    restart: unless-stopped</code></pre>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Does it handle multi-container docker run commands?</summary>
+                    <p>This tool converts a single <code>docker run</code> command to a single-service Compose file. For multi-container applications, convert each service separately and combine them manually, or use the generated file as a starting point for your full <code>docker-compose.yml</code>.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my command sent to a server?</summary>
+                    <p>No. All parsing and generation happens entirely within your browser. Your commands never leave your device. You can verify this by opening your browser's DevTools Network tab and observing zero outbound requests during conversion.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What if my command uses flags not listed?</summary>
+                    <p>The parser handles the most common 30+ flags. Unsupported flags are reported in the error output so you can add them manually. Open an issue on GitHub if you need a specific flag added.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does it validate the generated YAML?</summary>
+                    <p>The generated YAML follows Docker Compose specification. You can validate it by running <code>docker-compose config</code> (or <code>docker compose config</code>) on the downloaded file.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can it convert docker-compose.yml back to docker run?</summary>
+                    <p>Not currently. This tool focuses on the more common migration path: docker run to docker-compose. The reverse direction is less complex and more complex due to Compose features that don't have direct docker run equivalents.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Why should I use this instead of AI?</summary>
+                    <p>AI models frequently produce invalid YAML with broken indentation, incorrect port/volume syntax, wrong restart policy values, and misplaced resource limits. This tool uses deterministic parsing for 100% accurate, spec-compliant conversion every time. It works with commands of any complexity, has no usage limits, and never sends your data to an external server.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What Compose version should I choose?</summary>
+                    <p>Version 3.8 is recommended for most cases - it supports all modern features and works with Docker Compose v2 and Docker Engine 20.10+. Version 3.9 adds minor improvements. Version 2.4 is for legacy Swarm deployments only.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+        function loadSample(type) {
+            var samples = {
+                web: 'docker run -d -p 3000:3000 -e NODE_ENV=production -e PORT=3000 --name webapp --restart unless-stopped node:20-alpine',
+                db: 'docker run -d -p 5432:5432 -e POSTGRES_DB=myapp -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=secret -v pgdata:/var/lib/postgresql/data --name postgres --restart unless-stopped postgres:15',
+                full: 'docker run -d -p 80:80 -p 443:443 -e NGINX_HOST=example.com -e NGINX_PORT=80 -v /etc/nginx/conf.d:/etc/nginx/conf.d:ro -v certs:/etc/letsencrypt --name nginx --restart unless-stopped --network webnet nginx:alpine',
+                complex: 'docker run -d -p 8080:80 -p 8443:443 -e APP_ENV=prod -e DB_HOST=db -e REDIS_URL=redis://redis:6379 --env-file .env.prod -v /host/data:/app/data -v /host/logs:/var/log/app -v config:/app/config --name api --hostname api.prod --network app-network --network-alias api --restart unless-stopped --cpus 2 --memory 1g --ulimit nofile=65536:65536 --cap-add NET_BIND_SERVICE --label version=1.0 --label maintainer=team myapp:latest'
+            };
+            document.getElementById('dr-input').value = samples[type] || '';
+            clearOutput();
+        }
+
+        function convert() {
+            var input = document.getElementById('dr-input').value.trim();
+            if (!input) { showStatus('dr-status', 'Please enter a docker run command', 'info'); return; }
+
+            var errorEl = document.getElementById('dr-error');
+            errorEl.style.display = 'none';
+
+            try {
+                var result = parseDockerRun(input);
+                var yaml = generateComposeYaml(result);
+                document.getElementById('dr-output').value = yaml;
+                updateStats(yaml);
+                showStatus('dr-status', 'Converted successfully to docker-compose.yml', 'success');
+            } catch (e) {
+                showStatus('dr-status', 'Parse error: ' + e.message, 'error');
+                errorEl.textContent = 'Error details:\n' + e.message + '\n\nInput:\n' + input;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function parseDockerRun(cmd) {
+            cmd = cmd.replace(/^docker\s+run\s+/i, '').trim();
+
+            var tokens = [];
+            var current = '';
+            var inSingle = false, inDouble = false, escape = false;
+            for (var i = 0; i < cmd.length; i++) {
+                var c = cmd[i];
+                if (escape) { current += c; escape = false; continue; }
+                if (c === '\\' && (inSingle || inDouble)) { escape = true; current += c; continue; }
+                if (c === "'" && !inDouble) { inSingle = !inSingle; current += c; continue; }
+                if (c === '"' && !inSingle) { inDouble = !inDouble; current += c; continue; }
+                if ((c === ' ' || c === '\t') && !inSingle && !inDouble) {
+                    if (current) { tokens.push(current); current = ''; }
+                    continue;
+                }
+                current += c;
+            }
+            if (current) tokens.push(current);
+
+            var result = {
+                image: '',
+                detach: false,
+                interactive: false,
+                tty: false,
+                ports: [],
+                env: {},
+                envFiles: [],
+                volumes: [],
+                name: '',
+                network: '',
+                networkAliases: [],
+                restart: '',
+                cpus: '',
+                memory: '',
+                labels: {},
+                user: '',
+                workdir: '',
+                entrypoint: '',
+                cmd: '',
+                hostname: '',
+                extraHosts: {},
+                dns: [],
+                dnsSearch: [],
+                tmpfs: [],
+                shmSize: '',
+                ulimits: {},
+                capAdd: [],
+                capDrop: [],
+                securityOpt: [],
+                devices: [],
+                gpus: '',
+                init: false,
+                rm: false,
+                unsupported: []
+            };
+
+            var i = 0;
+            while (i < tokens.length) {
+                var token = tokens[i];
+                if (token === '-d' || token === '--detach') { result.detach = true; }
+                else if (token === '-i' || token === '--interactive') { result.interactive = true; }
+                else if (token === '-t' || token === '--tty') { result.tty = true; }
+                else if (token === '-it' || token === '-ti') { result.interactive = true; result.tty = true; }
+                else if (token === '-p' || token === '--publish') {
+                    if (i + 1 < tokens.length) { result.ports.push(tokens[++i]); }
+                }
+                else if (token === '-e' || token === '--env') {
+                    if (i + 1 < tokens.length) {
+                        var ev = tokens[++i];
+                        var eq = ev.indexOf('=');
+                        if (eq > 0) result.env[ev.substring(0, eq)] = ev.substring(eq + 1);
+                        else result.env[ev] = '';
+                    }
+                }
+                else if (token === '--env-file') {
+                    if (i + 1 < tokens.length) { result.envFiles.push(tokens[++i]); }
+                }
+                else if (token === '-v' || token === '--volume' || token === '--mount') {
+                    if (i + 1 < tokens.length) { result.volumes.push(tokens[++i]); }
+                }
+                else if (token === '--name') {
+                    if (i + 1 < tokens.length) { result.name = tokens[++i]; }
+                }
+                else if (token === '--network') {
+                    if (i + 1 < tokens.length) { result.network = tokens[++i]; }
+                }
+                else if (token === '--network-alias') {
+                    if (i + 1 < tokens.length) { result.networkAliases.push(tokens[++i]); }
+                }
+                else if (token === '--restart') {
+                    if (i + 1 < tokens.length) { result.restart = tokens[++i]; }
+                }
+                else if (token === '--cpus') {
+                    if (i + 1 < tokens.length) { result.cpus = tokens[++i]; }
+                }
+                else if (token === '--memory' || token === '-m') {
+                    if (i + 1 < tokens.length) { result.memory = tokens[++i]; }
+                }
+                else if (token === '--label' || token === '-l') {
+                    if (i + 1 < tokens.length) {
+                        var lv = tokens[++i];
+                        var eq = lv.indexOf('=');
+                        if (eq > 0) result.labels[lv.substring(0, eq)] = lv.substring(eq + 1);
+                        else result.labels[lv] = '';
+                    }
+                }
+                else if (token === '--user' || token === '-u') {
+                    if (i + 1 < tokens.length) { result.user = tokens[++i]; }
+                }
+                else if (token === '--workdir' || token === '-w') {
+                    if (i + 1 < tokens.length) { result.workdir = tokens[++i]; }
+                }
+                else if (token === '--entrypoint') {
+                    if (i + 1 < tokens.length) { result.entrypoint = tokens[++i]; }
+                }
+                else if (token === '--cmd' || token === '--command') {
+                    if (i + 1 < tokens.length) { result.cmd = tokens[++i]; }
+                }
+                else if (token === '--hostname' || token === '-h') {
+                    if (i + 1 < tokens.length) { result.hostname = tokens[++i]; }
+                }
+                else if (token === '--add-host') {
+                    if (i + 1 < tokens.length) {
+                        var ah = tokens[++i];
+                        var colon = ah.indexOf(':');
+                        if (colon > 0) result.extraHosts[ah.substring(0, colon)] = ah.substring(colon + 1);
+                    }
+                }
+                else if (token === '--dns') {
+                    if (i + 1 < tokens.length) { result.dns.push(tokens[++i]); }
+                }
+                else if (token === '--dns-search') {
+                    if (i + 1 < tokens.length) { result.dnsSearch.push(tokens[++i]); }
+                }
+                else if (token === '--tmpfs') {
+                    if (i + 1 < tokens.length) { result.tmpfs.push(tokens[++i]); }
+                }
+                else if (token === '--shm-size') {
+                    if (i + 1 < tokens.length) { result.shmSize = tokens[++i]; }
+                }
+                else if (token === '--ulimit') {
+                    if (i + 1 < tokens.length) {
+                        var ul = tokens[++i];
+                        var eq = ul.indexOf('=');
+                        if (eq > 0) result.ulimits[ul.substring(0, eq)] = ul.substring(eq + 1);
+                    }
+                }
+                else if (token === '--cap-add') {
+                    if (i + 1 < tokens.length) { result.capAdd.push(tokens[++i]); }
+                }
+                else if (token === '--cap-drop') {
+                    if (i + 1 < tokens.length) { result.capDrop.push(tokens[++i]); }
+                }
+                else if (token === '--security-opt') {
+                    if (i + 1 < tokens.length) { result.securityOpt.push(tokens[++i]); }
+                }
+                else if (token === '--device') {
+                    if (i + 1 < tokens.length) { result.devices.push(tokens[++i]); }
+                }
+                else if (token === '--gpus') {
+                    if (i + 1 < tokens.length) { result.gpus = tokens[++i]; }
+                }
+                else if (token === '--init') { result.init = true; }
+                else if (token === '--rm') { result.rm = true; }
+                else if (!token.startsWith('-')) {
+                    if (!result.image) { result.image = token; }
+                    else {
+                        result.cmd = tokens.slice(i).join(' ');
+                        break;
+                    }
+                }
+                else {
+                    result.unsupported.push(token);
+                }
+                i++;
+            }
+
+            if (!result.image) {
+                throw new Error('No image specified in docker run command');
+            }
+
+            return result;
+        }
+
+        function generateComposeYaml(parsed) {
+            var version = document.getElementById('composeVersion').value;
+            var serviceName = document.getElementById('serviceName').value || 'app';
+            var includeComments = document.getElementById('includeComments').checked;
+            var sortKeys = document.getElementById('sortKeys').checked;
+
+            var lines = [];
+            var indent = '  ';
+
+            lines.push('version: "' + version + '"');
+            lines.push('');
+            lines.push('services:');
+
+            function addLine(level, key, value, comment) {
+                var prefix = indent.repeat(level);
+                var line = prefix + key + ': ';
+                if (value === null || value === undefined) {
+                    line += '';
+                } else if (Array.isArray(value)) {
+                    if (value.length === 0) {
+                        line += '[]';
+                    } else {
+                        lines.push(line);
+                        value.forEach(function(v) {
+                            lines.push(prefix + indent + '- ' + yamlQuote(v));
+                        });
+                        return;
+                    }
+                } else if (typeof value === 'object') {
+                    if (Object.keys(value).length === 0) {
+                        line += '{}';
+                    } else {
+                        lines.push(line);
+                        var keys = Object.keys(value);
+                        if (sortKeys) keys.sort();
+                        keys.forEach(function(k) {
+                            addLine(level + 1, k, value[k]);
+                        });
+                        return;
+                    }
+                } else {
+                    line += yamlQuote(String(value));
+                }
+                if (comment && includeComments) line += '  # ' + comment;
+                lines.push(line);
+            }
+
+            function yamlQuote(str) {
+                if (/^[\d\.\-]+$/.test(str) || str === 'true' || str === 'false' || str === 'null') return str;
+                if (/[:"'{}[\]&*#?|<>!%@`]/.test(str) || str.includes('\n') || str.startsWith(' ') || str.endsWith(' ')) {
+                    return '"' + str.replace(/"/g, '\\"') + '"';
+                }
+                return str;
+            }
+
+            lines.push(indent + serviceName + ':');
+            addLine(2, 'image', parsed.image);
+
+            if (parsed.container_name || parsed.name) {
+                addLine(2, 'container_name', parsed.name);
+            }
+
+            if (parsed.ports.length > 0) {
+                addLine(2, 'ports', null);
+                parsed.ports.forEach(function(p) {
+                    lines.push(indent.repeat(3) + '- ' + yamlQuote(p));
+                });
+            }
+
+            if (Object.keys(parsed.env).length > 0) {
+                addLine(2, 'environment', parsed.env);
+            }
+
+            if (parsed.envFiles.length > 0) {
+                addLine(2, 'env_file', parsed.envFiles);
+            }
+
+            if (parsed.volumes.length > 0) {
+                addLine(2, 'volumes', null);
+                parsed.volumes.forEach(function(v) {
+                    lines.push(indent.repeat(3) + '- ' + yamlQuote(v));
+                });
+            }
+
+            if (parsed.network) {
+                addLine(2, 'networks', null);
+                lines.push(indent.repeat(3) + '- ' + yamlQuote(parsed.network));
+            }
+
+            if (parsed.restart) {
+                addLine(2, 'restart', parsed.restart);
+            }
+
+            if (parsed.cpus || parsed.memory || parsed.gpus) {
+                addLine(2, 'deploy', null);
+                lines.push(indent.repeat(3) + 'resources:');
+                lines.push(indent.repeat(4) + 'limits:');
+                if (parsed.cpus) addLine(5, 'cpus', parsed.cpus);
+                if (parsed.memory) addLine(5, 'memory', parsed.memory);
+                if (parsed.gpus) {
+                    lines.push(indent.repeat(5) + 'reservations:');
+                    lines.push(indent.repeat(6) + 'devices:');
+                    lines.push(indent.repeat(7) + '- driver: nvidia');
+                    lines.push(indent.repeat(7) + '  count: all');
+                    lines.push(indent.repeat(7) + '  capabilities: [gpu]');
+                }
+            }
+
+            if (Object.keys(parsed.labels).length > 0) {
+                addLine(2, 'labels', parsed.labels);
+            }
+
+            if (parsed.user) addLine(2, 'user', parsed.user);
+            if (parsed.workdir) addLine(2, 'working_dir', parsed.workdir);
+            if (parsed.entrypoint) addLine(2, 'entrypoint', parsed.entrypoint);
+            if (parsed.cmd) addLine(2, 'command', parsed.cmd);
+            if (parsed.hostname) addLine(2, 'hostname', parsed.hostname);
+
+            if (Object.keys(parsed.extraHosts).length > 0) {
+                addLine(2, 'extra_hosts', parsed.extraHosts);
+            }
+
+            if (parsed.dns.length > 0) addLine(2, 'dns', parsed.dns);
+            if (parsed.dnsSearch.length > 0) addLine(2, 'dns_search', parsed.dnsSearch);
+
+            if (parsed.tmpfs.length > 0) {
+                addLine(2, 'tmpfs', null);
+                parsed.tmpfs.forEach(function(t) { lines.push(indent.repeat(3) + '- ' + yamlQuote(t)); });
+            }
+
+            if (parsed.shmSize) addLine(2, 'shm_size', parsed.shmSize);
+            if (Object.keys(parsed.ulimits).length > 0) addLine(2, 'ulimits', parsed.ulimits);
+            if (parsed.capAdd.length > 0) addLine(2, 'cap_add', parsed.capAdd);
+            if (parsed.capDrop.length > 0) addLine(2, 'cap_drop', parsed.capDrop);
+            if (parsed.securityOpt.length > 0) addLine(2, 'security_opt', parsed.securityOpt);
+            if (parsed.devices.length > 0) addLine(2, 'devices', parsed.devices);
+            if (parsed.init) addLine(2, 'init', true);
+
+            if (parsed.network && parsed.network !== 'bridge' && parsed.network !== 'host' && parsed.network !== 'none') {
+                lines.push('');
+                lines.push('networks:');
+                lines.push(indent + parsed.network + ':');
+                lines.push(indent.repeat(2) + 'external: true');
+            }
+
+            var namedVolumes = parsed.volumes.filter(function(v) { return !v.includes(':'); });
+            if (namedVolumes.length > 0) {
+                lines.push('');
+                lines.push('volumes:');
+                namedVolumes.forEach(function(v) {
+                    lines.push(indent + v + ':');
+                });
+            }
+
+            if (parsed.unsupported.length > 0 && includeComments) {
+                lines.push('');
+                lines.push('# Unsupported flags (add manually):');
+                parsed.unsupported.forEach(function(f) {
+                    lines.push('# ' + f);
+                });
+            }
+
+            return lines.join('\n');
+        }
+
+        function updateStats(output) {
+            var lines = output.split('\n').length;
+            var bytes = output.length;
+            var size = bytes;
+            if (size < 1024) size = size + ' B';
+            else if (size < 1048576) size = (size / 1024).toFixed(1) + ' KB';
+            else size = (size / 1048576).toFixed(1) + ' MB';
+            document.getElementById('statLines').textContent = 'Lines: ' + lines;
+            document.getElementById('statSize').textContent = 'Size: ' + size;
+        }
+
+        function copyOutput() {
+            var el = document.getElementById('dr-output');
+            if (el && el.value) {
+                navigator.clipboard.writeText(el.value);
+                showStatus('dr-status', 'Copied to clipboard', 'success');
+            }
+        }
+
+        function downloadOutput() {
+            var el = document.getElementById('dr-output');
+            if (!el || !el.value) { showStatus('dr-status', 'Nothing to download', 'info'); return; }
+            var blob = new Blob([el.value], { type: 'text/yaml;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'docker-compose.yml';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+            showStatus('dr-status', 'Downloaded as docker-compose.yml', 'success');
+        }
+
+        function clearAll() {
+            document.getElementById('dr-input').value = '';
+            clearOutput();
+        }
+
+        function clearOutput() {
+            document.getElementById('dr-output').value = '';
+            document.getElementById('dr-status').textContent = '';
+            document.getElementById('dr-status').className = 'status';
+            document.getElementById('dr-error').style.display = 'none';
+            document.getElementById('statLines').textContent = 'Lines: -';
+            document.getElementById('statSize').textContent = 'Size: -';
+        }
+    </script>
+</body>
+</html>

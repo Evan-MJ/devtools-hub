@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 392,
+  "tool_count": 393,
   "categories": [
     "ai-language",
     "calculators",
@@ -2764,6 +2764,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-code-generator/.md",
       "description": "Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 1..."
+    },
+    {
+      "name": "Docker Run to Docker Compose Converter - Free Online Tool",
+      "url": "https://tools.scoreroute.com/tools/docker-run-to-compose/",
+      "category": "converters",
+      "markdown_url": "https://tools.scoreroute.com/tools/docker-run-to-compose/.md",
+      "description": "Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml wit..."
     }
   ],
   "skills": [
@@ -5510,6 +5517,13 @@
       "category": "ai-language",
       "markdown_url": "https://tools.scoreroute.com/tools/ai-code-generator/.md",
       "description": "Free AI code generator and assistant. Generate, explain, debug, convert code in 30+ languages. No login, no signup, 1..."
+    },
+    {
+      "name": "Docker Run to Docker Compose Converter - Free Online Tool",
+      "url": "https://tools.scoreroute.com/tools/docker-run-to-compose/",
+      "category": "converters",
+      "markdown_url": "https://tools.scoreroute.com/tools/docker-run-to-compose/.md",
+      "description": "Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml wit..."
     }
   ]
 }
