@@ -23,6 +23,10 @@ var BING_SUGGEST = 'https://api.bing.com/osjson.aspx?query=';
 // hot cache is what keeps us under Google's 429 threshold.
 var TTL = { trends: 300, questions: 1800 };
 
+// Where the last-good copy lives in the edge cache (the primary entry follows
+// the upstream URL). It is never fetched; only read back when the upstream fails.
+var STALE_URL = 'https://stale.trends.local/?k=';
+
 // Google's feed is fixed at 10 items per market. Anything outside this set is
 // either unsupported or returns an empty channel, and an empty list is a worse
 // answer than an honest "not available for this market".
@@ -124,11 +128,22 @@ async function cachedFetch(key, ttl, run) {
   const cacheKey = new Request(key);
   const hit = await caches.default.match(cacheKey);
   if (hit) return { data: await hit.json(), cached: true };
-  const data = await run();
-  await caches.default.put(cacheKey, new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' }
-  }));
-  return { data: data, cached: false };
+  try {
+    const data = await run();
+    await caches.default.put(cacheKey, new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=' + ttl }
+    }));
+    // A last-good copy that outlives the TTL. Google Trends rate-limits us
+    // sometimes; serving the previous hour beats a 502 in the tool page.
+    await caches.default.put(new Request(STALE_URL + encodeURIComponent(key)), new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=86400' }
+    }));
+    return { data: data, cached: false };
+  } catch (e) {
+    const stale = await caches.default.match(new Request(STALE_URL + encodeURIComponent(key)));
+    if (stale) return { data: await stale.json(), cached: true, stale: true };
+    throw e;
+  }
 }
 
 async function getTrends(geo) {
@@ -211,7 +226,7 @@ export async function onRequest(context) {
 
   try {
     const r = await getTrends(geo);
-    return json({ cached: r.cached, data: r.data }, headers);
+    return json({ cached: r.cached, stale: !!r.stale, data: r.data }, headers);
   } catch (e) {
     return json({ error: 'Live trend feed unavailable: ' + e.message }, headers, 502);
   }
