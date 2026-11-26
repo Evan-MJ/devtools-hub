@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 394 free developer tools across 11 categories. No signup, no tracking.
+> 395 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 394 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 395 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -136,6 +136,7 @@
 - [Seating Chart Maker - Free Printable Seating Plan](https://tools.scoreroute.com/tools/seating-chart-maker/.md) [HTML](https://tools.scoreroute.com/tools/seating-chart-maker/)
 - [Minecraft Circle Generator - Free Blueprint Tool](https://tools.scoreroute.com/tools/minecraft-circle-generator/.md) [HTML](https://tools.scoreroute.com/tools/minecraft-circle-generator/)
 - [Keyword Suggestions Generator - Free SEO Keyword Research](https://tools.scoreroute.com/tools/keyword-suggestions/.md) [HTML](https://tools.scoreroute.com/tools/keyword-suggestions/)
+- [Flowchart Maker - Free Drag & Drop Flowchart Creator](https://tools.scoreroute.com/tools/flowchart-maker/.md) [HTML](https://tools.scoreroute.com/tools/flowchart-maker/)
 
 ## Converters
 - [Base64 Encoder/Decoder - Encode Data](https://tools.scoreroute.com/tools/base64-encoder/.md) [HTML](https://tools.scoreroute.com/tools/base64-encoder/)

@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 394,
+  "tool_count": 395,
   "categories": [
     "ai-language",
     "calculators",
@@ -2778,6 +2778,13 @@
       "category": "network",
       "markdown_url": "https://tools.scoreroute.com/tools/sitemap-generator/.md",
       "description": "Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Suppor..."
+    },
+    {
+      "name": "Flowchart Maker - Free Drag & Drop Flowchart Creator",
+      "url": "https://tools.scoreroute.com/tools/flowchart-maker/",
+      "category": "generators",
+      "markdown_url": "https://tools.scoreroute.com/tools/flowchart-maker/.md",
+      "description": "Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs ..."
     }
   ],
   "skills": [
@@ -5538,6 +5545,13 @@
       "category": "network",
       "markdown_url": "https://tools.scoreroute.com/tools/sitemap-generator/.md",
       "description": "Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Suppor..."
+    },
+    {
+      "name": "Flowchart Maker - Free Drag & Drop Flowchart Creator",
+      "url": "https://tools.scoreroute.com/tools/flowchart-maker/",
+      "category": "generators",
+      "markdown_url": "https://tools.scoreroute.com/tools/flowchart-maker/.md",
+      "description": "Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs ..."
     }
   ]
 }

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowchart Maker - Free Drag &amp; Drop Flowchart Creator</title>
+  <meta name="description" content="Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs in your browser.">
+  <link rel="canonical" href="https://tools.scoreroute.com/tools/flowchart-maker/">
+  <meta property="og:title" content="Flowchart Maker - Free Drag &amp; Drop Flowchart Creator">
+  <meta property="og:description" content="Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs in your browser.">
+  <meta property="og:url" content="https://tools.scoreroute.com/tools/flowchart-maker/">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Flowchart Maker - Free Drag & Drop Flowchart Creator",
+    "description": "Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs in your browser.",
+    "url": "https://tools.scoreroute.com/tools/flowchart-maker/",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Drag and drop node canvas",
+      "Start, process, decision, input/output and document nodes",
+      "Connect nodes with arrowed edges",
+      "Inline label editing",
+      "Undo and clear",
+      "Export as SVG",
+      "Export as Mermaid code"
+    ]
+  }
+  </script>
+  <style>
+    /* Editor-only layout. Everything else uses the shared stylesheet. */
+    .fm-layout { display: grid; grid-template-columns: 210px 1fr; gap: 16px; align-items: start; }
+    .fm-palette { background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 12px; padding: 14px; min-width: 0; }
+    .fm-palette h3 { color: #fff; font-size: 0.9rem; margin: 0 0 10px; }
+    .fm-palette-list { display: flex; flex-direction: column; gap: 6px; }
+    .fm-palette-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; background: #252545; border: 1px solid #3a3a5a; border-radius: 8px; color: #e8e8f0; cursor: pointer; font: inherit; font-size: 0.82rem; text-align: left; transition: border-color 0.2s, background 0.2s; }
+    .fm-palette-btn:hover { border-color: #7eb3ff; background: #2d2d55; }
+    .fm-palette-btn svg { flex: 0 0 34px; width: 34px; height: 24px; }
+    .fm-palette-btn kbd { margin-left: auto; background: #0f0f23; border: 1px solid #3a3a5a; border-radius: 4px; padding: 1px 6px; color: #888; font-size: 0.7rem; font-family: inherit; }
+    .fm-hint { color: #888; font-size: 0.74rem; line-height: 1.5; margin: 12px 0 0; }
+
+    .fm-editor { background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 12px; padding: 14px; min-width: 0; }
+    .fm-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+    .fm-toolbar .btn { padding: 8px 14px; font-size: 0.82rem; }
+    .fm-toolbar-spacer { flex: 1; }
+    .fm-mode-active { border-color: #7eb3ff !important; color: #7eb3ff !important; }
+
+    .fm-scroll { position: relative; overflow: auto; max-height: 70vh; border: 1px solid #2a2a4a; border-radius: 10px; background-color: #0b0b1c; background-image: radial-gradient(circle, #23233d 1px, transparent 1px); background-size: 20px 20px; }
+    .fm-canvas-inner { position: relative; display: inline-block; }
+    #fm-canvas { display: block; }
+
+    .fm-node { cursor: grab; touch-action: none; }
+    .fm-node:active { cursor: grabbing; }
+    .fm-node-shape { fill: #1f2d4a; stroke: #7eb3ff; stroke-width: 2; }
+    .fm-node-text { fill: #e8e8f0; font: 600 13px 'IBM Plex Sans', sans-serif; pointer-events: none; user-select: none; }
+    .fm-node.fm-selected .fm-node-shape { stroke: #10b981; stroke-width: 3; }
+    .fm-node.fm-source .fm-node-shape { stroke: #f59e0b; stroke-width: 3; }
+    .fm-edge-line { fill: none; stroke: #8a90b8; stroke-width: 2; pointer-events: none; }
+    .fm-edge-hit { fill: none; stroke: transparent; stroke-width: 16; cursor: pointer; pointer-events: stroke; }
+    .fm-edge.fm-selected .fm-edge-line { stroke: #10b981; stroke-width: 3; }
+
+    .fm-label-input { position: absolute; z-index: 5; min-height: 0; padding: 6px 8px; font: 600 13px 'IBM Plex Sans', sans-serif; text-align: center; background: #0b0b1c; color: #fff; border: 2px solid #7eb3ff; border-radius: 6px; box-sizing: border-box; }
+    .tool-main .fm-mermaid { width: 100%; min-height: 150px; margin: 0; background: #0b0b1c; border: 1px solid #2a2a4a; color: #e8e8f0; padding: 12px; border-radius: 8px; font-family: 'Fira Code', 'Monaco', monospace; font-size: 13px; resize: vertical; white-space: pre; overflow: auto; }
+    .fm-output { margin-top: 16px; }
+    .fm-output h3 { color: #7eb3ff; font-size: 1rem; margin: 0 0 8px; }
+
+    @media (max-width: 780px) {
+      .fm-layout { grid-template-columns: 1fr; }
+      .fm-palette-list { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+      .fm-palette-btn { width: auto; flex: 0 0 auto; }
+      .fm-palette-btn kbd { display: none; }
+      .fm-scroll { max-height: 60vh; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Flowchart Maker</h1>
+      <p class="subtitle">Drag nodes, connect arrows, export SVG or Mermaid</p>
+      <nav class="breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/tools/">Tools</a> &gt; <span>Flowchart Maker</span>
+        <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <div class="tool-main">
+        <h2>Build Your Flowchart</h2>
+
+        <div class="fm-layout">
+          <aside class="fm-palette" aria-label="Node palette">
+            <h3>Add a node</h3>
+            <div class="fm-palette-list">
+              <button class="fm-palette-btn" type="button" data-type="start" aria-label="Add Start or End node (keyboard shortcut S)">
+                <svg viewBox="0 0 34 24" aria-hidden="true"><rect x="2" y="4" width="30" height="16" rx="8" fill="none" stroke="#7eb3ff" stroke-width="2"/></svg>
+                <span>Start / End</span><kbd>S</kbd>
+              </button>
+              <button class="fm-palette-btn" type="button" data-type="process" aria-label="Add Process node (keyboard shortcut P)">
+                <svg viewBox="0 0 34 24" aria-hidden="true"><rect x="2" y="4" width="30" height="16" rx="2" fill="none" stroke="#7eb3ff" stroke-width="2"/></svg>
+                <span>Process</span><kbd>P</kbd>
+              </button>
+              <button class="fm-palette-btn" type="button" data-type="decision" aria-label="Add Decision node (keyboard shortcut D)">
+                <svg viewBox="0 0 34 24" aria-hidden="true"><path d="M17 3 L32 12 L17 21 L2 12 Z" fill="none" stroke="#7eb3ff" stroke-width="2"/></svg>
+                <span>Decision</span><kbd>D</kbd>
+              </button>
+              <button class="fm-palette-btn" type="button" data-type="io" aria-label="Add Input or Output node (keyboard shortcut I)">
+                <svg viewBox="0 0 34 24" aria-hidden="true"><path d="M6 4 H32 L28 20 H2 Z" fill="none" stroke="#7eb3ff" stroke-width="2"/></svg>
+                <span>Input / Output</span><kbd>I</kbd>
+              </button>
+              <button class="fm-palette-btn" type="button" data-type="note" aria-label="Add Document or Note node (keyboard shortcut N)">
+                <svg viewBox="0 0 34 24" aria-hidden="true"><path d="M4 4 H30 V16 Q22 20 17 16 Q10 12 4 20 Z" fill="none" stroke="#7eb3ff" stroke-width="2"/></svg>
+                <span>Document / Note</span><kbd>N</kbd>
+              </button>
+            </div>
+            <p class="fm-hint">Click a shape or press its letter key. Drag nodes to move them, double-click to rename, click <strong>Connect</strong> then two nodes to draw an arrow (each new target becomes the next source, so a chain is one click per step).</p>
+          </aside>
+
+          <div class="fm-editor">
+            <div class="fm-toolbar">
+              <button id="fm-connect" class="btn btn-secondary" type="button" aria-pressed="false">Connect</button>
+              <button id="fm-edit" class="btn btn-secondary" type="button">Edit label</button>
+              <button id="fm-delete" class="btn btn-secondary" type="button">Delete</button>
+              <button id="fm-undo" class="btn btn-secondary" type="button">Undo</button>
+              <span class="fm-toolbar-spacer"></span>
+              <button id="fm-export-svg" class="btn btn-primary" type="button">Export SVG</button>
+              <button id="fm-copy-mermaid" class="btn btn-secondary" type="button">Copy Mermaid</button>
+              <button id="fm-download-mermaid" class="btn btn-secondary" type="button">Download .mmd</button>
+              <button id="fm-clear" class="btn btn-secondary" type="button">New / Clear</button>
+            </div>
+
+            <div class="fm-scroll" id="fm-scroll">
+              <div class="fm-canvas-inner" id="fm-canvas-inner">
+                <svg id="fm-canvas" xmlns="http://www.w3.org/2000/svg" width="800" height="520" role="application" aria-label="Flowchart canvas">
+                  <defs>
+                    <marker id="fm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                      <path d="M0 0 L10 5 L0 10 z" fill="#8a90b8"></path>
+                    </marker>
+                  </defs>
+                  <g id="fm-edges"></g>
+                  <g id="fm-nodes"></g>
+                </svg>
+              </div>
+            </div>
+
+            <div id="fm-status" class="status" role="status" aria-live="polite"></div>
+
+            <div class="fm-output">
+              <h3>Mermaid code</h3>
+              <textarea id="fm-mermaid" class="fm-mermaid" readonly aria-label="Generated Mermaid flowchart code"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h2>How it works</h2>
+        <p>The canvas is a single SVG document that you edit directly. Pick a shape from the palette (or press its letter key) and it drops onto the canvas at a free spot. Drag any node with the mouse or your finger and every arrow attached to it follows, because the edges are re-computed from node positions on every move.</p>
+        <p>To draw an arrow, press <strong>Connect</strong>, click the source node and then the target node. A decision node can have as many outgoing arrows as you need. Double-click a node to rename it — <kbd>Enter</kbd> confirms, <kbd>Esc</kbd> cancels. Select a node or an arrow and press <kbd>Delete</kbd> (or the <strong>Delete</strong> button) to remove it; deleting a node removes its arrows too.</p>
+        <p>Your work is autosaved to this browser's local storage, so a reload or a closed tab brings the flowchart back. <strong>New / Clear</strong> wipes the canvas and the saved copy.</p>
+
+        <h2>Export</h2>
+        <ul>
+          <li><strong>Export SVG</strong> downloads a self-contained vector file with the node shapes, labels and arrows — open it in Figma, Illustrator, Inkscape or a browser.</li>
+          <li><strong>Copy Mermaid</strong> puts valid <code>flowchart TD</code> source on your clipboard so you can paste it into GitHub, Notion, GitLab or any Markdown tool that renders Mermaid.</li>
+          <li><strong>Download .mmd</strong> saves the same Mermaid source as a file.</li>
+        </ul>
+
+        <h2>Privacy</h2>
+        <p>This editor is plain HTML, CSS and JavaScript — no server, no API, no analytics and no external requests. Your flowchart is drawn locally and the autosave lives only in this browser's local storage, which you can wipe at any time with <strong>New / Clear</strong>. Nothing you draw is ever transmitted.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <details class="faq-item">
+          <summary>Is this flowchart maker really free?</summary>
+          <p>Yes — 100% free, with no signup, no account, no watermark and no usage limit. There is no paid tier and no upsell.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does my flowchart get uploaded anywhere?</summary>
+          <p>No. The whole editor is plain HTML, CSS and JavaScript running in your browser tab. There is no server call, no external script, no CDN and no analytics on your diagram. The flowchart only ever exists in your browser's memory and in this browser's local storage.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Which node shapes are available?</summary>
+          <p>Five: Start/End (rounded), Process (rectangle), Decision (diamond), Input/Output (parallelogram) and Document/Note (wavy bottom). Each one maps to a matching Mermaid shape in the exported code.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use it on a phone?</summary>
+          <p>Yes. The layout collapses to a single column, the palette becomes a horizontally scrollable strip and nodes are dragged with touch. Because of the smaller screen, double-tapping a node to rename it can be finicky — the <strong>Edit label</strong> button does the same job with one tap.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I undo a mistake?</summary>
+          <p>Press <strong>Undo</strong> or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>. The editor keeps a stack of the last 50 changes, so you can step back through several edits.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Will my work still be there tomorrow?</summary>
+          <p>Yes, as long as you come back to the same browser on the same device and do not clear site data. The save lives in local storage under this site only — no account needed. Exporting to SVG or Mermaid gives you a permanent copy you control.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does the Mermaid export include my node positions?</summary>
+          <p>No — Mermaid renders its own layout, so the export contains the structure (nodes, labels and the connections between them) rather than pixel positions. Use the SVG export when you need the exact layout you drew.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 <a href="/">DevTools Hub</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/tools/feedback/">Report a Problem</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var SVGNS = 'http://www.w3.org/2000/svg';
+    var STORAGE_KEY = 'fm-flowchart-v1';
+
+    var TYPES = {
+      start:    { name: 'Start / End',    shape: 'terminator',    w: 150, h: 52, textW: 118, key: 's' },
+      process:  { name: 'Process',        shape: 'rect',          w: 160, h: 56, textW: 136, key: 'p' },
+      decision: { name: 'Decision',       shape: 'diamond',       w: 170, h: 92, textW: 96,  key: 'd' },
+      io:       { name: 'Input / Output', shape: 'parallelogram', w: 170, h: 56, textW: 116, key: 'i' },
+      note:     { name: 'Document / Note',shape: 'document',      w: 170, h: 66, textW: 140, key: 'n' }
+    };
+
+    var state = { nodes: [], edges: [], selected: null, selectedKind: null, connectMode: false, connectSource: null, seq: 0 };
+    var history = [];
+    var dragging = null;
+    var editing = null;
+    var lastDragMoved = false;
+
+    var $ = function (id) { return document.getElementById(id); };
+    var svg = $('fm-canvas');
+    var nodesLayer = $('fm-nodes');
+    var edgesLayer = $('fm-edges');
+    var inner = $('fm-canvas-inner');
+    var scroll = $('fm-scroll');
+    var statusEl = $('fm-status');
+    var mermaidEl = $('fm-mermaid');
+
+    // Text measuring canvas, used to wrap labels inside a node shape.
+    var measureCtx = document.createElement('canvas').getContext('2d');
+    var FONT = "600 13px 'IBM Plex Sans', sans-serif";
+
+    /* ---------- status ---------- */
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg;
+      statusEl.className = 'status ' + (kind || 'info');
+    }
+
+    /* ---------- model ---------- */
+
+    function snapshot() {
+      return JSON.stringify({ nodes: state.nodes, edges: state.edges, seq: state.seq });
+    }
+
+    function pushHistory() {
+      history.push(snapshot());
+      if (history.length > 50) history.shift();
+    }
+
+    function restore(json) {
+      var data = JSON.parse(json);
+      state.nodes = data.nodes || [];
+      state.edges = data.edges || [];
+      state.seq = data.seq || 0;
+      state.selected = null;
+      state.selectedKind = null;
+      state.connectSource = null;
+    }
+
+    function undo() {
+      if (!history.length) { setStatus('Nothing to undo.', 'info'); return; }
+      restore(history.pop());
+      renderAll();
+      setStatus('Undo applied.', 'info');
+    }
+
+    function nodeById(id) {
+      for (var i = 0; i < state.nodes.length; i++) if (state.nodes[i].id === id) return state.nodes[i];
+      return null;
+    }
+
+    function typeOf(node) { return TYPES[node.type]; }
+
+    /* ---------- geometry ---------- */
+
+    function center(n) { return { x: n.x + typeOf(n).w / 2, y: n.y + typeOf(n).h / 2 }; }
+
+    // Point where the straight line from a node's centre towards (tx,ty) leaves its box.
+    function boundaryPoint(n, tx, ty) {
+      var c = center(n), t = typeOf(n);
+      var dx = tx - c.x, dy = ty - c.y;
+      if (dx === 0 && dy === 0) return c;
+      var sx = dx === 0 ? Infinity : (t.w / 2) / Math.abs(dx);
+      var sy = dy === 0 ? Infinity : (t.h / 2) / Math.abs(dy);
+      var k = Math.min(sx, sy);
+      return { x: c.x + dx * k, y: c.y + dy * k };
+    }
+
+    function shapePath(shape, x, y, w, h) {
+      var r = 4;
+      switch (shape) {
+        case 'terminator':
+          return 'M' + x + ' ' + y + ' H' + (x + w) + ' A' + (h / 2) + ' ' + (h / 2) + ' 0 0 1 ' + (x + w) + ' ' + (y + h) + ' H' + x + ' A' + (h / 2) + ' ' + (h / 2) + ' 0 0 1 ' + x + ' ' + y + ' Z';
+        case 'diamond':
+          return 'M' + (x + w / 2) + ' ' + y + ' L' + (x + w) + ' ' + (y + h / 2) + ' L' + (x + w / 2) + ' ' + (y + h) + ' L' + x + ' ' + (y + h / 2) + ' Z';
+        case 'parallelogram': {
+          var s = Math.min(18, w / 6);
+          return 'M' + (x + s) + ' ' + y + ' H' + (x + w) + ' L' + (x + w - s) + ' ' + (y + h) + ' H' + x + ' Z';
+        }
+        case 'document': {
+          var d = 'M' + x + ' ' + y + ' H' + (x + w) + ' V' + (y + h - 10);
+          d += ' Q' + (x + w * 0.75) + ' ' + (y + h + 2) + ' ' + (x + w / 2) + ' ' + (y + h - 8);
+          d += ' Q' + (x + w * 0.25) + ' ' + (y + h - 18) + ' ' + x + ' ' + (y + h - 6);
+          return d + ' Z';
+        }
+        default:
+          return 'M' + (x + r) + ' ' + y + ' H' + (x + w - r) + ' Q' + (x + w) + ' ' + y + ' ' + (x + w) + ' ' + (y + r) +
+                 ' V' + (y + h - r) + ' Q' + (x + w) + ' ' + (y + h) + ' ' + (x + w - r) + ' ' + (y + h) +
+                 ' H' + (x + r) + ' Q' + x + ' ' + (y + h) + ' ' + x + ' ' + (y + h - r) +
+                 ' V' + (y + r) + ' Q' + x + ' ' + y + ' ' + (x + r) + ' ' + y + ' Z';
+      }
+    }
+
+    function wrapLabel(label, maxWidth) {
+      measureCtx.font = FONT;
+      var words = String(label).split(/\s+/).filter(Boolean);
+      if (!words.length) words = [' '];
+      var lines = [], cur = '';
+      for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        // Hard-split words that are wider than the shape on their own.
+        while (measureCtx.measureText(word).width > maxWidth && word.length > 1) {
+          var cut = word.length;
+          while (cut > 1 && measureCtx.measureText(word.slice(0, cut)).width > maxWidth) cut--;
+          if (cur) { lines.push(cur); cur = ''; }
+          lines.push(word.slice(0, cut));
+          word = word.slice(cut);
+        }
+        var probe = cur ? cur + ' ' + word : word;
+        if (cur && measureCtx.measureText(probe).width > maxWidth) { lines.push(cur); cur = word; }
+        else cur = probe;
+      }
+      if (cur) lines.push(cur);
+      if (lines.length > 3) {
+        lines = lines.slice(0, 3);
+        lines[2] = lines[2].replace(/.{1}$/, '…');
+      }
+      return lines;
+    }
+
+    function labelLines(node) { return wrapLabel(node.label, typeOf(node).textW); }
+
+    /* ---------- rendering ---------- */
+
+    function renderAll() {
+      while (nodesLayer.firstChild) nodesLayer.removeChild(nodesLayer.firstChild);
+      state.nodes.forEach(function (n) { nodesLayer.appendChild(buildNode(n)); });
+      renderEdges();
+      resizeCanvas();
+      updateMermaid();
+      save();
+    }
+
+    function buildNode(n) {
+      var t = typeOf(n);
+      var g = document.createElementNS(SVGNS, 'g');
+      g.setAttribute('class', 'fm-node');
+      g.setAttribute('data-id', n.id);
+      g.setAttribute('transform', 'translate(' + n.x + ',' + n.y + ')');
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      g.setAttribute('aria-label', t.name + ' node: ' + n.label);
+
+      var path = document.createElementNS(SVGNS, 'path');
+      path.setAttribute('class', 'fm-node-shape');
+      path.setAttribute('d', shapePath(t.shape, 0, 0, t.w, t.h));
+      g.appendChild(path);
+
+      var lines = labelLines(n);
+      var text = document.createElementNS(SVGNS, 'text');
+      text.setAttribute('class', 'fm-node-text');
+      text.setAttribute('x', t.w / 2);
+      text.setAttribute('y', t.h / 2 - (lines.length - 1) * 8);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('dominant-baseline', 'middle');
+      lines.forEach(function (line, i) {
+        var ts = document.createElementNS(SVGNS, 'tspan');
+        ts.setAttribute('x', t.w / 2);
+        ts.setAttribute('y', t.h / 2 - (lines.length - 1) * 8 + i * 16);
+        ts.textContent = line;
+        text.appendChild(ts);
+      });
+      g.appendChild(text);
+      applySelectionClasses(g, n);
+      return g;
+    }
+
+    function applySelectionClasses(g, n) {
+      g.classList.remove('fm-selected', 'fm-source');
+      if (state.selectedKind === 'node' && state.selected === n.id) g.classList.add('fm-selected');
+      if (state.connectSource === n.id) g.classList.add('fm-source');
+    }
+
+    function renderEdges() {
+      while (edgesLayer.firstChild) edgesLayer.removeChild(edgesLayer.firstChild);
+      state.edges.forEach(function (e) {
+        var from = nodeById(e.from), to = nodeById(e.to);
+        if (!from || !to) return;
+        var a = center(from), b = center(to);
+        var p1 = boundaryPoint(from, b.x, b.y);
+        var p2 = boundaryPoint(to, a.x, a.y);
+        var d = 'M' + p1.x + ' ' + p1.y + ' L' + p2.x + ' ' + p2.y;
+
+        var g = document.createElementNS(SVGNS, 'g');
+        g.setAttribute('class', 'fm-edge' + (state.selectedKind === 'edge' && state.selected === e.id ? ' fm-selected' : ''));
+
+        var hit = document.createElementNS(SVGNS, 'path');
+        hit.setAttribute('class', 'fm-edge-hit');
+        hit.setAttribute('d', d);
+        hit.setAttribute('data-id', e.id);
+        g.appendChild(hit);
+
+        var line = document.createElementNS(SVGNS, 'path');
+        line.setAttribute('class', 'fm-edge-line');
+        line.setAttribute('d', d);
+        line.setAttribute('marker-end', 'url(#fm-arrow)');
+        g.appendChild(line);
+
+        edgesLayer.appendChild(g);
+      });
+    }
+
+    function resizeCanvas() {
+      var w = 800, h = 520;
+      state.nodes.forEach(function (n) {
+        var t = typeOf(n);
+        w = Math.max(w, n.x + t.w + 60);
+        h = Math.max(h, n.y + t.h + 60);
+      });
+      svg.setAttribute('width', w);
+      svg.setAttribute('height', h);
+      inner.style.width = w + 'px';
+      inner.style.height = h + 'px';
+    }
+
+    /* ---------- persistence ---------- */
+
+    function save() {
+      try {
+        // An empty canvas is stored as "no key" so New / Clear really wipes the autosave.
+        if (!state.nodes.length && !state.edges.length) localStorage.removeItem(STORAGE_KEY);
+        else localStorage.setItem(STORAGE_KEY, snapshot());
+      } catch (err) {
+        // Private mode / storage disabled: the editor still works, it just will not persist.
+        if (!save.warned) { save.warned = true; setStatus('Autosave unavailable in this browser (storage blocked). Export to keep your work.', 'info'); }
+      }
+    }
+
+    function load() {
+      var raw = null;
+      try { raw = localStorage.getItem(STORAGE_KEY); } catch (err) { return; }
+      if (!raw) return;
+      try {
+        var data = JSON.parse(raw);
+        if (!data || !Array.isArray(data.nodes)) return;
+        state.nodes = data.nodes.filter(function (n) { return n && TYPES[n.type] && typeof n.x === 'number' && typeof n.y === 'number'; });
+        state.edges = (data.edges || []).filter(function (e) { return e && nodeById(e.from) && nodeById(e.to); });
+        state.seq = data.seq || state.nodes.length;
+      } catch (err) { /* corrupt save: start empty */ }
+    }
+
+    /* ---------- mermaid ---------- */
+
+    function mermaidLabel(node) {
+      return String(node.label).replace(/"/g, '#quot;').replace(/\r?\n/g, '<br/>');
+    }
+
+    function mermaidShape(node) {
+      var lbl = '"' + mermaidLabel(node) + '"';
+      switch (node.type) {
+        case 'start':    return '(' + lbl + ')';
+        case 'decision': return '{' + lbl + '}';
+        case 'io':       return '[/' + lbl + '/]';
+        case 'note':     return '[[' + lbl + ']]';
+        default:         return '[' + lbl + ']';
+      }
+    }
+
+    function buildMermaid() {
+      if (!state.nodes.length) return '';
+      var lines = ['flowchart TD'];
+      state.nodes.forEach(function (n) { lines.push('  ' + n.id + mermaidShape(n)); });
+      state.edges.forEach(function (e) { lines.push('  ' + e.from + ' --> ' + e.to); });
+      return lines.join('\n');
+    }
+
+    function updateMermaid() {
+      mermaidEl.value = buildMermaid();
+    }
+
+    /* ---------- svg export ---------- */
+
+    function escXml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c];
+      });
+    }
+
+    function buildSVG() {
+      if (!state.nodes.length) return '';
+      var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      state.nodes.forEach(function (n) {
+        var t = typeOf(n);
+        minX = Math.min(minX, n.x); minY = Math.min(minY, n.y);
+        maxX = Math.max(maxX, n.x + t.w); maxY = Math.max(maxY, n.y + t.h);
+      });
+      var pad = 30;
+      var vx = minX - pad, vy = minY - pad;
+      var vw = maxX - minX + pad * 2, vh = maxY - minY + pad * 2;
+
+      var out = [];
+      out.push('<?xml version="1.0" encoding="UTF-8"?>');
+      out.push('<svg xmlns="http://www.w3.org/2000/svg" width="' + Math.round(vw) + '" height="' + Math.round(vh) + '" viewBox="' + vx + ' ' + vy + ' ' + vw + ' ' + vh + '">');
+      out.push('<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#33334d"/></marker></defs>');
+      out.push('<rect x="' + vx + '" y="' + vy + '" width="' + vw + '" height="' + vh + '" fill="#ffffff"/>');
+
+      state.edges.forEach(function (e) {
+        var from = nodeById(e.from), to = nodeById(e.to);
+        if (!from || !to) return;
+        var a = center(from), b = center(to);
+        var p1 = boundaryPoint(from, b.x, b.y);
+        var p2 = boundaryPoint(to, a.x, a.y);
+        out.push('<path d="M' + p1.x + ' ' + p1.y + ' L' + p2.x + ' ' + p2.y + '" fill="none" stroke="#33334d" stroke-width="2" marker-end="url(#arrow)"/>');
+      });
+
+      state.nodes.forEach(function (n) {
+        var t = typeOf(n);
+        out.push('<g transform="translate(' + n.x + ',' + n.y + ')">');
+        out.push('<path d="' + shapePath(t.shape, 0, 0, t.w, t.h) + '" fill="#eef3ff" stroke="#33334d" stroke-width="2"/>');
+        var lines = labelLines(n);
+        var baseY = t.h / 2 - (lines.length - 1) * 8 + 4;
+        lines.forEach(function (line, i) {
+          out.push('<text x="' + (t.w / 2) + '" y="' + (baseY + i * 16) + '" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#101020">' + escXml(line) + '</text>');
+        });
+        out.push('</g>');
+      });
+
+      out.push('</svg>');
+      return out.join('\n');
+    }
+
+    function download(filename, content, mime) {
+      var blob = new Blob([content], { type: mime });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    }
+
+    /* ---------- node actions ---------- */
+
+    function freePosition(w, h) {
+      var stepX = 190, stepY = 110, gap = 20;
+      for (var r = 0; r < 40; r++) {
+        for (var c = 0; c < 5; c++) {
+          var x = 40 + c * stepX, y = 40 + r * stepY;
+          var clash = state.nodes.some(function (n) {
+            var t = typeOf(n);
+            return !(x + w + gap < n.x || n.x + t.w + gap < x || y + h + gap < n.y || n.y + t.h + gap < y);
+          });
+          if (!clash) return { x: x, y: y };
+        }
+      }
+      return { x: 40, y: 40 + state.nodes.length * 24 };
+    }
+
+    function addNode(type) {
+      var t = TYPES[type];
+      if (!t) return;
+      pushHistory();
+      var pos = freePosition(t.w, t.h);
+      state.seq += 1;
+      var node = { id: 'n' + state.seq, type: type, label: t.name, x: pos.x, y: pos.y };
+      state.nodes.push(node);
+      state.selected = node.id;
+      state.selectedKind = 'node';
+      renderAll();
+      setStatus('Added ' + t.name + ' node. Double-click it to rename.', 'success');
+    }
+
+    function deleteSelection() {
+      if (!state.selected) { setStatus('Select a node or an arrow first.', 'info'); return; }
+      pushHistory();
+      if (state.selectedKind === 'node') {
+        var n = nodeById(state.selected);
+        state.nodes = state.nodes.filter(function (x) { return x.id !== state.selected; });
+        state.edges = state.edges.filter(function (e) { return e.from !== state.selected && e.to !== state.selected; });
+        setStatus('Deleted ' + (n ? typeOf(n).name : 'node') + ' and its arrows.', 'success');
+      } else {
+        state.edges = state.edges.filter(function (e) { return e.id !== state.selected; });
+        setStatus('Deleted arrow.', 'success');
+      }
+      state.selected = null;
+      state.selectedKind = null;
+      state.connectSource = null;
+      renderAll();
+    }
+
+    function clearAll() {
+      if (!state.nodes.length && !state.edges.length) { setStatus('Canvas is already empty.', 'info'); return; }
+      if (!window.confirm('Clear the canvas? All nodes and arrows will be deleted and the autosave wiped.')) return;
+      pushHistory();
+      state.nodes = [];
+      state.edges = [];
+      state.selected = null;
+      state.selectedKind = null;
+      state.connectSource = null;
+      state.seq = 0;
+      try { localStorage.removeItem(STORAGE_KEY); } catch (err) { /* storage blocked */ }
+      renderAll();
+      setStatus('Canvas cleared.', 'success');
+    }
+
+    /* ---------- connect mode ---------- */
+
+    function setConnectMode(on) {
+      state.connectMode = on;
+      state.connectSource = null;
+      var btn = $('fm-connect');
+      btn.classList.toggle('fm-mode-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.textContent = on ? 'Connect: pick source' : 'Connect';
+      renderEdges();
+      nodesLayer.querySelectorAll('.fm-node').forEach(function (g) {
+        var n = nodeById(g.getAttribute('data-id'));
+        if (n) applySelectionClasses(g, n);
+      });
+      if (on) setStatus('Connect mode: click the source node, then the target node.', 'info');
+    }
+
+    function handleNodeClick(node) {
+      if (state.connectMode) {
+        if (!state.connectSource) {
+          state.connectSource = node.id;
+          setStatus('Source selected (' + node.label + '). Now click the target node.', 'info');
+          nodesLayer.querySelectorAll('.fm-node').forEach(function (g) {
+            var n = nodeById(g.getAttribute('data-id'));
+            if (n) applySelectionClasses(g, n);
+          });
+          return;
+        }
+        if (state.connectSource === node.id) {
+          setStatus('Source and target must be different nodes.', 'error');
+          state.connectSource = null;
+          return;
+        }
+        pushHistory();
+        var duplicate = state.edges.some(function (e) { return e.from === state.connectSource && e.to === node.id; });
+        if (!duplicate) {
+          state.seq += 1;
+          state.edges.push({ id: 'e' + state.seq, from: state.connectSource, to: node.id });
+        }
+        // The arrow's target becomes the next source, so a chain is one click per step.
+        state.connectSource = node.id;
+        renderAll();
+        setStatus(duplicate ? 'That arrow already exists.' : 'Arrow created. Click the next node to continue the chain.', duplicate ? 'info' : 'success');
+        return;
+      }
+      state.selected = node.id;
+      state.selectedKind = 'node';
+      renderEdges();
+      nodesLayer.querySelectorAll('.fm-node').forEach(function (g) {
+        var n = nodeById(g.getAttribute('data-id'));
+        if (n) applySelectionClasses(g, n);
+      });
+      setStatus('Selected: ' + node.label + '. Edit label, connect, or delete.', 'info');
+    }
+
+    /* ---------- inline label editing ---------- */
+
+    function startEdit(node) {
+      if (editing) return;
+      var t = typeOf(node);
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'fm-label-input';
+      input.value = node.label;
+      input.setAttribute('aria-label', 'Node label');
+      input.style.left = node.x + 'px';
+      input.style.top = (node.y + t.h / 2 - 16) + 'px';
+      input.style.width = t.w + 'px';
+      input.style.height = '32px';
+      inner.appendChild(input);
+      editing = { node: node, input: input };
+      input.focus();
+      input.select();
+
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); commitEdit(); }
+        else if (ev.key === 'Escape') { ev.preventDefault(); cancelEdit(); }
+        ev.stopPropagation();
+      });
+      input.addEventListener('blur', function () { if (editing && editing.input === input) commitEdit(); });
+    }
+
+    function cancelEdit() {
+      if (!editing) return;
+      var inp = editing.input;
+      editing = null;
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+      setStatus('Label unchanged.', 'info');
+    }
+
+    function commitEdit() {
+      if (!editing) return;
+      var node = editing.node, inp = editing.input;
+      var value = inp.value.trim();
+      editing = null;
+      if (inp.parentNode) inp.parentNode.removeChild(inp);
+      if (value && value !== node.label) {
+        pushHistory();
+        node.label = value;
+        renderAll();
+        setStatus('Label updated.', 'success');
+      } else {
+        setStatus('Label unchanged.', 'info');
+      }
+    }
+
+    /* ---------- dragging ---------- */
+
+    function svgPoint(clientX, clientY) {
+      var ctm = svg.getScreenCTM();
+      if (!ctm) return { x: clientX, y: clientY };
+      var inv = ctm.inverse();
+      var p = svg.createSVGPoint();
+      p.x = clientX;
+      p.y = clientY;
+      var r = p.matrixTransform(inv);
+      return { x: r.x, y: r.y };
+    }
+
+    function startDrag(node, ev) {
+      var start = svgPoint(ev.clientX, ev.clientY);
+      dragging = { node: node, dx: start.x - node.x, dy: start.y - node.y, moved: false, pointerId: ev.pointerId };
+      try { ev.target.setPointerCapture(ev.pointerId); } catch (err) { /* capture unsupported */ }
+    }
+
+    function moveDrag(ev) {
+      if (!dragging) return;
+      var p = svgPoint(ev.clientX, ev.clientY);
+      var n = dragging.node, t = typeOf(n);
+      var x = Math.max(0, Math.round(p.x - dragging.dx));
+      var y = Math.max(0, Math.round(p.y - dragging.dy));
+      if (x !== n.x || y !== n.y) {
+        if (!dragging.moved) { pushHistory(); dragging.moved = true; }
+        n.x = x;
+        n.y = y;
+        var g = nodesLayer.querySelector('[data-id="' + n.id + '"]');
+        if (g) g.setAttribute('transform', 'translate(' + n.x + ',' + n.y + ')');
+        renderEdges();
+        resizeCanvas();
+      }
+      ev.preventDefault();
+    }
+
+    function endDrag() {
+      if (!dragging) return;
+      var moved = dragging.moved;
+      dragging = null;
+      // Do not re-render the node here: replacing the element would detach it and the
+      // click event that follows pointerup would never reach the canvas.
+      if (moved) {
+        lastDragMoved = true;
+        updateMermaid();
+        save();
+        setStatus('Node moved.', 'info');
+      }
+    }
+
+    /* ---------- clipboard ---------- */
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function (resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('aria-label', 'Mermaid code');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? resolve() : reject(new Error('copy failed'));
+      });
+    }
+
+    /* ---------- wiring ---------- */
+
+    function init() {
+      document.querySelectorAll('.fm-palette-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () { addNode(btn.getAttribute('data-type')); });
+      });
+
+      $('fm-connect').addEventListener('click', function () { setConnectMode(!state.connectMode); });
+      $('fm-edit').addEventListener('click', function () {
+        var n = state.selectedKind === 'node' ? nodeById(state.selected) : null;
+        if (!n) { setStatus('Select a node first, then click Edit label.', 'info'); return; }
+        startEdit(n);
+      });
+      $('fm-delete').addEventListener('click', deleteSelection);
+      $('fm-undo').addEventListener('click', undo);
+      $('fm-clear').addEventListener('click', clearAll);
+
+      $('fm-export-svg').addEventListener('click', function () {
+        var svgText = buildSVG();
+        if (!svgText) { setStatus('Add at least one node before exporting.', 'error'); return; }
+        download('flowchart-' + Date.now() + '.svg', svgText, 'image/svg+xml;charset=utf-8');
+        setStatus('SVG downloaded.', 'success');
+      });
+
+      $('fm-copy-mermaid').addEventListener('click', function () {
+        var code = buildMermaid();
+        if (!code) { setStatus('Add at least one node before copying Mermaid code.', 'error'); return; }
+        copyText(code).then(function () {
+          setStatus('Mermaid code copied to clipboard.', 'success');
+        }).catch(function () {
+          setStatus('Clipboard blocked by the browser. Select the code in the box below and copy it manually.', 'error');
+          mermaidEl.focus();
+          mermaidEl.select();
+        });
+      });
+
+      $('fm-download-mermaid').addEventListener('click', function () {
+        var code = buildMermaid();
+        if (!code) { setStatus('Add at least one node before downloading Mermaid code.', 'error'); return; }
+        download('flowchart-' + Date.now() + '.mmd', code, 'text/plain;charset=utf-8');
+        setStatus('Mermaid file downloaded.', 'success');
+      });
+
+      // Canvas interactions (delegated so re-rendered nodes keep working).
+      nodesLayer.addEventListener('pointerdown', function (ev) {
+        var g = ev.target.closest ? ev.target.closest('.fm-node') : null;
+        if (!g) return;
+        var node = nodeById(g.getAttribute('data-id'));
+        if (!node) return;
+        startDrag(node, ev);
+      });
+      nodesLayer.addEventListener('dblclick', function (ev) {
+        var g = ev.target.closest ? ev.target.closest('.fm-node') : null;
+        if (!g) return;
+        var node = nodeById(g.getAttribute('data-id'));
+        if (node) startEdit(node);
+      });
+      nodesLayer.addEventListener('click', function (ev) {
+        if (lastDragMoved) { lastDragMoved = false; return; }
+        var g = ev.target.closest ? ev.target.closest('.fm-node') : null;
+        if (!g) return;
+        var node = nodeById(g.getAttribute('data-id'));
+        if (node) handleNodeClick(node);
+      });
+      // Keyboard users tabbing onto a node should get it selected, and Enter should edit it.
+      nodesLayer.addEventListener('focusin', function (ev) {
+        var g = ev.target.closest ? ev.target.closest('.fm-node') : null;
+        if (!g) return;
+        var node = nodeById(g.getAttribute('data-id'));
+        if (!node || state.connectMode) return;
+        state.selected = node.id;
+        state.selectedKind = 'node';
+        renderEdges();
+        nodesLayer.querySelectorAll('.fm-node').forEach(function (el) {
+          var n = nodeById(el.getAttribute('data-id'));
+          if (n) applySelectionClasses(el, n);
+        });
+      });
+
+      edgesLayer.addEventListener('click', function (ev) {
+        var hit = ev.target.closest ? ev.target.closest('.fm-edge-hit') : null;
+        if (!hit) return;
+        state.selected = hit.getAttribute('data-id');
+        state.selectedKind = 'edge';
+        renderEdges();
+        setStatus('Arrow selected. Press Delete to remove it.', 'info');
+      });
+
+      svg.addEventListener('pointermove', moveDrag);
+      svg.addEventListener('pointerup', endDrag);
+      svg.addEventListener('pointercancel', endDrag);
+
+      document.addEventListener('keydown', function (ev) {
+        if (editing) return;
+        var tag = (ev.target.tagName || '').toLowerCase();
+        var typing = tag === 'input' || tag === 'textarea';
+
+        if ((ev.key === 'Delete' || ev.key === 'Backspace') && !typing) {
+          ev.preventDefault();
+          deleteSelection();
+          return;
+        }
+        if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z') {
+          ev.preventDefault();
+          undo();
+          return;
+        }
+        if (ev.key === 'Escape') {
+          if (state.connectMode) setConnectMode(false);
+          return;
+        }
+        if (typing || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+        if (ev.key === 'Enter') {
+          var focused = ev.target.closest ? ev.target.closest('.fm-node') : null;
+          var fn = focused ? nodeById(focused.getAttribute('data-id')) : null;
+          if (fn) { ev.preventDefault(); startEdit(fn); }
+          return;
+        }
+        var key = ev.key.toLowerCase();
+        var match = null;
+        Object.keys(TYPES).forEach(function (t) { if (TYPES[t].key === key) match = t; });
+        if (match) { ev.preventDefault(); addNode(match); }
+      });
+
+      // Clicking empty canvas clears the selection.
+      svg.addEventListener('click', function (ev) {
+        if (ev.target === svg) {
+          lastDragMoved = false;
+          state.selected = null;
+          state.selectedKind = null;
+          renderEdges();
+        }
+      });
+
+      load();
+      renderAll();
+      setStatus(state.nodes.length ? 'Restored your saved flowchart.' : 'Pick a shape from the palette to start.', 'info');
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>
