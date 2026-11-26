@@ -174,6 +174,18 @@ async function loadKnownSlugs(env, baseUrl) {
 export async function onRequest(context) {
   const url = new URL(context.request.url);
 
+
+  // BUG-XXX: Skip static assets to avoid Functions middleware truncation (cf-cache-status: DYNAMIC)
+  // These paths are served directly by Cloudflare Pages static asset handling
+  const STATIC_ASSETS = new Set([
+    "/manifest.txt", "/sitemap.xml", "/llms.txt", "/llms-full.txt", "/tool-dates.json",
+    "/favicon.ico", "/favicon.png", "/apple-touch-icon.png", "/og-image.png",
+    "/styles.css", "/tools.js", "/robots.txt", "/_headers", "/_redirects",
+    "/_routes.json", "/404.html"
+  ]);
+  if (STATIC_ASSETS.has(url.pathname)) {
+    return context.next();
+  }
   // BUG-304: the `_redirects` block for these paths was a silent no-op — Cloudflare
   // Pages `_redirects` supports 200/301/302/303/307/308 and NOT 404, so every rule
   // of the form "/.env /nonexistent-404 404" was dropped at parse time. /.env and
