@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 393 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 394 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 393
+- Total tools: 394
 - Categories: 11
-- Last updated: 2026-11-25
+- Last updated: 2026-11-26
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (12 tools)
@@ -2049,7 +2049,7 @@ Free AI image detector that spots AI generated and deepfake images online. Get a
 
 Free AI photo editor. Describe the change in plain English and edit your photo with a generative model. Download the result.
 
-## Network Tools (26 tools)
+## Network Tools (27 tools)
 
 Browse all: [Network Tools](https://tools.scoreroute.com/tools/network/.md)
 
@@ -2286,6 +2286,15 @@ Free port checker. Test up to 25 TCP ports from outside your network and get ope
 - Tags: webhook, tester, inspect, http, api, callback, debug
 
 Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks and POST requests. View headers and body in real-time. No signup.
+
+### Sitemap Generator - Free XML Sitemap Creator
+
+- URL: https://tools.scoreroute.com/tools/sitemap-generator/
+- Markdown: https://tools.scoreroute.com/tools/sitemap-generator/.md
+- Category: Network Tools
+- Tags: sitemap, generator, xml, seo, crawl, urls, free, online
+
+Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Supports priority, changefreq, lastmod.
 
 ## Code Testing (19 tools)
 
@@ -3596,7 +3605,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 393 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 394 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

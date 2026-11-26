@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 393,
+  "tool_count": 394,
   "categories": [
     "ai-language",
     "calculators",
@@ -2771,6 +2771,13 @@
       "category": "converters",
       "markdown_url": "https://tools.scoreroute.com/tools/docker-run-to-compose/.md",
       "description": "Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml wit..."
+    },
+    {
+      "name": "Sitemap Generator - Free XML Sitemap Creator",
+      "url": "https://tools.scoreroute.com/tools/sitemap-generator/",
+      "category": "network",
+      "markdown_url": "https://tools.scoreroute.com/tools/sitemap-generator/.md",
+      "description": "Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Suppor..."
     }
   ],
   "skills": [
@@ -5524,6 +5531,13 @@
       "category": "converters",
       "markdown_url": "https://tools.scoreroute.com/tools/docker-run-to-compose/.md",
       "description": "Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml wit..."
+    },
+    {
+      "name": "Sitemap Generator - Free XML Sitemap Creator",
+      "url": "https://tools.scoreroute.com/tools/sitemap-generator/",
+      "category": "network",
+      "markdown_url": "https://tools.scoreroute.com/tools/sitemap-generator/.md",
+      "description": "Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Suppor..."
     }
   ]
 }
