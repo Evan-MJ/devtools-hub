@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 393 free developer tools across 11 categories. No signup, no tracking.
+> 394 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 393 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 394 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -287,6 +287,7 @@
 - [AI Crawler Log Analyzer - Bot Traffic](https://tools.scoreroute.com/tools/ai-crawler-log-analyzer/.md) [HTML](https://tools.scoreroute.com/tools/ai-crawler-log-analyzer/)
 - [Port Checker - Test Open Ports Online Free](https://tools.scoreroute.com/tools/port-checker/.md) [HTML](https://tools.scoreroute.com/tools/port-checker/)
 - [Webhook Tester - Capture & Inspect HTTP Webhooks](https://tools.scoreroute.com/tools/webhook-tester/.md) [HTML](https://tools.scoreroute.com/tools/webhook-tester/)
+- [Sitemap Generator - Free XML Sitemap Creator](https://tools.scoreroute.com/tools/sitemap-generator/.md) [HTML](https://tools.scoreroute.com/tools/sitemap-generator/)
 
 ## Code Testing
 - [Free Grammar Checker - AI Error Explanation](https://tools.scoreroute.com/tools/grammar-checker/.md) [HTML](https://tools.scoreroute.com/tools/grammar-checker/)
@@ -453,4 +454,4 @@
 - [Sitemap](https://tools.scoreroute.com/sitemap.xml): full URL list for search engines
 - [Agent Skills Index](https://tools.scoreroute.com/.well-known/agent-skills/index.json): machine-readable tool catalog
 - [Agent instructions](https://tools.scoreroute.com/AGENTS.md): how to discover, cite and use these tools (closes `ax/agents-md`)
-- Last updated: 2026-11-25
+- Last updated: 2026-11-26

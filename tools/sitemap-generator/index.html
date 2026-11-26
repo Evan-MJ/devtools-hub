@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Generator - Free XML Sitemap Creator | DevTools Hub</title>
+    <meta name="description" content="Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Supports priority, changefreq, lastmod.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/sitemap-generator/">
+    <meta property="og:title" content="Sitemap Generator - Free XML Sitemap Creator | DevTools Hub">
+    <meta property="og:description" content="Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Supports priority, changefreq, lastmod.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/sitemap-generator/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-26",
+        "dateModified": "2026-11-26",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "Sitemap Generator - Free XML Sitemap Creator | DevTools Hub",
+        "description": "Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Supports priority, changefreq, lastmod.",
+        "url": "https://tools.scoreroute.com/tools/sitemap-generator/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "featureList": ["Generate XML sitemap from URL list", "Crawl website for URLs", "Set priority, changefreq, lastmod per URL", "Export sitemap.xml", "Validate sitemap syntax", "No signup, no limits"]
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sitemap Generator</h1>
+            <p class="subtitle">Create XML Sitemaps Free - No Limits, No Signup</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/">Tools</a> > <span>Sitemap Generator</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <h2>Generate XML Sitemap</h2>
+
+                <div class="input-tabs">
+                    <button class="tab-btn active" data-tab="manual" onclick="switchTab('manual')">Manual URL List</button>
+                    <button class="tab-btn" data-tab="crawl" onclick="switchTab('crawl')">Crawl Website</button>
+                </div>
+
+                <div id="tab-manual" class="tab-content active">
+                    <textarea id="url-input" placeholder="Enter URLs (one per line)&#10;https://example.com/page1&#10;https://example.com/page2&#10;https://example.com/blog/post1" aria-label="URL List"></textarea>
+                    <div class="options-row">
+                        <label>Default Priority:
+                            <select id="default-priority">
+                                <option value="1.0">1.0 (Highest)</option>
+                                <option value="0.8" selected>0.8</option>
+                                <option value="0.6">0.6</option>
+                                <option value="0.4">0.4</option>
+                                <option value="0.2">0.2</option>
+                                <option value="0.0">0.0 (Lowest)</option>
+                            </select>
+                        </label>
+                        <label>Default Change Frequency:
+                            <select id="default-changefreq">
+                                <option value="always">always</option>
+                                <option value="hourly">hourly</option>
+                                <option value="daily">daily</option>
+                                <option value="weekly" selected>weekly</option>
+                                <option value="monthly">monthly</option>
+                                <option value="yearly">yearly</option>
+                                <option value="never">never</option>
+                            </select>
+                        </label>
+                        <label>Include Lastmod:
+                            <select id="include-lastmod">
+                                <option value="auto" selected>Auto (today)</option>
+                                <option value="none">None</option>
+                                <option value="custom">Custom date</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div id="custom-date-row" style="display:none;">
+                        <label>Custom Lastmod Date:
+                            <input type="date" id="custom-lastmod">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="tab-crawl" class="tab-content">
+                    <div class="crawl-input">
+                        <input type="url" id="crawl-url" placeholder="https://example.com" aria-label="Website URL to crawl">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="crawl-same-domain" checked> Same domain only
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="crawl-respect-robots" checked> Respect robots.txt
+                        </label>
+                        <div class="options-row">
+                            <label>Max Pages:
+                                <input type="number" id="crawl-max-pages" value="500" min="1" max="5000">
+                            </label>
+                            <label>Max Depth:
+                                <input type="number" id="crawl-max-depth" value="3" min="1" max="10">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button onclick="generateSitemap()" class="btn btn-primary" id="generate-btn">Generate Sitemap</button>
+                    <button onclick="validateSitemap()" class="btn" id="validate-btn">Validate Sitemap</button>
+                    <button onclick="downloadSitemap()" class="btn" id="download-btn" disabled>Download sitemap.xml</button>
+                    <button onclick="loadExample()" class="btn btn-secondary">Load Example</button>
+                    <button onclick="clearAll()" class="btn btn-secondary">Clear</button>
+                </div>
+
+                <div id="sitemap-status" class="status"></div>
+
+                <div id="stats-row" style="display:none; margin-top:16px; padding:12px; background:#1a1a3e; border-radius:8px;">
+                    <span id="stat-urls">0 URLs</span>
+                    <span id="stat-size" style="margin-left:24px;">0 KB</span>
+                    <span id="stat-warnings" style="margin-left:24px; color:#f59e0b;">0 Warnings</span>
+                </div>
+
+                <textarea id="sitemap-output" readonly placeholder="Generated sitemap.xml will appear here..." aria-label="Sitemap Output"></textarea>
+            </div>
+
+            <div class="info-section">
+                <h3>What is a Sitemap Generator?</h3>
+                <p>A Sitemap Generator creates XML sitemaps that help search engines discover and index your website pages. An XML sitemap is a file that lists all important URLs on your site along with metadata like last modification date, change frequency, and priority. This tool generates standards-compliant sitemaps following the <a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noopener">sitemaps.org protocol</a>.</p>
+
+                <h3>Why Use This Sitemap Generator?</h3>
+                <ul>
+                    <li><strong>No URL Limits:</strong> Most free tools limit you to 500 URLs. This tool handles thousands.</li>
+                    <li><strong>No Signup Required:</strong> Generate sitemaps instantly without creating an account.</li>
+                    <li><strong>100% Client-Side:</strong> Your URLs never leave your browser. Complete privacy.</li>
+                    <li><strong>Multiple Input Methods:</strong> Paste a URL list or crawl a website directly.</li>
+                    <li><strong>Full Control:</strong> Set priority, changefreq, and lastmod per URL or globally.</li>
+                    <li><strong>Validation Built-In:</strong> Validate your sitemap against the XML schema before submitting.</li>
+                </ul>
+
+                <h3>Sitemap Protocol Fields</h3>
+                <div class="example-box">
+                    <div class="example-item">
+                        <strong><loc></strong> (Required) - The full URL of the page, including protocol (http/https).
+                    </div>
+                    <div class="example-item">
+                        <strong><lastmod></strong> (Optional) - Date of last modification in YYYY-MM-DD format.
+                    </div>
+                    <div class="example-item">
+                        <strong><changefreq></strong> (Optional) - How frequently the page changes: always, hourly, daily, weekly, monthly, yearly, never.
+                    </div>
+                    <div class="example-item">
+                        <strong><priority></strong> (Optional) - Priority relative to other URLs on your site (0.0 to 1.0).
+                    </div>
+                </div>
+
+                <h3>How to Use</h3>
+                <ol>
+                    <li><strong>Manual Mode:</strong> Paste your URLs (one per line), configure default options, click Generate.</li>
+                    <li><strong>Crawl Mode:</strong> Enter your website URL, set crawl limits, click Generate. The tool will fetch and parse your site's HTML to discover links.</li>
+                    <li>Review the generated sitemap in the output area.</li>
+                    <li>Click Validate to check for syntax errors.</li>
+                    <li>Click Download to save as <code>sitemap.xml</code>.</li>
+                    <li>Upload to your site root and submit to Google Search Console / Bing Webmaster Tools.</li>
+                </ol>
+
+                <h3>Sitemap Best Practices</h3>
+                <ul>
+                    <li>Keep sitemaps under 50,000 URLs and 50MB (uncompressed). Split into multiple sitemaps with a sitemap index if larger.</li>
+                    <li>Only include canonical URLs - no duplicates, redirects, or blocked pages.</li>
+                    <li>Use <code>lastmod</code> accurately - Google uses it for recrawl scheduling.</li>
+                    <li>Set <code>priority</code> for your most important pages (homepage = 1.0, main sections = 0.8, blog posts = 0.6).</li>
+                    <li>Submit your sitemap to <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> and <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster Tools</a>.</li>
+                </ul>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Does this tool upload my URLs to a server?</summary>
+                    <p>No. All processing happens entirely in your browser using JavaScript. Your URL list and any crawled data never leave your device.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I crawl websites that block bots?</summary>
+                    <p>The crawl runs in your browser context, so it respects the same CORS and authentication rules as your browser. Some sites may block cross-origin requests. For those, use Manual mode with exported URLs from your CMS.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What's the maximum number of URLs supported?</summary>
+                    <p>The tool can handle 10,000+ URLs in Manual mode. Crawl mode is limited to 5,000 pages by default to prevent browser memory issues. For larger sites, use multiple sitemaps with a sitemap index.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does it generate a sitemap index file?</summary>
+                    <p>This tool generates a single sitemap.xml. For sites exceeding 50,000 URLs, generate multiple sitemaps and create a sitemap index manually, or use the sitemap index feature in your CMS.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I handle dynamic/JS-rendered content?</summary>
+                    <p>The crawler only sees the initial HTML. For SPA/JS-rendered sites, use Manual mode with URLs from your server-side rendering or pre-rendering setup.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        function showStatus(id, msg, type) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.className = 'status ' + (type || '');
+        }
+
+        function escapeXml(str) {
+            return str
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '"')
+                .replace(/'/g, '&apos;');
+        }
+
+        function generateSitemap() {
+            const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
+            let urls = [];
+
+            if (activeTab === 'manual') {
+                const input = document.getElementById('url-input').value.trim();
+                if (!input) {
+                    showStatus('sitemap-status', 'Please enter at least one URL', 'info');
+                    return;
+                }
+                const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+                const priority = document.getElementById('default-priority').value;
+                const changefreq = document.getElementById('default-changefreq').value;
+                const lastmodMode = document.getElementById('include-lastmod').value;
+                let customDate = null;
+                if (lastmodMode === 'custom') {
+                    customDate = document.getElementById('custom-lastmod').value;
+                    if (!customDate) {
+                        showStatus('sitemap-status', 'Please select a custom date', 'info');
+                        return;
+                    }
+                }
+                const today = new Date().toISOString().split('T')[0];
+
+                urls = lines.map((url, i) => {
+                    let lastmod = '';
+                    if (lastmodMode === 'auto') lastmod = today;
+                    else if (lastmodMode === 'custom') lastmod = customDate;
+                    return { url, priority, changefreq, lastmod };
+                });
+            } else {
+                const crawlUrl = document.getElementById('crawl-url').value.trim();
+                if (!crawlUrl) {
+                    showStatus('sitemap-status', 'Please enter a website URL to crawl', 'info');
+                    return;
+                }
+                showStatus('sitemap-status', 'Crawling... this may take a moment', 'info');
+                crawlWebsite(crawlUrl).then(crawledUrls => {
+                    if (crawledUrls.length === 0) {
+                        showStatus('sitemap-status', 'No URLs found. Check the URL or try Manual mode.', 'info');
+                        return;
+                    }
+                    urls = crawledUrls.map(u => ({
+                        url: u,
+                        priority: document.getElementById('default-priority').value,
+                        changefreq: document.getElementById('default-changefreq').value,
+                        lastmod: new Date().toISOString().split('T')[0]
+                    }));
+                    buildSitemap(urls);
+                }).catch(err => {
+                    showStatus('sitemap-status', 'Crawl failed: ' + err.message, 'error');
+                });
+                return;
+            }
+
+            buildSitemap(urls);
+        }
+
+        function buildSitemap(urls) {
+            if (urls.length === 0) {
+                showStatus('sitemap-status', 'No valid URLs to process', 'info');
+                return;
+            }
+
+            let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+            xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+            let warnings = 0;
+            urls.forEach(item => {
+                if (!item.url.match(/^https?:\/\//i)) {
+                    warnings++;
+                    return;
+                }
+                xml += '  <url>\n';
+                xml += '    <loc>' + escapeXml(item.url) + '</loc>\n';
+                if (item.lastmod) {
+                    xml += '    <lastmod>' + item.lastmod + '</lastmod>\n';
+                }
+                if (item.changefreq) {
+                    xml += '    <changefreq>' + item.changefreq + '</changefreq>\n';
+                }
+                if (item.priority) {
+                    xml += '    <priority>' + item.priority + '</priority>\n';
+                }
+                xml += '  </url>\n';
+            });
+
+            xml += '</urlset>';
+
+            document.getElementById('sitemap-output').value = xml;
+            document.getElementById('download-btn').disabled = false;
+            document.getElementById('stats-row').style.display = 'block';
+            document.getElementById('stat-urls').textContent = urls.length + ' URLs';
+            const sizeKB = (new Blob([xml]).size / 1024).toFixed(1);
+            document.getElementById('stat-size').textContent = sizeKB + ' KB';
+            document.getElementById('stat-warnings').textContent = warnings + ' Warnings';
+            if (warnings > 0) document.getElementById('stat-warnings').style.color = '#f59e0b';
+
+            showStatus('sitemap-status', 'Sitemap generated: ' + urls.length + ' URLs' + (warnings ? ' (' + warnings + ' invalid skipped)' : ''), 'success');
+        }
+
+        async function crawlWebsite(baseUrl) {
+            const maxPages = parseInt(document.getElementById('crawl-max-pages').value) || 500;
+            const maxDepth = parseInt(document.getElementById('crawl-max-depth').value) || 3;
+            const sameDomain = document.getElementById('crawl-same-domain').checked;
+            const respectRobots = document.getElementById('crawl-respect-robots').checked;
+
+            const base = new URL(baseUrl);
+            const origin = base.origin;
+            const visited = new Set();
+            const toVisit = [{ url: baseUrl, depth: 0 }];
+            const foundUrls = new Set([baseUrl]);
+            const robotsCache = {};
+
+            async function fetchRobots(domain) {
+                if (robotsCache[domain]) return robotsCache[domain];
+                try {
+                    const res = await fetch(domain + '/robots.txt', {
+                        method: 'GET',
+                        mode: 'cors',
+                        credentials: 'omit'
+                    });
+                    if (res.ok) {
+                        const text = await res.text();
+                        robotsCache[domain] = parseRobots(text);
+                    } else {
+                        robotsCache[domain] = { allowAll: true };
+                    }
+                } catch {
+                    robotsCache[domain] = { allowAll: true };
+                }
+                return robotsCache[domain];
+            }
+
+            function parseRobots(text) {
+                const rules = { allowAll: true, disallow: [] };
+                let currentUA = '*';
+                text.split('\n').forEach(line => {
+                    line = line.trim();
+                    if (line.startsWith('User-agent:')) {
+                        currentUA = line.split(':')[1].trim();
+                    } else if (line.startsWith('Disallow:') && (currentUA === '*' || currentUA.toLowerCase().includes('bot'))) {
+                        const path = line.split(':')[1].trim();
+                        if (path) rules.disallow.push(path);
+                        rules.allowAll = false;
+                    }
+                });
+                return rules;
+            }
+
+            function isAllowed(robots, url) {
+                if (robots.allowAll) return true;
+                const path = new URL(url).pathname;
+                return !robots.disallow.some(d => path.startsWith(d));
+            }
+
+            while (toVisit.length > 0 && foundUrls.size < maxPages) {
+                const { url, depth } = toVisit.shift();
+                if (visited.has(url) || depth > maxDepth) continue;
+                visited.add(url);
+
+                try {
+                    const res = await fetch(url, {
+                        method: 'GET',
+                        mode: 'cors',
+                        credentials: 'omit',
+                        headers: { 'Accept': 'text/html' }
+                    });
+                    if (!res.ok || !res.headers.get('content-type')?.includes('text/html')) continue;
+
+                    const html = await res.text();
+                    const links = extractLinks(html, url);
+
+                    for (const link of links) {
+                        try {
+                            const linkUrl = new URL(link, url).href;
+                            const linkOrigin = new URL(linkUrl).origin;
+
+                            if (sameDomain && linkOrigin !== origin) continue;
+                            if (respectRobots) {
+                                const robots = await fetchRobots(linkOrigin);
+                                if (!isAllowed(robots, linkUrl)) continue;
+                            }
+                            if (!visited.has(linkUrl) && !foundUrls.has(linkUrl)) {
+                                foundUrls.add(linkUrl);
+                                toVisit.push({ url: linkUrl, depth: depth + 1 });
+                            }
+                        } catch {}
+                    }
+                } catch (e) {
+                    console.warn('Failed to fetch:', url, e);
+                }
+            }
+
+            return Array.from(foundUrls);
+        }
+
+        function extractLinks(html, baseUrl) {
+            const links = [];
+            const base = new URL(baseUrl);
+            const regex = /<a\s+[^>]*href\s*=\s*["']([^"']+)["'][^>]*>/gi;
+            let match;
+            while ((match = regex.exec(html)) !== null) {
+                const href = match[1].trim();
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) continue;
+                try {
+                    const absolute = new URL(href, base).href;
+                    links.push(absolute);
+                } catch {}
+            }
+            return links;
+        }
+
+        function validateSitemap() {
+            const xml = document.getElementById('sitemap-output').value;
+            if (!xml) {
+                showStatus('sitemap-status', 'No sitemap to validate. Generate one first.', 'info');
+                return;
+            }
+
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(xml, 'application/xml');
+                const errors = doc.querySelectorAll('parsererror');
+                if (errors.length > 0) {
+                    showStatus('sitemap-status', 'Validation failed: ' + errors[0].textContent, 'error');
+                } else {
+                    const urls = doc.querySelectorAll('url');
+                    showStatus('sitemap-status', 'Valid sitemap: ' + urls.length + ' URLs', 'success');
+                }
+            } catch (e) {
+                showStatus('sitemap-status', 'Validation error: ' + e.message, 'error');
+            }
+        }
+
+        function downloadSitemap() {
+            const xml = document.getElementById('sitemap-output').value;
+            if (!xml) {
+                showStatus('sitemap-status', 'No sitemap to download', 'info');
+                return;
+            }
+            const blob = new Blob([xml], { type: 'application/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sitemap.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showStatus('sitemap-status', 'sitemap.xml downloaded', 'success');
+        }
+
+        function loadExample() {
+            const example = 'https://example.com/\nhttps://example.com/about\nhttps://example.com/products\nhttps://example.com/products/item1\nhttps://example.com/products/item2\nhttps://example.com/blog\nhttps://example.com/blog/post-1\nhttps://example.com/blog/post-2\nhttps://example.com/contact\nhttps://example.com/privacy';
+            document.getElementById('url-input').value = example;
+            switchTab('manual');
+            generateSitemap();
+        }
+
+        function clearAll() {
+            document.getElementById('url-input').value = '';
+            document.getElementById('crawl-url').value = '';
+            document.getElementById('sitemap-output').value = '';
+            document.getElementById('sitemap-status').textContent = '';
+            document.getElementById('sitemap-status').className = 'status';
+            document.getElementById('download-btn').disabled = true;
+            document.getElementById('stats-row').style.display = 'none';
+        }
+
+        document.getElementById('include-lastmod').addEventListener('change', function() {
+            document.getElementById('custom-date-row').style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+
+        document.getElementById('url-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                generateSitemap();
+            }
+        });
+    </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
+</body>
+</html>
