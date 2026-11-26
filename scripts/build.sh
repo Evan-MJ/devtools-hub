@@ -151,6 +151,13 @@ rm -f dist/test-*.js dist/test-*.html dist/test-*.txt \
 # stayed in the repo because the operator still uses them; they must not ship.
 rm -rf dist/tools/_autonomous-resources
 
+# The IndexNow submitter is an operator script (the GitHub workflow runs it from the repo) and
+# _autonomous-resources/ holds deai staging output (rewritten copy that no page reads). Neither
+# is site content, and both were served publicly (HTTP 200) because the upload set is the whole
+# working tree. The IndexNow KEY file next to it (f0ed603a….txt) stays public on purpose.
+rm -f dist/indexnow-submit.sh
+rm -rf dist/_autonomous-resources
+
 # src/ is the source of a SEPARATE Worker (devtools-hub-api-proxy) that is deployed
 # on its own; it is not a page of this site. squirrel.toml is the crawler's local
 # config, README.md is the repository readme. None of them is site content — they
