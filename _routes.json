@@ -1,5 +1,20 @@
 {
   "version": 1,
   "include": ["/*"],
-  "exclude": []
+  "exclude": [
+    "/manifest.txt",
+    "/sitemap.xml",
+    "/llms.txt",
+    "/llms-full.txt",
+    "/tool-dates.json",
+    "/favicon.ico",
+    "/favicon.png",
+    "/apple-touch-icon.png",
+    "/og-image.png",
+    "/styles.css",
+    "/tools.js",
+    "/robots.txt",
+    "/_headers",
+    "/_redirects"
+  ]
 }
