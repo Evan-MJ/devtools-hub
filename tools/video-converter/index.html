@@ -283,8 +283,6 @@ ol li, ul li { margin: 0.5rem 0; }
     resultSummary.textContent = '';
   });
 
-  convertBtn.addEventListener('click', run);
-
   function ensureEngine() {
     if (engineLoaded) return Promise.resolve();
     progText.textContent = 'Loading the conversion engine (~31 MB, first use only)...';
