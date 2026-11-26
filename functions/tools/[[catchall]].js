@@ -2419,7 +2419,11 @@ function patchToolHtml(html, tool, slug, lastMod) {
           '@type': 'Answer',
           'text': f.answer
         }
-      }))
+      })),
+      'speakable': {
+        '@type': 'SpeakableSpecification',
+        'cssSelector': ['.info-section .faq-item']
+      }
     };
     const faqScript = '<script type="application/ld+json">' + JSON.stringify(faqPage) + '</script>';
     html = html.replace('</head>', faqScript + '\n</head>');
@@ -3367,7 +3371,11 @@ const _today = new Date().toISOString().split('T')[0];
         '@type': 'Question',
         'name': f.q,
         'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
-      }))
+      })),
+      'speakable': {
+        '@type': 'SpeakableSpecification',
+        'cssSelector': ['.section-block .faq-item']
+      }
     }) + '</script>' + nl : '') +
     '</head>' + nl +
     '<body>' + nl +

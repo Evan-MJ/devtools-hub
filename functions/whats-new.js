@@ -85,7 +85,11 @@ export async function onRequest(context) {
           'text': 'Yes. Every new tool is 100% free, runs in your browser by default, requires no signup, and does not upload your data unless the AI features require a server roundtrip (which is documented on each tool page).'
         }
       }
-    ]
+    ],
+    'speakable': {
+      '@type': 'SpeakableSpecification',
+      'cssSelector': ['.faq-section .faq-item', '.wn-faq .faq-item']
+    }
   };
 
   const html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n' +
