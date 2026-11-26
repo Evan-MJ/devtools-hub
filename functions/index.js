@@ -312,7 +312,11 @@ export async function onRequest(context) {
       '@type': 'Question',
       'name': f.q,
       'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
-    }))
+    })),
+    'speakable': {
+      '@type': 'SpeakableSpecification',
+      'cssSelector': ['.faq-section .faq-item']
+    }
   };
 
   // Pagination nav (only show if >1 page)
@@ -386,7 +390,23 @@ export async function onRequest(context) {
     '<meta name="twitter:image" content="/og-image.png">' + nl +
     '<meta name="twitter:url" content="https://tools.scoreroute.com/">' + nl +
     '<script type="application/ld+json">' + nl +
-    '{"@context":"https://schema.org","@type":"WebSite","@id":"https://tools.scoreroute.com/#website","datePublished":"2026-05-21","dateModified":"' + today + '","author":{"@id":"https://tools.scoreroute.com/#author","@type":"Person","name":"BAOMING","url":"https://github.com/Evan-MJ","sameAs":["https://github.com/Evan-MJ","https://github.com/Evan-MJ/devtools-hub"]},"publisher":{"@id":"https://tools.scoreroute.com/#organization","@type":"Organization","name":"DevTools Hub","url":"https://tools.scoreroute.com/"},"name":"DevTools Hub","description":"Free online developer tools, no signup required. ' + totalCount + '+ browser-based utilities.","url":"https://tools.scoreroute.com/"}' + nl +
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': 'https://tools.scoreroute.com/#website',
+      'datePublished': '2026-05-21',
+      'dateModified': today,
+      'author': { '@id': 'https://tools.scoreroute.com/#author', '@type': 'Person', 'name': 'BAOMING', 'url': 'https://github.com/Evan-MJ', 'sameAs': ['https://github.com/Evan-MJ', 'https://github.com/Evan-MJ/devtools-hub'] },
+      'publisher': { '@id': 'https://tools.scoreroute.com/#organization', '@type': 'Organization', 'name': 'DevTools Hub', 'url': 'https://tools.scoreroute.com/' },
+      'name': 'DevTools Hub',
+      'description': 'Free online developer tools, no signup required. ' + totalCount + '+ browser-based utilities.',
+      'url': 'https://tools.scoreroute.com/',
+      'potentialAction': {
+        '@type': 'SearchAction',
+        'target': { '@type': 'EntryPoint', 'urlTemplate': 'https://tools.scoreroute.com/tools/?q={search_term_string}' },
+        'query-input': 'required name=search_term_string'
+      }
+    }) + nl +
     '</script>' + nl +
     // BUG-310: the home page declared only WebSite, so the one thing that is unambiguously true
     // about this site — it is an application you use, not a set of articles — was never declared
