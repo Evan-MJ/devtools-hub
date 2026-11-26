@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 394 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 395 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 394
+- Total tools: 395
 - Categories: 11
 - Last updated: 2026-11-26
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -489,7 +489,7 @@ Free heart rate zone calculator. Enter your age to get all five training zones i
 
 Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.
 
-## Generators (53 tools)
+## Generators (54 tools)
 
 Browse all: [Generators](https://tools.scoreroute.com/tools/generators/.md)
 
@@ -969,6 +969,15 @@ Free Minecraft circle generator. Draw pixel-perfect circles, ovals and domes wit
 - Tags: keyword, suggestions, seo, autosuggest, bing, google, research
 
 Free keyword suggestions from Google and Bing autosuggest. Expand one seed into 20 live search ideas, compare both engines, and copy the list. No signup.
+
+### Flowchart Maker - Free Drag & Drop Flowchart Creator
+
+- URL: https://tools.scoreroute.com/tools/flowchart-maker/
+- Markdown: https://tools.scoreroute.com/tools/flowchart-maker/.md
+- Category: Generators
+- Tags: flowchart, diagram, flow, chart, mermaid, svg, draw, process, free, online
+
+Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs in your browser.
 
 ## Converters (46 tools)
 
@@ -3605,7 +3614,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 394 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 395 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
