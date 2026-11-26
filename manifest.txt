@@ -1,3 +1,4 @@
+# Manifest updated: 2026-11-26
 # DevTools Hub manifest — single source of truth for all tool metadata
 # Format: slug|category|featured|isnew|name|description|tags
 # To add a tool: append a line above. The function uses this directly (no per-tool fetch).
