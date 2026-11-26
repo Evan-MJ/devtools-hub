@@ -56,6 +56,16 @@ check('sorted traffic is numeric', () => {
 const t2 = await call('?geo=US');
 check('2nd call served from edge cache', () => assert.strictEqual(t2.body.cached, true));
 
+console.log('upstream down -> serve the last-good copy, not a 502');
+store.delete('https://trends.google.com/trending/rss?geo=US');
+const realFetch = globalThis.fetch;
+globalThis.fetch = async () => { throw new Error('simulated upstream failure'); };
+const down = await call('?geo=US');
+globalThis.fetch = realFetch;
+check('HTTP 200', () => assert.strictEqual(down.status, 200));
+check('served from the last-good copy', () => assert.strictEqual(down.body.stale, true));
+check('still 10 trends', () => assert.ok(down.body.data.trends.length === 10, 'got ' + (down.body.data.trends || []).length));
+
 console.log('geo=JP (live, non-latin)');
 const j = await call('?geo=JP');
 check('HTTP 200', () => assert.strictEqual(j.status, 200));
