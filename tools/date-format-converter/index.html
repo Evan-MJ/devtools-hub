@@ -258,16 +258,13 @@ Dec 25 2024
             <div class="dfc-token-row">
               <div class="dfc-token-item"><span class="dfc-token-code">yyyy</span><span class="dfc-token-desc">4-digit year (2024)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">yy</span><span class="dfc-token-desc">2-digit year (24)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">MM</span><span class="dfc-token-desc">2-digit month (01-12)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">M</span><span class="dfc-token-desc">Month (1-12)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">MMM</span><span class="dfc-token-desc">Short month (Jan-Dec)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">MMMM</span><span class="dfc-token-desc">Full month (January)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">MMM</span><span class="dfc-token-desc">Short month (Jan-Dec)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">MM</span><span class="dfc-token-desc">2-digit month (01-12)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">dd</span><span class="dfc-token-desc">2-digit day (01-31)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">d</span><span class="dfc-token-desc">Day (1-31)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">EEE</span><span class="dfc-token-desc">Short day (Mon-Sun)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">EEEE</span><span class="dfc-token-desc">Full day (Monday)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">EEE</span><span class="dfc-token-desc">Short day (Mon-Sun)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">HH</span><span class="dfc-token-desc">24-hour (00-23)</span></div>
-              <div class="dfc-token-item"><span class="dfc-token-code">H</span><span class="dfc-token-desc">24-hour (0-23)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">hh</span><span class="dfc-token-desc">12-hour (01-12)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">mm</span><span class="dfc-token-desc">Minutes (00-59)</span></div>
               <div class="dfc-token-item"><span class="dfc-token-code">ss</span><span class="dfc-token-desc">Seconds (00-59)</span></div>
@@ -305,8 +302,8 @@ Dec 25 2024
           <p>100% private. All conversion happens in your browser using JavaScript. No data is sent to any server. The tool works offline after the initial page load.</p>
         </details>
         <details class="faq-item">
-          <summary>What are date-fns tokens?</summary>
-          <p>date-fns is a popular JavaScript date library. Its tokens (yyyy, MM, dd, HH, mm, ss, etc.) are used to define custom format patterns. For example, <code>yyyy-MM-dd HH:mm:ss</code> produces <code>2024-12-25 14:30:00</code>. Single letters (M, d, H) produce non-padded values.</p>
+          <summary>What format tokens are supported?</summary>
+          <p>This tool uses a subset of date-fns tokens: <code>yyyy</code>, <code>yy</code>, <code>MMMM</code>, <code>MMM</code>, <code>MM</code>, <code>dd</code>, <code>EEEE</code>, <code>EEE</code>, <code>HH</code>, <code>hh</code>, <code>mm</code>, <code>ss</code>, <code>SSS</code>, <code>X</code>, <code>x</code>, <code>zzz</code>, <code>Z</code>, <code>a</code>. For example, <code>yyyy-MM-dd HH:mm:ss</code> produces <code>2024-12-25 14:30:00</code>. Single-letter tokens (M, d, H, h, m, s) are not supported to avoid conflicts with longer tokens.</p>
         </details>
       </div>
     </section>
@@ -416,27 +413,21 @@ Dec 25 2024
       const tzNames = { 'UTC': 'UTC', 'America/New_York': 'EST/EDT', 'America/Los_Angeles': 'PST/PDT', 'Europe/London': 'GMT/BST', 'Europe/Paris': 'CET/CEST', 'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST', 'Australia/Sydney': 'AEST/AEDT' };
       const tzName = tzNames[tz] || (tz ? tz.split('/').pop() : '');
 
-      // Placeholder-based replacement to avoid conflicts between tokens
-      // (e.g., "m" for minutes replacing "m" in "December" from MMMM)
+      // Token definitions (single-char tokens removed to avoid conflicts)
+      // M, d, H, h, m, s removed - use MM, dd, HH, hh, mm, ss instead
       const tokens = {
         'yyyy': pad(year, 4),
         'yy': pad(year % 100),
         'MMMM': monthNamesFull[month - 1],
         'MMM': monthNames[month - 1],
         'MM': pad(month),
-        'M': String(month),
         'dd': pad(day),
-        'd': String(day),
         'EEEE': dayNamesFull[d.getDay()],
         'EEE': dayNames[d.getDay()],
         'HH': pad(hours),
-        'H': String(hours),
         'hh': pad(hours % 12 || 12),
-        'h': String(hours % 12 || 12),
         'mm': pad(minutes),
-        'm': String(minutes),
         'ss': pad(seconds),
-        's': String(seconds),
         'SSS': pad(ms, 3),
         'X': String(Math.floor(d.getTime() / 1000)),
         'x': String(d.getTime()),
@@ -445,24 +436,11 @@ Dec 25 2024
         'a': hours >= 12 ? 'PM' : 'AM'
       };
 
-      // Use unique placeholders to avoid token interference
+      // Single regex with alternation (longest tokens first) to avoid conflicts
       let result = pattern.replace(/'[^']*'/g, m => m.slice(1, -1));
-      const placeholders = {};
       const sortedTokens = Object.keys(tokens).sort((a, b) => b.length - a.length);
-      
-      // First pass: replace each token with a unique placeholder
-      for (const tok of sortedTokens) {
-        const ph = '__DFC_' + tok.replace(/[^a-zA-Z0-9]/g, '_') + '__';
-        placeholders[tok] = ph;
-        const regex = new RegExp(tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-        result = result.replace(regex, ph);
-      }
-      
-      // Second pass: replace placeholders with actual values
-      for (const tok of sortedTokens) {
-        const ph = placeholders[tok];
-        result = result.replace(new RegExp(ph.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), tokens[tok]);
-      }
+      const tokenRegex = new RegExp(sortedTokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+      result = result.replace(tokenRegex, match => tokens[match]);
       return result;
     }
 
