@@ -425,13 +425,16 @@
 
       document.getElementById('interviewSetup').style.display = 'none';
       document.getElementById('interviewSession').style.display = 'block';
-      document.getElementById('questionTitle').textContent = currentQuestion.title;
+      const qTitleEl = document.getElementById('questionTitle');
+      if (qTitleEl) qTitleEl.textContent = currentQuestion.title;
 
       if (interviewMode === 'timed' || interviewMode === 'mock') {
-        document.getElementById('pauseBtn').style.display = 'inline-block';
+        const pauseBtn = document.getElementById('pauseBtn');
+        if (pauseBtn) pauseBtn.style.display = 'inline-block';
         startTimer();
       } else {
-        document.getElementById('timerDisplay').textContent = '∞';
+        const timerEl = document.getElementById('timerDisplay');
+        if (timerEl) timerEl.textContent = '∞';
       }
 
       startTime = Date.now();
@@ -456,14 +459,17 @@
     }
 
     function updateTimerDisplay() {
+      const timerEl = document.getElementById('timerDisplay');
+      if (!timerEl) return;
       const mins = Math.floor(remainingSeconds / 60);
       const secs = remainingSeconds % 60;
-      document.getElementById('timerDisplay').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+      timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 
     function togglePause() {
       isPaused = !isPaused;
       const btn = document.getElementById('pauseBtn');
+      if (!btn) return;
       btn.textContent = isPaused ? 'Resume' : 'Pause';
       btn.classList.toggle('btn-secondary', !isPaused);
       btn.classList.toggle('btn-primary', isPaused);
@@ -471,9 +477,10 @@
 
     function markSectionComplete(sectionKey) {
       sectionCompleted[sectionKey] = true;
-      document.getElementById(sectionKey + 'Status').textContent = '✅';
+      const statusEl = document.getElementById(sectionKey + 'Status');
+      if (statusEl) statusEl.textContent = '✅';
       const section = document.querySelector(`[data-section="${sectionKey}"]`);
-      section.classList.add('completed');
+      if (section) section.classList.add('completed');
       updateProgress();
       showStatus(`${sectionNames[sectionKey]} marked complete`, 'success');
     }
@@ -561,11 +568,14 @@
 
         sectionKeys.forEach(key => {
           if (data.sections[key]) {
-            document.getElementById(key).value = data.sections[key];
+            const inputEl = document.getElementById(key);
+            if (inputEl) inputEl.value = data.sections[key];
           }
           if (sectionCompleted[key]) {
-            document.getElementById(key + 'Status').textContent = '✅';
-            document.querySelector(`[data-section="${key}"]`).classList.add('completed');
+            const statusEl = document.getElementById(key + 'Status');
+            if (statusEl) statusEl.textContent = '✅';
+            const section = document.querySelector(`[data-section="${key}"]`);
+            if (section) section.classList.add('completed');
           }
         });
 
@@ -581,11 +591,15 @@
       const timeUsed = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
       const completed = Object.values(sectionCompleted).filter(v => v).length;
 
-      document.getElementById('interviewSession').style.display = 'none';
-      document.getElementById('interviewResults').style.display = 'block';
+      const sessionEl = document.getElementById('interviewSession');
+      const resultsEl = document.getElementById('interviewResults');
+      if (sessionEl) sessionEl.style.display = 'none';
+      if (resultsEl) resultsEl.style.display = 'block';
 
-      document.getElementById('timeUsed').textContent = formatTime(timeUsed);
-      document.getElementById('sectionsCompleted').textContent = `${completed}/6`;
+      const timeUsedEl = document.getElementById('timeUsed');
+      const sectionsCompletedEl = document.getElementById('sectionsCompleted');
+      if (timeUsedEl) timeUsedEl.textContent = formatTime(timeUsed);
+      if (sectionsCompletedEl) sectionsCompletedEl.textContent = `${completed}/6`;
 
       // Get AI feedback
       await generateFinalFeedback();
