@@ -484,8 +484,10 @@
     }
 
     async function getAIHelp(sectionKey) {
-      const input = document.getElementById(sectionKey).value;
+      const inputEl = document.getElementById(sectionKey);
       const feedbackDiv = document.getElementById(sectionKey + 'Feedback');
+      if (!inputEl || !feedbackDiv) return;
+      const input = inputEl.value;
       feedbackDiv.style.display = 'block';
       feedbackDiv.innerHTML = '<div class="loading">Getting AI guidance...</div>';
 
