@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 395 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 396 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,9 +8,9 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 395
+- Total tools: 396
 - Categories: 11
-- Last updated: 2026-11-26
+- Last updated: 2026-11-27
 - License: Free to use, no signup, no tracking, 100% client-side
 
 ## Code Formatters (12 tools)
@@ -979,7 +979,7 @@ Free keyword suggestions from Google and Bing autosuggest. Expand one seed into 
 
 Free online flowchart maker. Drag nodes, connect arrows, edit labels, export SVG or Mermaid code. 100% private, runs in your browser.
 
-## Converters (46 tools)
+## Converters (47 tools)
 
 Browse all: [Converters](https://tools.scoreroute.com/tools/converters/.md)
 
@@ -1396,6 +1396,15 @@ Free online MD to PDF converter. Convert markdown to PDF instantly in browser. P
 - Tags: docker, compose, converter, run, cli, devops, container, yaml
 
 Free docker run to docker-compose converter. Convert complex docker run commands to structured docker-compose.yml with ports, volumes, and env vars.
+
+### Date Format Converter - Convert Dates Between Formats
+
+- URL: https://tools.scoreroute.com/tools/date-format-converter/
+- Markdown: https://tools.scoreroute.com/tools/date-format-converter/.md
+- Category: Converters
+- Tags: date, format, converter, convert, iso, unix, timestamp, timezone, batch, custom
+
+Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. Auto-detect, batch, timezone-aware.
 
 ## Media Tools (73 tools)
 
@@ -3614,7 +3623,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 395 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 396 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
