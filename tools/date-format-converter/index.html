@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Date Format Converter - Convert Dates Between Formats</title>
+  <meta name="description" content="Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. Auto-detect, batch, timezone-aware.">
+  <link rel="canonical" href="https://tools.scoreroute.com/tools/date-format-converter/">
+  <meta property="og:title" content="Date Format Converter - Convert Dates Between Formats">
+  <meta property="og:description" content="Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. Auto-detect, batch, timezone-aware.">
+  <meta property="og:url" content="https://tools.scoreroute.com/tools/date-format-converter/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Date Format Converter - Convert Dates Between Formats | DevTools Hub">
+  <meta name="twitter:description" content="Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. Auto-detect, batch, timezone-aware.">
+  <meta name="twitter:image" content="/og-image.png">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "datePublished": "2026-11-27",
+    "dateModified": "2026-11-27",
+    "author": {"@type": "Person", "name": "BAOMING"},
+    "name": "Date Format Converter - Convert Dates Between Formats",
+    "description": "Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. Auto-detect, batch, timezone-aware.",
+    "url": "https://tools.scoreroute.com/tools/date-format-converter/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "featureList": ["Auto-detect input date format", "Convert to 15+ standard formats", "Custom format patterns (date-fns tokens)", "Batch convert multiple dates", "Timezone-aware conversion", "Unix timestamp support", "One-click copy per format", "100% client-side, no data leaves browser"]
+  }
+  </script>
+  <style>
+    .dfc-tabs { display: flex; gap: 0; margin-bottom: 24px; border-radius: 10px; overflow: hidden; border: 1px solid #2a2a4a; flex-wrap: wrap; }
+    .dfc-tab { display: block; border: 0; font-family: inherit; line-height: inherit; flex: 1; padding: 12px 16px; text-align: center; cursor: pointer; background: #0f0f23; color: #888; font-size: 0.9rem; transition: all 0.2s; border-right: 1px solid #2a2a4a; min-width: 130px; }
+    .dfc-tab:last-child { border-right: none; }
+    .dfc-tab:hover { background: #1a1a3e; color: #ccc; }
+    .dfc-tab.active { background: #252545; color: #7eb3ff; border-bottom: 2px solid #7eb3ff; }
+    .dfc-panel { display: none; }
+    .dfc-panel.active { display: block; animation: fadeIn 0.15s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .dfc-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; align-items: flex-end; }
+    .dfc-field { flex: 1; min-width: 180px; }
+    .dfc-field label { display: block; color: #aaa; font-size: 0.85rem; margin-bottom: 6px; }
+    .dfc-field input, .dfc-field select, .dfc-field textarea { width: 100%; padding: 10px 12px; background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box; font-family: inherit; }
+    .dfc-field input:focus, .dfc-field select:focus, .dfc-field textarea:focus { outline: 2px solid transparent; border-color: #7eb3ff; }
+    .dfc-field textarea { min-height: 100px; resize: vertical; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.85rem; line-height: 1.5; }
+    .dfc-field small { color: #666; font-size: 0.75rem; margin-top: 4px; display: block; }
+    .dfc-results { margin-top: 24px; }
+    .dfc-result-card { background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s; }
+    .dfc-result-card:hover { border-color: #3a3a5a; }
+    .dfc-result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .dfc-result-title { color: #7eb3ff; font-size: 0.95rem; font-weight: 600; }
+    .dfc-result-badge { background: #1a1a3e; color: #888; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .dfc-result-value { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 1rem; color: #e8e8e8; background: #15152e; padding: 12px 16px; border-radius: 8px; word-break: break-all; border: 1px solid #2a2a4a; }
+    .dfc-result-value.error { color: #f472b6; background: #2a0f1a; border-color: #4a1a2a; }
+    .dfc-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .dfc-btn { padding: 8px 16px; background: #1a1a3e; border: 1px solid #2a2a4a; border-radius: 6px; color: #ccc; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .dfc-btn:hover { background: #252545; border-color: #3a3a5a; color: #fff; }
+    .dfc-btn.primary { background: #252545; border-color: #7eb3ff; color: #7eb3ff; }
+    .dfc-btn.primary:hover { background: #2a2a5a; }
+    .dfc-btn.success { background: #0f2a1a; border-color: #10b981; color: #10b981; }
+    .dfc-btn.success:hover { background: #1a3a25; }
+    .dfc-format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+    .dfc-format-item { background: #0f0f23; border: 1px solid #2a2a4a; border-radius: 10px; padding: 16px; transition: all 0.2s; }
+    .dfc-format-item:hover { border-color: #3a3a5a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .dfc-format-label { color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .dfc-format-value { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9rem; color: #e8e8e8; word-break: break-all; }
+    .dfc-format-value.error { color: #f472b6; }
+    .dfc-copy-btn { margin-top: 8px; padding: 6px 12px; font-size: 0.75rem; }
+    .dfc-detected { background: #15152e; border: 1px solid #2a2a4a; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.85rem; color: #10b981; }
+    .dfc-detected.error { color: #f472b6; background: #2a0f1a; border-color: #4a1a2a; }
+    .dfc-tz-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px; }
+    .dfc-tz-field { flex: 1; min-width: 200px; }
+    .dfc-tz-field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .dfc-token-guide { background: #15152e; border: 1px solid #2a2a4a; border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 0.8rem; color: #aaa; }
+    .dfc-token-guide h4 { color: #7eb3ff; margin-bottom: 12px; font-size: 0.85rem; }
+    .dfc-token-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+    .dfc-token-item { display: flex; gap: 8px; align-items: center; padding: 4px 8px; background: #0f0f23; border-radius: 4px; border: 1px solid #2a2a4a; }
+    .dfc-token-code { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.75rem; color: #7eb3ff; background: #15152e; padding: 2px 6px; border-radius: 3px; }
+    .dfc-token-desc { font-size: 0.7rem; color: #888; }
+    .dfc-stats { display: flex; gap: 24px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #2a2a4a; color: #888; font-size: 0.8rem; }
+    .dfc-stat { display: flex; align-items: center; gap: 6px; }
+    .dfc-stat-value { color: #7eb3ff; font-weight: 600; }
+    @media (max-width: 600px) {
+      .dfc-tab { font-size: 0.8rem; padding: 10px 8px; min-width: 100px; }
+      .dfc-format-grid { grid-template-columns: 1fr; }
+      .dfc-token-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Date Format Converter</h1>
+      <p class="subtitle">Convert Dates Between 15+ Formats · Auto-Detect · Batch · Timezone-Aware · 100% Private</p>
+      <nav class="breadcrumb">
+        <a href="/">Home</a> > <a href="/tools/">Tools</a> > <span>Date Format Converter</span>
+        <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <div class="tool-main">
+        <div class="dfc-tabs" role="group" aria-label="Conversion mode">
+          <button type="button" class="dfc-tab active" data-panel="single" aria-pressed="true" onclick="switchTab('single')">Single Date</button>
+          <button type="button" class="dfc-tab" data-panel="batch" aria-pressed="false" onclick="switchTab('batch')">Batch Convert</button>
+          <button type="button" class="dfc-tab" data-panel="custom" aria-pressed="false" onclick="switchTab('custom')">Custom Pattern</button>
+        </div>
+
+        <div id="panel-single" class="dfc-panel active">
+          <div class="dfc-row">
+            <div class="dfc-field">
+              <label for="single-input">Input Date <span style="color:#7eb3ff">*</span></label>
+              <input type="text" id="single-input" placeholder="e.g., 2024-12-25, 12/25/2024, 25/12/2024, Dec 25 2024, 1703462400..." aria-label="Input date to convert" autocomplete="off">
+              <small>Supports ISO, US, EU, Chinese, RFC2822, Unix timestamp, and more. Auto-detected.</small>
+            </div>
+            <div class="dfc-field">
+              <label for="single-timezone">Timezone (optional)</label>
+              <select id="single-timezone" class="dfc-tz-field">
+                <option value="">Use local timezone</option>
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">America/New_York (EST/EDT)</option>
+                <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+                <option value="America/Chicago">America/Chicago (CST/CDT)</option>
+                <option value="America/Denver">America/Denver (MST/MDT)</option>
+                <option value="Europe/London">Europe/London (GMT/BST)</option>
+                <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+                <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+                <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                <option value="Asia/Hong_Kong">Asia/Hong_Kong (HKT)</option>
+                <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+                <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+                <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+                <option value="Pacific/Auckland">Pacific/Auckland (NZST/NZDT)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="single-detected" class="dfc-detected" style="display:none;"></div>
+
+          <div class="dfc-results" id="single-results" style="display:none;">
+            <div class="dfc-format-grid" id="single-format-grid"></div>
+            <div class="dfc-stats" id="single-stats" style="display:none;">
+              <span class="dfc-stat"><span class="dfc-stat-value" id="stat-formats">0</span> formats generated</span>
+              <span class="dfc-stat"><span class="dfc-stat-value" id="stat-time">0ms</span> conversion time</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-batch" class="dfc-panel">
+          <div class="dfc-row">
+            <div class="dfc-field" style="flex: 1; min-width: 300px;">
+              <label for="batch-input">Input Dates (one per line) <span style="color:#7eb3ff">*</span></label>
+              <textarea id="batch-input" placeholder="2024-12-25
+12/25/2024
+25/12/2024
+Dec 25 2024
+1703462400
+2024-01-01T00:00:00Z" aria-label="Multiple dates to convert, one per line"></textarea>
+              <small>Each line is parsed independently. Empty lines ignored. Max 100 dates.</small>
+            </div>
+            <div class="dfc-field">
+              <label for="batch-target-format">Target Format</label>
+              <select id="batch-target-format">
+                <option value="iso">ISO 8601 (YYYY-MM-DD)</option>
+                <option value="iso-full">ISO 8601 Full (YYYY-MM-DDTHH:mm:ss)</option>
+                <option value="us">US (MM/DD/YYYY)</option>
+                <option value="eu">EU/UK (DD/MM/YYYY)</option>
+                <option value="chinese">Chinese (YYYY年MM月DD日)</option>
+                <option value="rfc2822">RFC 2822</option>
+                <option value="unix">Unix Timestamp (seconds)</option>
+                <option value="unix-ms">Unix Timestamp (milliseconds)</option>
+                <option value="custom">Custom Pattern (set below)</option>
+              </select>
+            </div>
+            <div class="dfc-field" style="flex: 1; min-width: 300px;">
+              <label for="batch-custom-pattern">Custom Pattern (when target is Custom)</label>
+              <input type="text" id="batch-custom-pattern" placeholder="yyyy-MM-dd HH:mm:ss" aria-label="Custom date-fns pattern">
+              <small>Uses date-fns tokens: yyyy, MM, dd, HH, mm, ss, EEE, MMM, zzz</small>
+            </div>
+            <div class="dfc-field">
+              <label for="batch-timezone">Timezone</label>
+              <select id="batch-timezone" class="dfc-tz-field">
+                <option value="">Use local timezone</option>
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">America/New_York (EST/EDT)</option>
+                <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+                <option value="Europe/London">Europe/London (GMT/BST)</option>
+                <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+                <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+              </select>
+            </div>
+          </div>
+          <div class="dfc-actions">
+            <button type="button" class="dfc-btn primary" onclick="convertBatch()">Convert All</button>
+            <button type="button" class="dfc-btn" onclick="clearBatch()">Clear</button>
+            <button type="button" class="dfc-btn success" id="batch-copy-all" onclick="copyBatchResults()" style="display:none;">Copy All Results</button>
+          </div>
+          <div id="batch-results" style="margin-top: 24px; display:none;">
+            <div class="dfc-format-grid" id="batch-format-grid"></div>
+          </div>
+        </div>
+
+        <div id="panel-custom" class="dfc-panel">
+          <div class="dfc-row">
+            <div class="dfc-field">
+              <label for="custom-input">Input Date <span style="color:#7eb3ff">*</span></label>
+              <input type="text" id="custom-input" placeholder="e.g., 2024-12-25 14:30:00" aria-label="Input date for custom formatting" autocomplete="off">
+            </div>
+            <div class="dfc-field">
+              <label for="custom-pattern">Custom Format Pattern <span style="color:#7eb3ff">*</span></label>
+              <input type="text" id="custom-pattern" value="yyyy-MM-dd HH:mm:ss" placeholder="yyyy-MM-dd HH:mm:ss" aria-label="Custom date-fns format pattern">
+              <small>Uses date-fns tokens. See guide below.</small>
+            </div>
+          </div>
+          <div class="dfc-row">
+            <div class="dfc-field">
+              <label for="custom-timezone">Timezone</label>
+              <select id="custom-timezone" class="dfc-tz-field">
+                <option value="">Use local timezone</option>
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">America/New_York (EST/EDT)</option>
+                <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+                <option value="Europe/London">Europe/London (GMT/BST)</option>
+                <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+                <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+              </select>
+            </div>
+          </div>
+          <div class="dfc-actions">
+            <button type="button" class="dfc-btn primary" onclick="formatCustom()">Format Date</button>
+            <button type="button" class="dfc-btn success" id="custom-copy" onclick="copyCustomResult()" style="display:none;">Copy Result</button>
+          </div>
+          <div id="custom-result" style="margin-top: 16px; display:none;">
+            <div class="dfc-result-card">
+              <div class="dfc-result-header">
+                <span class="dfc-result-title">Formatted Result</span>
+                <span class="dfc-result-badge">Custom</span>
+              </div>
+              <div class="dfc-result-value" id="custom-output"></div>
+            </div>
+          </div>
+
+          <div class="dfc-token-guide">
+            <h3>Format Tokens (date-fns compatible)</h4>
+            <div class="dfc-token-row">
+              <div class="dfc-token-item"><span class="dfc-token-code">yyyy</span><span class="dfc-token-desc">4-digit year (2024)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">yy</span><span class="dfc-token-desc">2-digit year (24)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">MM</span><span class="dfc-token-desc">2-digit month (01-12)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">M</span><span class="dfc-token-desc">Month (1-12)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">MMM</span><span class="dfc-token-desc">Short month (Jan-Dec)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">MMMM</span><span class="dfc-token-desc">Full month (January)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">dd</span><span class="dfc-token-desc">2-digit day (01-31)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">d</span><span class="dfc-token-desc">Day (1-31)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">EEE</span><span class="dfc-token-desc">Short day (Mon-Sun)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">EEEE</span><span class="dfc-token-desc">Full day (Monday)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">HH</span><span class="dfc-token-desc">24-hour (00-23)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">H</span><span class="dfc-token-desc">24-hour (0-23)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">hh</span><span class="dfc-token-desc">12-hour (01-12)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">mm</span><span class="dfc-token-desc">Minutes (00-59)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">ss</span><span class="dfc-token-desc">Seconds (00-59)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">SSS</span><span class="dfc-token-desc">Milliseconds (000-999)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">X</span><span class="dfc-token-desc">Unix timestamp (seconds)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">x</span><span class="dfc-token-desc">Unix timestamp (ms)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">zzz</span><span class="dfc-token-desc">Timezone name (EST)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">Z</span><span class="dfc-token-desc">Offset (+05:00)</span></div>
+              <div class="dfc-token-item"><span class="dfc-token-code">'text'</span><span class="dfc-token-desc">Literal text</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="info-section">
+        <details class="faq-item">
+          <summary>What date formats does this tool support?</summary>
+          <p>This tool auto-detects and converts between 15+ formats including: ISO 8601 (YYYY-MM-DD, YYYY-MM-DDTHH:mm:ss), US (MM/DD/YYYY), EU/UK (DD/MM/YYYY), Chinese (YYYY年MM月DD日), RFC 2822 (Mon, 25 Dec 2024 14:30:00 +0000), Unix timestamps (seconds and milliseconds), and custom patterns using date-fns tokens.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does auto-detection work?</summary>
+          <p>The tool tries multiple parsing strategies in order: ISO 8601 (native Date.parse), Unix timestamp detection (10/13 digit numbers), RFC 2822, common US/EU/Chinese patterns, and flexible parsing. The first successful parse determines the detected format.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I convert multiple dates at once?</summary>
+          <p>Yes! Use the "Batch Convert" tab. Paste up to 100 dates (one per line) and convert them all to a single target format, or use a custom pattern. Each date is parsed independently with auto-detection.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does this tool handle timezones correctly?</summary>
+          <p>Yes. You can select a source timezone for the input date and the tool will convert to the target timezone. By default, it uses your browser's local timezone. For Unix timestamps, the timezone applies to the formatted output.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my data private?</summary>
+          <p>100% private. All conversion happens in your browser using JavaScript. No data is sent to any server. The tool works offline after the initial page load.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What are date-fns tokens?</summary>
+          <p>date-fns is a popular JavaScript date library. Its tokens (yyyy, MM, dd, HH, mm, ss, etc.) are used to define custom format patterns. For example, <code>yyyy-MM-dd HH:mm:ss</code> produces <code>2024-12-25 14:30:00</code>. Single letters (M, d, H) produce non-padded values.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+  </footer>
+
+  <script src="/tools.js"></script>
+  <script>
+    const FORMATS = [
+      { key: 'iso', label: 'ISO 8601 (Date)', pattern: 'yyyy-MM-dd', example: '2024-12-25' },
+      { key: 'iso-full', label: 'ISO 8601 (Full)', pattern: "yyyy-MM-dd'T'HH:mm:ssXXX", example: '2024-12-25T14:30:00+00:00' },
+      { key: 'iso-utc', label: 'ISO 8601 (UTC)', pattern: "yyyy-MM-dd'T'HH:mm:ss'Z'", example: '2024-12-25T14:30:00Z', utc: true },
+      { key: 'us', label: 'US (MM/DD/YYYY)', pattern: 'MM/dd/yyyy', example: '12/25/2024' },
+      { key: 'us-long', label: 'US Long', pattern: 'MMMM d, yyyy', example: 'December 25, 2024' },
+      { key: 'eu', label: 'EU/UK (DD/MM/YYYY)', pattern: 'dd/MM/yyyy', example: '25/12/2024' },
+      { key: 'eu-long', label: 'EU/UK Long', pattern: 'd MMMM yyyy', example: '25 December 2024' },
+      { key: 'chinese', label: 'Chinese', pattern: 'yyyy年MM月DD日', example: '2024年12月25日' },
+      { key: 'chinese-full', label: 'Chinese (Full)', pattern: 'yyyy年MM月DD日 EEEE', example: '2024年12月25日 星期三' },
+      { key: 'rfc2822', label: 'RFC 2822', pattern: 'EEE, dd MMM yyyy HH:mm:ss XXX', example: 'Wed, 25 Dec 2024 14:30:00 +0000' },
+      { key: 'unix', label: 'Unix Timestamp (s)', pattern: 'X', example: '1703514600' },
+      { key: 'unix-ms', label: 'Unix Timestamp (ms)', pattern: 'x', example: '1703514600000' },
+      { key: 'compact', label: 'Compact (YYYYMMDD)', pattern: 'yyyyMMdd', example: '20241225' },
+      { key: 'sql', label: 'SQL Datetime', pattern: 'yyyy-MM-dd HH:mm:ss', example: '2024-12-25 14:30:00' },
+      { key: 'log', label: 'Log Format', pattern: 'yyyy-MM-dd HH:mm:ss.SSS', example: '2024-12-25 14:30:00.000' },
+    ];
+
+    let currentDate = null;
+    let currentTimezone = '';
+
+    function parseDate(input, tz = '') {
+      const trimmed = input.trim();
+      if (!trimmed) return null;
+
+      if (/^\d{10}$/.test(trimmed)) {
+        return new Date(parseInt(trimmed, 10) * 1000);
+      }
+      if (/^\d{13}$/.test(trimmed)) {
+        return new Date(parseInt(trimmed, 10));
+      }
+
+      const native = new Date(trimmed);
+      if (!isNaN(native.getTime())) {
+        return native;
+      }
+
+      const patterns = [
+        { regex: /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/, parser: (m) => new Date(parseInt(m[3].length === 2 ? '20' + m[3] : m[3], 10), parseInt(m[1], 10) - 1, parseInt(m[2], 10)) },
+        { regex: /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/, parser: (m) => new Date(parseInt(m[3].length === 2 ? '20' + m[3] : m[3], 10), parseInt(m[2], 10) - 1, parseInt(m[1], 10)) },
+        { regex: /^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/, parser: (m) => new Date(parseInt(m[3].length === 2 ? '20' + m[3] : m[3], 10), parseInt(m[2], 10) - 1, parseInt(m[1], 10)) },
+        { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})[\sT](\d{1,2}):(\d{1,2}):(\d{1,2})/, parser: (m) => new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10), parseInt(m[4], 10), parseInt(m[5], 10), parseInt(m[6], 10)) },
+        { regex: /^(\d{4})年(\d{1,2})月(\d{1,2})日/, parser: (m) => new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10)) },
+        { regex: /^([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})/, parser: (m) => new Date(Date.parse(m[0])) },
+      ];
+
+      for (const p of patterns) {
+        const match = trimmed.match(p.regex);
+        if (match) {
+          try {
+            const d = p.parser(match);
+            if (!isNaN(d.getTime())) return d;
+          } catch (e) {}
+        }
+      }
+
+      return null;
+    }
+
+    function formatDate(date, pattern, tz = '') {
+      if (!date || isNaN(date.getTime())) return 'Invalid Date';
+
+      let d = date;
+      if (tz && tz !== 'local') {
+        const fmt = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz,
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour12: false
+        });
+        const parts = fmt.formatToParts(date);
+        const vals = {};
+        parts.forEach(p => vals[p.type] = p.value);
+        d = new Date(vals.year + '-' + vals.month + '-' + vals.day + 'T' + vals.hour + ':' + vals.minute + ':' + vals.second);
+      }
+
+      const pad = (n, w = 2) => String(n).padStart(w, '0');
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const hours = d.getHours();
+      const minutes = d.getMinutes();
+      const seconds = d.getSeconds();
+      const ms = d.getMilliseconds();
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dayNamesFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthNamesFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      const offset = -d.getTimezoneOffset();
+      const offsetSign = offset >= 0 ? '+' : '-';
+      const offsetHours = pad(Math.floor(Math.abs(offset) / 60));
+      const offsetMins = pad(Math.abs(offset) % 60);
+      const offsetStr = offsetSign + offsetHours + ':' + offsetMins;
+
+      const tzNames = { 'UTC': 'UTC', 'America/New_York': 'EST/EDT', 'America/Los_Angeles': 'PST/PDT', 'Europe/London': 'GMT/BST', 'Europe/Paris': 'CET/CEST', 'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST', 'Australia/Sydney': 'AEST/AEDT' };
+      const tzName = tzNames[tz] || (tz ? tz.split('/').pop() : '');
+
+      return pattern.replace(/'[^']*'/g, m => m.slice(1, -1))
+        .replace(/yyyy/g, pad(year, 4))
+        .replace(/yy/g, pad(year % 100))
+        .replace(/MMMM/g, monthNamesFull[month - 1])
+        .replace(/MMM/g, monthNames[month - 1])
+        .replace(/MM/g, pad(month))
+        .replace(/M/g, String(month))
+        .replace(/dd/g, pad(day))
+        .replace(/d/g, String(day))
+        .replace(/EEEE/g, dayNamesFull[d.getDay()])
+        .replace(/EEE/g, dayNames[d.getDay()])
+        .replace(/HH/g, pad(hours))
+        .replace(/H/g, String(hours))
+        .replace(/hh/g, pad(hours % 12 || 12))
+        .replace(/h/g, String(hours % 12 || 12))
+        .replace(/mm/g, pad(minutes))
+        .replace(/m/g, String(minutes))
+        .replace(/ss/g, pad(seconds))
+        .replace(/s/g, String(seconds))
+        .replace(/SSS/g, pad(ms, 3))
+        .replace(/X/g, String(Math.floor(d.getTime() / 1000)))
+        .replace(/x/g, String(d.getTime()))
+        .replace(/zzz/g, tzName)
+        .replace(/Z/g, offsetStr);
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.dfc-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      document.querySelectorAll('.dfc-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('.dfc-tab[data-panel="' + tab + '"]').classList.add('active');
+      document.querySelector('.dfc-tab[data-panel="' + tab + '"]').setAttribute('aria-pressed', 'true');
+      document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    function detectAndConvert() {
+      const input = document.getElementById('single-input').value.trim();
+      const tz = document.getElementById('single-timezone').value;
+      const detectedEl = document.getElementById('single-detected');
+      const resultsEl = document.getElementById('single-results');
+      const gridEl = document.getElementById('single-format-grid');
+      const statsEl = document.getElementById('single-stats');
+
+      if (!input) {
+        detectedEl.style.display = 'none';
+        resultsEl.style.display = 'none';
+        return;
+      }
+
+      const start = performance.now();
+      const date = parseDate(input, tz);
+      const elapsed = (performance.now() - start).toFixed(2);
+
+      if (!date) {
+        detectedEl.textContent = 'Could not parse: ' + input;
+        detectedEl.className = 'dfc-detected error';
+        detectedEl.style.display = 'block';
+        resultsEl.style.display = 'none';
+        return;
+      }
+
+      currentDate = date;
+      currentTimezone = tz;
+
+      detectedEl.textContent = 'Parsed as: ' + date.toISOString() + (tz ? ' (timezone: ' + tz + ')' : ' (local timezone)');
+      detectedEl.className = 'dfc-detected';
+      detectedEl.style.display = 'block';
+
+      gridEl.innerHTML = '';
+      let count = 0;
+      FORMATS.forEach(fmt => {
+        try {
+          const formatted = formatDate(date, fmt.pattern, fmt.utc ? 'UTC' : tz);
+          const item = document.createElement('div');
+          item.className = 'dfc-format-item';
+          item.innerHTML = '<div class="dfc-format-label">' + fmt.label + '</div><div class="dfc-format-value" id="fmt-' + fmt.key + '">' + formatted + '</div><button class="dfc-btn dfc-copy-btn" onclick="copyFormat(\'' + fmt.key + '\')" title="Copy">Copy</button>';
+          gridEl.appendChild(item);
+          count++;
+        } catch (e) {
+          const item = document.createElement('div');
+          item.className = 'dfc-format-item';
+          item.innerHTML = '<div class="dfc-format-label">' + fmt.label + '</div><div class="dfc-format-value error">Error: ' + e.message + '</div>';
+          gridEl.appendChild(item);
+        }
+      });
+
+      document.getElementById('stat-formats').textContent = count;
+      document.getElementById('stat-time').textContent = elapsed + 'ms';
+      resultsEl.style.display = 'block';
+      statsEl.style.display = 'flex';
+    }
+
+    function copyFormat(key) {
+      const val = document.getElementById('fmt-' + key).textContent;
+      if (val && !val.includes('Error')) {
+        navigator.clipboard.writeText(val).then(() => showStatus('Copied: ' + val));
+      }
+    }
+
+    function copyCustomResult() {
+      const val = document.getElementById('custom-output').textContent;
+      if (val) {
+        navigator.clipboard.writeText(val).then(() => showStatus('Copied!'));
+      }
+    }
+
+    function copyBatchResults() {
+      const items = document.querySelectorAll('#batch-format-grid .dfc-format-value:not(.error)');
+      const texts = Array.from(items).map(el => el.textContent).join('\n');
+      if (texts) {
+        navigator.clipboard.writeText(texts).then(() => showStatus('Copied ' + items.length + ' results!'));
+      }
+    }
+
+    function convertBatch() {
+      const input = document.getElementById('batch-input').value.trim();
+      const targetFormat = document.getElementById('batch-target-format').value;
+      const customPattern = document.getElementById('batch-custom-pattern').value.trim();
+      const tz = document.getElementById('batch-timezone').value;
+      const gridEl = document.getElementById('batch-format-grid');
+      const resultsEl = document.getElementById('batch-results');
+      const copyBtn = document.getElementById('batch-copy-all');
+
+      if (!input) {
+        showStatus('Please enter dates to convert');
+        return;
+      }
+
+      const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+      if (lines.length > 100) {
+        showStatus('Maximum 100 dates allowed');
+        return;
+      }
+
+      let pattern;
+      if (targetFormat === 'custom') {
+        pattern = customPattern || 'yyyy-MM-dd';
+      } else {
+        const fmt = FORMATS.find(f => f.key === targetFormat);
+        pattern = fmt ? fmt.pattern : 'yyyy-MM-dd';
+      }
+
+      gridEl.innerHTML = '';
+      let success = 0, failed = 0;
+
+      lines.forEach((line, idx) => {
+        const date = parseDate(line, tz);
+        if (!date) {
+          const item = document.createElement('div');
+          item.className = 'dfc-format-item';
+          item.innerHTML = '<div class="dfc-format-label">Line ' + (idx + 1) + ': ' + line.substring(0, 30) + '</div><div class="dfc-format-value error">Failed to parse</div>';
+          gridEl.appendChild(item);
+          failed++;
+          return;
+        }
+
+        try {
+          const formatted = formatDate(date, pattern, tz);
+          const item = document.createElement('div');
+          item.className = 'dfc-format-item';
+          item.innerHTML = '<div class="dfc-format-label">Line ' + (idx + 1) + '</div><div class="dfc-format-value">' + formatted + '</div><button class="dfc-btn dfc-copy-btn" onclick="navigator.clipboard.writeText(\'' + formatted.replace(/'/g, "\\'") + '\').then(() => showStatus(\'Copied!\'))" title="Copy">Copy</button>';
+          gridEl.appendChild(item);
+          success++;
+        } catch (e) {
+          failed++;
+        }
+      });
+
+      resultsEl.style.display = 'block';
+      copyBtn.style.display = success > 0 ? 'inline-flex' : 'none';
+      showStatus('Converted: ' + success + ' success, ' + failed + ' failed');
+    }
+
+    function clearBatch() {
+      document.getElementById('batch-input').value = '';
+      document.getElementById('batch-results').style.display = 'none';
+      document.getElementById('batch-copy-all').style.display = 'none';
+    }
+
+    function formatCustom() {
+      const input = document.getElementById('custom-input').value.trim();
+      const pattern = document.getElementById('custom-pattern').value.trim();
+      const tz = document.getElementById('custom-timezone').value;
+      const resultEl = document.getElementById('custom-result');
+      const outputEl = document.getElementById('custom-output');
+      const copyBtn = document.getElementById('custom-copy');
+
+      if (!input || !pattern) {
+        showStatus('Please enter both date and pattern');
+        return;
+      }
+
+      const date = parseDate(input, tz);
+      if (!date) {
+        outputEl.textContent = 'Error: Could not parse input date';
+        outputEl.className = 'dfc-result-value error';
+        resultEl.style.display = 'block';
+        copyBtn.style.display = 'none';
+        return;
+      }
+
+      try {
+        const formatted = formatDate(date, pattern, tz);
+        outputEl.textContent = formatted;
+        outputEl.className = 'dfc-result-value';
+        resultEl.style.display = 'block';
+        copyBtn.style.display = 'inline-flex';
+      } catch (e) {
+        outputEl.textContent = 'Error: ' + e.message;
+        outputEl.className = 'dfc-result-value error';
+        resultEl.style.display = 'block';
+        copyBtn.style.display = 'none';
+      }
+    }
+
+    let debounceTimer;
+    document.getElementById('single-input').addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(detectAndConvert, 300);
+    });
+    document.getElementById('single-timezone').addEventListener('change', detectAndConvert);
+
+    document.getElementById('custom-input').addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(formatCustom, 300);
+    });
+    document.getElementById('custom-pattern').addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(formatCustom, 300);
+    });
+    document.getElementById('custom-timezone').addEventListener('change', formatCustom);
+
+    document.getElementById('batch-target-format').addEventListener('change', (e) => {
+      document.getElementById('batch-custom-pattern').style.display = e.target.value === 'custom' ? 'block' : 'none';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const demo = today.toISOString().split('T')[0];
+      document.getElementById('single-input').value = demo;
+      detectAndConvert();
+    });
+  </script>
+</body>
+</html>

@@ -159,6 +159,7 @@ const LEDGER = {
   "tools/css-to-tailwind/index.html": 1,
   "tools/daily-holiday/index.html": 2,
   "tools/date-calculator/index.html": 1,
+  "tools/date-format-converter/index.html": 1,
   "tools/days-until-calculator/index.html": 1,
   "tools/dictionary/index.html": 1,
   "tools/dns-lookup/index.html": 1,
