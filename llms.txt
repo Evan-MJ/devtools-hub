@@ -1,6 +1,6 @@
 # DevTools Hub
 
-> 396 free developer tools across 11 categories. No signup, no tracking.
+> 398 free developer tools across 11 categories. No signup, no tracking.
 
 > Each tool has a markdown version at /tools/<slug>/.md for AI agents.
 
@@ -8,7 +8,7 @@
 
 ## Site
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 396 free developer tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 398 free developer tools
 - [Tools index](https://tools.scoreroute.com/tools/): All tools grouped by category
 - [Feedback & Bug Reports](https://tools.scoreroute.com/tools/feedback/): Submit feedback, report bugs, request features
 
@@ -81,6 +81,7 @@
 - [Solar Sizing Calculator](https://tools.scoreroute.com/tools/solar-calculator/.md) [HTML](https://tools.scoreroute.com/tools/solar-calculator/)
 - [Heart Rate Zone Calculator - 5 Zones by Age](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/.md) [HTML](https://tools.scoreroute.com/tools/heart-rate-zone-calculator/)
 - [Gravel Calculator - Tons, Cubic Yards & Bags](https://tools.scoreroute.com/tools/gravel-calculator/.md) [HTML](https://tools.scoreroute.com/tools/gravel-calculator/)
+- [Treadmill Pace Calculator - MPH to Pace & 5K/10K Times](https://tools.scoreroute.com/tools/treadmill-pace-calculator/.md) [HTML](https://tools.scoreroute.com/tools/treadmill-pace-calculator/)
 
 ## Generators
 - [Barcode Generator - QR, UPC, EAN and Code 128](https://tools.scoreroute.com/tools/barcode-generator/.md) [HTML](https://tools.scoreroute.com/tools/barcode-generator/)
@@ -311,6 +312,7 @@
 - [Log File Merger - Merge Logs by Timestamp Online](https://tools.scoreroute.com/tools/log-file-merger/.md) [HTML](https://tools.scoreroute.com/tools/log-file-merger/)
 - [HTML Accessibility Validator - Free WCAG 2.1 AA/AAA Checker](https://tools.scoreroute.com/tools/accessibility-validator/.md) [HTML](https://tools.scoreroute.com/tools/accessibility-validator/)
 - [Online SQL Playground - Run SQLite in Browser](https://tools.scoreroute.com/tools/sql-playground/.md) [HTML](https://tools.scoreroute.com/tools/sql-playground/)
+- [System Design Interview Simulator](https://tools.scoreroute.com/tools/system-design-interview/.md) [HTML](https://tools.scoreroute.com/tools/system-design-interview/)
 
 ## PDF Tools
 - [PDF Editor - Edit, Rotate, Delete, Annotate PDF Pages](https://tools.scoreroute.com/tools/pdf-editor/.md) [HTML](https://tools.scoreroute.com/tools/pdf-editor/)

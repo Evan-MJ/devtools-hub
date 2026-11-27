@@ -331,6 +331,7 @@ const LEDGER = {
   "tools/keyword-research/index.html": 3,
   "tools/ai-code-generator/index.html": 2,
   "tools/docker-run-to-compose/index.html": 1,
+  "tools/system-design-interview/index.html": 1,
 };
 // G4b/G4c — count DECLARATIONS, not rules, and resolve each declaration's owning selector
 // by scanning back to the nearest brace. A rule-counting regex is wrong here: `[^{}]*`

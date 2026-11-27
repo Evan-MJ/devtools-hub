@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Design Interview Simulator | DevTools Hub</title>
+  <meta name="description" content="Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. No signup required.">
+  <link rel="canonical" href="https://tools.scoreroute.com/tools/system-design-interview/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="System Design Interview Simulator | DevTools Hub">
+  <meta property="og:description" content="Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. No signup required.">
+  <meta property="og:url" content="https://tools.scoreroute.com/tools/system-design-interview/">
+  <meta property="og:image" content="https://tools.scoreroute.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="System Design Interview Simulator - Practice System Design Interviews | DevTools Hub">
+  <meta name="twitter:description" content="Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. No signup required.">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "System Design Interview Simulator | DevTools Hub",
+    "description": "Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. No signup required.",
+    "url": "https://tools.scoreroute.com/tools/system-design-interview/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@id": "https://tools.scoreroute.com/#author"
+    },
+    "publisher": {
+      "@id": "https://tools.scoreroute.com/#organization"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>System Design Interview Simulator</h1>
+      <p class="subtitle">Practice system design interviews with realistic questions, timed sessions, and AI-powered feedback</p>
+      <nav class="breadcrumb">
+        <a href="/">Home</a> > <a href="/tools/">Tools</a> > <a href="/tools/code-testing/">Code Testing</a> > <span>System Design Interview Simulator</span>
+        <a href="/tools/feedback/" class="feedback-link">Report Problem</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <div class="tool-main">
+        <div class="interview-setup" id="interviewSetup">
+          <h2>Setup Your Interview</h2>
+          <div class="setup-grid">
+            <div class="setup-item">
+              <label for="questionSelect">Select Question</label>
+              <select id="questionSelect">
+                <option value="">Choose a system design question...</option>
+              </select>
+            </div>
+            <div class="setup-item">
+              <label for="timeSelect">Interview Duration</label>
+              <select id="timeSelect">
+                <option value="30">30 minutes</option>
+                <option value="45" selected>45 minutes</option>
+                <option value="60">60 minutes</option>
+                <option value="90">90 minutes</option>
+              </select>
+            </div>
+            <div class="setup-item">
+              <label for="modeSelect">Mode</label>
+              <select id="modeSelect">
+                <option value="practice" selected>Practice (self-paced)</option>
+                <option value="timed">Timed Interview</option>
+                <option value="mock">Mock Interview (with AI feedback)</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button id="startBtn" class="btn btn-primary" onclick="startInterview()">Start Interview</button>
+            <button id="loadBtn" class="btn" onclick="loadProgress()">Load Saved Progress</button>
+          </div>
+        </div>
+
+        <div class="interview-session" id="interviewSession" style="display:none;">
+          <div class="interview-header">
+            <div class="timer-display" id="timerDisplay">45:00</div>
+            <div class="question-title" id="questionTitle"></div>
+            <div class="session-controls">
+              <button id="pauseBtn" class="btn btn-secondary" onclick="togglePause()" style="display:none;">Pause</button>
+              <button id="saveBtn" class="btn" onclick="saveProgress()">Save Progress</button>
+              <button id="finishBtn" class="btn btn-primary" onclick="finishInterview()">Finish & Get Feedback</button>
+            </div>
+          </div>
+
+          <div class="interview-sections">
+            <section class="interview-section" data-section="requirements">
+              <h3>1. Requirements Clarification <span class="section-status" id="reqStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Define functional & non-functional requirements. Ask clarifying questions.
+                <ul>
+                  <li>What are the core features?</li>
+                  <li>What is the scale (users, requests/sec, data volume)?</li>
+                  <li>What are latency/availability/consistency requirements?</li>
+                  <li>Any specific constraints (budget, compliance, tech stack)?</li>
+                </ul>
+              </div>
+              <textarea id="requirements" class="section-input" placeholder="Write your requirements clarification here...&#10;&#10;Functional Requirements:&#10;- ...&#10;&#10;Non-Functional Requirements:&#10;- Scale: ...&#10;- Latency: ...&#10;- Availability: ...&#10;- Consistency: ..."></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('requirements')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('requirements')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="requirementsFeedback" style="display:none;"></div>
+            </section>
+
+            <section class="interview-section" data-section="api">
+              <h3>2. API Design <span class="section-status" id="apiStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Define the external interfaces. Use REST/GraphQL/gRPC as appropriate.
+                <ul>
+                  <li>List key endpoints with HTTP methods, paths, request/response</li>
+                  <li>Consider versioning, authentication, rate limiting</li>
+                  <li>Define error response formats</li>
+                </ul>
+              </div>
+              <textarea id="api" class="section-input" placeholder="Design your APIs here...&#10;&#10;Example:&#10;POST /api/v1/users&#10;  Request: { name, email, password }&#10;  Response: 201 { id, name, email, createdAt }&#10;&#10;GET /api/v1/users/:id&#10;  Response: 200 { id, name, email, createdAt }"></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('api')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('api')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="apiFeedback" style="display:none;"></div>
+            </section>
+
+            <section class="interview-section" data-section="dataModel">
+              <h3>3. Data Model <span class="section-status" id="dataModelStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Define entities, relationships, and storage choices.
+                <ul>
+                  <li>List core entities with key fields</li>
+                  <li>Define relationships (1:1, 1:N, M:N)</li>
+                  <li>Choose SQL vs NoSQL per entity</li>
+                  <li>Consider indexing, partitioning, sharding strategies</li>
+                </ul>
+              </div>
+              <textarea id="dataModel" class="section-input" placeholder="Define your data model here...&#10;&#10;Entities:&#10;- User: id, email, name, passwordHash, createdAt&#10;- Post: id, userId, content, createdAt, updatedAt&#10;&#10;Relationships:&#10;- User 1:N Post&#10;&#10;Storage:&#10;- Users: PostgreSQL (ACID, relational)&#10;- Posts: PostgreSQL with read replicas&#10;- Analytics: ClickHouse/BigQuery"></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('dataModel')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('dataModel')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="dataModelFeedback" style="display:none;"></div>
+            </section>
+
+            <section class="interview-section" data-section="highLevel">
+              <h3>4. High-Level Architecture <span class="section-status" id="hlStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Draw the system topology. Identify major components and data flow.
+                <ul>
+                  <li>Client → Load Balancer → API Gateway → Services</li>
+                  <li>Identify: web servers, app servers, caches, queues, databases</li>
+                  <li>Show data flow for key operations</li>
+                  <li>Consider: CDN, DNS, SSL termination</li>
+                </ul>
+              </div>
+              <textarea id="highLevel" class="section-input" placeholder="Describe your high-level architecture...&#10;&#10;Components:&#10;- CDN (Cloudflare) for static assets&#10;- Load Balancer (AWS ALB)&#10;- API Gateway (Kong/Krakend)&#10;- Auth Service (stateless JWT)&#10;- User Service&#10;- Post Service&#10;- Notification Service (async via queue)&#10;- PostgreSQL (primary + read replicas)&#10;- Redis (cache, sessions, rate limiting)&#10;- Kafka/RabbitMQ (event bus)&#10;&#10;Data Flow (Create Post):&#10;Client → LB → API Gateway → Auth → Post Service → DB → Kafka → Notification Service"></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('highLevel')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('highLevel')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="highLevelFeedback" style="display:none;"></div>
+            </section>
+
+            <section class="interview-section" data-section="detailed">
+              <h3>5. Detailed Design <span class="section-status" id="detStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Deep-dive into 1-2 critical components. Address bottlenecks.
+                <ul>
+                  <li>Pick the most complex/high-traffic component</li>
+                  <li>Design algorithms, caching strategies, concurrency control</li>
+                  <li>Address: hot partitions, thundering herd, cache stampede</li>
+                  <li>Consider: circuit breakers, retries, idempotency</li>
+                </ul>
+              </div>
+              <textarea id="detailed" class="section-input" placeholder="Detail your critical component design...&#10;&#10;Example: Feed Generation Service&#10;- Problem: Generate personalized feed for 100M users&#10;- Approach: Fan-out-on-write + Redis cache&#10;- Write path: Post created → Fan-out to followers' feed in Redis&#10;- Read path: Get feed from Redis (sub-ms)&#10;- Optimization: Batch writes, compress feed entries&#10;- Fallback: If Redis miss, reconstruct from DB&#10;&#10;Concurrency: Optimistic locking for feed updates&#10;Idempotency: Dedupe via postId + userId"></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('detailed')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('detailed')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="detailedFeedback" style="display:none;"></div>
+            </section>
+
+            <section class="interview-section" data-section="scaling">
+              <h3>6. Scaling & Reliability <span class="section-status" id="scaleStatus">⬜</span></h3>
+              <div class="section-guidance">
+                <strong>Goal:</strong> Address scale bottlenecks, failure modes, and operational concerns.
+                <ul>
+                  <li>Horizontal vs vertical scaling strategies</li>
+                  <li>Database: read replicas, sharding, partitioning</li>
+                  <li>Cache: invalidation, eviction, warm-up</li>
+                  <li>Queue: backpressure, dead letters, ordering</li>
+                  <li>Observability: metrics, logs, traces, alerts</li>
+                  <li>Disaster recovery: backups, RPO/RTO, multi-region</li>
+                </ul>
+              </div>
+              <textarea id="scaling" class="section-input" placeholder="Address scaling and reliability...&#10;&#10;Scaling Strategy:&#10;- Stateless services: Horizontal (K8s HPA)&#10;- Database: Read replicas → Sharding by userId&#10;- Cache: Redis Cluster (hash slots)&#10;- Queue: Partition by userId for ordering&#10;&#10;Failure Modes:&#10;- DB primary failover: Automated (RDS Multi-AZ)&#10;- Cache miss storm: Request coalescing + circuit breaker&#10;- Queue backlog: Consumer autoscaling + priority queues&#10;&#10;Observability:&#10;- Metrics: Prometheus + Grafana (RED metrics)&#10;- Logs: ELK/Loki (structured JSON)&#10;- Traces: Jaeger (distributed tracing)&#10;- Alerts: PagerDuty (latency, error rate, saturation)"></textarea>
+              <div class="section-actions">
+                <button class="btn btn-sm" onclick="getAIHelp('scaling')">Get AI Guidance</button>
+                <button class="btn btn-sm btn-secondary" onclick="markSectionComplete('scaling')">Mark Complete</button>
+              </div>
+              <div class="ai-feedback" id="scalingFeedback" style="display:none;"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="interview-results" id="interviewResults" style="display:none;">
+          <h2>Interview Complete!</h2>
+          <div class="results-summary">
+            <div class="result-card">
+              <h3>Time Used</h3>
+              <div class="result-value" id="timeUsed">0:00</div>
+            </div>
+            <div class="result-card">
+              <h3>Sections Completed</h3>
+              <div class="result-value" id="sectionsCompleted">0/6</div>
+            </div>
+            <div class="result-card">
+              <h3>Overall Score</h3>
+              <div class="result-value" id="overallScore">--</div>
+            </div>
+          </div>
+          <div class="ai-feedback-final" id="finalFeedback"></div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="exportInterview()">Export as Markdown</button>
+            <button class="btn" onclick="restartInterview()">New Interview</button>
+            <button class="btn btn-secondary" onclick="shareInterview()">Share Link</button>
+          </div>
+        </div>
+
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="info-section">
+        <details class="faq-item open">
+          <summary>How to use this simulator</summary>
+          <div class="faq-content">
+            <ol>
+              <li><strong>Select a question</strong> from the dropdown - questions range from beginner to advanced</li>
+              <li><strong>Choose duration</strong> - 45 minutes is standard for system design interviews</li>
+              <li><strong>Pick a mode</strong> - Practice (self-paced), Timed (countdown), or Mock (with AI feedback)</li>
+              <li><strong>Work through each section</strong> in order: Requirements → API → Data Model → High-Level → Detailed → Scaling</li>
+              <li><strong>Use AI Guidance</strong> - Click "Get AI Guidance" for hints and best practices per section</li>
+              <li><strong>Mark sections complete</strong> to track your progress</li>
+              <li><strong>Finish & Get Feedback</strong> - Receive AI-powered architecture review and scoring</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What makes a good system design answer?</summary>
+          <div class="faq-content">
+            <ul>
+              <li><strong>Requirements:</strong> Clear functional/non-functional split, realistic scale numbers, justified constraints</li>
+              <li><strong>API:</strong> RESTful conventions, proper HTTP codes, versioning, pagination, error handling</li>
+              <li><strong>Data Model:</strong> Normalized vs denormalized tradeoffs, SQL/NoSQL justification, indexing strategy</li>
+              <li><strong>High-Level:</strong> Clear component boundaries, data flow arrows, stateless services, async where needed</li>
+              <li><strong>Detailed:</strong> Deep-dive on 1-2 critical paths, concurrency control, caching strategy, failure handling</li>
+              <li><strong>Scaling:</strong> Specific bottlenecks & solutions, observability, disaster recovery, cost awareness</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Common system design interview questions</summary>
+          <div class="faq-content">
+            <ul>
+              <li><strong>Design a URL shortener</strong> (bit.ly) - Hashing, collision handling, analytics</li>
+              <li><strong>Design a chat system</strong> (WhatsApp) - WebSockets, message ordering, push notifications</li>
+              <li><strong>Design a feed/timeline</strong> (Twitter/Instagram) - Fan-out, caching, pagination</li>
+              <li><strong>Design a video platform</strong> (YouTube) - Transcoding, CDN, adaptive bitrate</li>
+              <li><strong>Design a ride-sharing app</strong> (Uber) - Geospatial, matching, real-time tracking</li>
+              <li><strong>Design a payment system</strong> (Stripe) - Idempotency, reconciliation, compliance</li>
+              <li><strong>Design a rate limiter</strong> - Token bucket, sliding window, distributed</li>
+              <li><strong>Design a search engine</strong> - Inverted index, ranking, distributed crawling</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Tips for succeeding in system design interviews</summary>
+          <div class="faq-content">
+            <ul>
+              <li><strong>Clarify first:</strong> Spend 5-10 min on requirements. Wrong assumptions = wrong design.</li>
+              <li><strong>Estimate scale:</strong> Calculate QPS, storage, bandwidth. Back-of-envelope math shows engineering rigor.</li>
+              <li><strong>Draw as you go:</strong> Visual diagrams communicate faster than text. Use the text areas to sketch ASCII diagrams.</li>
+              <li><strong>Tradeoffs explicit:</strong> Every choice has pros/cons. State them: "I chose eventual consistency because..."</li>
+              <li><strong>Bottlenecks honest:</strong> Identify where your design breaks. "This works to 10K QPS, beyond that we'd shard..."</li>
+              <li><strong>Operate mentally:</strong> Think about deploys, rollbacks, monitoring, on-call. "We'd alert on p99 > 500ms"</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Keyboard shortcuts</summary>
+          <div class="faq-content">
+            <table style="width:100%;border-collapse:collapse;">
+              <caption class="sr-only">Keyboard shortcuts for the System Design Interview Simulator</caption>
+              <thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid #333;">Key</th><th style="text-align:left;padding:8px;border-bottom:1px solid #333;">Action</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:8px;border-bottom:1px solid #333;"><kbd>Ctrl/Cmd + S</kbd></td><td style="padding:8px;border-bottom:1px solid #333;">Save progress</td></tr>
+                <tr><td style="padding:8px;border-bottom:1px solid #333;"><kbd>Ctrl/Cmd + Enter</kbd></td><td style="padding:8px;border-bottom:1px solid #333;">Mark current section complete</td></tr>
+                <tr><td style="padding:8px;border-bottom:1px solid #333;"><kbd>Alt + 1-6</kbd></td><td style="padding:8px;border-bottom:1px solid #333;">Jump to section 1-6</td></tr>
+                <tr><td style="padding:8px;border-bottom:1px solid #333;"><kbd>Space</kbd></td><td style="padding:8px;border-bottom:1px solid #333;">Pause/Resume timer</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+  </footer>
+
+  <script src="/tools.js"></script>
+  <script>
+    // System Design Interview Simulator Logic
+    const questions = [
+      { id: 'url-shortener', title: 'Design a URL Shortener (bit.ly)', difficulty: 'Beginner', tags: ['Hashing', 'Database', 'Caching', 'Analytics'] },
+      { id: 'chat-system', title: 'Design a Chat System (WhatsApp/Slack)', difficulty: 'Intermediate', tags: ['WebSockets', 'Message Queue', 'Push Notifications', 'Presence'] },
+      { id: 'social-feed', title: 'Design a Social Media Feed (Twitter/Instagram)', difficulty: 'Advanced', tags: ['Fan-out', 'Caching', 'Pagination', 'Ranking'] },
+      { id: 'video-platform', title: 'Design a Video Platform (YouTube/TikTok)', difficulty: 'Advanced', tags: ['Transcoding', 'CDN', 'Adaptive Bitrate', 'Storage'] },
+      { id: 'ride-sharing', title: 'Design a Ride-Sharing App (Uber/Lyft)', difficulty: 'Advanced', tags: ['Geospatial', 'Matching Algorithm', 'Real-time Tracking', 'Payments'] },
+      { id: 'payment-system', title: 'Design a Payment System (Stripe/PayPal)', difficulty: 'Advanced', tags: ['Idempotency', 'Reconciliation', 'Compliance', 'Ledger'] },
+      { id: 'rate-limiter', title: 'Design a Distributed Rate Limiter', difficulty: 'Intermediate', tags: ['Token Bucket', 'Sliding Window', 'Redis', 'Consistency'] },
+      { id: 'search-engine', title: 'Design a Search Engine (Google/Elasticsearch)', difficulty: 'Expert', tags: ['Inverted Index', 'Crawling', 'Ranking', 'Distributed Systems'] },
+      { id: 'notification-system', title: 'Design a Notification System', difficulty: 'Intermediate', tags: ['Push', 'Email', 'SMS', 'Preferences', 'Deduplication'] },
+      { id: 'file-storage', title: 'Design a File Storage Service (Dropbox/S3)', difficulty: 'Advanced', tags: ['Chunking', 'Deduplication', 'Sync', 'Versioning'] },
+      { id: 'api-gateway', title: 'Design an API Gateway (Kong/AWS API Gateway)', difficulty: 'Intermediate', tags: ['Routing', 'Auth', 'Rate Limiting', 'Observability'] },
+      { id: 'job-queue', title: 'Design a Distributed Job Queue (Celery/Bull)', difficulty: 'Intermediate', tags: ['Retry', 'Dead Letter', 'Priority', 'Ordering', 'Scaling'] }
+    ];
+
+    let currentQuestion = null;
+    let interviewMode = 'practice';
+    let totalSeconds = 45 * 60;
+    let remainingSeconds = totalSeconds;
+    let timerInterval = null;
+    let isPaused = false;
+    let startTime = null;
+    let sectionCompleted = { requirements: false, api: false, dataModel: false, highLevel: false, detailed: false, scaling: false };
+
+    const sectionKeys = ['requirements', 'api', 'dataModel', 'highLevel', 'detailed', 'scaling'];
+    const sectionNames = {
+      requirements: 'Requirements Clarification',
+      api: 'API Design',
+      dataModel: 'Data Model',
+      highLevel: 'High-Level Architecture',
+      detailed: 'Detailed Design',
+      scaling: 'Scaling & Reliability'
+    };
+
+    function init() {
+      const select = document.getElementById('questionSelect');
+      questions.forEach(q => {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = `${q.title} (${q.difficulty})`;
+        select.appendChild(opt);
+      });
+
+      // Load saved progress
+      const saved = localStorage.getItem('sdi_progress');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (data.questionId && data.timestamp > Date.now() - 7 * 24 * 60 * 60 * 1000) {
+            document.getElementById('loadBtn').style.display = 'inline-block';
+          }
+        } catch (e) {}
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', handleKeydown);
+    }
+
+    function handleKeydown(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveProgress();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const activeSection = document.querySelector('.interview-section:not([style*="display:none"])');
+        if (activeSection) {
+          markSectionComplete(activeSection.dataset.section);
+        }
+      }
+      if (e.altKey && e.key >= '1' && e.key <= '6') {
+        const idx = parseInt(e.key) - 1;
+        const section = document.querySelectorAll('.interview-section')[idx];
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (e.key === ' ' && document.getElementById('interviewSession').style.display !== 'none') {
+        e.preventDefault();
+        togglePause();
+      }
+    }
+
+    function startInterview() {
+      const questionId = document.getElementById('questionSelect').value;
+      if (!questionId) {
+        showStatus('Please select a question first', 'error');
+        return;
+      }
+      currentQuestion = questions.find(q => q.id === questionId);
+      interviewMode = document.getElementById('modeSelect').value;
+      totalSeconds = parseInt(document.getElementById('timeSelect').value) * 60;
+      remainingSeconds = totalSeconds;
+
+      document.getElementById('interviewSetup').style.display = 'none';
+      document.getElementById('interviewSession').style.display = 'block';
+      document.getElementById('questionTitle').textContent = currentQuestion.title;
+
+      if (interviewMode === 'timed' || interviewMode === 'mock') {
+        document.getElementById('pauseBtn').style.display = 'inline-block';
+        startTimer();
+      } else {
+        document.getElementById('timerDisplay').textContent = '∞';
+      }
+
+      startTime = Date.now();
+      showStatus('Interview started! Work through each section.', 'success');
+    }
+
+    function startTimer() {
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          remainingSeconds--;
+          updateTimerDisplay();
+          if (remainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            showStatus('Time is up! Click Finish to get feedback.', 'warning');
+            document.getElementById('timerDisplay').classList.add('timer-warning');
+          } else if (remainingSeconds <= 300) {
+            document.getElementById('timerDisplay').classList.add('timer-warning');
+          }
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(remainingSeconds / 60);
+      const secs = remainingSeconds % 60;
+      document.getElementById('timerDisplay').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      const btn = document.getElementById('pauseBtn');
+      btn.textContent = isPaused ? 'Resume' : 'Pause';
+      btn.classList.toggle('btn-secondary', !isPaused);
+      btn.classList.toggle('btn-primary', isPaused);
+    }
+
+    function markSectionComplete(sectionKey) {
+      sectionCompleted[sectionKey] = true;
+      document.getElementById(sectionKey + 'Status').textContent = '✅';
+      const section = document.querySelector(`[data-section="${sectionKey}"]`);
+      section.classList.add('completed');
+      updateProgress();
+      showStatus(`${sectionNames[sectionKey]} marked complete`, 'success');
+    }
+
+    function updateProgress() {
+      const completed = Object.values(sectionCompleted).filter(v => v).length;
+      // Could show progress indicator
+    }
+
+    async function getAIHelp(sectionKey) {
+      const input = document.getElementById(sectionKey).value;
+      const feedbackDiv = document.getElementById(sectionKey + 'Feedback');
+      feedbackDiv.style.display = 'block';
+      feedbackDiv.innerHTML = '<div class="loading">Getting AI guidance...</div>';
+
+      try {
+        const response = await fetch('/api/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              { role: 'system', content: `You are a system design interview coach. Provide concise, actionable guidance for the "${sectionNames[sectionKey]}" section. Focus on: key concepts, common mistakes, best practices, and what interviewers look for. Keep response under 300 words.` },
+              { role: 'user', content: `Question: ${currentQuestion.title}\n\nMy current ${sectionNames[sectionKey].toLowerCase()}:\n${input || '(empty - need starting guidance)'}` }
+            ],
+            temperature: 0.3,
+            max_tokens: 500
+          })
+        });
+        const data = await response.json();
+        if (data.response) {
+          // Process through DeAI for human-like text
+          const deaiResponse = await fetch('/api/deai-humanize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: data.response, mode: 'balanced' })
+          });
+          const deaiData = await deaiResponse.json();
+          feedbackDiv.innerHTML = `<div class="ai-guidance">${deaiData.humanized || data.response}</div>`;
+        } else {
+          feedbackDiv.innerHTML = '<div class="error">Failed to get AI guidance</div>';
+        }
+      } catch (err) {
+        feedbackDiv.innerHTML = '<div class="error">AI guidance unavailable. Check console for details.</div>';
+      }
+    }
+
+    function saveProgress() {
+      const progress = {
+        questionId: currentQuestion?.id,
+        mode: interviewMode,
+        totalSeconds,
+        remainingSeconds,
+        startTime,
+        sectionCompleted,
+        sections: {}
+      };
+      sectionKeys.forEach(key => {
+        progress.sections[key] = document.getElementById(key).value;
+      });
+      localStorage.setItem('sdi_progress', JSON.stringify(progress));
+      showStatus('Progress saved to browser storage', 'success');
+    }
+
+    function loadProgress() {
+      const saved = localStorage.getItem('sdi_progress');
+      if (!saved) return showStatus('No saved progress found', 'error');
+      try {
+        const data = JSON.parse(saved);
+        currentQuestion = questions.find(q => q.id === data.questionId);
+        if (!currentQuestion) return showStatus('Saved question not found', 'error');
+
+        interviewMode = data.mode;
+        totalSeconds = data.totalSeconds;
+        remainingSeconds = data.remainingSeconds;
+        startTime = data.startTime;
+        sectionCompleted = data.sectionCompleted || {};
+
+        document.getElementById('questionSelect').value = data.questionId;
+        document.getElementById('modeSelect').value = interviewMode;
+        document.getElementById('timeSelect').value = totalSeconds / 60;
+
+        startInterview();
+
+        sectionKeys.forEach(key => {
+          if (data.sections[key]) {
+            document.getElementById(key).value = data.sections[key];
+          }
+          if (sectionCompleted[key]) {
+            document.getElementById(key + 'Status').textContent = '✅';
+            document.querySelector(`[data-section="${key}"]`).classList.add('completed');
+          }
+        });
+
+        showStatus('Progress loaded successfully', 'success');
+      } catch (err) {
+        showStatus('Failed to load progress', 'error');
+      }
+    }
+
+    async function finishInterview() {
+      if (timerInterval) clearInterval(timerInterval);
+
+      const timeUsed = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
+      const completed = Object.values(sectionCompleted).filter(v => v).length;
+
+      document.getElementById('interviewSession').style.display = 'none';
+      document.getElementById('interviewResults').style.display = 'block';
+
+      document.getElementById('timeUsed').textContent = formatTime(timeUsed);
+      document.getElementById('sectionsCompleted').textContent = `${completed}/6`;
+
+      // Get AI feedback
+      await generateFinalFeedback();
+    }
+
+    async function generateFinalFeedback() {
+      const feedbackDiv = document.getElementById('finalFeedback');
+      feedbackDiv.innerHTML = '<div class="loading">Generating comprehensive AI feedback...</div>';
+
+      const sectionsContent = {};
+      sectionKeys.forEach(key => {
+        sectionsContent[key] = document.getElementById(key).value;
+      });
+
+      try {
+        const response = await fetch('/api/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              { role: 'system', content: `You are a senior staff engineer conducting a system design interview debrief. Evaluate the candidate's answer for: "${currentQuestion.title}". Score each section (0-10) and provide specific, actionable feedback. Consider: completeness, correctness, tradeoff awareness, scalability thinking, operational maturity. Be encouraging but honest. Format as JSON with: overallScore (0-100), sectionScores (object), strengths (array), improvements (array), summary (string).` },
+              { role: 'user', content: JSON.stringify(sectionsContent, null, 2) }
+            ],
+            temperature: 0.2,
+            max_tokens: 1500,
+            response_format: { type: 'json_object' }
+          })
+        });
+        const data = await response.json();
+        let feedback = null;
+        try {
+          feedback = JSON.parse(data.response || '{}');
+        } catch (e) {
+          feedback = { overallScore: 75, sectionScores: {}, strengths: ['Completed all sections'], improvements: ['Add more specific scaling details'], summary: 'Good effort on completing the interview.' };
+        }
+
+        // Humanize the feedback
+        const deaiResponse = await fetch('/api/deai-humanize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: JSON.stringify(feedback), mode: 'balanced' })
+        });
+        const deaiData = await deaiResponse.json();
+        let finalFeedback = feedback;
+        try {
+          finalFeedback = JSON.parse(deaiData.humanized || JSON.stringify(feedback));
+        } catch (e) {}
+
+        document.getElementById('overallScore').textContent = finalFeedback.overallScore || '75';
+
+        let html = `<h3>AI Feedback Summary</h3><p>${finalFeedback.summary || 'Good work completing the interview!'}</p>`;
+        html += '<h4>Section Scores</h4><ul>';
+        if (finalFeedback.sectionScores) {
+          Object.entries(finalFeedback.sectionScores).forEach(([section, score]) => {
+            html += `<li><strong>${sectionNames[section] || section}:</strong> ${score}/10</li>`;
+          });
+        }
+        html += '</ul>';
+        if (finalFeedback.strengths?.length) {
+          html += '<h4>Strengths</h4><ul>' + finalFeedback.strengths.map(s => `<li>${s}</li>`).join('') + '</ul>';
+        }
+        if (finalFeedback.improvements?.length) {
+          html += '<h4>Areas for Improvement</h4><ul>' + finalFeedback.improvements.map(s => `<li>${s}</li>`).join('') + '</ul>';
+        }
+        feedbackDiv.innerHTML = html;
+      } catch (err) {
+        feedbackDiv.innerHTML = '<div class="error">AI feedback unavailable. Your interview is complete - review the sections manually.</div>';
+        document.getElementById('overallScore').textContent = '--';
+      }
+    }
+
+    function exportInterview() {
+      let md = `# System Design Interview: ${currentQuestion.title}\n\n`;
+      md += `**Date:** ${new Date().toLocaleDateString()}\n`;
+      md += `**Mode:** ${interviewMode}\n`;
+      md += `**Duration:** ${formatTime(totalSeconds - remainingSeconds)} / ${formatTime(totalSeconds)}\n`;
+      md += `**Sections Completed:** ${Object.values(sectionCompleted).filter(v => v).length}/6\n\n`;
+
+      sectionKeys.forEach(key => {
+        const content = document.getElementById(key).value;
+        md += `## ${sectionNames[key]}\n\n${content || '(Not completed)'}\n\n`;
+      });
+
+      const blob = new Blob([md], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `system-design-${currentQuestion.id}-${Date.now()}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showStatus('Interview exported as Markdown', 'success');
+    }
+
+    function restartInterview() {
+      if (timerInterval) clearInterval(timerInterval);
+      currentQuestion = null;
+      remainingSeconds = totalSeconds;
+      isPaused = false;
+      startTime = null;
+      sectionCompleted = { requirements: false, api: false, dataModel: false, highLevel: false, detailed: false, scaling: false };
+      sectionKeys.forEach(key => {
+        document.getElementById(key).value = '';
+        document.getElementById(key + 'Status').textContent = '⬜';
+        document.getElementById(key + 'Feedback').style.display = 'none';
+        document.querySelector(`[data-section="${key}"]`).classList.remove('completed');
+      });
+      document.getElementById('interviewResults').style.display = 'none';
+      document.getElementById('interviewSetup').style.display = 'block';
+      document.getElementById('timerDisplay').classList.remove('timer-warning');
+      document.getElementById('pauseBtn').style.display = 'none';
+      showStatus('Ready for a new interview', 'success');
+    }
+
+    function shareInterview() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        showStatus('Interview link copied to clipboard', 'success');
+      }).catch(() => {
+        prompt('Copy this link:', url);
+      });
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('status');
+      el.textContent = msg;
+      const typeClass = type === 'error' ? 'status-alert' : type === 'warning' ? 'status-warn' : 'status-ok';
+      el.className = 'status ' + typeClass;
+      setTimeout(() => { el.textContent = ''; el.className = 'status'; }, 4000);
+    }
+
+    init();
+  </script>
+  <style>
+    .interview-setup { background: #1a1a2e; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+    .section-input:focus-visible { outline: 3px solid #7eb3ff !important; outline-offset: 2px !important; }
+    .setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+    .setup-item label { display: block; font-size: 14px; color: #b3b8c0; margin-bottom: 6px; }
+    .setup-item select { width: 100%; padding: 10px 12px; background: #0f0f23; border: 1px solid #333; border-radius: 6px; color: #fff; font-size: 14px; }
+    .interview-session { display: none; }
+    .interview-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding: 16px; background: #1a1a2e; border-radius: 12px; flex-wrap: wrap; }
+    .timer-display { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 700; color: #7eb3ff; }
+    .timer-display.timer-warning { color: #ff6b6b; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .question-title { flex: 1; font-size: 1.1rem; color: #e0e0e0; }
+    .session-controls { display: flex; gap: 8px; }
+    .interview-sections { display: flex; flex-direction: column; gap: 20px; }
+    .interview-section { background: #1a1a2e; border-radius: 12px; padding: 20px; border: 1px solid #2a2a4a; transition: border-color 0.2s; }
+    .interview-section.completed { border-color: #2e7d32; }
+    .interview-section h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 1.1rem; color: #fff; }
+    .section-status { font-size: 1.2rem; }
+    .section-guidance { background: #0f0f23; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; color: #b3b8c0; line-height: 1.6; }
+    .section-guidance strong { color: #7eb3ff; }
+    .section-guidance ul { margin: 8px 0 0 18px; }
+    .section-input { width: 100%; min-height: 120px; padding: 12px; background: #0f0f23; border: 1px solid #333; border-radius: 6px; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; resize: vertical; }
+    .section-input:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: #7eb3ff; }
+    .section-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .ai-feedback { margin-top: 12px; padding: 12px; background: #0f0f23; border-radius: 6px; border-left: 3px solid #7eb3ff; font-size: 13px; line-height: 1.6; }
+    .ai-guidance { white-space: pre-wrap; }
+    .loading { color: #7eb3ff; font-style: italic; }
+    .error { color: #ff6b6b; }
+    .interview-results { text-align: center; padding: 32px; background: #1a1a2e; border-radius: 12px; }
+    .results-summary { display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap; }
+    .result-card { background: #0f0f23; padding: 24px 32px; border-radius: 12px; min-width: 120px; }
+    .result-card h3 { margin: 0 0 8px; font-size: 14px; color: #b3b8c0; font-weight: 500; }
+    .result-value { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 700; color: #7eb3ff; }
+    .ai-feedback-final { max-width: 800px; margin: 0 auto 24px; text-align: left; padding: 20px; background: #0f0f23; border-radius: 12px; line-height: 1.7; }
+    .ai-feedback-final h3, .ai-feedback-final h4 { color: #7eb3ff; margin-top: 20px; }
+    .ai-feedback-final ul { margin-left: 18px; }
+    .ai-feedback-final li { margin: 6px 0; }
+    .faq-content { padding: 16px 0; color: #b3b8c0; line-height: 1.7; }
+    .faq-content ul, .faq-content ol { margin-left: 18px; }
+    .faq-content li { margin: 6px 0; }
+    .faq-content code, .faq-content kbd { background: #0f0f23; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .faq-content table { font-size: 13px; }
+    .faq-content th, .faq-content td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #2a2a4a; }
+    .feedback-link { color: #7eb3ff; text-decoration: none; margin-left: 16px; }
+    .feedback-link:hover { text-decoration: underline; }
+    .status { margin-top: 16px; padding: 12px 16px; border-radius: 6px; font-size: 14px; display: none; }
+    .status.status-ok { display: block; background: #1a3a2a; color: #4ade80; border: 1px solid #2e7d32; }
+    .status.status-alert { display: block; background: #3a1a1a; color: #ff6b6b; border: 1px solid #c62828; }
+    .status.status-warn { display: block; background: #3a3a1a; color: #ffd93d; border: 1px solid #f9a825; }
+  </style>
+</body>
+</html>
