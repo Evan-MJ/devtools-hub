@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 396 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 398 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 396
+- Total tools: 398
 - Categories: 11
 - Last updated: 2026-11-27
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -125,7 +125,7 @@ Free online JSON Schema generator. Infer a JSON Schema from sample JSON data aut
 
 Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private browser processing.
 
-## Calculators (40 tools)
+## Calculators (41 tools)
 
 Browse all: [Calculators](https://tools.scoreroute.com/tools/calculators/.md)
 
@@ -488,6 +488,15 @@ Free heart rate zone calculator. Enter your age to get all five training zones i
 - Tags: gravel, gravel calculator, cubic yards, tons, crushed stone, sand, topsoil, mulch, landscaping, bags
 
 Free gravel calculator. Convert length, width and depth into cubic yards, tons and bags for gravel, crushed stone, sand, topsoil or mulch.
+
+### Treadmill Pace Calculator - MPH to Pace & 5K/10K Times
+
+- URL: https://tools.scoreroute.com/tools/treadmill-pace-calculator/
+- Markdown: https://tools.scoreroute.com/tools/treadmill-pace-calculator/.md
+- Category: Calculators
+- Tags: treadmill, pace, calculator, convert, mph, kph, 5k, 10k, running, fitness
+
+Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.
 
 ## Generators (54 tools)
 
@@ -2314,7 +2323,7 @@ Free webhook tester. Generate a unique URL to capture and inspect HTTP webhooks 
 
 Free online sitemap generator. Create XML sitemaps from URL lists or crawl websites. No signup, no URL limits. Supports priority, changefreq, lastmod.
 
-## Code Testing (19 tools)
+## Code Testing (20 tools)
 
 Browse all: [Code Testing](https://tools.scoreroute.com/tools/code-testing/.md)
 
@@ -2488,6 +2497,15 @@ Free online HTML accessibility validator. Test WCAG 2.1 AA/AAA compliance with a
 - Tags: sql, sqlite, playground, database, query, webassembly, chinook, northwind
 
 Free online SQL playground. Run SQLite queries in browser with Chinook, Northwind samples. CodeMirror editor, EXPLAIN plan, CSV/JSON export.
+
+### System Design Interview Simulator
+
+- URL: https://tools.scoreroute.com/tools/system-design-interview/
+- Markdown: https://tools.scoreroute.com/tools/system-design-interview/.md
+- Category: Code Testing
+- Tags: system, design, interview, simulator, practice, architecture, preparation
+
+Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. No signup required.
 
 ## PDF Tools (25 tools)
 
@@ -3623,7 +3641,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 396 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 398 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

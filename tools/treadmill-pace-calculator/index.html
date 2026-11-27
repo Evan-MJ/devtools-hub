@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treadmill Pace Calculator - MPH to Pace &amp; 5K/10K Times</title>
+    <meta name="description" content="Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/treadmill-pace-calculator/">
+    <meta property="og:title" content="Treadmill Pace Calculator - MPH to Pace &amp; 5K/10K Times">
+    <meta property="og:description" content="Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/treadmill-pace-calculator/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Treadmill Pace Calculator - Free MPH to Pace Converter | DevTools Hub">
+    <meta name="twitter:description" content="Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.">
+    <meta name="twitter:image" content="/og-image.png">
+    <meta name="twitter:url" content="https://tools.scoreroute.com/tools/treadmill-pace-calculator/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "datePublished": "2026-11-27",
+        "dateModified": "2026-11-27",
+        "author": {"@type": "Person", "name": "BAOMING"},
+        "name": "Treadmill Pace Calculator - MPH to Pace & 5K/10K Times",
+        "description": "Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.",
+        "url": "https://tools.scoreroute.com/tools/treadmill-pace-calculator/",
+        "applicationCategory": "SportsApplication",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "operatingSystem": "Any",
+        "permissions": "none",
+        "softwareVersion": "1.0"
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #0f0f23;
+            --card: #1a1a2e;
+            --border: #2a2a4a;
+            --primary: #667eea;
+            --text: #fff;
+            --text-secondary: #888;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        .tpc-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .tpc-tab {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .tpc-tab:hover { color: var(--text); background: rgba(102,126,234,0.1); }
+        .tpc-tab.active { background: var(--primary); color: #fff; }
+
+        .tpc-unit-toggle {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--card);
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .tpc-unit-btn {
+            flex: 1;
+            padding: 10px 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .tpc-unit-btn:hover { color: var(--text); background: rgba(102,126,234,0.1); }
+        .tpc-unit-btn.active { background: var(--primary); color: #fff; }
+
+        .tpc-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .tpc-card h3 {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .tpc-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tpc-row label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            min-width: 100px;
+        }
+
+        .tpc-input {
+            padding: 10px 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 100px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .tpc-input:focus { border-color: var(--primary); }
+        .tpc-input[type="number"] { max-width: 100px; }
+
+        .tpc-result-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .tpc-result-card.highlight {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), transparent);
+        }
+
+        .tpc-result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .tpc-result-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .tpc-result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .tpc-result-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .tpc-result-item .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .tpc-result-item .label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .tpc-chart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .tpc-chart-table th {
+            background: var(--card);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .tpc-chart-table td {
+            padding: 8px 10px;
+            font-size: 0.85rem;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tpc-chart-table tr:hover td { background: rgba(102,126,234,0.05); }
+
+        .tpc-chart-table .effort-walk { color: #10b981; font-weight: 600; }
+        .tpc-chart-table .effort-jog { color: #f59e0b; font-weight: 600; }
+        .tpc-chart-table .effort-run { color: #ef4444; font-weight: 600; }
+
+        .tpc-chart-table .pace-col { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+        .tpc-chart-table .time-col { font-family: 'JetBrains Mono', monospace; }
+
+        .tpc-tab-content { display: none; }
+        .tpc-tab-content.active { display: block; }
+
+        .tpc-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .tpc-info-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .tpc-info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .tpc-info-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .tpc-row { flex-direction: column; align-items: stretch; }
+            .tpc-row label { min-width: auto; }
+            .tpc-chart-table th, .tpc-chart-table td { padding: 6px 4px; font-size: 0.75rem; }
+            .tpc-result-grid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            .tpc-tabs, .tpc-unit-toggle, .btn-group, .tpc-card > h3:first-of-type, .status { display: none !important; }
+            .tpc-tab-content { display: block !important; }
+            .tpc-chart-table { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Treadmill Pace Calculator</h1>
+            <p class="subtitle">Convert MPH to Pace, km/h to min/km — 5K & 10K Times</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/tools/calculators/">Calculators</a> > <span>Treadmill Pace Calculator</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="tpc-tabs" role="group" aria-label="Calculator modes">
+                    <button class="tpc-tab active" data-tab="converter" aria-pressed="true" onclick="switchTPCTab('converter')">Converter</button>
+                    <button class="tpc-tab" data-tab="chart" aria-pressed="false" onclick="switchTPCTab('chart')">Full Chart</button>
+                    <button class="tpc-tab" data-tab="distance" aria-pressed="false" onclick="switchTPCTab('distance')">Distance Calc</button>
+                    <button class="tpc-tab" data-tab="calories" aria-pressed="false" onclick="switchTPCTab('calories')">Calorie Estimate</button>
+                </div>
+
+                <div id="tab-converter" class="tpc-tab-content active">
+                    <div class="tpc-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+                            <h2 style="margin:0;">Convert Speed &larr;&rarr; Pace</h2>
+                        </div>
+
+                        <div class="tpc-unit-toggle" role="group" aria-label="Unit system">
+                            <button class="tpc-unit-btn active" data-unit="mph" onclick="setTPCUnit('mph')" aria-pressed="true">MPH &rarr; min/mi</button>
+                            <button class="tpc-unit-btn" data-unit="kph" onclick="setTPCUnit('kph')" aria-pressed="false">km/h &rarr; min/km</button>
+                        </div>
+
+                        <div class="tpc-row">
+                            <label for="tpc-speed">Treadmill Speed</label>
+                            <input type="number" id="tpc-speed" class="tpc-input" value="6.0" min="0.1" max="20" step="0.1" aria-label="Treadmill speed">
+                            <span id="tpc-speed-unit" style="color:var(--text-secondary);font-size:0.85rem;">mph</span>
+                        </div>
+
+                        <div class="tpc-row">
+                            <label for="tpc-incline">Incline (optional)</label>
+                            <input type="number" id="tpc-incline" class="tpc-input" value="0" min="0" max="15" step="0.5" aria-label="Incline percent">
+                            <span style="color:var(--text-secondary);font-size:0.85rem;">%</span>
+                        </div>
+
+                        <div class="btn-group">
+                            <button onclick="convertTPC()" class="btn btn-primary">Convert</button>
+                            <button onclick="clearTPC()" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </div>
+
+                    <div id="tpc-status" class="status"></div>
+                    <div id="tpc-results" class="tpc-card" style="display:none;">
+                        <h3>Conversion Results</h3>
+                        <div id="tpc-result-primary" class="tpc-result-card highlight">
+                            <div id="tpc-result-value" class="tpc-result-value">10:00 /mi</div>
+                            <div id="tpc-result-label" class="tpc-result-label">Pace</div>
+                        </div>
+                        <div id="tpc-result-secondary" class="tpc-result-grid"></div>
+                        <div id="tpc-effort" style="margin-top:12px;padding:10px;background:var(--card);border-radius:8px;border:1px solid var(--border);">
+                            <span id="tpc-effort-text" style="font-weight:600;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-chart" class="tpc-tab-content">
+                    <div class="tpc-card">
+                        <h3>Full Treadmill Pace Chart</h3>
+                        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">
+                            Speeds from 2.0 to 12.0 in 0.5 increments. Toggle units for metric/imperial. Print-friendly version available.
+                        </p>
+                        <div class="tpc-unit-toggle" role="group" aria-label="Chart unit system">
+                            <button class="tpc-unit-btn active" data-chart-unit="mph" onclick="setChartUnit('mph')" aria-pressed="true">MPH / min/mi</button>
+                            <button class="tpc-unit-btn" data-chart-unit="kph" onclick="setChartUnit('kph')" aria-pressed="false">km/h / min/km</button>
+                        </div>
+                        <div style="text-align:right;margin-bottom:8px;">
+                            <button onclick="window.print()" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">Print Chart</button>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="tpc-chart-table" id="chart-table">
+                                <caption class="sr-only">Treadmill speed conversion chart with pace, 5K time, 10K time, and effort level</caption>
+                                <thead>
+                                    <tr>
+                                        <th>Speed</th>
+                                        <th>Pace</th>
+                                        <th>5K</th>
+                                        <th>10K</th>
+                                        <th>Effort</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="chart-body"><tr><td colspan="5">Select unit to load chart.</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-distance" class="tpc-tab-content">
+                    <div class="tpc-card">
+                        <h3>Distance from Speed & Time</h3>
+                        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">
+                            Calculate how far you ran based on treadmill speed and workout duration.
+                        </p>
+                        <div class="tpc-row">
+                            <label for="dist-speed">Speed</label>
+                            <input type="number" id="dist-speed" class="tpc-input" value="6.0" min="0.1" max="20" step="0.1" aria-label="Speed">
+                            <span id="dist-speed-unit" style="color:var(--text-secondary);font-size:0.85rem;">mph</span>
+                        </div>
+                        <div class="tpc-row">
+                            <label for="dist-hours">Hours</label>
+                            <input type="number" id="dist-hours" class="tpc-input" value="0" min="0" max="99" aria-label="Hours" style="max-width:60px;">
+                            <span style="color:var(--text-secondary);">h</span>
+                            <label for="dist-minutes" style="min-width:40px;">Minutes</label>
+                            <input type="number" id="dist-minutes" class="tpc-input" value="30" min="0" max="59" aria-label="Minutes" style="max-width:70px;">
+                            <span style="color:var(--text-secondary);">m</span>
+                            <label for="dist-seconds" style="min-width:40px;">Seconds</label>
+                            <input type="number" id="dist-seconds" class="tpc-input" value="0" min="0" max="59" aria-label="Seconds" style="max-width:70px;">
+                            <span style="color:var(--text-secondary);">s</span>
+                        </div>
+                        <div class="btn-group">
+                            <button onclick="calculateDistance()" class="btn btn-primary">Calculate Distance</button>
+                            <button onclick="clearDistance()" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </div>
+                    <div id="dist-results" class="tpc-card" style="display:none;">
+                        <h3>Distance Results</h3>
+                        <div id="dist-result-grid" class="tpc-result-grid"></div>
+                    </div>
+                </div>
+
+                <div id="tab-calories" class="tpc-tab-content">
+                    <div class="tpc-card">
+                        <h3>Calorie Estimate</h3>
+                        <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">
+                            Estimate calories burned from speed, incline, duration, and weight. Based on ACSM metabolic equations.
+                        </p>
+                        <div class="tpc-row">
+                            <label for="cal-speed">Speed</label>
+                            <input type="number" id="cal-speed" class="tpc-input" value="6.0" min="0.1" max="20" step="0.1" aria-label="Speed">
+                            <span id="cal-speed-unit" style="color:var(--text-secondary);font-size:0.85rem;">mph</span>
+                        </div>
+                        <div class="tpc-row">
+                            <label for="cal-incline">Incline</label>
+                            <input type="number" id="cal-incline" class="tpc-input" value="1" min="0" max="15" step="0.5" aria-label="Incline percent">
+                            <span style="color:var(--text-secondary);font-size:0.85rem;">%</span>
+                        </div>
+                        <div class="tpc-row">
+                            <label for="cal-weight">Your Weight</label>
+                            <input type="number" id="cal-weight" class="tpc-input" value="70" min="30" max="200" step="0.5" aria-label="Weight">
+                            <span id="cal-weight-unit" style="color:var(--text-secondary);font-size:0.85rem;">kg</span>
+                        </div>
+                        <div class="tpc-row">
+                            <label for="cal-hours">Duration</label>
+                            <input type="number" id="cal-hours" class="tpc-input" value="0" min="0" max="99" aria-label="Hours" style="max-width:60px;">
+                            <span style="color:var(--text-secondary);">h</span>
+                            <input type="number" id="cal-minutes" class="tpc-input" value="30" min="0" max="59" aria-label="Minutes" style="max-width:70px;">
+                            <span style="color:var(--text-secondary);">m</span>
+                            <input type="number" id="cal-seconds" class="tpc-input" value="0" min="0" max="59" aria-label="Seconds" style="max-width:70px;">
+                            <span style="color:var(--text-secondary);">s</span>
+                        </div>
+                        <div class="btn-group">
+                            <button onclick="calculateCalories()" class="btn btn-primary">Estimate Calories</button>
+                            <button onclick="clearCalories()" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </div>
+                    <div id="cal-results" class="tpc-card" style="display:none;">
+                        <h3>Calorie Estimate</h3>
+                        <div id="cal-result-grid" class="tpc-result-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>How This Treadmill Pace Calculator Works</h2>
+                <p>
+                    Treadmills display speed in MPH or km/h, but runners think in pace — minutes per mile or minutes per kilometer.
+                    This calculator bridges that gap with exact conversions and practical training data.
+                </p>
+
+                <h3>Core Conversion</h3>
+                <ul>
+                    <li><strong>MPH to min/mile:</strong> 60 ÷ MPH = minutes per mile (e.g., 60 ÷ 6.0 = 10:00/mi)</li>
+                    <li><strong>km/h to min/km:</strong> 60 ÷ km/h = minutes per kilometer (e.g., 60 ÷ 9.66 = 6:12/km)</li>
+                    <li><strong>Cross-unit:</strong> 1 mph = 1.60934 km/h, 1 mile = 1.60934 km</li>
+                </ul>
+
+                <h3>5K & 10K Finish Times</h3>
+                <p>
+                    The chart and converter show even-split finish times if you hold that belt speed continuously.
+                    <strong>Important:</strong> These are treadmill workout durations at constant speed, not outdoor race predictions.
+                    Outdoor running adds wind, turns, and grade variation that a treadmill does not model.
+                </p>
+
+                <h3>Effort Levels</h3>
+                <ul>
+                    <li><strong>Walk (2.0–4.0 mph / 3.2–6.4 km/h):</strong> Recovery, warm-up, cool-down. Full conversation possible.</li>
+                    <li><strong>Jog (4.5–5.5 mph / 7.2–8.8 km/h):</strong> Easy running for beginners; very easy day for experienced runners.</li>
+                    <li><strong>Run (6.0+ mph / 9.6+ km/h):</strong> Continuous running for people who already run. 7.5 mph / 12 km/h ≈ tempo.</li>
+                </ul>
+
+                <h3>Grade-Adjusted Pace (Incline)</h3>
+                <p>
+                    When you set an incline, the converter shows your "flat equivalent" pace — the pace you'd run on a flat
+                    surface at the same effort. Based on the common approximation: each 1% incline adds ~12–15 seconds per mile
+                    to your pace at the same physiological effort.
+                </p>
+
+                <h3>Distance Calculator</h3>
+                <p>
+                    Enter your treadmill speed and workout duration to get total distance in miles and kilometers.
+                    Useful when the treadmill display resets or you want to verify the console reading.
+                </p>
+
+                <h3>Calorie Estimate</h3>
+                <p>
+                    Uses ACSM metabolic equations for running/walking on a treadmill. Accounts for speed, grade, weight, and duration.
+                    Results are estimates — actual calorie burn varies by individual metabolism, running economy, and body composition.
+                </p>
+
+                <details class="faq-item">
+                    <summary>How do I convert treadmill MPH to minutes per mile?</summary>
+                    <p>Divide 60 by the MPH. For example: 60 ÷ 6.0 mph = 10:00 per mile. 60 ÷ 7.5 mph = 8:00 per mile. Use the Converter tab above for instant results.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What's the difference between treadmill speed and outdoor pace?</summary>
+                    <p>Treadmill speed is belt speed with no wind resistance and perfect footing. Outdoor pace includes wind, turns, elevation changes, and surface variation. A 6:00/mile on a treadmill typically feels easier than a 6:00/mile outdoors. Do not treat treadmill 5K/10K columns as outdoor race predictions.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How accurate is the calorie estimate?</summary>
+                    <p>The ACSM equation is a scientific standard but individual variation is 10–20%. Factors not modeled: running economy, body composition, fitness level, temperature, and whether you hold the handrails (which reduces burn significantly). Treat as a relative guide, not an absolute number.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What incline should I use to simulate outdoor running?</summary>
+                    <p>A common guideline is 1% incline to offset the lack of wind resistance at speeds above ~7 mph. Below that, 0% is fine. For grade-adjusted effort, use the Incline field in the Converter — it shows your flat-equivalent pace at the same effort.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I print the pace chart for the gym?</summary>
+                    <p>Yes. Click the "Print Chart" button in the Full Chart tab. The print layout hides navigation and controls, giving you a clean reference card for the treadmill rail.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What is a "10-minute mile" on a treadmill?</summary>
+                    <p>6.0 mph. It's the most common easy-run setting on US treadmills. At 6.0 mph, a 5K takes 31:04 and a 10K takes 1:02:08 if you hold that speed continuously.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a> | <a href="/privacy/">Privacy</a> | <a href="/about/">About</a> | <a href="/contact/">Contact</a></p>
+        </div>
+    </footer>
+
+    <script src="/tools.js"></script>
+    <script>
+        var tpcUnit = 'mph';
+        var chartUnit = 'mph';
+
+        function switchTPCTab(tab) {
+            var tabs = document.querySelectorAll('.tpc-tab');
+            tabs.forEach(function(t) {
+                t.classList.remove('active');
+                t.setAttribute('aria-pressed', 'false');
+            });
+            document.querySelector('.tpc-tab[data-tab="' + tab + '"]').classList.add('active');
+            document.querySelector('.tpc-tab[data-tab="' + tab + '"]').setAttribute('aria-pressed', 'true');
+
+            var contents = document.querySelectorAll('.tpc-tab-content');
+            contents.forEach(function(c) { c.classList.remove('active'); });
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        function setTPCUnit(unit) {
+            tpcUnit = unit;
+            var btns = document.querySelectorAll('#tab-converter .tpc-unit-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+            var onBtn = document.querySelector('#tab-converter .tpc-unit-btn[data-unit="' + unit + '"]');
+            onBtn.classList.add('active');
+            onBtn.setAttribute('aria-pressed', 'true');
+
+            document.getElementById('tpc-speed-unit').textContent = unit === 'mph' ? 'mph' : 'km/h';
+            document.getElementById('tpc-speed').placeholder = unit === 'mph' ? '6.0' : '9.7';
+        }
+
+        function setChartUnit(unit) {
+            chartUnit = unit;
+            var btns = document.querySelectorAll('#tab-chart .tpc-unit-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+            var onBtn = document.querySelector('#tab-chart .tpc-unit-btn[data-chart-unit="' + unit + '"]');
+            onBtn.classList.add('active');
+            onBtn.setAttribute('aria-pressed', 'true');
+            renderChart();
+        }
+
+        function formatPace(secPerUnit) {
+            if (!isFinite(secPerUnit) || secPerUnit <= 0) return '--:--';
+            var totalSec = Math.round(secPerUnit);
+            var m = Math.floor(totalSec / 60);
+            var s = totalSec % 60;
+            return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function formatTime(seconds) {
+            if (!isFinite(seconds) || seconds <= 0) return '--:--';
+            var totalSec = Math.round(seconds);
+            var h = Math.floor(totalSec / 3600);
+            var m = Math.floor((totalSec % 3600) / 60);
+            var s = totalSec % 60;
+            if (h > 0) return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function getEffort(speed, unit) {
+            var mph = unit === 'mph' ? speed : speed / 1.60934;
+            if (mph < 4.5) return { label: 'Walk', class: 'effort-walk' };
+            if (mph < 6.0) return { label: 'Jog', class: 'effort-jog' };
+            return { label: 'Run', class: 'effort-run' };
+        }
+
+        function convertTPC() {
+            var speed = parseFloat(document.getElementById('tpc-speed').value);
+            var incline = parseFloat(document.getElementById('tpc-incline').value) || 0;
+
+            if (!speed || speed <= 0 || speed > 20) {
+                showStatus('tpc-status', 'Please enter a valid speed (0.1–20)', 'info');
+                return;
+            }
+
+            var paceSec, speedKph, speedMph, paceMinKm, paceMinMi;
+            var unitLabel, paceLabel;
+
+            if (tpcUnit === 'mph') {
+                speedMph = speed;
+                speedKph = speed * 1.60934;
+                paceSec = 3600 / speedMph;
+                paceMinMi = paceSec / 60;
+                paceMinKm = paceSec / 60 / 1.60934;
+                unitLabel = 'mi';
+                paceLabel = 'min/mi';
+            } else {
+                speedKph = speed;
+                speedMph = speed / 1.60934;
+                paceSec = 3600 / speedKph;
+                paceMinKm = paceSec / 60;
+                paceMinMi = paceSec / 60 * 1.60934;
+                unitLabel = 'km';
+                paceLabel = 'min/km';
+            }
+
+            var effort = getEffort(speed, tpcUnit);
+
+            var paceDisplay = formatPace(paceSec) + ' /' + unitLabel;
+            document.getElementById('tpc-result-value').textContent = paceDisplay;
+            document.getElementById('tpc-result-label').textContent = 'Pace (' + paceLabel + ')';
+
+            var effortEl = document.getElementById('tpc-effort-text');
+            effortEl.textContent = 'Effort Level: ' + effort.label;
+            effortEl.className = effort.class;
+
+            var paceKm = paceSec / 60;
+            var paceMi = paceSec / 60 * 1.60934;
+            var kph = speedKph;
+            var mph = speedMph;
+
+            var time5k = paceKm * 5;
+            var time10k = paceKm * 10;
+
+            var gradeAdj = 1 + (incline * 0.02);
+            var flatPaceSec = paceSec / gradeAdj;
+            var flatPaceDisplay = formatPace(flatPaceSec) + ' /' + unitLabel;
+
+            document.getElementById('tpc-result-secondary').innerHTML =
+                '<div class="tpc-result-item"><div class="value">' + speedMph.toFixed(1) + ' mph</div><div class="label">Speed (MPH)</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + speedKph.toFixed(1) + ' km/h</div><div class="label">Speed (km/h)</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatPace(paceSec) + ' /mi</div><div class="label">Pace per Mile</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatPace(paceSec / 1.60934) + ' /km</div><div class="label">Pace per km</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatTime(time5k) + '</div><div class="label">5K Time</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatTime(time10k) + '</div><div class="label">10K Time</div></div>' +
+                (incline > 0 ?
+                '<div class="tpc-result-item"><div class="value">' + flatPaceDisplay + '</div><div class="label">Flat-Equivalent Pace</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + incline + '%</div><div class="label">Incline</div></div>' : '');
+
+            document.getElementById('tpc-results').style.display = 'block';
+        }
+
+        function clearTPC() {
+            document.getElementById('tpc-results').style.display = 'none';
+        }
+
+        function renderChart() {
+            var tbody = document.getElementById('chart-body');
+            tbody.innerHTML = '';
+
+            var speeds = chartUnit === 'mph' 
+                ? [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0]
+                : [3.2, 4.0, 4.8, 5.6, 6.4, 7.2, 8.0, 8.9, 9.7, 10.5, 11.3, 12.1, 12.9, 13.7, 14.5, 15.3, 16.1, 16.9, 17.7, 18.5, 19.3];
+
+            speeds.forEach(function(speed) {
+                var mph = chartUnit === 'mph' ? speed : speed / 1.60934;
+                var kph = chartUnit === 'mph' ? speed * 1.60934 : speed;
+                var paceSec = 3600 / kph;
+                var paceMinKm = paceSec / 60;
+                var time5k = paceMinKm * 5;
+                var time10k = paceMinKm * 10;
+                var effort = getEffort(mph, 'mph');
+
+                var speedDisplay = chartUnit === 'mph' ? speed.toFixed(1) + ' mph' : speed.toFixed(1) + ' km/h';
+                var paceDisplay = formatPace(paceSec) + (chartUnit === 'mph' ? ' /mi' : ' /km');
+                var time5kDisplay = formatTime(time5k);
+                var time10kDisplay = formatTime(time10k);
+
+                var row = document.createElement('tr');
+                row.innerHTML =
+                    '<td>' + speedDisplay + '</td>' +
+                    '<td class="pace-col">' + paceDisplay + '</td>' +
+                    '<td class="time-col">' + time5kDisplay + '</td>' +
+                    '<td class="time-col">' + time10kDisplay + '</td>' +
+                    '<td class="' + effort.class + '">' + effort.label + '</td>';
+                tbody.appendChild(row);
+            });
+        }
+
+        function calculateDistance() {
+            var speed = parseFloat(document.getElementById('dist-speed').value);
+            var h = parseInt(document.getElementById('dist-hours').value) || 0;
+            var m = parseInt(document.getElementById('dist-minutes').value) || 0;
+            var s = parseInt(document.getElementById('dist-seconds').value) || 0;
+            var totalSec = h * 3600 + m * 60 + s;
+
+            if (!speed || speed <= 0 || !totalSec) {
+                showStatus('tpc-status', 'Please enter valid speed and duration', 'info');
+                return;
+            }
+
+            var mph = speed;
+            var kph = speed * 1.60934;
+            var miles = (mph * totalSec) / 3600;
+            var km = (kph * totalSec) / 3600;
+
+            document.getElementById('dist-result-grid').innerHTML =
+                '<div class="tpc-result-item"><div class="value">' + miles.toFixed(2) + ' mi</div><div class="label">Distance (Miles)</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + km.toFixed(2) + ' km</div><div class="label">Distance (Kilometers)</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatTime(totalSec) + '</div><div class="label">Duration</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + mph.toFixed(1) + ' mph</div><div class="label">Speed</div></div>';
+
+            document.getElementById('dist-results').style.display = 'block';
+        }
+
+        function clearDistance() {
+            document.getElementById('dist-results').style.display = 'none';
+        }
+
+        function calculateCalories() {
+            var speed = parseFloat(document.getElementById('cal-speed').value);
+            var incline = parseFloat(document.getElementById('cal-incline').value) || 0;
+            var weight = parseFloat(document.getElementById('cal-weight').value);
+            var h = parseInt(document.getElementById('cal-hours').value) || 0;
+            var m = parseInt(document.getElementById('cal-minutes').value) || 0;
+            var s = parseInt(document.getElementById('cal-seconds').value) || 0;
+            var totalMin = h * 60 + m + s / 60;
+
+            if (!speed || speed <= 0 || !weight || weight <= 0 || !totalMin) {
+                showStatus('tpc-status', 'Please enter valid speed, weight, and duration', 'info');
+                return;
+            }
+
+            var mph = speed;
+            var kph = speed * 1.60934;
+            var vo2;
+            if (mph < 3.7) {
+                vo2 = 3.5 + (0.1 * kph) + (1.8 * kph * incline / 100);
+            } else {
+                vo2 = 3.5 + (0.2 * kph) + (0.9 * kph * incline / 100);
+            }
+            var kcalPerMin = vo2 * weight / 200;
+            var totalKcal = kcalPerMin * totalMin;
+
+            document.getElementById('cal-result-grid').innerHTML =
+                '<div class="tpc-result-item"><div class="value">' + Math.round(totalKcal) + ' kcal</div><div class="label">Estimated Calories</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + kcalPerMin.toFixed(1) + ' kcal/min</div><div class="label">Burn Rate</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + mph.toFixed(1) + ' mph / ' + kph.toFixed(1) + ' km/h</div><div class="label">Speed</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + incline + '%</div><div class="label">Incline</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + weight + ' kg</div><div class="label">Weight</div></div>' +
+                '<div class="tpc-result-item"><div class="value">' + formatTime(totalMin * 60) + '</div><div class="label">Duration</div></div>';
+
+            document.getElementById('cal-results').style.display = 'block';
+        }
+
+        function clearCalories() {
+            document.getElementById('cal-results').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderChart();
+        });
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 396,
+  "tool_count": 398,
   "categories": [
     "ai-language",
     "calculators",
@@ -2792,6 +2792,20 @@
       "category": "converters",
       "markdown_url": "https://tools.scoreroute.com/tools/date-format-converter/.md",
       "description": "Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. ..."
+    },
+    {
+      "name": "Treadmill Pace Calculator - MPH to Pace & 5K/10K Times",
+      "url": "https://tools.scoreroute.com/tools/treadmill-pace-calculator/",
+      "category": "calculators",
+      "markdown_url": "https://tools.scoreroute.com/tools/treadmill-pace-calculator/.md",
+      "description": "Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each ..."
+    },
+    {
+      "name": "System Design Interview Simulator",
+      "url": "https://tools.scoreroute.com/tools/system-design-interview/",
+      "category": "code-testing",
+      "markdown_url": "https://tools.scoreroute.com/tools/system-design-interview/.md",
+      "description": "Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. N..."
     }
   ],
   "skills": [
@@ -5566,6 +5580,20 @@
       "category": "converters",
       "markdown_url": "https://tools.scoreroute.com/tools/date-format-converter/.md",
       "description": "Free online date format converter. Convert between ISO, US, EU, Chinese, RFC2822, Unix timestamp and custom formats. ..."
+    },
+    {
+      "name": "Treadmill Pace Calculator - MPH to Pace & 5K/10K Times",
+      "url": "https://tools.scoreroute.com/tools/treadmill-pace-calculator/",
+      "category": "calculators",
+      "markdown_url": "https://tools.scoreroute.com/tools/treadmill-pace-calculator/.md",
+      "description": "Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each ..."
+    },
+    {
+      "name": "System Design Interview Simulator",
+      "url": "https://tools.scoreroute.com/tools/system-design-interview/",
+      "category": "code-testing",
+      "markdown_url": "https://tools.scoreroute.com/tools/system-design-interview/.md",
+      "description": "Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. N..."
     }
   ]
 }
