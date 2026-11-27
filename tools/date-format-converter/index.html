@@ -416,30 +416,42 @@ Dec 25 2024
       const tzNames = { 'UTC': 'UTC', 'America/New_York': 'EST/EDT', 'America/Los_Angeles': 'PST/PDT', 'Europe/London': 'GMT/BST', 'Europe/Paris': 'CET/CEST', 'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST', 'Australia/Sydney': 'AEST/AEDT' };
       const tzName = tzNames[tz] || (tz ? tz.split('/').pop() : '');
 
-      return pattern.replace(/'[^']*'/g, m => m.slice(1, -1))
-        .replace(/yyyy/g, pad(year, 4))
-        .replace(/yy/g, pad(year % 100))
-        .replace(/MMMM/g, monthNamesFull[month - 1])
-        .replace(/MMM/g, monthNames[month - 1])
-        .replace(/MM/g, pad(month))
-        .replace(/M/g, String(month))
-        .replace(/dd/g, pad(day))
-        .replace(/d/g, String(day))
-        .replace(/EEEE/g, dayNamesFull[d.getDay()])
-        .replace(/EEE/g, dayNames[d.getDay()])
-        .replace(/HH/g, pad(hours))
-        .replace(/H/g, String(hours))
-        .replace(/hh/g, pad(hours % 12 || 12))
-        .replace(/h/g, String(hours % 12 || 12))
-        .replace(/mm/g, pad(minutes))
-        .replace(/m/g, String(minutes))
-        .replace(/ss/g, pad(seconds))
-        .replace(/s/g, String(seconds))
-        .replace(/SSS/g, pad(ms, 3))
-        .replace(/X/g, String(Math.floor(d.getTime() / 1000)))
-        .replace(/x/g, String(d.getTime()))
-        .replace(/zzz/g, tzName)
-        .replace(/Z/g, offsetStr);
+      // Single-pass token replacement to avoid ordering issues
+      const tokens = {
+        'yyyy': pad(year, 4),
+        'yy': pad(year % 100),
+        'MMMM': monthNamesFull[month - 1],
+        'MMM': monthNames[month - 1],
+        'MM': pad(month),
+        'M': String(month),
+        'dd': pad(day),
+        'd': String(day),
+        'EEEE': dayNamesFull[d.getDay()],
+        'EEE': dayNames[d.getDay()],
+        'HH': pad(hours),
+        'H': String(hours),
+        'hh': pad(hours % 12 || 12),
+        'h': String(hours % 12 || 12),
+        'mm': pad(minutes),
+        'm': String(minutes),
+        'ss': pad(seconds),
+        's': String(seconds),
+        'SSS': pad(ms, 3),
+        'X': String(Math.floor(d.getTime() / 1000)),
+        'x': String(d.getTime()),
+        'zzz': tzName,
+        'Z': offsetStr,
+        'a': hours >= 12 ? 'PM' : 'AM'
+      };
+
+      // Sort tokens by length descending to handle MMMM before MMM, etc.
+      const sortedTokens = Object.keys(tokens).sort((a, b) => b.length - a.length);
+      let result = pattern.replace(/'[^']*'/g, m => m.slice(1, -1));
+      for (const tok of sortedTokens) {
+        const regex = new RegExp(tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        result = result.replace(regex, tokens[tok]);
+      }
+      return result;
     }
 
     function switchTab(tab) {
