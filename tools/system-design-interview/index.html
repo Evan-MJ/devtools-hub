@@ -591,11 +591,13 @@
 
     async function generateFinalFeedback() {
       const feedbackDiv = document.getElementById('finalFeedback');
+      const overallScoreEl = document.getElementById('overallScore');
+      if (!feedbackDiv || !overallScoreEl) return;
       feedbackDiv.innerHTML = '<div class="loading">Generating comprehensive AI feedback...</div>';
 
       const sectionsContent = {};
       sectionKeys.forEach(key => {
-        sectionsContent[key] = document.getElementById(key).value;
+        sectionsContent[key] = document.getElementById(key)?.value || '';
       });
 
       try {
@@ -632,7 +634,7 @@
           finalFeedback = JSON.parse(deaiData.humanized || JSON.stringify(feedback));
         } catch (e) {}
 
-        document.getElementById('overallScore').textContent = finalFeedback.overallScore || '75';
+        overallScoreEl.textContent = finalFeedback.overallScore || '75';
 
         let html = `<h3>AI Feedback Summary</h3><p>${finalFeedback.summary || 'Good work completing the interview!'}</p>`;
         html += '<h4>Section Scores</h4><ul>';
@@ -651,7 +653,7 @@
         feedbackDiv.innerHTML = html;
       } catch (err) {
         feedbackDiv.innerHTML = '<div class="error">AI feedback unavailable. Your interview is complete - review the sections manually.</div>';
-        document.getElementById('overallScore').textContent = '--';
+        overallScoreEl.textContent = '--';
       }
     }
 
