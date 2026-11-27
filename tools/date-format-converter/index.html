@@ -416,7 +416,8 @@ Dec 25 2024
       const tzNames = { 'UTC': 'UTC', 'America/New_York': 'EST/EDT', 'America/Los_Angeles': 'PST/PDT', 'Europe/London': 'GMT/BST', 'Europe/Paris': 'CET/CEST', 'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST', 'Australia/Sydney': 'AEST/AEDT' };
       const tzName = tzNames[tz] || (tz ? tz.split('/').pop() : '');
 
-      // Single-pass token replacement to avoid ordering issues
+      // Placeholder-based replacement to avoid conflicts between tokens
+      // (e.g., "m" for minutes replacing "m" in "December" from MMMM)
       const tokens = {
         'yyyy': pad(year, 4),
         'yy': pad(year % 100),
@@ -444,12 +445,23 @@ Dec 25 2024
         'a': hours >= 12 ? 'PM' : 'AM'
       };
 
-      // Sort tokens by length descending to handle MMMM before MMM, etc.
-      const sortedTokens = Object.keys(tokens).sort((a, b) => b.length - a.length);
+      // Use unique placeholders to avoid token interference
       let result = pattern.replace(/'[^']*'/g, m => m.slice(1, -1));
+      const placeholders = {};
+      const sortedTokens = Object.keys(tokens).sort((a, b) => b.length - a.length);
+      
+      // First pass: replace each token with a unique placeholder
       for (const tok of sortedTokens) {
+        const ph = '__DFC_' + tok.replace(/[^a-zA-Z0-9]/g, '_') + '__';
+        placeholders[tok] = ph;
         const regex = new RegExp(tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-        result = result.replace(regex, tokens[tok]);
+        result = result.replace(regex, ph);
+      }
+      
+      // Second pass: replace placeholders with actual values
+      for (const tok of sortedTokens) {
+        const ph = placeholders[tok];
+        result = result.replace(new RegExp(ph.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), tokens[tok]);
       }
       return result;
     }
