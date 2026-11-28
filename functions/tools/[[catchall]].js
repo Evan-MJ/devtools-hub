@@ -2717,7 +2717,7 @@ export async function onRequest(context) {
         // Warning 4 of every 2026-11-07/08 review round) — BUG-353's duplicate-catalogue fix was
         // not enough on its own once the 50 card descriptions came back for parity (BUG-397).
         // Zero content lost: the document declares its base once, in the `URL:` line below.
-        let _md = '# ' + _totalCount + ' Free Online Developer Tools by Category\n\n> Browse by category, or search the index by tool name\n\nURL: ' + _base + '/tools/\n\nMarkdown: ' + _base + '/tools/.md\n\n## Categories\n\n';
+        let _md = '# Free Online Developer Tools by Category - ' + _totalCount + ' Tools\n\n> Browse by category, or search the index by tool name\n\nURL: ' + _base + '/tools/\n\nMarkdown: ' + _base + '/tools/.md\n\n## Categories\n\n';
         _md += 'Browse all ' + _totalCount + ' free online developer tools organized into ' + _CAT_ORDER.length + ' categories. Every tool runs in your browser, no signup required.\n\n';
         _md += 'Full description for every tool: [llms-full.txt](/llms-full.txt) ' +
                '(machine-readable catalogue: [/api/tools](/api/tools), compact index: ' +

@@ -221,6 +221,7 @@ const LEDGER = {
   "tools/lottery-number-generator/index.html": 1,
   "tools/margin-calculator/index.html": 1,
   "tools/markdown-editor/index.html": 1,
+  "tools/mouse-sensitivity-converter/index.html": 1,
   "tools/markdown-to-pdf/index.html": 1,
   "tools/math-calculator/index.html": 2,
   "tools/math-solver/index.html": 1,
