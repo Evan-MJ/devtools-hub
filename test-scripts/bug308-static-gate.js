@@ -195,6 +195,7 @@ const LEDGER = {
   "tools/html-to-image/index.html": 1,
   "tools/html-to-markdown-converter/index.html": 3,
   "tools/html-to-pdf/index.html": 2,
+  "tools/html-validator/index.html": 1,
   "tools/http-status-checker/index.html": 2,
   "tools/image-cropper/index.html": 1,
   "tools/image-extender/index.html": 1,

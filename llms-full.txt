@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 398 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 399 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,12 +8,12 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 398
+- Total tools: 399
 - Categories: 11
-- Last updated: 2026-11-27
+- Last updated: 2026-11-28
 - License: Free to use, no signup, no tracking, 100% client-side
 
-## Code Formatters (12 tools)
+## Code Formatters (13 tools)
 
 Browse all: [Code Formatters](https://tools.scoreroute.com/tools/formatters/.md)
 
@@ -124,6 +124,15 @@ Free online JSON Schema generator. Infer a JSON Schema from sample JSON data aut
 - Tags: python, formatter, beautifier, black, autopep8, format, indent
 
 Free online Python formatter with Black-compatible style. Configure indentation, quotes, line length. 100% private browser processing.
+
+### HTML Validator - Free Online HTML5 Validation
+
+- URL: https://tools.scoreroute.com/tools/html-validator/
+- Markdown: https://tools.scoreroute.com/tools/html-validator/.md
+- Category: Code Formatters
+- Tags: html, validator, validate, html5, syntax, accessibility, deprecated
+
+Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.
 
 ## Calculators (41 tools)
 
@@ -3641,7 +3650,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 398 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 399 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback

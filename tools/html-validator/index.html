@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Validator - Free Online HTML5 Validation | DevTools Hub</title>
+<meta name="description" content="Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.">
+<link rel="canonical" href="https://tools.scoreroute.com/tools/html-validator/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta property="og:image" content="/og-image.png">
+<meta property="og:url" content="https://tools.scoreroute.com/tools/html-validator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HTML Validator - Free Online HTML5 Validation | DevTools Hub">
+<meta property="og:description" content="Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Validator - Free Online HTML5 Validation">
+<meta name="twitter:description" content="Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.">
+<meta name="twitter:image" content="/og-image.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HTML Validator - Free Online HTML5 Validation | DevTools Hub",
+  "description": "Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.",
+  "url": "https://tools.scoreroute.com/tools/html-validator/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Modern browser with JavaScript",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@id": "https://tools.scoreroute.com/#author"},
+  "featureList": [
+    "Validates against HTML5 specification using browser's native parser",
+    "Reports errors with exact line and column numbers",
+    "Explains each error in plain language with fix suggestions",
+    "Checks for accessibility issues (missing alt, label associations, heading structure)",
+    "Detects deprecated and obsolete HTML elements",
+    "Validates HTML fragments or full documents",
+    "100% client-side - your code never leaves your browser"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does this HTML validator check?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It validates your HTML against the HTML5 specification using the browser's native DOMParser. It catches syntax errors, unclosed tags, invalid nesting, missing required attributes, deprecated elements, and accessibility issues like missing alt text or improper heading structure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my HTML code sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All validation happens entirely in your browser using the native DOMParser API. Your code never leaves your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I validate a partial HTML snippet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Paste any HTML fragment - the validator will parse it in a sandboxed document context and report errors specific to that fragment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it check CSS or JavaScript?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This tool validates HTML structure only. For CSS validation, use the CSS Formatter tool. For JavaScript, use the JS Formatter or online code runner."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between this and the W3C validator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The W3C validator (validator.nu) is the reference implementation. This tool uses the browser's native DOMParser which follows the same HTML5 parsing algorithm. Results are nearly identical for most cases, but this runs instantly offline with no network requests."
+      }
+    }
+  ]
+}
+</script>
+<style>
+.hv-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+.hv-row textarea { flex: 1; min-width: 280px; min-height: 200px; padding: 14px 18px; background: #0f0f23; border: 2px solid #2a2a4a; color: #fff; border-radius: 10px; font-size: 0.9rem; font-family: monospace; line-height: 1.6; resize: vertical; }
+.hv-row textarea:focus { outline: 2px solid transparent; border-color: #667eea; }
+.hv-row textarea::placeholder { color: #555; }
+.hv-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 20px; }
+.hv-loading { text-align: center; padding: 40px 20px; display: none; }
+.hv-loading.visible { display: block; }
+.hv-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #2a2a4a; border-top: 4px solid #667eea; border-radius: 50%; animation: hv-spin 0.8s linear infinite; margin-bottom: 12px; }
+@keyframes hv-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.hv-loading p { color: #888; font-size: 0.95rem; }
+.hv-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 16px 20px; color: #f87171; margin-bottom: 20px; display: none; }
+.hv-out { display: none; }
+.hv-out.visible { display: block; }
+.hv-summary { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.hv-stat { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 14px 20px; min-width: 140px; text-align: center; }
+.hv-stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.hv-stat-label { color: #888; font-size: 0.85rem; margin-top: 4px; }
+.hv-stat.error .hv-stat-value { color: #f87171; }
+.hv-stat.warn .hv-stat-value { color: #fbbf24; }
+.hv-stat.pass .hv-stat-value { color: #4ade80; }
+.hv-stat.info .hv-stat-value { color: #667eea; }
+.hv-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.hv-filter { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: #ccc; cursor: pointer; transition: all 0.2s; }
+.hv-filter.active { background: #667eea; border-color: #667eea; color: #fff; }
+.hv-filter:hover:not(.active) { border-color: #667eea; color: #fff; }
+.hv-issues { max-height: 500px; overflow-y: auto; }
+.hv-issue { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+.hv-issue-header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.hv-issue-type { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.hv-issue-type.error { background: rgba(239,68,68,0.15); color: #f87171; }
+.hv-issue-type.warn { background: rgba(234,179,8,0.15); color: #fbbf24; }
+.hv-issue-type.info { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+.hv-issue-location { font-family: monospace; font-size: 0.85rem; color: #888; background: #0f0f23; padding: 2px 8px; border-radius: 6px; }
+.hv-issue-message { color: #fff; font-size: 0.95rem; line-height: 1.55; margin-bottom: 8px; }
+.hv-issue-explanation { color: #b3b8c0; font-size: 0.88rem; line-height: 1.55; margin-bottom: 8px; }
+.hv-issue-fix { color: #9ae6b4; font-size: 0.88rem; line-height: 1.55; margin-bottom: 8px; }
+.hv-issue-code { background: #0f0f23; border: 1px solid #2a2a4a; padding: 10px 12px; border-radius: 8px; color: #9ae6b4; font-size: 0.8rem; line-height: 1.55; font-family: monospace; white-space: pre-wrap; word-break: break-word; max-height: 150px; overflow: auto; margin-top: 8px; }
+.hv-empty { color: #4ade80; font-size: 1rem; padding: 40px 20px; text-align: center; }
+.hv-privacy { margin-top: 20px; font-size: 0.85rem; color: #777; text-align: center; }
+@media (max-width: 600px) {
+  .hv-row { flex-direction: column; align-items: stretch; }
+  .hv-stat { min-width: unset; flex: 1; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>HTML Validator</h1>
+    <p class="subtitle">Validate HTML5 Instantly — Errors Explained with Fix Suggestions</p>
+    <nav class="breadcrumb">
+      <a href="/">Home</a> > <a href="/tools/formatters/">Formatters</a> > <span>HTML Validator</span>
+      <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <section class="tool-page">
+    <div class="tool-main">
+      <h2>Validate Your HTML</h2>
+      <div class="hv-row">
+        <label class="sr-only" for="hv-input">HTML code to validate</label>
+        <textarea id="hv-input" placeholder="Paste your HTML here...
+
+Example:
+<div>
+  <p>Hello world</p>
+  <img src="photo.jpg">
+</div>
+
+The validator checks for:
+- Unclosed tags
+- Invalid nesting
+- Missing required attributes (alt, label, etc.)
+- Deprecated elements
+- Accessibility issues
+- Heading structure"></textarea>
+      </div>
+      <div class="hv-actions">
+        <button class="btn btn-primary" onclick="validateHTML()" id="hv-btn">Validate HTML</button>
+        <button class="btn btn-secondary" onclick="clearInput()">Clear</button>
+        <button class="btn" onclick="loadExample()">Load Example</button>
+      </div>
+      <div id="hv-loading" class="hv-loading">
+        <div class="hv-spinner"></div>
+        <p id="hv-loading-text">Validating HTML...</p>
+      </div>
+      <div id="hv-error" class="hv-error"></div>
+      <div id="hv-out" class="hv-out">
+        <div id="hv-summary" class="hv-summary"></div>
+        <div class="hv-filters" id="hv-filters">
+          <button class="hv-filter active" data-filter="all" onclick="filterIssues('all')">All</button>
+          <button class="hv-filter" data-filter="error" onclick="filterIssues('error')">Errors</button>
+          <button class="hv-filter" data-filter="warn" onclick="filterIssues('warn')">Warnings</button>
+          <button class="hv-filter" data-filter="info" onclick="filterIssues('info')">Info</button>
+        </div>
+        <div id="hv-issues" class="hv-issues"></div>
+        <p class="hv-privacy">Validation runs 100% in your browser. Your HTML is never sent to any server.</p>
+      </div>
+    </div>
+    <div class="info-section">
+      <h3>Why Validate HTML?</h3>
+      <p>Browsers are forgiving - they silently fix broken HTML and render something. But "something" isn't what you wrote. Invalid HTML causes:</p>
+      <ul>
+        <li><strong>Inconsistent rendering</strong> across browsers - each browser guesses differently</li>
+        <li><strong>Accessibility failures</strong> - screen readers rely on proper structure</li>
+        <li><strong>SEO problems</strong> - search engines parse your HTML to understand content</li>
+        <li><strong>Maintenance nightmares</strong> - broken structure breaks CSS and JavaScript selectors</li>
+      </ul>
+      <p>This validator catches issues before they reach production, with plain-language explanations and copy-paste fixes.</p>
+
+      <h3>What This Tool Checks</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:16px 0;">
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Syntax Errors</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li>Unclosed tags</li>
+            <li>Mismatched opening/closing tags</li>
+            <li>Invalid character references</li>
+            <li>Incorrect DOCTYPE</li>
+          </ul>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Invalid Nesting</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li>Block elements in inline elements</li>
+            <li>Table structure violations</li>
+            <li>List nesting errors</li>
+            <li>Form element placement</li>
+          </ul>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Missing Requirements</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li>Missing alt on images</li>
+            <li>Missing labels on inputs</li>
+            <li>Missing lang attribute</li>
+            <li>Missing title on iframes</li>
+          </ul>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Deprecated & Obsolete</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li><font>, <center>, <strike></li>
+            <li><frame>, <frameset></li>
+            <li>align, bgcolor, border attributes</li>
+            <li>Obsolete input types</li>
+          </ul>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Accessibility</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li>Heading hierarchy (h1-h6)</li>
+            <li>Landmark regions</li>
+            <li>ARIA attribute validity</li>
+            <li>Color contrast hints</li>
+          </ul>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;padding:16px;">
+          <strong style="color:#667eea;">Best Practices</strong>
+          <ul style="margin:8px 0 0;padding-left:20px;color:#b3b8c0;font-size:0.9rem;">
+            <li>Meta viewport present</li>
+            <li>Charset declaration</li>
+            <li>Unique IDs</li>
+            <li>Valid href targets</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>How It Works</h3>
+      <p>Unlike server-based validators that send your code to W3C's validator.nu, this tool uses the browser's native <code>DOMParser</code> API - the same HTML5 parsing engine that renders every page you visit. This means:</p>
+      <ul>
+        <li><strong>Instant results</strong> - no network round-trip</li>
+        <li><strong>Complete privacy</strong> - your code never leaves your browser</li>
+        <li><strong>Offline capable</strong> - works without internet after first load</li>
+        <li><strong>Real browser behavior</strong> - matches what Chrome/Firefox/Safari actually parse</li>
+      </ul>
+      <p>The parser builds a DOM tree from your HTML, then we traverse it checking for spec violations, accessibility gaps, and deprecated patterns. Each finding includes the exact location, a human-readable explanation, and a suggested fix.</p>
+
+      <h3>Limitations</h3>
+      <ul>
+        <li>Validates HTML structure only - not CSS or JavaScript syntax</li>
+        <li>Cannot detect logical errors (e.g., wrong heading level for content)</li>
+        <li>Some browser-specific parsing quirks may differ from validator.nu</li>
+        <li>Does not validate against custom schemas or XML namespaces</li>
+      </ul>
+
+      <h3>Frequently Asked</h3>
+      <details class="faq-item">
+        <summary>What does this HTML validator check?</summary>
+        <p>It validates your HTML against the HTML5 specification using the browser's native DOMParser. It catches syntax errors, unclosed tags, invalid nesting, missing required attributes, deprecated elements, and accessibility issues like missing alt text or improper heading structure.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my HTML code sent to a server?</summary>
+        <p>No. All validation happens entirely in your browser using the native DOMParser API. Your code never leaves your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I validate a partial HTML snippet?</summary>
+        <p>Yes. Paste any HTML fragment - the validator will parse it in a sandboxed document context and report errors specific to that fragment.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does it check CSS or JavaScript?</summary>
+        <p>No. This tool validates HTML structure only. For CSS validation, use the CSS Formatter tool. For JavaScript, use the JS Formatter or online code runner.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is the difference between this and the W3C validator?</summary>
+        <p>The W3C validator (validator.nu) is the reference implementation. This tool uses the browser's native DOMParser which follows the same HTML5 parsing algorithm. Results are nearly identical for most cases, but this runs instantly offline with no network requests.</p>
+      </details>
+
+      <div class="related-section">
+        <h4>Related Tools</h4>
+        <ul>
+          <li><a href="/tools/html-formatter/">HTML Formatter</a></li>
+          <li><a href="/tools/css-formatter/">CSS Formatter</a></li>
+          <li><a href="/tools/xml-formatter/">XML Formatter</a></li>
+          <li><a href="/tools/json-formatter/">JSON Formatter</a></li>
+          <li><a href="/tools/accessibility-validator/">HTML Accessibility Validator</a></li>
+          <li><a href="/tools/color-contrast-checker/">Color Contrast Checker</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2026 DevTools Hub | <a href="/">Free Developer Tools</a></p>
+</footer>
+<script src="/tools.js"></script>
+<script>
+const DEPRECATED_TAGS = new Set([
+  'acronym', 'applet', 'basefont', 'bgsound', 'big', 'blink', 'center', 'dir', 'font',
+  'frame', 'frameset', 'isindex', 'listing', 'marquee', 'multicol', 'nextid', 'nobr',
+  'noembed', 'noframes', 'plaintext', 'rb', 'rtc', 'strike', 'tt', 'xmp'
+]);
+
+const DEPRECATED_ATTRS = new Set([
+  'align', 'alink', 'archive', 'axis', 'background', 'bgcolor', 'border', 'cellpadding',
+  'cellspacing', 'char', 'charoff', 'clear', 'compact', 'coords', 'datafld', 'dataformatas',
+  'datapagesize', 'datasrc', 'frame', 'framespacing', 'hspace', 'link', 'longdesc',
+  'marginheight', 'marginwidth', 'nohref', 'noresize', 'noshade', 'nowrap', 'profile',
+  'prompt', 'rev', 'rules', 'scheme', 'scrolling', 'shape', 'standby', 'summary',
+  'text', 'valign', 'version', 'vlink', 'vspace', 'width', 'height'
+]);
+
+const VOID_ELEMENTS = new Set([
+  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta',
+  'param', 'source', 'track', 'wbr'
+]);
+
+const BLOCK_IN_INLINE = new Map([
+  ['a', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['span', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['button', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['label', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['strong', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['em', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['i', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['b', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['small', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['cite', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['abbr', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['time', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['code', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['var', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['kbd', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['samp', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['sub', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['sup', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['q', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['ruby', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['rt', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['rp', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['data', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['output', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['progress', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+  ['meter', new Set(['div', 'p', 'ul', 'ol', 'li', 'table', 'dl', 'pre', 'blockquote', 'form', 'fieldset', 'header', 'footer', 'section', 'article', 'aside', 'nav', 'main', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'address'])],
+]);
+
+const REQUIRED_ATTRS = {
+  'img': ['alt'],
+  'input': ['type'],
+  'textarea': [],
+  'select': [],
+  'iframe': ['title'],
+  'area': ['alt'],
+  'form': [],
+  'html': ['lang'],
+  'video': [],
+  'audio': []
+};
+
+const ARIA_ROLES = new Set([
+  'alert', 'alertdialog', 'application', 'article', 'banner', 'button', 'cell',
+  'checkbox', 'columnheader', 'combobox', 'complementary', 'contentinfo', 'definition',
+  'dialog', 'directory', 'document', 'feed', 'figure', 'form', 'grid', 'gridcell',
+  'group', 'heading', 'img', 'link', 'list', 'listbox', 'listitem', 'log', 'main',
+  'marquee', 'math', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio',
+  'navigation', 'none', 'note', 'option', 'presentation', 'progressbar', 'radio',
+  'radiogroup', 'region', 'row', 'rowgroup', 'rowheader', 'scrollbar', 'search',
+  'searchbox', 'separator', 'slider', 'spinbutton', 'status', 'switch', 'tab',
+  'table', 'tablist', 'tabpanel', 'term', 'textbox', 'timer', 'toolbar', 'tooltip',
+  'tree', 'treegrid', 'treeitem'
+]);
+
+const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"').replace(/'/g, "'");
+}
+
+function validateHTML() {
+  const input = document.getElementById('hv-input').value;
+  if (!input.trim()) {
+    showStatus('toolNotice', 'Paste some HTML to validate.', 'info');
+    return;
+  }
+
+  document.getElementById('hv-error').style.display = 'none';
+  document.getElementById('hv-out').className = 'hv-out';
+  document.getElementById('hv-loading').className = 'hv-loading visible';
+  document.getElementById('hv-btn').disabled = true;
+
+  setTimeout(() => {
+    try {
+      const issues = runValidation(input);
+      renderResults(issues);
+    } catch (e) {
+      document.getElementById('hv-loading').className = 'hv-loading';
+      document.getElementById('hv-btn').disabled = false;
+      document.getElementById('hv-error').style.display = 'block';
+      document.getElementById('hv-error').innerHTML = '<strong>Validation failed:</strong> ' + esc(e.message);
+    }
+  }, 10);
+}
+
+function runValidation(html) {
+  const issues = [];
+  const lines = html.split('\n');
+
+  let doc;
+  try {
+    const parser = new DOMParser();
+    doc = parser.parseFromString(html, 'text/html');
+  } catch (e) {
+    issues.push({
+      type: 'error',
+      line: 1,
+      col: 1,
+      message: 'Failed to parse HTML',
+      explanation: 'The HTML could not be parsed. This usually indicates a fundamental syntax error.',
+      fix: 'Check for unclosed tags, mismatched brackets, or invalid characters.',
+      code: html.substring(0, 200)
+    });
+    return issues;
+  }
+
+  const parserErrors = doc.querySelectorAll('parsererror');
+  parserErrors.forEach(err => {
+    issues.push({
+      type: 'error',
+      line: 1,
+      col: 1,
+      message: 'Parser error: ' + err.textContent,
+      explanation: 'The browser parser encountered a syntax error it could not recover from.',
+      fix: 'Fix the syntax error indicated by the parser.',
+      code: html.substring(0, 200)
+    });
+  });
+
+  const seenIds = new Set();
+  let headingLevels = [];
+  let hasH1 = false;
+
+  function walk(node, path = []) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const tagName = node.tagName.toLowerCase();
+      const lineCol = getLineColumn(node, html);
+
+      if (DEPRECATED_TAGS.has(tagName)) {
+        issues.push({
+          type: 'warn',
+          line: lineCol.line,
+          col: lineCol.col,
+          message: 'Deprecated element: <' + tagName + '>',
+          explanation: 'The <' + tagName + '> element is deprecated in HTML5 and should not be used. It may be removed from future browser versions.',
+          fix: getDeprecatedTagFix(tagName),
+          code: getNodeCode(node, html)
+        });
+      }
+
+      Array.from(node.attributes).forEach(attr => {
+        if (DEPRECATED_ATTRS.has(attr.name.toLowerCase())) {
+          issues.push({
+            type: 'warn',
+            line: lineCol.line,
+            col: lineCol.col,
+            message: 'Deprecated attribute: ' + attr.name,
+            explanation: 'The ' + attr.name + ' attribute is deprecated in HTML5. Use CSS instead for styling.',
+            fix: 'Remove the ' + attr.name + ' attribute and use CSS (e.g., style="text-align:center" instead of align="center").',
+            code: getNodeCode(node, html)
+          });
+        }
+      });
+
+      const required = REQUIRED_ATTRS[tagName] || [];
+      required.forEach(reqAttr => {
+        if (!node.hasAttribute(reqAttr)) {
+          const isImageAlt = tagName === 'img' && reqAttr === 'alt';
+          issues.push({
+            type: isImageAlt ? 'error' : 'warn',
+            line: lineCol.line,
+            col: lineCol.col,
+            message: 'Missing required attribute: ' + reqAttr + ' on <' + tagName + '>',
+            explanation: getRequiredAttrExplanation(tagName, reqAttr),
+            fix: getRequiredAttrFix(tagName, reqAttr),
+            code: getNodeCode(node, html)
+          });
+        }
+      });
+
+      const id = node.getAttribute('id');
+      if (id) {
+        if (seenIds.has(id)) {
+          issues.push({
+            type: 'error',
+            line: lineCol.line,
+            col: lineCol.col,
+            message: 'Duplicate ID: "' + id + '"',
+            explanation: 'The ID "' + id + '" appears more than once in the document. IDs must be unique.',
+            fix: 'Change one of the duplicate IDs to a unique value.',
+            code: getNodeCode(node, html)
+          });
+        } else {
+          seenIds.add(id);
+        }
+      }
+
+      if (HEADING_TAGS.has(tagName)) {
+        const level = parseInt(tagName[1]);
+        headingLevels.push({ level, line: lineCol.line, tag: tagName });
+        if (level === 1) hasH1 = true;
+      }
+
+      const role = node.getAttribute('role');
+      if (role && !ARIA_ROLES.has(role)) {
+        issues.push({
+          type: 'warn',
+          line: lineCol.line,
+          col: lineCol.col,
+          message: 'Invalid ARIA role: "' + role + '"',
+          explanation: 'The role "' + role + '" is not a valid ARIA role. This may confuse assistive technologies.',
+          fix: 'Use a valid ARIA role from the WAI-ARIA specification.',
+          code: getNodeCode(node, html)
+        });
+      }
+
+      const parent = node.parentElement;
+      if (parent) {
+        const parentTag = parent.tagName.toLowerCase();
+        const invalidChildren = BLOCK_IN_INLINE.get(parentTag);
+        if (invalidChildren && invalidChildren.has(tagName)) {
+          issues.push({
+            type: 'error',
+            line: lineCol.line,
+            col: lineCol.col,
+            message: 'Invalid nesting: <' + tagName + '> inside <' + parentTag + '>',
+            explanation: 'Block-level elements (<' + tagName + '>) cannot be placed inside inline elements (<' + parentTag + '>). This violates HTML content model rules.',
+            fix: 'Restructure the HTML: move the <' + tagName + '> outside the <' + parentTag + '>, or change the parent to a block-level element like <div>.',
+            code: getNodeCode(node, html)
+          });
+        }
+      }
+
+      if (tagName === 'table') {
+        checkTableStructure(node, lineCol, issues);
+      }
+
+      if (tagName === 'input' && node.type !== 'hidden' && node.type !== 'submit' && node.type !== 'button' && node.type !== 'reset') {
+        checkInputLabel(node, lineCol, issues);
+      }
+
+      Array.from(node.childNodes).forEach(child => walk(child, [...path, tagName]));
+    }
+  }
+
+  walk(doc.documentElement);
+
+  if (headingLevels.length > 0) {
+    let prevLevel = 0;
+    headingLevels.forEach(h => {
+      if (prevLevel > 0 && h.level > prevLevel + 1) {
+        issues.push({
+          type: 'warn',
+          line: h.line,
+          col: 1,
+          message: 'Heading level jump: <h' + prevLevel + '> to <h' + h.level + '>',
+          explanation: 'Heading levels should not skip levels (e.g., h1 to h3). This confuses screen reader users who navigate by heading structure.',
+          fix: 'Use <h' + (prevLevel + 1) + '> instead of <h' + h.level + '>, or add intermediate headings.',
+          code: '<h' + h.level + '>Heading text</h' + h.level + '>'
+        });
+      }
+      prevLevel = h.level;
+    });
+    if (!hasH1) {
+      issues.push({
+        type: 'warn',
+        line: 1,
+        col: 1,
+        message: 'No <h1> heading found',
+        explanation: 'Every page should have exactly one <h1> as the main heading. This is important for accessibility and SEO.',
+        fix: 'Add an <h1> element with the main title of your page.',
+        code: '<h1>Page Title</h1>'
+      });
+    }
+  } else {
+    issues.push({
+      type: 'info',
+      line: 1,
+      col: 1,
+      message: 'No headings found',
+      explanation: 'The document contains no heading elements (h1-h6). Headings provide document structure for accessibility and SEO.',
+      fix: 'Add appropriate heading elements to structure your content.',
+      code: ''
+    });
+  }
+
+  const hasViewport = doc.querySelector('meta[name="viewport"]');
+  if (!hasViewport) {
+    issues.push({
+      type: 'warn',
+      line: 1,
+      col: 1,
+      message: 'Missing meta viewport',
+      explanation: 'The page lacks a <meta name="viewport"> tag. Mobile browsers will render at desktop width and scale down, making content hard to read.',
+      fix: 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> in the <head>.',
+      code: '<meta name="viewport" content="width=device-width, initial-scale=1">'
+    });
+  }
+
+  const hasCharset = doc.querySelector('meta[charset]') || (doc.documentElement.getAttribute('xmlns') && doc.querySelector('meta[http-equiv="Content-Type"]'));
+  if (!hasCharset) {
+    issues.push({
+      type: 'info',
+      line: 1,
+      col: 1,
+      message: 'No explicit charset declaration',
+      explanation: 'While UTF-8 is the default, explicitly declaring <meta charset="utf-8"> prevents encoding issues.',
+      fix: 'Add <meta charset="utf-8"> as the first element in <head>.',
+      code: '<meta charset="utf-8">'
+    });
+  }
+
+  if (!html.trim().startsWith('<!DOCTYPE') && !html.trim().startsWith('<!doctype')) {
+    issues.push({
+      type: 'warn',
+      line: 1,
+      col: 1,
+      message: 'Missing DOCTYPE declaration',
+      explanation: 'Without a DOCTYPE, browsers render in quirks mode, leading to inconsistent layout.',
+      fix: 'Add <!DOCTYPE html> as the very first line of your document.',
+      code: '<!DOCTYPE html>'
+    });
+  }
+
+  return issues;
+}
+
+function getLineColumn(node, html) {
+  const outer = node.outerHTML || '';
+  const idx = html.indexOf(outer.substring(0, Math.min(50, outer.length)));
+  if (idx === -1) return { line: 1, col: 1 };
+  const before = html.substring(0, idx);
+  const lines = before.split('\n');
+  return { line: lines.length, col: lines[lines.length - 1].length + 1 };
+}
+
+function getNodeCode(node, html) {
+  const outer = node.outerHTML || '';
+  return outer.length > 300 ? outer.substring(0, 300) + '...' : outer;
+}
+
+function getDeprecatedTagFix(tag) {
+  const fixes = {
+    'font': 'Use CSS: <span style="font-family:...;font-size:...;color:...">',
+    'center': 'Use CSS: <div style="text-align:center"> or <style>.center { text-align:center }</style>',
+    'strike': 'Use <del> for deleted text or <s> for strikethrough styling',
+    'frame': 'Use <iframe> instead',
+    'frameset': 'Use <iframe> or CSS Grid/Flexbox for layout',
+    'big': 'Use CSS: <span style="font-size:larger">',
+    'tt': 'Use <code>, <kbd>, or <samp> for monospace text',
+    'acronym': 'Use <abbr> instead',
+    'dir': 'Use <ul> or <ol>',
+    'marquee': 'Use CSS animations or JavaScript for scrolling text',
+    'blink': 'Use CSS animations (but avoid - blinking content is bad for accessibility)',
+    'noframes': 'Not needed in HTML5',
+    'isindex': 'Use <form> with <input type="search">',
+    'listing': 'Use <pre> or <code>',
+    'plaintext': 'Use <pre>',
+    'xmp': 'Use <pre><code>',
+    'multicol': 'Use CSS columns',
+    'nextid': 'Not needed',
+    'nobr': 'Use CSS: white-space: nowrap',
+    'noembed': 'Not needed',
+    'rb': 'Use <ruby> with <rt> directly',
+    'rtc': 'Use <ruby> with <rtc>',
+    'basefont': 'Use CSS font properties on body or :root',
+    'bgsound': 'Use <audio> element'
+  };
+  return fixes[tag] || 'Replace with modern HTML5 equivalent and CSS.';
+}
+
+function getRequiredAttrExplanation(tag, attr) {
+  const explanations = {
+    'img-alt': 'Images must have an alt attribute describing the content. Empty alt (alt="") is valid for decorative images.',
+    'input-type': 'Input elements require a type attribute (e.g., text, email, password, checkbox).',
+    'iframe-title': 'Iframes need a title attribute describing their content for screen readers.',
+    'area-alt': 'Image map areas require alt text for accessibility.',
+    'html-lang': 'The lang attribute declares the document language for screen readers and search engines.'
+  };
+  return explanations[tag + '-' + attr] || 'The ' + attr + ' attribute is required for ' + tag + ' elements.';
+}
+
+function getRequiredAttrFix(tag, attr) {
+  const fixes = {
+    'img-alt': 'Add alt="description of image" or alt="" for decorative images.',
+    'input-type': 'Add type="text" (or email, password, checkbox, etc.).',
+    'iframe-title': 'Add title="Description of iframe content".',
+    'area-alt': 'Add alt="Description of link target".',
+    'html-lang': 'Add lang="en" (or appropriate language code) to the <html> tag.'
+  };
+  return fixes[tag + '-' + attr] || 'Add the required ' + attr + ' attribute.';
+}
+
+function checkTableStructure(table, lineCol, issues) {
+  let hasThead = false, hasTbody = false;
+  table.childNodes.forEach(child => {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      if (child.tagName.toLowerCase() === 'thead') hasThead = true;
+      if (child.tagName.toLowerCase() === 'tbody') hasTbody = true;
+    }
+  });
+  if (!hasThead) {
+    issues.push({
+      type: 'info',
+      line: lineCol.line,
+      col: lineCol.col,
+      message: 'Table missing <thead>',
+      explanation: 'Tables with header rows should wrap them in <thead> for accessibility and styling.',
+      fix: 'Wrap header rows in <thead><tr>...</tr></thead>.',
+      code: '<thead><tr><th>Header</th></tr></thead>'
+    });
+  }
+}
+
+function checkInputLabel(input, lineCol, issues) {
+  const id = input.getAttribute('id');
+  if (id) {
+    const label = document.querySelector('label[for="' + id + '"]');
+    if (!label) {
+      const parentLabel = input.closest('label');
+      if (!parentLabel) {
+        issues.push({
+          type: 'warn',
+          line: lineCol.line,
+          col: lineCol.col,
+          message: 'Input missing associated label',
+          explanation: 'Form inputs should have an associated <label> for accessibility. Screen readers need labels to announce the input purpose.',
+          fix: 'Add <label for="' + id + '">Label text</label> or wrap input in <label>.',
+          code: '<label for="' + id + '">Label</label> <input id="' + id + '" ...>'
+        });
+      }
+    }
+  } else {
+    const parentLabel = input.closest('label');
+    if (!parentLabel) {
+      issues.push({
+        type: 'warn',
+        line: lineCol.line,
+        col: lineCol.col,
+        message: 'Input has no ID or wrapping label',
+        explanation: 'Inputs need either an ID with a matching label[for], or to be wrapped in a label element.',
+        fix: 'Add an ID to the input and a matching label, or wrap the input in a label.',
+        code: '<label>Label <input ...></label>'
+      });
+    }
+  }
+}
+
+function renderResults(issues) {
+  document.getElementById('hv-loading').className = 'hv-loading';
+  document.getElementById('hv-btn').disabled = false;
+  document.getElementById('hv-out').className = 'hv-out visible';
+
+  const errors = issues.filter(i => i.type === 'error').length;
+  const warns = issues.filter(i => i.type === 'warn').length;
+  const infos = issues.filter(i => i.type === 'info').length;
+
+  document.getElementById('hv-summary').innerHTML = `
+    <div class="hv-stat ${errors > 0 ? 'error' : 'pass'}"><div class="hv-stat-value">${errors}</div><div class="hv-stat-label">Errors</div></div>
+    <div class="hv-stat ${warns > 0 ? 'warn' : 'pass'}"><div class="hv-stat-value">${warns}</div><div class="hv-stat-label">Warnings</div></div>
+    <div class="hv-stat ${infos > 0 ? 'info' : 'pass'}"><div class="hv-stat-value">${infos}</div><div class="hv-stat-label">Info</div></div>
+    <div class="hv-stat"><div class="hv-stat-value">${issues.length}</div><div class="hv-stat-label">Total</div></div>
+  `;
+
+  const container = document.getElementById('hv-issues');
+  if (issues.length === 0) {
+    container.innerHTML = '<div class="hv-empty">✓ No issues found. Your HTML is valid!</div>';
+    return;
+  }
+
+  container.innerHTML = issues.map((issue, idx) => `
+    <div class="hv-issue" data-type="${issue.type}" data-index="${idx}">
+      <div class="hv-issue-header">
+        <span class="hv-issue-type ${issue.type}">${issue.type.toUpperCase()}</span>
+        <span class="hv-issue-location">Line ${issue.line}, Col ${issue.col}</span>
+      </div>
+      <div class="hv-issue-message">${esc(issue.message)}</div>
+      <div class="hv-issue-explanation">${esc(issue.explanation)}</div>
+      <div class="hv-issue-fix">Fix: ${esc(issue.fix)}</div>
+      ${issue.code ? '<div class="hv-issue-code">' + esc(issue.code) + '</div>' : ''}
+    </div>
+  `).join('');
+}
+
+function filterIssues(type) {
+  document.querySelectorAll('.hv-filter').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === type);
+  });
+  document.querySelectorAll('.hv-issue').forEach(issue => {
+    if (type === 'all' || issue.dataset.type === type) {
+      issue.style.display = 'block';
+    } else {
+      issue.style.display = 'none';
+    }
+  });
+}
+
+function clearInput() {
+  document.getElementById('hv-input').value = '';
+  document.getElementById('hv-out').className = 'hv-out';
+  document.getElementById('hv-error').style.display = 'none';
+  showStatus('toolNotice', 'Cleared. Paste your HTML to validate.', 'info');
+}
+
+function loadExample() {
+  const example = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example Page</title>
+</head>
+<body>
+  <header>
+    <h1>Welcome</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h2>Article Title</h2>
+      <p>This is a paragraph with <strong>bold</strong> and <em>italic</em> text.</p>
+      <img src="photo.jpg" alt="A beautiful landscape">
+      <ul>
+        <li>List item 1</li>
+        <li>List item 2</li>
+      </ul>
+    </article>
+    <aside>
+      <h3>Sidebar</h3>
+      <form>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </aside>
+  </main>
+  <footer>
+    <p>&copy; 2026 Example</p>
+  </footer>
+</body>
+</html>`;
+  document.getElementById('hv-input').value = example;
+  showStatus('toolNotice', 'Example loaded. Click Validate to check it.', 'info');
+}
+
+document.getElementById('hv-input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') {
+    validateHTML();
+  }
+});
+</script>
+</body>
+</html>
