@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 398,
+  "tool_count": 399,
   "categories": [
     "ai-language",
     "calculators",
@@ -2806,6 +2806,13 @@
       "category": "code-testing",
       "markdown_url": "https://tools.scoreroute.com/tools/system-design-interview/.md",
       "description": "Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. N..."
+    },
+    {
+      "name": "HTML Validator - Free Online HTML5 Validation",
+      "url": "https://tools.scoreroute.com/tools/html-validator/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/html-validator/.md",
+      "description": "Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line ..."
     }
   ],
   "skills": [
@@ -5594,6 +5601,13 @@
       "category": "code-testing",
       "markdown_url": "https://tools.scoreroute.com/tools/system-design-interview/.md",
       "description": "Free system design interview simulator. Practice with realistic questions, timed sessions, and AI-powered feedback. N..."
+    },
+    {
+      "name": "HTML Validator - Free Online HTML5 Validation",
+      "url": "https://tools.scoreroute.com/tools/html-validator/",
+      "category": "formatters",
+      "markdown_url": "https://tools.scoreroute.com/tools/html-validator/.md",
+      "description": "Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line ..."
     }
   ]
 }

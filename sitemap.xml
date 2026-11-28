@@ -948,6 +948,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://tools.scoreroute.com/tools/html-validator/</loc>
+    <lastmod>2026-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tools.scoreroute.com/tools/http-status-checker/</loc>
     <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>

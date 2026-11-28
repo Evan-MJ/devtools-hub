@@ -1,10 +1,10 @@
 {
   "name": "DevTools Hub",
-  "description": "Free browser-based developer tools — 398 utilities across 11 categories (ai-language, calculators, code-testing, converters, finance, formatters, generators, life, media, network, pdf-tools). No signup, no tracking, all client-side.",
+  "description": "Free browser-based developer tools — 399 utilities across 11 categories (ai-language, calculators, code-testing, converters, finance, formatters, generators, life, media, network, pdf-tools). No signup, no tracking, all client-side.",
   "url": "https://tools.scoreroute.com/llms.txt",
   "homepage": "https://tools.scoreroute.com/",
   "version": "1.0.0",
-  "tool_count": 398,
+  "tool_count": 399,
   "categories": [
     "ai-language",
     "calculators",
@@ -21,7 +21,7 @@
   "tools": [
     {
       "name": "tool_catalog",
-      "description": "Browse all 398 developer tools organized by category. Supports text search across tool names and descriptions.",
+      "description": "Browse all 399 developer tools organized by category. Supports text search across tool names and descriptions.",
       "url": "https://tools.scoreroute.com/llms.txt"
     },
     {
