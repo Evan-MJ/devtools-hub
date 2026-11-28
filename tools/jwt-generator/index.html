@@ -60,7 +60,8 @@
 
                 <div class="form-group">
                     <label for="jwt-secret">Secret Key</label>
-                    <input type="text" id="jwt-secret" placeholder="Enter your secret key (min 16 characters for HS256)" aria-label="Secret key for signing">
+                    <input type="text" id="jwt-secret" placeholder="Enter your secret key" aria-label="Secret key for signing">
+                    <span id="jwt-secret-hint" class="hint" style="display: none; font-size: 0.85em; color: #888; margin-top: 4px;"></span>
                 </div>
 
                 <div class="form-group">
@@ -169,6 +170,7 @@
     function updateAlgorithm() {
         const alg = document.getElementById('jwt-algorithm').value;
         const header = document.getElementById('jwt-header-json');
+        const hint = document.getElementById('jwt-secret-hint');
         try {
             const headerObj = JSON.parse(header.value);
             headerObj.alg = alg;
@@ -176,6 +178,11 @@
         } catch (e) {
             // Invalid JSON, don't update
         }
+        // Update secret key hint based on algorithm
+        const minLengths = { 'HS256': 32, 'HS384': 48, 'HS512': 64 };
+        const minLen = minLengths[alg] || 32;
+        hint.textContent = `Recommended: at least ${minLen} characters (${minLen * 8} bits) for ${alg}`;
+        hint.style.display = 'block';
     }
 
     function formatHeaderJSON() {
@@ -216,9 +223,12 @@
             return;
         }
 
-        if (secret.length < 16) {
-            showStatus('jwt-status', 'Secret key should be at least 16 characters', 'error');
-            return;
+        // Warn if secret is shorter than recommended for the algorithm, but allow it
+        const minLengths = { 'HS256': 32, 'HS384': 48, 'HS512': 64 };
+        const minLen = minLengths[alg] || 32;
+        let warningMsg = '';
+        if (secret.length < minLen) {
+            warningMsg = `Warning: For ${alg}, recommended minimum is ${minLen} characters (${minLen * 8} bits). `;
         }
 
         if (!headerInput || !payloadInput) {
@@ -289,7 +299,7 @@
             '<div style="margin: 10px 0;"><strong>Signature:</strong> <code style="word-break: break-all;">' + signature + '</code></div></div>';
         document.getElementById('jwt-token-parts').innerHTML = partsHtml;
 
-        showStatus('jwt-status', 'Token generated successfully', 'success');
+        showStatus('jwt-status', warningMsg + 'Token generated successfully', 'success');
     }
 
     function copyToken() {
@@ -318,6 +328,8 @@
         const defaultPayload = JSON.stringify({ sub: '1234567890', name: 'John Doe', iat: Math.floor(Date.now() / 1000) }, null, 2);
         document.getElementById('jwt-header-json').value = defaultHeader;
         document.getElementById('jwt-payload-json').value = defaultPayload;
+        // Initialize secret key hint
+        updateAlgorithm();
     });
     </script>
 </body>

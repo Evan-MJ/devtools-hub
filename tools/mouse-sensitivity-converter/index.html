@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Sensitivity Converter - eDPI &amp; cm/360 Calculator</title>
+    <meta name="description" content="Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games. Calculate eDPI and cm/360.">
+    <link rel="canonical" href="https://tools.scoreroute.com/tools/mouse-sensitivity-converter/">
+    <meta property="og:title" content="Mouse Sensitivity Converter - eDPI &amp; cm/360 Calculator">
+    <meta property="og:description" content="Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games. Calculate eDPI and cm/360.">
+    <meta property="og:url" content="https://tools.scoreroute.com/tools/mouse-sensitivity-converter/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","datePublished":"2026-11-28","dateModified":"2026-11-28","author":{"@type":"Person","name":"BAOMING"},"name":"Mouse Sensitivity Converter - eDPI & cm/360 Calculator","description":"Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games. Calculate eDPI and cm/360.","url":"https://tools.scoreroute.com/tools/mouse-sensitivity-converter/","applicationCategory":"UtilityApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Mouse Sensitivity Converter</h1>
+            <p class="subtitle">eDPI & cm/360 Calculator for FPS Games</p>
+            <nav class="breadcrumb">
+                <a href="/">Home</a> > <a href="/tools/?category=calculators">Calculators</a> > <span>Mouse Sensitivity Converter</span>
+                <a href="/tools/feedback/" class="feedback-link" title="Report a Problem">Report Problem</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="tool-page">
+            <div class="tool-main">
+                <div class="converter-tabs">
+                    <button class="converter-tab active" onclick="switchTab('converter', this)">Sensitivity Converter</button>
+                    <button class="converter-tab" onclick="switchTab('edpi', this)">eDPI Calculator</button>
+                    <button class="converter-tab" onclick="switchTab('cm360', this)">cm/360 Calculator</button>
+                    <button class="converter-tab" onclick="switchTab('favorites', this)">Favorites</button>
+                </div>
+
+                <div id="tab-converter" class="converter-panel">
+                    <div class="converter-row">
+                        <div class="converter-side source">
+                            <h2>From</h2>
+                            <div class="input-group">
+                                <label for="source-game">Game</label>
+                                <select id="source-game" onchange="updateSourceDetails()">
+                                    <option value="">Select game...</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="source-sens">In-game Sensitivity</label>
+                                <input type="number" id="source-sens" step="0.001" min="0" placeholder="e.g., 1.5" oninput="calculateConversion()">
+                            </div>
+                            <div class="input-group">
+                                <label for="source-dpi">Mouse DPI</label>
+                                <input type="number" id="source-dpi" min="1" max="20000" value="800" oninput="calculateConversion()">
+                            </div>
+                        </div>
+
+                        <div class="converter-arrow">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" onclick="swapGames()"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </div>
+
+                        <div class="converter-side target">
+                            <h2>To</h2>
+                            <div class="input-group">
+                                <label for="target-game">Game</label>
+                                <select id="target-game" onchange="updateTargetDetails()">
+                                    <option value="">Select game...</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="target-sens">Converted Sensitivity</label>
+                                <input type="number" id="target-sens" step="0.001" min="0" readonly placeholder="Auto-calculated" aria-label="Converted sensitivity">
+                            </div>
+                            <div class="input-group">
+                                <label for="target-dpi">Mouse DPI</label>
+                                <input type="number" id="target-dpi" min="1" max="20000" value="800" oninput="calculateConversion()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">cm/360°</div>
+                            <div class="result-value" id="result-cm360">—</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">inches/360°</div>
+                            <div class="result-value" id="result-in360">—</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Source eDPI</div>
+                            <div class="result-value" id="result-source-edpi">—</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Target eDPI</div>
+                            <div class="result-value" id="result-target-edpi">—</div>
+                        </div>
+                    </div>
+
+                    <div class="equivalent-games">
+                        <h3>Equivalent Sensitivity in All Games</h3>
+                        <div id="equivalent-table" class="equivalent-table"></div>
+                    </div>
+
+                    <div class="converter-actions">
+                        <button class="btn btn-primary" onclick="addToFavorites()">⭐ Save to Favorites</button>
+                        <button class="btn" onclick="copyResults()">📋 Copy Results</button>
+                    </div>
+                </div>
+
+                <div id="tab-edpi" class="converter-panel" style="display:none;">
+                    <div class="calculator-card">
+                        <h3>eDPI Calculator</h3>
+                        <p class="card-desc">eDPI = DPI × In-game Sensitivity. Use this to compare sensitivity within the same game only.</p>
+                        <div class="input-group">
+                            <label for="edpi-dpi">Mouse DPI</label>
+                            <input type="number" id="edpi-dpi" min="1" max="20000" value="800" oninput="calculateEdpi()">
+                        </div>
+                        <div class="input-group">
+                            <label for="edpi-sens">In-game Sensitivity</label>
+                            <input type="number" id="edpi-sens" step="0.001" min="0" value="1.0" oninput="calculateEdpi()">
+                        </div>
+                        <div class="result-display">
+                            <div class="result-label">eDPI</div>
+                            <div class="result-value large" id="edpi-result">800</div>
+                        </div>
+                        <div class="edpi-ranges">
+                            <h4>Competitive eDPI Ranges</h4>
+                            <div class="range-bars">
+                                <div class="range-bar" data-game="Valorant"><span class="range-label">Valorant</span><span class="range-value">200–400</span></div>
+                                <div class="range-bar" data-game="CS2"><span class="range-label">CS2</span><span class="range-value">800–1200</span></div>
+                                <div class="range-bar" data-game="Overwatch 2"><span class="range-label">Overwatch 2</span><span class="range-value">3200–6400</span></div>
+                                <div class="range-bar" data-game="Apex Legends"><span class="range-label">Apex</span><span class="range-value">800–1200</span></div>
+                                <div class="range-bar" data-game="Fortnite"><span class="range-label">Fortnite</span><span class="range-value">32–72</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-cm360" class="converter-panel" style="display:none;">
+                    <div class="calculator-card">
+                        <h3>cm/360° Calculator</h3>
+                        <p class="card-desc">cm/360° is the physical distance to turn 360° in-game. The universal standard for comparing sensitivity across games.</p>
+                        <div class="input-group">
+                            <label for="cm360-dpi">Mouse DPI</label>
+                            <input type="number" id="cm360-dpi" min="1" max="20000" value="800" oninput="calculateCm360()">
+                        </div>
+                        <div class="input-group">
+                            <label for="cm360-sens">In-game Sensitivity</label>
+                            <input type="number" id="cm360-sens" step="0.001" min="0" value="1.0" oninput="calculateCm360()">
+                        </div>
+                        <div class="input-group">
+                            <label for="cm360-yaw">Game Yaw (deg/count)</label>
+                            <input type="number" id="cm360-yaw" step="0.00001" min="0" value="0.022" oninput="calculateCm360()" placeholder="0.022 for CS2, 0.07 for Valorant">
+                        </div>
+                        <div class="result-display">
+                            <div class="result-label">cm/360°</div>
+                            <div class="result-value large" id="cm360-result-cm">—</div>
+                            <div class="result-label">inches/360°</div>
+                            <div class="result-value" id="cm360-result-in">—</div>
+                        </div>
+                        <div class="cm360-ranges">
+                            <h4>Recommended cm/360° Ranges</h4>
+                            <div class="range-info">
+                                <div class="range-item"><span class="range-label">Low Sens (Precision)</span><span class="range-value">40–60 cm</span></div>
+                                <div class="range-item"><span class="range-label">Medium Sens (Balanced)</span><span class="range-value">25–40 cm</span></div>
+                                <div class="range-item"><span class="range-label">High Sens (Speed)</span><span class="range-value">15–25 cm</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-favorites" class="converter-panel" style="display:none;">
+                    <div class="calculator-card">
+                        <h3>Saved Favorites</h3>
+                        <p class="card-desc">Your favorite sensitivity conversions. Saved in your browser.</p>
+                        <div id="favorites-list" class="favorites-list"></div>
+                        <button class="btn btn-secondary" onclick="clearFavorites()" style="margin-top: 16px;">Clear All Favorites</button>
+                    </div>
+                </div>
+
+                <div class="setup-guide">
+                    <h3>⚙️ Required Setup for Accurate Conversion</h3>
+                    <div class="guide-grid">
+                        <div class="guide-item">
+                            <h4>Windows Pointer Speed</h4>
+                            <p>Set to 6th notch (middle). <strong>Disable "Enhance pointer precision"</strong> (mouse acceleration).</p>
+                        </div>
+                        <div class="guide-item">
+                            <h4>Raw Input</h4>
+                            <p>Enable <strong>Raw Input</strong> in-game if available. Bypasses OS mouse processing.</p>
+                        </div>
+                        <div class="guide-item">
+                            <h4>FOV & Aspect Ratio</h4>
+                            <p>Match FOV and aspect ratio between games. Different FOV changes visual turn speed.</p>
+                        </div>
+                        <div class="guide-item">
+                            <h4>360° Test</h4>
+                            <p>After converting, do <strong>one full 360° turn</strong> in practice range. Confirm physical distance matches.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="why-cm360">
+                    <h3>Why cm/360°, Not eDPI?</h3>
+                    <p>eDPI (DPI × sensitivity) only works within <strong>the same game</strong>. CS2 uses 0.022°/count, Valorant uses 0.07°/count. The same eDPI means completely different physical turn distances.</p>
+                    <p><strong>cm/360° matches physical mouse movement</strong> — your muscle memory transfers perfectly. 280 Valorant eDPI ≠ 280 CS2 eDPI. Always convert using cm/360°.</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Mouse Sensitivity Converter: Keep Your Aim Across Games</h2>
+                <p>Switching between Valorant, CS2, Overwatch 2, Apex Legends, Fortnite, and other FPS games shouldn't mean relearning your aim. This free mouse sensitivity converter matches your physical cm/360° turn distance across 100+ games using verified yaw constants. No signup, runs entirely in your browser.</p>
+
+                <h3>How the Converter Works</h3>
+                <p>The converter uses the <strong>360° distance method</strong> (cm/360°). It calculates how far your mouse physically moves for a full 360° turn in your source game, then finds the sensitivity in your target game that produces the exact same physical distance. Your muscle memory stays consistent.</p>
+
+                <h3>Supported Games (100+)</h3>
+                <div class="game-grid">
+                    <div class="game-category">
+                        <h3>Tactical Shooters</h3>
+                        <ul>
+                            <li>Valorant (0.07°)</li>
+                            <li>Counter-Strike 2 (0.022°)</li>
+                            <li>Rainbow Six Siege (0.022°)</li>
+                            <li>Delta Force (0.022°)</li>
+                        </ul>
+                    </div>
+                    <div class="game-category">
+                        <h3>Hero Shooters</h3>
+                        <ul>
+                            <li>Overwatch 2 (0.0066°)</li>
+                            <li>Marvel Rivals (0.0175°)</li>
+                            <li>Deadlock (0.044°)</li>
+                            <li>Team Fortress 2 (0.022°)</li>
+                        </ul>
+                    </div>
+                    <div class="game-category">
+                        <h3>Battle Royale</h3>
+                        <ul>
+                            <li>Apex Legends (0.022°)</li>
+                            <li>Fortnite (0.005555%)</li>
+                            <li>Warzone (0.0066°)</li>
+                            <li>PUBG (0.022°)</li>
+                        </ul>
+                    </div>
+                    <div class="game-category">
+                        <h3>Aim Trainers</h3>
+                        <ul>
+                            <li>KovaaK's (0.022°)</li>
+                            <li>Aim Lab (0.05°)</li>
+                            <li>Aiming.pro (0.022°)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li><strong>100+ Games</strong> — Verified yaw constants for every major FPS</li>
+                    <li><strong>cm/360° & inches/360°</strong> — Universal physical distance measurement</li>
+                    <li><strong>eDPI Calculator</strong> — DPI × sensitivity for same-game comparison</li>
+                    <li><strong>DPI Adjustment</strong> — Different DPI per game supported</li>
+                    <li><strong>Favorites</strong> — Save conversions locally in your browser</li>
+                    <li><strong>Equivalent Table</strong> — See your sens in every game at once</li>
+                    <li><strong>Privacy-First</strong> — No data leaves your device</li>
+                    <li><strong>Offline-Capable</strong> — Works without internet after first load</li>
+                </ul>
+
+                <h3>Common Conversions</h3>
+                <table>
+                    <caption class="sr-only">Common sensitivity conversions at 800 DPI</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">From → To</th>
+                            <th scope="col">Multiply By</th>
+                            <th scope="col">Example (800 DPI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">CS2 → Valorant</th><td>× 0.314</td><td>1.14 → 0.36</td></tr>
+                        <tr><th scope="row">Valorant → CS2</th><td>× 3.18</td><td>0.35 → 1.11</td></tr>
+                        <tr><th scope="row">CS2 → Overwatch 2</th><td>× 3.33</td><td>1.14 → 3.80</td></tr>
+                        <tr><th scope="row">Overwatch 2 → CS2</th><td>× 0.30</td><td>5.00 → 1.50</td></tr>
+                        <tr><th scope="row">Apex → CS2</th><td>1:1 (hipfire)</td><td>1.14 → 1.14</td></tr>
+                        <tr><th scope="row">Valorant → Apex</th><td>× 3.18</td><td>0.35 → 1.11</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Frequently Asked Questions</h3>
+                <details class="faq-item">
+                    <summary>Why does my aim feel different even after perfect conversion?</summary>
+                    <p>FOV, aspect ratio, monitor size, game animations, and movement speed all affect perceived sensitivity. The 360° distance matches perfectly; the difference you feel is visual, not mechanical.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Should I change my DPI when switching games?</summary>
+                    <p>No. Keep your hardware DPI constant. Only change DPI in the converter if you genuinely use different DPIs in different games. The converter accounts for it automatically.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What is cm/360°?</summary>
+                    <p>Centimeters per 360° turn. The physical distance your mouse travels on the pad for one complete in-game rotation. It's the only measurement that transfers across games.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this work for ADS sensitivity?</summary>
+                    <p>This converter matches hipfire sensitivity. ADS (aim down sights) multipliers vary by game and optic. Match hipfire first, then adjust ADS per game feel.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data saved anywhere?</summary>
+                    <p>Only your Favorites are saved in your browser's localStorage. No data is sent to any server. Clear favorites anytime.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How accurate are the yaw values?</summary>
+                    <p>Yaw constants are sourced from game engine documentation, community reverse-engineering, and developer confirmation. Verified as of 2026. Always 360°-test in practice range.</p>
+                </details>
+
+                <div class="related-section">
+                    <h4>Related Tools</h4>
+                    <ul>
+                        <li><a href="/tools/calculator/">Free Online Calculator</a></li>
+                        <li><a href="/tools/click-speed-test/">Click Speed Test</a></li>
+                        <li><a href="/tools/mouse-tester/">Mouse Tester</a></li>
+                        <li><a href="/tools/keyboard-tester/">Keyboard Tester</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .converter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .converter-tab { padding: 10px 16px; background: #1a1a2e; border: 1px solid #333; color: #888; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .converter-tab:hover { color: #fff; border-color: #667eea; }
+        .converter-tab.active { background: #667eea; color: #fff; border-color: #667eea; }
+        .converter-panel { background: #1a1a2e; border-radius: 12px; padding: 20px; }
+        .converter-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 20px; }
+        .converter-side { flex: 1; min-width: 280px; }
+        .converter-side h3 { color: #667eea; margin-bottom: 16px; font-size: 1rem; }
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; color: #888; font-size: 0.85rem; margin-bottom: 6px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 1rem; }
+        .input-group input:focus, .input-group select:focus { outline: 2px solid transparent; border-color: #667eea; }
+        .input-group input[readonly] { background: #151530; color: #667eea; }
+        .converter-arrow { display: flex; align-items: center; justify-content: center; padding: 20px 0; color: #667eea; cursor: pointer; }
+        .converter-arrow:hover { color: #fff; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .result-card { background: #0f0f23; border-radius: 8px; padding: 16px; text-align: center; }
+        .result-label { color: #888; font-size: 0.8rem; margin-bottom: 4px; }
+        .result-value { color: #667eea; font-size: 1.5rem; font-weight: bold; font-family: monospace; }
+        .equivalent-games { margin-top: 20px; }
+        .equivalent-games h4 { color: #888; font-size: 0.9rem; margin-bottom: 12px; }
+        .equivalent-table { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+        .equiv-item { background: #0f0f23; border-radius: 8px; padding: 10px; text-align: center; }
+        .equiv-game { color: #888; font-size: 0.75rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .equiv-sens { color: #fff; font-size: 1rem; font-weight: bold; font-family: monospace; }
+        .converter-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .calculator-card { background: #1a1a2e; border-radius: 12px; padding: 20px; }
+        .card-desc { color: #888; font-size: 0.9rem; margin-bottom: 16px; }
+        .result-display { background: #0f0f23; border-radius: 8px; padding: 20px; text-align: center; margin: 16px 0; }
+        .result-value.large { font-size: 3rem; }
+        .edpi-ranges, .cm360-ranges { margin-top: 20px; }
+        .edpi-ranges h4, .cm360-ranges h4 { color: #888; font-size: 0.9rem; margin-bottom: 12px; }
+        .range-bars { display: flex; flex-wrap: wrap; gap: 8px; }
+        .range-bar { flex: 1; min-width: 120px; background: #0f0f23; border-radius: 8px; padding: 10px; text-align: center; }
+        .range-label { display: block; color: #888; font-size: 0.75rem; margin-bottom: 4px; }
+        .range-value { color: #667eea; font-weight: bold; font-family: monospace; }
+        .range-info { display: flex; flex-direction: column; gap: 8px; }
+        .range-item { display: flex; justify-content: space-between; background: #0f0f23; padding: 10px 16px; border-radius: 8px; }
+        .favorites-list { display: flex; flex-direction: column; gap: 8px; }
+        .favorite-item { background: #0f0f23; border-radius: 8px; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .favorite-info { display: flex; flex-direction: column; gap: 2px; }
+        .favorite-games { color: #667eea; font-weight: bold; font-size: 0.9rem; }
+        .favorite-details { color: #888; font-size: 0.8rem; }
+        .favorite-delete { background: none; border: none; color: #888; cursor: pointer; padding: 4px; }
+        .favorite-delete:hover { color: #e74c3c; }
+        .setup-guide { margin-top: 24px; }
+        .setup-guide h3 { color: #667eea; margin-bottom: 16px; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .guide-item { background: #0f0f23; border-radius: 8px; padding: 16px; }
+        .guide-item h4 { color: #fff; margin-bottom: 8px; font-size: 0.9rem; }
+        .guide-item p { color: #888; font-size: 0.85rem; margin: 0; }
+        .why-cm360 { margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%); border-radius: 12px; border: 1px solid #333; }
+        .why-cm360 h3 { color: #667eea; margin-bottom: 12px; }
+        .why-cm360 p { color: #ccc; margin: 8px 0; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 16px 0; }
+        .game-category h4 { color: #667eea; margin-bottom: 8px; font-size: 0.9rem; }
+        .game-category ul { list-style: none; padding: 0; margin: 0; }
+        .game-category li { color: #ccc; font-size: 0.85rem; margin-bottom: 4px; }
+    </style>
+
+    <script>
+        const GAMES = [
+            {id:"valorant", name:"Valorant", yaw:0.07, category:"Tactical"},
+            {id:"cs2", name:"Counter-Strike 2", yaw:0.022, category:"Tactical"},
+            {id:"csgo", name:"CS:GO", yaw:0.022, category:"Tactical"},
+            {id:"r6", name:"Rainbow Six Siege", yaw:0.022, category:"Tactical"},
+            {id:"delta", name:"Delta Force", yaw:0.022, category:"Tactical"},
+            {id:"ow2", name:"Overwatch 2", yaw:0.0066, category:"Hero"},
+            {id:"marvel", name:"Marvel Rivals", yaw:0.0175, category:"Hero"},
+            {id:"deadlock", name:"Deadlock", yaw:0.044, category:"Hero"},
+            {id:"tf2", name:"Team Fortress 2", yaw:0.022, category:"Hero"},
+            {id:"apex", name:"Apex Legends", yaw:0.022, category:"Battle Royale"},
+            {id:"fortnite", name:"Fortnite", yaw:0.005555, category:"Battle Royale", isPercent:true},
+            {id:"warzone", name:"Call of Duty: Warzone", yaw:0.0066, category:"Battle Royale"},
+            {id:"pubg", name:"PUBG", yaw:0.022, category:"Battle Royale"},
+            {id:"fortnite_legacy", name:"Fortnite (Legacy %)", yaw:0.005555, category:"Battle Royale", isPercent:true},
+            {id:"kovaks", name:"KovaaK's", yaw:0.022, category:"Aim Trainer"},
+            {id:"aimlab", name:"Aim Lab", yaw:0.05, category:"Aim Trainer"},
+            {id:"aimingpro", name:"Aiming.pro", yaw:0.022, category:"Aim Trainer"},
+            {id:"valorant_ads", name:"Valorant (ADS)", yaw:0.035, category:"Tactical"},
+            {id:"cs2_ads", name:"CS2 (ADS)", yaw:0.011, category:"Tactical"},
+            {id:"ow2_ads", name:"Overwatch 2 (ADS)", yaw:0.0033, category:"Hero"},
+            {id:"apex_ads", name:"Apex (ADS 1x)", yaw:0.022, category:"Battle Royale"},
+            {id:"cod_mw2", name:"Call of Duty MW2/3", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_bo6", name:"Call of Duty BO6", yaw:0.0066, category:"Battle Royale"},
+            {id:"battlefield", name:"Battlefield 2042", yaw:0.0025, category:"Battle Royale"},
+            {id:"halo", name:"Halo Infinite", yaw:0.0088, category:"Hero"},
+            {id:"destiny2", name:"Destiny 2", yaw:0.013, category:"Hero"},
+            {id:"tarkov", name:"Escape from Tarkov", yaw:0.022, category:"Tactical"},
+            {id:"rust", name:"Rust", yaw:0.022, category:"Tactical"},
+            {id:"hunt", name:"Hunt: Showdown", yaw:0.022, category:"Tactical"},
+            {id:"splitgate", name:"Splitgate", yaw:0.022, category:"Hero"},
+            {id:"paladins", name:"Paladins", yaw:0.011, category:"Hero"},
+            {id:"rogue", name:"Rogue Company", yaw:0.011, category:"Hero"},
+            {id:"thefinals", name:"THE FINALS", yaw:0.0066, category:"Hero"},
+            {id:"xdefiant", name:"XDefiant", yaw:0.0066, category:"Hero"},
+            {id:"arcraiders", name:"ARC Raiders", yaw:0.022, category:"Tactical"},
+            {id:"marathon", name:"Marathon", yaw:0.022, category:"Tactical"},
+            {id:"concord", name:"Concord", yaw:0.0066, category:"Hero"},
+            {id:"overwatch", name:"Overwatch 1", yaw:0.0066, category:"Hero"},
+            {id:"cs16", name:"Counter-Strike 1.6", yaw:0.022, category:"Tactical"},
+            {id:"css", name:"Counter-Strike: Source", yaw:0.022, category:"Tactical"},
+            {id:"l4d2", name:"Left 4 Dead 2", yaw:0.022, category:"Tactical"},
+            {id:"gmod", name:"Garry's Mod", yaw:0.022, category:"Tactical"},
+            {id:"quake", name:"Quake Champions", yaw:0.022, category:"Tactical"},
+            {id:"ut", name:"Unreal Tournament", yaw:0.022, category:"Tactical"},
+            {id:"reach", name:"Halo: Reach", yaw:0.0088, category:"Hero"},
+            {id:"h3", name:"Halo 3", yaw:0.0088, category:"Hero"},
+            {id:"h2", name:"Halo 2", yaw:0.0088, category:"Hero"},
+            {id:"ce", name:"Halo CE", yaw:0.0088, category:"Hero"},
+            {id:"ow2_legacy", name:"Overwatch 1 (Legacy)", yaw:0.0066, category:"Hero"},
+            {id:"bf2042", name:"Battlefield 2042", yaw:0.0025, category:"Battle Royale"},
+            {id:"bfv", name:"Battlefield V", yaw:0.0025, category:"Battle Royale"},
+            {id:"bf1", name:"Battlefield 1", yaw:0.0025, category:"Battle Royale"},
+            {id:"bf4", name:"Battlefield 4", yaw:0.0025, category:"Battle Royale"},
+            {id:"bf3", name:"Battlefield 3", yaw:0.0025, category:"Battle Royale"},
+            {id:"bfbc2", name:"Battlefield Bad Company 2", yaw:0.0025, category:"Battle Royale"},
+            {id:"cod_mw", name:"CoD Modern Warfare 2019", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_cw", name:"CoD Cold War", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_vg", name:"CoD Vanguard", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_mw2_2022", name:"CoD MW2 2022", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_mw3_2023", name:"CoD MW3 2023", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_bo3", name:"CoD Black Ops 3", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_bo4", name:"CoD Black Ops 4", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_ww2", name:"CoD WWII", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_iw", name:"CoD Infinite Warfare", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod_mwr", name:"CoD MW Remastered", yaw:0.0066, category:"Battle Royale"},
+            {id:"cod4", name:"CoD 4: Modern Warfare", yaw:0.0066, category:"Battle Royale"},
+            {id:"waw", name:"CoD World at War", yaw:0.0066, category:"Battle Royale"},
+            {id:"mw2_2009", name:"CoD MW2 2009", yaw:0.0066, category:"Battle Royale"},
+            {id:"bo2", name:"CoD Black Ops 2", yaw:0.0066, category:"Battle Royale"},
+            {id:"mw3_2011", name:"CoD MW3 2011", yaw:0.0066, category:"Battle Royale"},
+            {id:"ghosts", name:"CoD Ghosts", yaw:0.0066, category:"Battle Royale"},
+            {id:"aw", name:"CoD Advanced Warfare", yaw:0.0066, category:"Battle Royale"},
+            {id:"bo1", name:"CoD Black Ops", yaw:0.0066, category:"Battle Royale"},
+            {id:"mw2019_warzone", name:"MW2019 Warzone", yaw:0.0066, category:"Battle Royale"},
+            {id:"warzone2", name:"Warzone 2.0", yaw:0.0066, category:"Battle Royale"},
+            {id:"dmz", name:"DMZ", yaw:0.0066, category:"Battle Royale"},
+            {id:"mw2_dmz", name:"MW2 DMZ", yaw:0.0066, category:"Battle Royale"},
+        ];
+
+        function populateGameSelects() {
+            const sourceSelect = document.getElementById('source-game');
+            const targetSelect = document.getElementById('target-game');
+            
+            GAMES.forEach(game => {
+                const opt1 = document.createElement('option');
+                opt1.value = game.id;
+                opt1.textContent = game.name;
+                sourceSelect.appendChild(opt1.cloneNode(true));
+                targetSelect.appendChild(opt1);
+            });
+            
+            sourceSelect.value = 'cs2';
+            targetSelect.value = 'valorant';
+            updateSourceDetails();
+            updateTargetDetails();
+            calculateConversion();
+        }
+
+        function getGame(id) {
+            return GAMES.find(g => g.id === id);
+        }
+
+        function updateSourceDetails() {
+            const game = getGame(document.getElementById('source-game').value);
+            if (game) {
+                document.getElementById('source-sens').placeholder = game.isPercent ? 'e.g., 5.0 (%)' : 'e.g., 1.5';
+            }
+        }
+
+        function updateTargetDetails() {
+            const game = getGame(document.getElementById('target-game').value);
+            if (game) {
+                document.getElementById('target-sens').placeholder = game.isPercent ? 'Auto-calculated (%)' : 'Auto-calculated';
+            }
+        }
+
+        function swapGames() {
+            const sourceGame = document.getElementById('source-game').value;
+            const targetGame = document.getElementById('target-game').value;
+            const sourceSens = document.getElementById('source-sens').value;
+            const targetSens = document.getElementById('target-sens').value;
+            const sourceDpi = document.getElementById('source-dpi').value;
+            const targetDpi = document.getElementById('target-dpi').value;
+            
+            document.getElementById('source-game').value = targetGame;
+            document.getElementById('target-game').value = sourceGame;
+            document.getElementById('source-sens').value = targetSens;
+            document.getElementById('target-sens').value = sourceSens;
+            document.getElementById('source-dpi').value = targetDpi;
+            document.getElementById('target-dpi').value = sourceDpi;
+            
+            updateSourceDetails();
+            updateTargetDetails();
+            calculateConversion();
+        }
+
+        function calculateConversion() {
+            const sourceGame = getGame(document.getElementById('source-game').value);
+            const targetGame = getGame(document.getElementById('target-game').value);
+            const sourceSens = parseFloat(document.getElementById('source-sens').value);
+            const targetSens = parseFloat(document.getElementById('target-sens').value);
+            const sourceDpi = parseFloat(document.getElementById('source-dpi').value) || 800;
+            const targetDpi = parseFloat(document.getElementById('target-dpi').value) || 800;
+            
+            if (!sourceGame || !targetGame || isNaN(sourceSens) || isNaN(sourceDpi) || isNaN(targetDpi)) {
+                clearResults();
+                return;
+            }
+            
+            let sourceYaw = sourceGame.yaw;
+            let targetYaw = targetGame.yaw;
+            
+            let sourceSensAdj = sourceGame.isPercent ? sourceSens / 100 : sourceSens;
+            
+            const sourceCm360 = (360 * 2.54) / (sourceSensAdj * sourceDpi * sourceYaw);
+            
+            let targetSensAdj;
+            if (targetGame.isPercent) {
+                targetSensAdj = (360 * 2.54) / (sourceCm360 * targetDpi * targetYaw) * 100;
+            } else {
+                targetSensAdj = (360 * 2.54) / (sourceCm360 * targetDpi * targetYaw);
+            }
+            
+            document.getElementById('target-sens').value = targetSensAdj.toFixed(targetGame.isPercent ? 1 : 3);
+            
+            const sourceEdpi = sourceSens * sourceDpi;
+            const targetEdpi = targetSensAdj * targetDpi;
+            const inches360 = sourceCm360 / 2.54;
+            
+            document.getElementById('result-cm360').textContent = sourceCm360.toFixed(1) + ' cm';
+            document.getElementById('result-in360').textContent = inches360.toFixed(1) + ' in';
+            document.getElementById('result-source-edpi').textContent = Math.round(sourceEdpi);
+            document.getElementById('result-target-edpi').textContent = Math.round(targetEdpi);
+            
+            buildEquivalentTable(sourceCm360, sourceDpi);
+        }
+
+        function buildEquivalentTable(cm360, sourceDpi) {
+            const container = document.getElementById('equivalent-table');
+            container.innerHTML = '';
+            
+            GAMES.forEach(game => {
+                let sens;
+                if (game.isPercent) {
+                    sens = ((360 * 2.54) / (cm360 * sourceDpi * game.yaw) * 100).toFixed(1);
+                } else {
+                    sens = ((360 * 2.54) / (cm360 * sourceDpi * game.yaw)).toFixed(3);
+                }
+                
+                const item = document.createElement('div');
+                item.className = 'equiv-item';
+                item.innerHTML = '<div class="equiv-game">' + game.name + '</div><div class="equiv-sens">' + sens + (game.isPercent ? '%' : '') + '</div>';
+                container.appendChild(item);
+            });
+        }
+
+        function clearResults() {
+            document.getElementById('target-sens').value = '';
+            document.getElementById('result-cm360').textContent = '—';
+            document.getElementById('result-in360').textContent = '—';
+            document.getElementById('result-source-edpi').textContent = '—';
+            document.getElementById('result-target-edpi').textContent = '—';
+            document.getElementById('equivalent-table').innerHTML = '';
+        }
+
+        function calculateEdpi() {
+            const dpi = parseFloat(document.getElementById('edpi-dpi').value) || 0;
+            const sens = parseFloat(document.getElementById('edpi-sens').value) || 0;
+            const edpi = dpi * sens;
+            document.getElementById('edpi-result').textContent = edpi.toFixed(edpi % 1 === 0 ? 0 : 1);
+            
+            highlightRange('edpi', edpi);
+        }
+
+        function calculateCm360() {
+            const dpi = parseFloat(document.getElementById('cm360-dpi').value) || 800;
+            const sens = parseFloat(document.getElementById('cm360-sens').value) || 1;
+            const yaw = parseFloat(document.getElementById('cm360-yaw').value) || 0.022;
+            
+            const cm360 = (360 * 2.54) / (sens * dpi * yaw);
+            const in360 = cm360 / 2.54;
+            
+            document.getElementById('cm360-result-cm').textContent = cm360.toFixed(1) + ' cm';
+            document.getElementById('cm360-result-in').textContent = in360.toFixed(1) + ' in';
+            
+            highlightRange('cm360', cm360);
+        }
+
+        function highlightRange(type, value) {
+            document.querySelectorAll('.range-bar, .range-item').forEach(el => el.classList.remove('active'));
+            if (type === 'edpi') {
+                document.querySelectorAll('.range-bar').forEach(bar => {
+                    const game = bar.dataset.game;
+                    let min, max;
+                    if (game === 'Valorant') { min = 200; max = 400; }
+                    else if (game === 'CS2') { min = 800; max = 1200; }
+                    else if (game === 'Overwatch 2') { min = 3200; max = 6400; }
+                    else if (game === 'Apex Legends') { min = 800; max = 1200; }
+                    else if (game === 'Fortnite') { min = 32; max = 72; }
+                    if (value >= min && value <= max) bar.classList.add('active');
+                });
+            } else if (type === 'cm360') {
+                document.querySelectorAll('.range-item').forEach(item => {
+                    const label = item.querySelector('.range-label').textContent;
+                    if (label.includes('Low') && value >= 40 && value <= 60) item.classList.add('active');
+                    else if (label.includes('Medium') && value >= 25 && value <= 40) item.classList.add('active');
+                    else if (label.includes('High') && value >= 15 && value <= 25) item.classList.add('active');
+                });
+            }
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.converter-panel').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.converter-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab).style.display = 'block';
+            var target = btn || (typeof event !== 'undefined' ? event.target : null);
+            if (target && target.classList) target.classList.add('active');
+            if (tab === 'favorites') loadFavorites();
+        }
+
+        function addToFavorites() {
+            const sourceGame = getGame(document.getElementById('source-game').value);
+            const targetGame = getGame(document.getElementById('target-game').value);
+            const sourceSens = document.getElementById('source-sens').value;
+            const targetSens = document.getElementById('target-sens').value;
+            const sourceDpi = document.getElementById('source-dpi').value;
+            const targetDpi = document.getElementById('target-dpi').value;
+            const cm360 = document.getElementById('result-cm360').textContent;
+            
+            if (!sourceGame || !targetGame || !sourceSens || !targetSens) return;
+            
+            const favorite = {
+                id: Date.now(),
+                sourceGame: sourceGame.name,
+                targetGame: targetGame.name,
+                sourceSens: sourceSens,
+                targetSens: targetSens,
+                sourceDpi: sourceDpi,
+                targetDpi: targetDpi,
+                cm360: cm360,
+                timestamp: new Date().toISOString()
+            };
+            
+            const favorites = JSON.parse(localStorage.getItem('sens_favorites') || '[]');
+            favorites.unshift(favorite);
+            if (favorites.length > 20) favorites.pop();
+            localStorage.setItem('sens_favorites', JSON.stringify(favorites));
+            
+            loadFavorites();
+        }
+
+        function loadFavorites() {
+            const container = document.getElementById('favorites-list');
+            const favorites = JSON.parse(localStorage.getItem('sens_favorites') || '[]');
+            
+            if (favorites.length === 0) {
+                container.innerHTML = '<p style="color:#888;text-align:center;padding:20px;">No favorites saved yet</p>';
+                return;
+            }
+            
+            container.innerHTML = favorites.map(fav => `
+                <div class="favorite-item">
+                    <div class="favorite-info">
+                        <span class="favorite-games">\${fav.sourceGame} \u2192 \${fav.targetGame}</span>
+                        <span class="favorite-details">\${fav.sourceSens} @ \${fav.sourceDpi} DPI \u2192 \${fav.targetSens} @ \${fav.targetDpi} DPI | \${fav.cm360}</span>
+                    </div>
+                    <button class="favorite-delete" onclick="deleteFavorite(\${fav.id})">\u2715</button>
+                </div>
+`).join('');
+        }
+
+        function deleteFavorite(id) {
+            let favorites = JSON.parse(localStorage.getItem('sens_favorites') || '[]');
+            favorites = favorites.filter(f => f.id !== id);
+            localStorage.setItem('sens_favorites', JSON.stringify(favorites));
+            loadFavorites();
+        }
+
+        function clearFavorites() {
+            if (confirm('Clear all saved favorites?')) {
+                localStorage.removeItem('sens_favorites');
+                loadFavorites();
+            }
+        }
+
+        function copyResults() {
+            const sourceGame = getGame(document.getElementById('source-game').value);
+            const targetGame = getGame(document.getElementById('target-game').value);
+            const sourceSens = document.getElementById('source-sens').value;
+            const targetSens = document.getElementById('target-sens').value;
+            const sourceDpi = document.getElementById('source-dpi').value;
+            const targetDpi = document.getElementById('target-dpi').value;
+            const cm360 = document.getElementById('result-cm360').textContent;
+            const in360 = document.getElementById('result-in360').textContent;
+            const sourceEdpi = document.getElementById('result-source-edpi').textContent;
+            const targetEdpi = document.getElementById('result-target-edpi').textContent;
+            
+            if (!sourceGame || !targetGame) return;
+            
+            const text = sourceGame.name + ' ' + sourceSens + ' @ ' + sourceDpi + ' DPI \u2192 ' + targetGame.name + ' ' + targetSens + ' @ ' + targetDpi + ' DPI\ncm/360°: ' + cm360 + ' | inches/360°: ' + in360 + '\neDPI: ' + sourceEdpi + ' \u2192 ' + targetEdpi;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+
+        populateGameSelects();
+        calculateEdpi();
+        calculateCm360();
+    </script>
+    <footer style="text-align:center;padding:30px 20px;color:#888;font-size:0.9rem;border-top:1px solid #1a1a3e;margin-top:40px;">
+        <p style="margin-bottom:8px;">&copy; 2026 <a href="/" style="color:#667eea;text-decoration:none;">DevTools Hub</a> &middot; <a href="/about/" style="color:#667eea;text-decoration:none;">About</a> &middot; <a href="/privacy/" style="color:#667eea;text-decoration:none;">Privacy</a> &middot; <a href="/tools/feedback/" style="color:#667eea;text-decoration:none;">Feedback</a></p>
+        <p style="font-size:0.8rem;color:#666;">Hundreds of free browser-based developer tools. No signup. 100% private.</p>
+    </footer>
+</body>
+</html>

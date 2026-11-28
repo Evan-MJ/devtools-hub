@@ -3,7 +3,7 @@
   "description": "Free collection of browser-based developer tools. No signup, no tracking, all client-side.",
   "version": "1.0.0",
   "homepage": "https://tools.scoreroute.com/",
-  "tool_count": 399,
+  "tool_count": 400,
   "categories": [
     "ai-language",
     "calculators",
@@ -2813,6 +2813,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/html-validator/.md",
       "description": "Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line ..."
+    },
+    {
+      "name": "Mouse Sensitivity Converter - eDPI & cm/360 Calculator",
+      "url": "https://tools.scoreroute.com/tools/mouse-sensitivity-converter/",
+      "category": "calculators",
+      "markdown_url": "https://tools.scoreroute.com/tools/mouse-sensitivity-converter/.md",
+      "description": "Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games...."
     }
   ],
   "skills": [
@@ -5608,6 +5615,13 @@
       "category": "formatters",
       "markdown_url": "https://tools.scoreroute.com/tools/html-validator/.md",
       "description": "Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line ..."
+    },
+    {
+      "name": "Mouse Sensitivity Converter - eDPI & cm/360 Calculator",
+      "url": "https://tools.scoreroute.com/tools/mouse-sensitivity-converter/",
+      "category": "calculators",
+      "markdown_url": "https://tools.scoreroute.com/tools/mouse-sensitivity-converter/.md",
+      "description": "Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games...."
     }
   ]
 }

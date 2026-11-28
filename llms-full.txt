@@ -1,6 +1,6 @@
 # DevTools Hub - Full Catalog
 
-> Complete catalog of 399 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
+> Complete catalog of 400 browser-based developer tools. For a compact index see [/llms.txt](https://tools.scoreroute.com/llms.txt).
 
 ## Site Information
 
@@ -8,7 +8,7 @@
 - URL: https://tools.scoreroute.com/
 - Owner: BAOMING
 - Host: Cloudflare Pages
-- Total tools: 399
+- Total tools: 400
 - Categories: 11
 - Last updated: 2026-11-28
 - License: Free to use, no signup, no tracking, 100% client-side
@@ -134,7 +134,7 @@ Free online Python formatter with Black-compatible style. Configure indentation,
 
 Free online HTML5 validator. Checks syntax, unclosed tags, invalid nesting, deprecated elements, accessibility. Line numbers and fixes included.
 
-## Calculators (41 tools)
+## Calculators (42 tools)
 
 Browse all: [Calculators](https://tools.scoreroute.com/tools/calculators/.md)
 
@@ -506,6 +506,15 @@ Free gravel calculator. Convert length, width and depth into cubic yards, tons a
 - Tags: treadmill, pace, calculator, convert, mph, kph, 5k, 10k, running, fitness
 
 Free treadmill pace calculator. Convert MPH to minutes per mile, km/h to min/km. Get 5K and 10K finish times at each speed. Printable chart included.
+
+### Mouse Sensitivity Converter - eDPI & cm/360 Calculator
+
+- URL: https://tools.scoreroute.com/tools/mouse-sensitivity-converter/
+- Markdown: https://tools.scoreroute.com/tools/mouse-sensitivity-converter/.md
+- Category: Calculators
+- Tags: mouse, sensitivity, converter, edpi, cm360, valorant, cs2, overwatch, apex, fortnite, gaming, fps
+
+Free mouse sensitivity converter for FPS games. Convert sens between Valorant, CS2, Overwatch 2, Apex and 100+ games. Calculate eDPI and cm/360.
 
 ## Generators (54 tools)
 
@@ -3650,7 +3659,7 @@ Free AI code generator and assistant. Generate, explain, debug, convert code in 
 
 ## Pages
 
-- [Homepage](https://tools.scoreroute.com/): Browse all 399 tools
+- [Homepage](https://tools.scoreroute.com/): Browse all 400 tools
 - [About](https://tools.scoreroute.com/about/): Mission, technology stack, contact
 - [Privacy Policy](https://tools.scoreroute.com/privacy/): No tracking, no personal data collection
 - [Contact](https://tools.scoreroute.com/contact/): Report a bug, request a tool, or send feedback
